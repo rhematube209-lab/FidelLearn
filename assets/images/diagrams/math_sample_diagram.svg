@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240">
+  <rect width="100%" height="100%" fill="#F8FAFC" rx="8"/>
+  <!-- Coordinate Grid Lines -->
+  <line x1="40" y1="20" x2="40" y2="210" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="120" y1="20" x2="120" y2="210" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="200" y1="20" x2="200" y2="210" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="280" y1="20" x2="280" y2="210" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="360" y1="20" x2="360" y2="210" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+  <!-- Axes -->
+  <line x1="20" y1="180" x2="380" y2="180" stroke="#334155" stroke-width="2.5"/>
+  <line x1="60" y1="220" x2="60" y2="20" stroke="#334155" stroke-width="2.5"/>
+  
+  <!-- Axis Labels -->
+  <text x="370" y="200" font-family="sans-serif" font-size="14" font-weight="bold" fill="#334155">x</text>
+  <text x="40" y="30" font-family="sans-serif" font-size="14" font-weight="bold" fill="#334155">y</text>
+  <text x="50" y="195" font-family="sans-serif" font-size="12" fill="#64748B">0</text>
+
+  <!-- Curve y = f(x) -->
+  <path d="M 60 170 C 120 160, 160 120, 220 70 S 300 20, 360 15" fill="none" stroke="#0D5C3A" stroke-width="3.5"/>
+  <text x="280" y="55" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0D5C3A">y = f(x)</text>
+
+  <!-- Tangent Line at x=2 -->
+  <line x1="140" y1="155" x2="300" y2="15" stroke="#D97706" stroke-width="2.5" stroke-dasharray="5 5"/>
+  <circle cx="220" cy="85" r="5" fill="#D97706"/>
+  <text x="230" y="95" font-family="sans-serif" font-size="12" font-weight="bold" fill="#D97706">P(x₀, y₀)</text>
+  <text x="170" y="150" font-family="sans-serif" font-size="11" fill="#B45309">Tangent: Slope = f'(x₀)</text>
+</svg>

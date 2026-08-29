@@ -1,0 +1,58 @@
+name: fidel_learn
+description: "FidelLearn - Offline-First Ethiopian National Exam Preparation Platform"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.3
+
+  # State Management & Architecture
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Routing
+  go_router: ^13.2.0
+
+  # Local Persistence & Offline Database
+  drift: ^2.16.0
+  sqlite3_flutter_libs: ^0.5.20
+  path_provider: ^2.1.2
+  path: ^1.9.0
+
+  # Secure Storage & Connectivity
+  flutter_secure_storage: ^9.0.0
+  connectivity_plus: ^5.0.2
+
+  # Supabase Integration (Ready for cloud sync)
+  supabase_flutter: ^2.3.4
+
+  # Utility & Design Tokens
+  uuid: ^4.3.3
+  equatable: ^2.0.5
+  crypto: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.8
+  drift_dev: ^2.16.0
+  riverpod_generator: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/seed/
+    - assets/images/
+    - assets/images/diagrams/
+    - assets/translations/

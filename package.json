@@ -1,0 +1,24 @@
+{
+  "name": "fidel-learn",
+  "version": "1.0.0",
+  "description": "FidelLearn - Offline-First Ethiopian National Exam Preparation Platform",
+  "scripts": {
+    "build": "bash vercel-build.sh",
+    "vercel-build": "bash vercel-build.sh",
+    "dev": "flutter run -d web-server --web-port=3000 --web-hostname=localhost",
+    "dev:chrome": "flutter run -d chrome",
+    "dev:windows": "flutter run -d windows",
+    "test": "flutter test",
+    "analyze": "flutter analyze"
+  },
+  "keywords": [
+    "flutter",
+    "dart",
+    "ethiopia",
+    "esslce",
+    "exam-prep",
+    "offline-first"
+  ],
+  "author": "FidelLearn Team",
+  "license": "MIT"
+}

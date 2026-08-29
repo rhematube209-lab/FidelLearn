@@ -1,0 +1,5054 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_biology_2013",
+      "subject_id": "biology_g12",
+      "name_en": "Grade 12 Biology (ESSLCE 2013 E.C. National Exam)",
+      "name_am": "የ12ኛ ክፍል ባዮሎጂ (የ2013 ዓ.ም. ብሔራዊ ፈተና)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 1048576,
+      "publisher": "National Educational Assessment and Examinations Agency (NEAEA)",
+      "license": "official_archive",
+      "attribution": "ESSLCE 2013 E.C. / 2020-2021 G.C. Booklet 12",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "biology_g12",
+      "code": "BIO12",
+      "name_en": "Biology",
+      "name_am": "ባዮሎጂ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/biology_icon.png",
+      "sort_order": 3
+    }
+  ],
+  "units": [
+    {
+      "id": "bio_u1",
+      "subject_id": "biology_g12",
+      "unit_number": 1,
+      "title_en": "Biological Research & Scientific Tools",
+      "title_am": "የስነ-ህይወት ምርምርና ሳይንሳዊ መሳሪያዎች"
+    },
+    {
+      "id": "bio_u2",
+      "subject_id": "biology_g12",
+      "unit_number": 2,
+      "title_en": "Cytology, Biomolecules & Enzymes",
+      "title_am": "ሴል፣ ባዮሞለኪዩሎች እና ኢንዛይሞች"
+    },
+    {
+      "id": "bio_u3",
+      "subject_id": "biology_g12",
+      "unit_number": 3,
+      "title_en": "Energy Transformation: Respiration & Photosynthesis",
+      "title_am": "የሃይል ልውውጥ፡ አተነፋፈስና ፎቶሲንተሲስ"
+    },
+    {
+      "id": "bio_u4",
+      "subject_id": "biology_g12",
+      "unit_number": 4,
+      "title_en": "Microorganisms & Human Health",
+      "title_am": "ደቂቅ አካላትና የሰው ጤና"
+    },
+    {
+      "id": "bio_u5",
+      "subject_id": "biology_g12",
+      "unit_number": 5,
+      "title_en": "Genetics, Molecular Biology & Biotechnology",
+      "title_am": "ጄኔቲክስ፣ ሞለኪዩላር ባዮሎጂ እና ባዮቴክኖሎጂ"
+    },
+    {
+      "id": "bio_u6",
+      "subject_id": "biology_g12",
+      "unit_number": 6,
+      "title_en": "Evolution & Animal Behavior",
+      "title_am": "የዝግመተ-ለውጥና የእንስሳት ባህሪ"
+    },
+    {
+      "id": "bio_u7",
+      "subject_id": "biology_g12",
+      "unit_number": 7,
+      "title_en": "Ecology, Biomes & Environmental Conservation",
+      "title_am": "ኢኮሎጂ፣ ባዮሞችና የአካባቢ ጥበቃ"
+    }
+  ],
+  "topics": [
+    {
+      "id": "bio_t1_1",
+      "unit_id": "bio_u1",
+      "topic_number": 1,
+      "title_en": "Scientific Method & Experimental Design",
+      "title_am": "የሳይንሳዊ ዘዴ ደረጃዎች"
+    },
+    {
+      "id": "bio_t1_2",
+      "unit_id": "bio_u1",
+      "topic_number": 2,
+      "title_en": "Biological Apparatus & Field Tools",
+      "title_am": "የላቦራቶሪና የመስክ መሳሪያዎች"
+    },
+    {
+      "id": "bio_t2_1",
+      "unit_id": "bio_u2",
+      "topic_number": 1,
+      "title_en": "Cell Membrane & Transport Mechanisms",
+      "title_am": "የሴል ሽፋንና የንጥረ-ነገሮች ዝውውር"
+    },
+    {
+      "id": "bio_t2_2",
+      "unit_id": "bio_u2",
+      "topic_number": 2,
+      "title_en": "Organic Macromolecules (Carbohydrates, Lipids, Proteins)",
+      "title_am": "ኦርጋኒክ ማክሮሞለኪዩሎች"
+    },
+    {
+      "id": "bio_t2_3",
+      "unit_id": "bio_u2",
+      "topic_number": 3,
+      "title_en": "Enzyme Kinetics, Specificity & Inhibition",
+      "title_am": "የኢንዛይም አሰራርና ተጽእኖዎች"
+    },
+    {
+      "id": "bio_t3_1",
+      "unit_id": "bio_u3",
+      "topic_number": 1,
+      "title_en": "Glycolysis, Krebs Cycle & Anaerobic Fermentation",
+      "title_am": "ሴሉላር አተነፋፈስና እርሾ"
+    },
+    {
+      "id": "bio_t3_2",
+      "unit_id": "bio_u3",
+      "topic_number": 2,
+      "title_en": "Light Reactions, Calvin Cycle & CAM Pathway",
+      "title_am": "የፎቶሲንተሲስ ሂደቶች"
+    },
+    {
+      "id": "bio_t4_1",
+      "unit_id": "bio_u4",
+      "topic_number": 1,
+      "title_en": "Bacteria Structure, Morphology & Pathogenesis",
+      "title_am": "የባክቴሪያ ቅርፅና በሽታ አምጪነት"
+    },
+    {
+      "id": "bio_t4_2",
+      "unit_id": "bio_u4",
+      "topic_number": 2,
+      "title_en": "Viruses, Replication Cycles & HIV/AIDS Management",
+      "title_am": "ቫይረሶችና ኤች አይ ቪ / ኤድስ"
+    },
+    {
+      "id": "bio_t5_1",
+      "unit_id": "bio_u5",
+      "topic_number": 1,
+      "title_en": "DNA Structure, Semiconservative Replication & Translation",
+      "title_am": "ዲ ኤን ኤና የፕሮቲን ቅንብር"
+    },
+    {
+      "id": "bio_t5_2",
+      "unit_id": "bio_u5",
+      "topic_number": 2,
+      "title_en": "Meiosis, Crossing Over & Mendelian Genetics",
+      "title_am": "የዘር ውርስና ሜዮሲስ"
+    },
+    {
+      "id": "bio_t5_3",
+      "unit_id": "bio_u5",
+      "topic_number": 3,
+      "title_en": "Recombinant DNA, Plasmids & Insulin Cloning",
+      "title_am": "የኢንሱሊን ክሎኒንግ"
+    },
+    {
+      "id": "bio_t6_1",
+      "unit_id": "bio_u6",
+      "topic_number": 1,
+      "title_en": "Theories of Evolution (Lamarck, Darwin, Neo-Darwinism)",
+      "title_am": "የዝግመተ-ለውጥ ንድፈ-ሀሳቦች"
+    },
+    {
+      "id": "bio_t6_2",
+      "unit_id": "bio_u6",
+      "topic_number": 2,
+      "title_en": "Hominid Evolution, Lucy & Evidences of Evolution",
+      "title_am": "የሰው ዘር ዝግመተ-ለውጥና ድንቅነሽ (ሉሲ)"
+    },
+    {
+      "id": "bio_t6_3",
+      "unit_id": "bio_u6",
+      "topic_number": 3,
+      "title_en": "Innate vs Learned Behavior & Territoriality",
+      "title_am": "የእንስሳት ባህሪ"
+    },
+    {
+      "id": "bio_t7_1",
+      "unit_id": "bio_u7",
+      "topic_number": 1,
+      "title_en": "Ecosystems, Nutrient Cycling & Phosphate Cycle",
+      "title_am": "የንጥረ-ነገሮች ዑደት"
+    },
+    {
+      "id": "bio_t7_2",
+      "unit_id": "bio_u7",
+      "topic_number": 2,
+      "title_en": "Population Dynamics, Natality/Mortality & Growth Curves",
+      "title_am": "የህዝብ ብዛት ተለዋዋጭነት"
+    },
+    {
+      "id": "bio_t7_3",
+      "unit_id": "bio_u7",
+      "topic_number": 3,
+      "title_en": "Terrestrial Biomes, Succession & Biodiversity",
+      "title_am": "ባዮሞች፣ ተከታታይነትና ብዝሃ-ህይወት"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_bio_2013_001",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is true about the importance of Lucy in resolving debates about human evolution?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 1,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_001_a",
+          "label": "A",
+          "text_en": "Big brains came before bipedalism.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_001_b",
+          "label": "B",
+          "text_en": "Lucy had a brain size of 1.8% of her body mass.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_001_c",
+          "label": "C",
+          "text_en": "Bipedalism came before big brains.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_001_d",
+          "label": "D",
+          "text_en": "Lucy was partially an arboreal primate",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The discovery of Australopithecus afarensis (Lucy) in Hadar, Ethiopia (1974) demonstrated that upright bipedal walking evolved before hominid brain enlargement.",
+        "simpler_explanation_en": "Lucy walked upright on two feet despite having a chimpanzee-sized brain.",
+        "key_concept": "Hominid evolutionary sequence: Bipedalism preceded encephalization.",
+        "common_pitfall": "Assuming large brain size was the primary initial driver of human evolution."
+      }
+    },
+    {
+      "id": "q_bio_2013_002",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following can best explain behavior? It is",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 1,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_002_a",
+          "label": "A",
+          "text_en": "the co-ordinated response of an organism to an internal or external stimuli.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_002_b",
+          "label": "B",
+          "text_en": "the tendency for parts of plants to grow towards light.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_002_c",
+          "label": "C",
+          "text_en": "the actions or reactions of a person or animal in response to external or internal stimuli.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_002_d",
+          "label": "D",
+          "text_en": "a cell or group of cells that receives and processes stimuli.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Behavior is biologically defined as the observable actions or reactions of an individual or animal in response to internal or external stimuli.",
+        "simpler_explanation_en": "Behavior describes how an organism acts and reacts to its environment.",
+        "key_concept": "Ethological definition of animal behavior.",
+        "common_pitfall": "Confusing plant physiological tropisms with animal behavioral definitions."
+      }
+    },
+    {
+      "id": "q_bio_2013_003",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "The quick withdrawal of your hand from a hot plate is an example of",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 1,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_003_a",
+          "label": "A",
+          "text_en": "fixed action pattern",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_003_b",
+          "label": "B",
+          "text_en": "innate behavior",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_003_c",
+          "label": "C",
+          "text_en": "biological clock",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_003_d",
+          "label": "D",
+          "text_en": "key stimulus",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A withdrawal reflex is an involuntary, genetically hardwired spinal reflex present from birth (innate behavior) requiring no prior learning.",
+        "simpler_explanation_en": "Withdrawing your hand from danger is an automatic reflex you are born with.",
+        "key_concept": "Innate behavior and unconditioned reflex arcs.",
+        "common_pitfall": "Thinking reflex reactions are acquired through trial-and-error conditioning."
+      }
+    },
+    {
+      "id": "q_bio_2013_004",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following processes describes a biological clock?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_004_a",
+          "label": "A",
+          "text_en": "Removal of one's thumb from hot objects quickly",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_004_b",
+          "label": "B",
+          "text_en": "The growing of plants towards light",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_004_c",
+          "label": "C",
+          "text_en": "Circannual migration of birds from temperate to tropical areas",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_004_d",
+          "label": "D",
+          "text_en": "Kinesis and taxes of woodlice and other simple animals",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Biological clocks regulate endogenous circadian (daily) and circannual (yearly) rhythms, such as the seasonal migration of birds.",
+        "simpler_explanation_en": "Seasonal migration is governed by an internal yearly biological clock.",
+        "key_concept": "Circannual and circadian biological rhythms.",
+        "common_pitfall": "Confusing simple stimulus-driven reflexes or taxes with endogenous biological clocks."
+      }
+    },
+    {
+      "id": "q_bio_2013_005",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "Identify learned behavior from the following.",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_005_a",
+          "label": "A",
+          "text_en": "Dog trained to hunt",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_005_b",
+          "label": "B",
+          "text_en": "Honey bee making honey",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_005_c",
+          "label": "C",
+          "text_en": "Child withdraws hand from hot things",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_005_d",
+          "label": "D",
+          "text_en": "Ants making nest",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hunting skills in a trained dog develop through conditioning, reinforcement, and experience, characterizing learned behavior.",
+        "simpler_explanation_en": "A dog must be trained by humans to hunt, making it learned behavior.",
+        "key_concept": "Learned behavior vs innate/instinctive behaviors.",
+        "common_pitfall": "Assuming insect nest construction or honey production is learned rather than instinctive."
+      }
+    },
+    {
+      "id": "q_bio_2013_006",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_1",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following features is unique to bacteria?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_006_a",
+          "label": "A",
+          "text_en": "Presence of permeable membrane",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_006_b",
+          "label": "B",
+          "text_en": "Being unicellular",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_006_c",
+          "label": "C",
+          "text_en": "Absence of nuclear membrane",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_006_d",
+          "label": "D",
+          "text_en": "Having flagella for locomotion",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Bacteria are prokaryotes characterized uniquely by the absence of a membrane-bound nucleus (no nuclear membrane), having naked circular DNA.",
+        "simpler_explanation_en": "Prokaryotic bacteria lack a nuclear membrane enclosing their genetic material.",
+        "key_concept": "Prokaryotic cellular organization: absence of nuclear membrane.",
+        "common_pitfall": "Forgetting that protozoa and certain algae are also unicellular and flagellated."
+      }
+    },
+    {
+      "id": "q_bio_2013_007",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_1",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the diagram which shows the different shape of bacteria below. What is the correct name of the shape of bacteria represented by letters A, B, and C, respectively?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_007_a",
+          "label": "A",
+          "text_en": "Rod, spirochaete, sphere",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_007_b",
+          "label": "B",
+          "text_en": "Sphere, rod, spirochaete",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_007_c",
+          "label": "C",
+          "text_en": "Flagellated bacilli, clusters, spirilla",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_007_d",
+          "label": "D",
+          "text_en": "Spirochaete, sphere, rod",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Letter A represents spiral/helical spirochaete, B represents clustered spherical cocci, and C represents rod-shaped bacilli.",
+        "simpler_explanation_en": "A is spiral (spirochaete), B is round (sphere), C is rod-shaped.",
+        "key_concept": "Classification of bacterial cell morphology.",
+        "common_pitfall": "Inverting the order of bacteria shapes."
+      },
+      "vector_diagram": {
+        "id": "diag_bio_bacteria_shapes",
+        "title_en": "Bacterial Morphology Shapes (A, B, C)",
+        "title_am": "የባክቴሪያ ቅርጾች",
+        "raw_svg_content": "<svg viewBox='0 0 400 200'><path d='M30,100 Q60,40 90,100 T150,100' fill='none' stroke='#0F766E' stroke-width='4'/><circle cx='230' cy='80' r='14' fill='#0F766E'/><circle cx='255' cy='90' r='14' fill='#0F766E'/><circle cx='235' cy='110' r='14' fill='#0F766E'/><circle cx='260' cy='120' r='14' fill='#0F766E'/><rect x='310' y='70' width='55' height='22' rx='10' fill='#0F766E'/><rect x='325' y='105' width='55' height='22' rx='10' fill='#0F766E'/></svg>",
+        "view_box_width": 400,
+        "view_box_height": 200,
+        "caption": "A = Spirochaete (spiral), B = Spherical Cocci, C = Rod-shaped Bacilli",
+        "hotspots": [
+          {
+            "id": "h_a",
+            "x_ratio": 0.22,
+            "y_ratio": 0.5,
+            "label": "A",
+            "description_en": "A: Spirochaete (spiral wavy shape)",
+            "description_am": "A: ስፓይሮኬት (ጠመዝማዛ)"
+          },
+          {
+            "id": "h_b",
+            "x_ratio": 0.6,
+            "y_ratio": 0.5,
+            "label": "B",
+            "description_en": "B: Sphere / Coccus (spherical clusters)",
+            "description_am": "B: ክብ ቅርፅ (ኮከስ)"
+          },
+          {
+            "id": "h_c",
+            "x_ratio": 0.85,
+            "y_ratio": 0.5,
+            "label": "C",
+            "description_en": "C: Rod / Bacillus (cylindrical rod shape)",
+            "description_am": "C: ዘንግ ቅርፅ (ባሲለስ)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "q_bio_2013_008",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_3",
+      "exam_year": 2013,
+      "question_text_en": "It is possible to produce human insulin in a bacterial strain. The insulin gene should be inserted in a plasmid and the recombinant DNA plasmid should be inserted into a bacterium. What is the role of the bacterium in this process?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_008_a",
+          "label": "A",
+          "text_en": "The source of insulin and modification",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_008_b",
+          "label": "B",
+          "text_en": "The source of plasmid and insulin production",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_008_c",
+          "label": "C",
+          "text_en": "Multiplying the recombinant DNA molecule",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_008_d",
+          "label": "D",
+          "text_en": "Joining the gene of insulin with the gene of plasmid",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The transgenic bacterium acts as a cellular host that replicates rapidly, multiplying the recombinant plasmid DNA and expressing large amounts of human insulin.",
+        "simpler_explanation_en": "The bacterium replicates the recombinant DNA and produces the insulin protein.",
+        "key_concept": "Recombinant DNA biotechnology and gene expression vectors.",
+        "common_pitfall": "Thinking bacteria are the genetic source of human insulin."
+      }
+    },
+    {
+      "id": "q_bio_2013_009",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_1",
+      "exam_year": 2013,
+      "question_text_en": "Bacteria can cause diseases in all of the following mechanisms EXCEPT",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_009_a",
+          "label": "A",
+          "text_en": "Changing the genetic structure of host cells",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_009_b",
+          "label": "B",
+          "text_en": "Entering living cells and disrupting metabolic systems",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_009_c",
+          "label": "C",
+          "text_en": "Releasing toxins as they multiply",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_009_d",
+          "label": "D",
+          "text_en": "Invading and growing on the tissues of organs",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Pathogenic bacteria cause illness by tissue colonization, endotoxins, and exotoxins. They do not alter or integrate into the host chromosomal DNA sequence.",
+        "simpler_explanation_en": "Bacteria do not alter human host cell DNA chromosomes.",
+        "key_concept": "Mechanisms of bacterial pathogenesis.",
+        "common_pitfall": "Confusing oncogenic viral genomic integration with bacterial mechanisms."
+      }
+    },
+    {
+      "id": "q_bio_2013_010",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "Functional diseases differ from infectious diseases in that they",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_010_a",
+          "label": "A",
+          "text_en": "Are caused by microorganisms",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_010_b",
+          "label": "B",
+          "text_en": "Occur in the brain and heart",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_010_c",
+          "label": "C",
+          "text_en": "Are more common in females than males",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_010_d",
+          "label": "D",
+          "text_en": "Show no signs of damage on the organ",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Functional diseases (such as non-ulcer dyspepsia or irritable bowel syndrome) present with symptoms of organ dysfunction without observable structural tissue lesions or pathogen infection.",
+        "simpler_explanation_en": "Functional diseases cause symptom disturbance without visible structural damage on organs.",
+        "key_concept": "Distinction between functional and organic/infectious diseases.",
+        "common_pitfall": "Believing all diseases must produce visible tissue lesions."
+      }
+    },
+    {
+      "id": "q_bio_2013_011",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the drawing of a bacteriophage given below. In the above diagram of a bacteriophage, DNA and Protein coat are respectively represented by",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_011_a",
+          "label": "A",
+          "text_en": "2 and 3.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_011_b",
+          "label": "B",
+          "text_en": "1 and 3.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_011_c",
+          "label": "C",
+          "text_en": "1 and 2.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_011_d",
+          "label": "D",
+          "text_en": "2 and 1.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In the bacteriophage diagram, label 2 points to the nucleic acid genome (DNA) inside the head, and label 1 points to the external capsid protein coat.",
+        "simpler_explanation_en": "DNA is on the inside (2) and the protein coat is on the outside (1).",
+        "key_concept": "Structural anatomy of bacteriophage viruses.",
+        "common_pitfall": "Reversing labels 1 and 2."
+      },
+      "vector_diagram": {
+        "id": "diag_bio_bacteriophage",
+        "title_en": "Bacteriophage Structure (1 = Capsid, 2 = DNA, 3 = Sheath)",
+        "title_am": "የባክቴሪዮፋጅ መዋቅር",
+        "raw_svg_content": "<svg viewBox='0 0 400 280'><polygon points='200,30 250,65 250,125 200,160 150,125 150,65' fill='none' stroke='#0F766E' stroke-width='3'/><path d='M180,75 Q200,60 220,75 T200,115' fill='none' stroke='#E11D48' stroke-width='3'/><rect x='192' y='160' width='16' height='50' fill='#0F766E'/><line x1='192' y1='210' x2='150' y2='250' stroke='#0F766E' stroke-width='3'/><line x1='208' y1='210' x2='250' y2='250' stroke='#0F766E' stroke-width='3'/></svg>",
+        "view_box_width": 400,
+        "view_box_height": 280,
+        "caption": "1 = Outer protein capsid, 2 = Inner viral DNA, 3 = Sheath tail",
+        "hotspots": [
+          {
+            "id": "h_1",
+            "x_ratio": 0.38,
+            "y_ratio": 0.28,
+            "label": "1",
+            "description_en": "1: Outer protein coat (capsid head)",
+            "description_am": "1: የፕሮቲን ሽፋን"
+          },
+          {
+            "id": "h_2",
+            "x_ratio": 0.5,
+            "y_ratio": 0.32,
+            "label": "2",
+            "description_en": "2: Viral DNA inside head",
+            "description_am": "2: የቫይረስ ዲ ኤን ኤ"
+          },
+          {
+            "id": "h_3",
+            "x_ratio": 0.56,
+            "y_ratio": 0.65,
+            "label": "3",
+            "description_en": "3: Tail sheath core",
+            "description_am": "3: ጭራ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "q_bio_2013_012",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "The social impact of AIDS can be mainly revealed by",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_012_a",
+          "label": "A",
+          "text_en": "Fear of stigmatization",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_012_b",
+          "label": "B",
+          "text_en": "Loss of appetite",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_012_c",
+          "label": "C",
+          "text_en": "Reduced labor force",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_012_d",
+          "label": "D",
+          "text_en": "Loss of body weight",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Social impacts directly affect interpersonal community relationships, where fear of stigma and social ostracization constitutes a primary sociological burden.",
+        "simpler_explanation_en": "Stigma and discrimination are social impacts of HIV/AIDS.",
+        "key_concept": "Social versus biological manifestations of HIV/AIDS.",
+        "common_pitfall": "Confusing physiological symptoms (weight loss) with social factors."
+      }
+    },
+    {
+      "id": "q_bio_2013_013",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is a DNA virus?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_013_a",
+          "label": "A",
+          "text_en": "Herpes complex",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_013_b",
+          "label": "B",
+          "text_en": "HIV",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_013_c",
+          "label": "C",
+          "text_en": "Hepatitis C",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_013_d",
+          "label": "D",
+          "text_en": "H1N1",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Herpes simplex virus (HSV) has a double-stranded DNA genome. In contrast, HIV, Hepatitis C, and Influenza (H1N1) are RNA viruses.",
+        "simpler_explanation_en": "Herpes is a DNA virus; HIV and flu are RNA viruses.",
+        "key_concept": "Classification of animal viruses by nucleic acid type.",
+        "common_pitfall": "Misidentifying HIV retrovirus as a DNA virus."
+      }
+    },
+    {
+      "id": "q_bio_2013_014",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is a correct comparison of lytic and lysogenic cycles of virus multiplication?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_014_a",
+          "label": "A",
+          "text_en": "Lysogenic cycle releases new viruses using only chronic cycle",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_014_b",
+          "label": "B",
+          "text_en": "Lytic cycle involves incorporation of viral DNA into the host DNA",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_014_c",
+          "label": "C",
+          "text_en": "Lytic cycle releases new viruses only by splitting the host cell",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_014_d",
+          "label": "D",
+          "text_en": "Both cycles damage the host cell DNA following infection",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In the lytic cycle, phage multiplication culminates in host cell lysis (splitting/bursting) to release progeny. In the lysogenic cycle, the viral genome integrates stably as a prophage.",
+        "simpler_explanation_en": "Lytic cycle bursts and splits the host cell to release new viruses.",
+        "key_concept": "Lytic vs lysogenic viral life cycles.",
+        "common_pitfall": "Thinking lytic cycles integrate DNA into host genome."
+      }
+    },
+    {
+      "id": "q_bio_2013_015",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "In an HIV/AIDS community screening, students were asked to take part in voluntary testing. The following discussion presents the views of four grade 12 students named A, B, C, and D towards HIV testing. Student A: I should not take the testing; it is simply boring. Student B: We should take the testing since we are educated; we should be exemplary. Student C: If we get tested and get positive, what should we do? So, let us not get tested. Student D: You know, this HIV/AIDS testing is simply a business. We should not be cheated. Which student do you think is correct?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_015_a",
+          "label": "A",
+          "text_en": "Student B",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_015_b",
+          "label": "B",
+          "text_en": "Student A",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_015_c",
+          "label": "C",
+          "text_en": "Student D",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_015_d",
+          "label": "D",
+          "text_en": "Student C",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Student B correctly promotes voluntary counseling and testing (VCT) as an educated, responsible civic behavior that models healthy practices for the community.",
+        "simpler_explanation_en": "Student B recognizes that educated youth should lead by example in voluntary health testing.",
+        "key_concept": "Public health responsibility and voluntary HIV testing.",
+        "common_pitfall": "Succumbing to unfounded fear or conspiracy theories regarding testing."
+      }
+    },
+    {
+      "id": "q_bio_2013_016",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "Which event of cellular respiration takes place in the cytoplasm of eukaryotic cells?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_016_a",
+          "label": "A",
+          "text_en": "Production of pyruvate from glucose",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_016_b",
+          "label": "B",
+          "text_en": "Reaction of acetyl CoA with oxaloacetate",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_016_c",
+          "label": "C",
+          "text_en": "Production of ATP through chemiosmosis",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_016_d",
+          "label": "D",
+          "text_en": "Reaction of pyruvate with coenzyme A",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Glycolysis (converting glucose into 2 pyruvate molecules) occurs in the cytoplasm/cytosol. The link reaction, Krebs cycle, and chemiosmosis occur inside the mitochondria.",
+        "simpler_explanation_en": "Glycolysis converts glucose to pyruvate in the cell cytoplasm.",
+        "key_concept": "Spatial compartmentalization of aerobic respiration stages.",
+        "common_pitfall": "Placing Krebs cycle reactions in the cytoplasm."
+      }
+    },
+    {
+      "id": "q_bio_2013_017",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "Suppose two moles of glucose is burned aerobically. How many moles of ATP can be produced by substrate level phosphorylation in Krebs cycle?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_017_a",
+          "label": "A",
+          "text_en": "4",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_017_b",
+          "label": "B",
+          "text_en": "6",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_017_c",
+          "label": "C",
+          "text_en": "10",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_017_d",
+          "label": "D",
+          "text_en": "8",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Each mole of glucose yields 2 turns of the Krebs cycle, producing 2 moles of ATP by substrate-level phosphorylation. Thus, 2 moles of glucose produce 2 * 2 = 4 moles of ATP.",
+        "simpler_explanation_en": "1 mole of glucose gives 2 ATP in Krebs; 2 moles of glucose give 4 ATP.",
+        "key_concept": "Substrate-level phosphorylation yields in the Krebs cycle.",
+        "common_pitfall": "Calculating total oxidative phosphorylation ATP instead of substrate level."
+      }
+    },
+    {
+      "id": "q_bio_2013_018",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "During alcoholic fermentation, CO₂ is released when",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_018_a",
+          "label": "A",
+          "text_en": "Acetaldehyde is reduced",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_018_b",
+          "label": "B",
+          "text_en": "Pyruvate is oxidized",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_018_c",
+          "label": "C",
+          "text_en": "Pyruvate is decarboxylated",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_018_d",
+          "label": "D",
+          "text_en": "Ethanol is oxidized",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In yeast fermentation, pyruvate decarboxylase removes a carboxyl group from pyruvate (decarboxylation) to form acetaldehyde and carbon dioxide (CO2).",
+        "simpler_explanation_en": "Decarboxylation of pyruvate releases CO2 during fermentation.",
+        "key_concept": "Enzymatic reactions of alcoholic fermentation.",
+        "common_pitfall": "Thinking acetaldehyde reduction releases CO2."
+      }
+    },
+    {
+      "id": "q_bio_2013_019",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "During anaerobic respiration, reduced NAD is required to",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_019_a",
+          "label": "A",
+          "text_en": "Split pyruvate to CO₂ and acetaldehyde",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_019_b",
+          "label": "B",
+          "text_en": "Reduce pyruvate to lactate",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_019_c",
+          "label": "C",
+          "text_en": "Convert lactate into pyruvate",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_019_d",
+          "label": "D",
+          "text_en": "Reduce pyruvate to acetyl CoA",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In lactic acid fermentation, reduced NAD (NADH) donates protons and electrons to reduce pyruvate into lactate, regenerating oxidized NAD+ for glycolysis.",
+        "simpler_explanation_en": "NADH reduces pyruvate to lactate to regenerate NAD+.",
+        "key_concept": "Redox balance in anaerobic lactate fermentation.",
+        "common_pitfall": "Confusing pyruvate reduction with lactate oxidation."
+      }
+    },
+    {
+      "id": "q_bio_2013_020",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "Why do we get tired and fatigued during heavy exercise such as long distance running? It is due to",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_020_a",
+          "label": "A",
+          "text_en": "Accumulation of CO₂",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_020_b",
+          "label": "B",
+          "text_en": "Accumulation of lactic acid",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_020_c",
+          "label": "C",
+          "text_en": "High rate of aerobic respiration",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_020_d",
+          "label": "D",
+          "text_en": "Shortage of glucose",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Oxygen deficit in exercising skeletal muscle shifts metabolism to anaerobic glycolysis, leading to accumulation of lactic acid, acidosis, and muscle fatigue.",
+        "simpler_explanation_en": "Lactic acid builds up in oxygen-deprived muscles, causing muscle fatigue.",
+        "key_concept": "Physiology of anaerobic exercise and lactic acidosis.",
+        "common_pitfall": "Attributing acute muscle fatigue to carbon dioxide."
+      }
+    },
+    {
+      "id": "q_bio_2013_021",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_1",
+      "exam_year": 2013,
+      "question_text_en": "If one base in the six triplets of the gene coding for one of the four polypeptides in the haemoglobin molecule alters the triplet from GAG to GTG, which one of the following biological terms best describes the above phenomenon?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_021_a",
+          "label": "A",
+          "text_en": "Mutation",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_021_b",
+          "label": "B",
+          "text_en": "Cloning",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_021_c",
+          "label": "C",
+          "text_en": "Translation",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_021_d",
+          "label": "D",
+          "text_en": "Transcription",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A change in a single nucleotide base (point mutation: GAG to GTG coding for valine instead of glutamic acid) in the beta-globin gene is a gene mutation causing sickle-cell anemia.",
+        "simpler_explanation_en": "A change in DNA nucleotide sequence from GAG to GTG is a mutation.",
+        "key_concept": "Point mutation and molecular basis of sickle cell hemoglobin.",
+        "common_pitfall": "Confusing mutation with gene transcription or translation."
+      }
+    },
+    {
+      "id": "q_bio_2013_022",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_1",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is the basic characteristic of mutation? It is",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_022_a",
+          "label": "A",
+          "text_en": "Spontaneous",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_022_b",
+          "label": "B",
+          "text_en": "Planned",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_022_c",
+          "label": "C",
+          "text_en": "Regular",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_022_d",
+          "label": "D",
+          "text_en": "Expected",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Mutations are fundamentally spontaneous, random, and unpredictable changes in the genetic material occurring during DNA replication or repair errors.",
+        "simpler_explanation_en": "Mutations occur spontaneously and randomly in nature.",
+        "key_concept": "Spontaneous and random nature of genetic mutations.",
+        "common_pitfall": "Believing natural mutations occur in a planned or regular predictable pattern."
+      }
+    },
+    {
+      "id": "q_bio_2013_023",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_1",
+      "exam_year": 2013,
+      "question_text_en": "The theory that suggests 'life can evolve autonomously from non-living objects' is known as",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_023_a",
+          "label": "A",
+          "text_en": "Cosmozoan theory",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_023_b",
+          "label": "B",
+          "text_en": "Spontaneous generation theory",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_023_c",
+          "label": "C",
+          "text_en": "Biochemical theory",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_023_d",
+          "label": "D",
+          "text_en": "Eternity theory",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The historical theory of spontaneous generation (abiogenesis) proposed that living organisms could arise spontaneously from non-living matter.",
+        "simpler_explanation_en": "Spontaneous generation claimed life arises spontaneously from non-living matter.",
+        "key_concept": "Historical theories on the origin of life: Abiogenesis vs Biogenesis.",
+        "common_pitfall": "Confusing spontaneous generation with modern biochemical abiogenesis theory."
+      }
+    },
+    {
+      "id": "q_bio_2013_024",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_1",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is true about neo-Darwinian theory?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_024_a",
+          "label": "A",
+          "text_en": "There is natural variation in features and variations which are heritable",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_024_b",
+          "label": "B",
+          "text_en": "All species tend to produce more offspring than can possibly survive",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_024_c",
+          "label": "C",
+          "text_en": "It takes into account genetics and animal behavior to understand evolution",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_024_d",
+          "label": "D",
+          "text_en": "Development of new feature is important for survival",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Neo-Darwinism (Modern Evolutionary Synthesis) synthesizes classical Darwinian natural selection with modern Mendelian population genetics, molecular biology, and ethology.",
+        "simpler_explanation_en": "Neo-Darwinism integrates genetics and behavior with natural selection.",
+        "key_concept": "Modern Evolutionary Synthesis (Neo-Darwinian theory).",
+        "common_pitfall": "Assuming neo-Darwinism only relies on Lamarckian acquired traits."
+      }
+    },
+    {
+      "id": "q_bio_2013_025",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_1",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following statements describes the evolutionary theory of Lamarck?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_025_a",
+          "label": "A",
+          "text_en": "Acquired characteristics cannot be inherited",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_025_b",
+          "label": "B",
+          "text_en": "Structures commonly used become more developed",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_025_c",
+          "label": "C",
+          "text_en": "Origin of species happens only through natural selection",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_025_d",
+          "label": "D",
+          "text_en": "Species started complex and gradually become simple",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Lamarckism proposed the law of use and disuse (frequently used organs become enlarged and developed) and the inheritance of acquired characteristics.",
+        "simpler_explanation_en": "Lamarck claimed that organs used frequently grow stronger and are passed on.",
+        "key_concept": "Lamarckian evolutionary theory: Use and disuse.",
+        "common_pitfall": "Confusing Lamarck's ideas with Darwinian natural selection."
+      }
+    },
+    {
+      "id": "q_bio_2013_026",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "The behavior which trainers look, if modified, could lead to the desired behavior and reward such a behavior is",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_026_a",
+          "label": "A",
+          "text_en": "Innate",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_026_b",
+          "label": "B",
+          "text_en": "Reflex",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_026_c",
+          "label": "C",
+          "text_en": "Instinct",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_026_d",
+          "label": "D",
+          "text_en": "Operant",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Operant behavior operates on the environment to produce rewarding consequences; through operant conditioning, trainers reinforce modified behaviors.",
+        "simpler_explanation_en": "Operant behavior is shaped and rewarded during animal training.",
+        "key_concept": "Operant conditioning and behavioral modification.",
+        "common_pitfall": "Confusing innate unconditioned reflexes with operant conditioning."
+      }
+    },
+    {
+      "id": "q_bio_2013_027",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following examples of behavior describes when an animal stops responding to stimulus or cue after a period of repeated exposure?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_027_a",
+          "label": "A",
+          "text_en": "Imprinting",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_027_b",
+          "label": "B",
+          "text_en": "Habituation",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_027_c",
+          "label": "C",
+          "text_en": "Reflex",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_027_d",
+          "label": "D",
+          "text_en": "Conditioning",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Habituation is a form of non-associative learning where an organism decreases or ceases its response to a repetitive stimulus that provides neither reward nor harm.",
+        "simpler_explanation_en": "Habituation occurs when an animal gets used to a stimulus and ignores it.",
+        "key_concept": "Habituation as non-associative learned behavior.",
+        "common_pitfall": "Confusing habituation with filial imprinting or classical conditioning."
+      }
+    },
+    {
+      "id": "q_bio_2013_028",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "A police man trained a dog on how to find explosive materials through sniffing, on another instant the same police man observed a week old puppy following him on the roadside. Which one of the following is correct about the behaviors of the animals in the observation?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_028_a",
+          "label": "A",
+          "text_en": "The first case is genetically encoded and the second is adaptive",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_028_b",
+          "label": "B",
+          "text_en": "Both of the cases indicate natural behavior of the animals",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_028_c",
+          "label": "C",
+          "text_en": "Both of the cases indicate learned behavior of the animals",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_028_d",
+          "label": "D",
+          "text_en": "The first case develops through trial and the second is genetically coded",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The trained police dog learned explosive detection through operant conditioning, while the young puppy following a human displays filial imprinting/early learning; both represent learned behaviors.",
+        "simpler_explanation_en": "Both the explosive sniffing training and imprinting following behavior are learned.",
+        "key_concept": "Learned behavior categories: conditioning and imprinting.",
+        "common_pitfall": "Assuming following behavior in imprinting is purely an unmodifiable innate reflex."
+      }
+    },
+    {
+      "id": "q_bio_2013_029",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following behaviors is a courtship behavior?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_029_a",
+          "label": "A",
+          "text_en": "Touch",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_029_b",
+          "label": "B",
+          "text_en": "Ritual fighting",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_029_c",
+          "label": "C",
+          "text_en": "Scent marking",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_029_d",
+          "label": "D",
+          "text_en": "Defending a den",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Tactile stimulation (touch, mutual preening, nudging) is a recognized component of courtship displays preceding mating. Scent marking and ritual fighting are territorial or dominance behaviors.",
+        "simpler_explanation_en": "Touching and mutual grooming are common courtship behaviors in animals.",
+        "key_concept": "Animal courtship displays vs territorial behavior.",
+        "common_pitfall": "Classifying territorial scent marking or defense fighting as courtship."
+      }
+    },
+    {
+      "id": "q_bio_2013_030",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_3",
+      "exam_year": 2013,
+      "question_text_en": "The Ethiopian wolf (Canis simensis) lives and hunts in packs. During patrolling their habitat, both male and female wolves of the group maintain their area with urine containing pheromone. This pattern of behavior best exemplifies",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_030_a",
+          "label": "A",
+          "text_en": "Courtship behavior",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_030_b",
+          "label": "B",
+          "text_en": "Territorial behavior",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_030_c",
+          "label": "C",
+          "text_en": "Operant behavior",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_030_d",
+          "label": "D",
+          "text_en": "Learned behavior",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Scent-marking boundaries with pheromone-laden urine during pack patrols defines classic territorial behavior to defend resources against neighboring packs.",
+        "simpler_explanation_en": "Marking boundaries with scent marks is territorial behavior.",
+        "key_concept": "Territoriality and chemical communication in canids.",
+        "common_pitfall": "Confusing territorial scent marking with mating courtship."
+      }
+    },
+    {
+      "id": "q_bio_2013_031",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_3",
+      "exam_year": 2013,
+      "question_text_en": "The terrestrial biome characterized by cold temperature, dry precipitation, frozen soil, and inhabited by migrating birds is",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_031_a",
+          "label": "A",
+          "text_en": "Boreal forests",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_031_b",
+          "label": "B",
+          "text_en": "Deserts",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_031_c",
+          "label": "C",
+          "text_en": "Tropical montane forests",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_031_d",
+          "label": "D",
+          "text_en": "Tundra",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The tundra biome is characterized by sub-zero temperatures, low precipitation, permanently frozen subsoil (permafrost), and seasonal summer migratory birds.",
+        "simpler_explanation_en": "Tundra is the cold, dry biome with permanently frozen soil (permafrost).",
+        "key_concept": "Characteristics of global terrestrial biomes: Arctic and alpine tundra.",
+        "common_pitfall": "Confusing tundra with taiga/boreal forest (which has trees and thawed topsoil)."
+      }
+    },
+    {
+      "id": "q_bio_2013_032",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_3",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the table below. Select the correct representatives for L, M, N and O, respectively:\n\nBiome | Soil | Animals\nDesert (hot) | L | M\nTropical montane forest | N | O",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_032_a",
+          "label": "A",
+          "text_en": "Fertile, many animals, poor, few animals",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_032_b",
+          "label": "B",
+          "text_en": "Poor, sparse, fertile, many animals",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_032_c",
+          "label": "C",
+          "text_en": "Fertile, migratory animals, poor, drought and fire-adapting animals",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_032_d",
+          "label": "D",
+          "text_en": "Medium, ants and spiders, poor, polar bears",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hot deserts have poor nutrient-deficient soil (L) and sparse fauna (M). Tropical montane forests have fertile humus-rich soils (N) and abundant biodiversity/many animals (O).",
+        "simpler_explanation_en": "Deserts have poor soil and few animals; tropical montane forests have fertile soil and many animals.",
+        "key_concept": "Comparative soil fertility and animal biodiversity across biomes.",
+        "common_pitfall": "Assuming hot deserts possess fertile soil."
+      }
+    },
+    {
+      "id": "q_bio_2013_033",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following explains biodiversity?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_033_a",
+          "label": "A",
+          "text_en": "The variability among living organisms, within species, and of ecosystems",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_033_b",
+          "label": "B",
+          "text_en": "The large number of human races in the world",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_033_c",
+          "label": "C",
+          "text_en": "The similarity and difference of organisms which live in different ecosystems",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_033_d",
+          "label": "D",
+          "text_en": "Large number of organisms in the same ecosystem",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Biological diversity (biodiversity) is defined by the UN Convention on Biological Diversity as variability among living organisms from all sources, including diversity within species, between species, and of ecosystems.",
+        "simpler_explanation_en": "Biodiversity encompasses genetic diversity, species diversity, and ecosystem diversity.",
+        "key_concept": "Comprehensive definition of biological diversity.",
+        "common_pitfall": "Restricting biodiversity to only the total count of organisms in a single spot."
+      }
+    },
+    {
+      "id": "q_bio_2013_034",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_1",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the table below which shows an 'invented' ecosystem. In which area of the above table does all of the species are more or less equally successful?\n\nSpecies | Area 1 | Area 2 | Area 3\nA | 86 | 16 | 23\nB | 5 | 17 | 25\nC | 2 | 16 | 27\nD | 3 | 17 | 5\nE | 1 | 17 | 12\nF | 3 | 17 | 8",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_034_a",
+          "label": "A",
+          "text_en": "Area 2",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_034_b",
+          "label": "B",
+          "text_en": "Area 1",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_034_c",
+          "label": "C",
+          "text_en": "Area 1 and 3",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_034_d",
+          "label": "D",
+          "text_en": "Area 1 and 2",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In Area 2, species abundances are nearly identical (16, 17, 16, 17, 17, 17), representing high species evenness where all species are equally successful.",
+        "simpler_explanation_en": "Area 2 has virtually equal population counts (~16-17) across all six species.",
+        "key_concept": "Species evenness and ecological community balance.",
+        "common_pitfall": "Confusing single-species dominance (Area 1) with community-wide equal success."
+      }
+    },
+    {
+      "id": "q_bio_2013_035",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_2",
+      "exam_year": 2013,
+      "question_text_en": "A major factor in controlling the population size that helps to minimize predators and recover prey's number is",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_035_a",
+          "label": "A",
+          "text_en": "Disease-causing organisms",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_035_b",
+          "label": "B",
+          "text_en": "Inter-specific competition",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_035_c",
+          "label": "C",
+          "text_en": "Predation",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_035_d",
+          "label": "D",
+          "text_en": "Intra-specific competition",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Predator-prey cycles demonstrate density-dependent population regulation: when prey decline, predator populations starve and drop, allowing prey numbers to recover.",
+        "simpler_explanation_en": "Predation drives cyclic balance between predator and prey population sizes.",
+        "key_concept": "Predator-prey population dynamics and cyclic equilibrium.",
+        "common_pitfall": "Selecting non-cyclic competition factors."
+      }
+    },
+    {
+      "id": "q_bio_2013_036",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "What is the major difference that viruses have with free-living cells? Viruses",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_036_a",
+          "label": "A",
+          "text_en": "Reproduce only asexually",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_036_b",
+          "label": "B",
+          "text_en": "Lack genetic material of their own",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_036_c",
+          "label": "C",
+          "text_en": "Do not function outside of a living cell",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_036_d",
+          "label": "D",
+          "text_en": "Lack locomotory structure",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Viruses are obligate intracellular parasites that lack cellular machinery, metabolic enzymes, and ribosomes, remaining inert particles outside of living host cells.",
+        "simpler_explanation_en": "Viruses are completely inert and non-functional outside a living host cell.",
+        "key_concept": "Acellular nature of viruses vs living cellular organisms.",
+        "common_pitfall": "Believing viruses lack nucleic acid genetic material."
+      }
+    },
+    {
+      "id": "q_bio_2013_037",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_1",
+      "exam_year": 2013,
+      "question_text_en": "Why is nutrient recycling important in an environment? Because",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_037_a",
+          "label": "A",
+          "text_en": "The amount of nutrients in the environment is limited",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_037_b",
+          "label": "B",
+          "text_en": "It adds new types of molecules into the environment",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_037_c",
+          "label": "C",
+          "text_en": "Nutrients in an environment will be depleted if not recycled",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_037_d",
+          "label": "D",
+          "text_en": "Nutrients should be exchanged between the Earth and other planets",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Unlike energy (which flows unidirectionally from the sun and is lost as heat), matter and chemical nutrients on Earth are finite and would be permanently depleted without biogeochemical recycling.",
+        "simpler_explanation_en": "Nutrient recycling is essential because finite mineral nutrients would run out if not recycled.",
+        "key_concept": "Biogeochemical nutrient cycling in ecosystems.",
+        "common_pitfall": "Believing nutrients arrive continually from space."
+      }
+    },
+    {
+      "id": "q_bio_2013_038",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_1",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following orders of life processes correctly illustrates the occurrence of the nutrient cycle?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_038_a",
+          "label": "A",
+          "text_en": "Feeding → Death and decomposition → Excretion → Respiration and breathing",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_038_b",
+          "label": "B",
+          "text_en": "Feeding → Excretion → Respiration and breathing → Death and decomposition",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_038_c",
+          "label": "C",
+          "text_en": "Death and decomposition → Feeding → Excretion → Respiration and breathing",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_038_d",
+          "label": "D",
+          "text_en": "Respiration and breathing → Feeding → Excretion → Death and decomposition",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Nutrients enter living organisms via feeding, are cycled through metabolic excretion and respiration, and are finally returned to abiotic reservoirs via death and decomposer action.",
+        "simpler_explanation_en": "Organisms feed, excrete wastes, respire, and finally decompose upon death.",
+        "key_concept": "Sequential pathways of matter flow through organismal life cycles.",
+        "common_pitfall": "Placing death and decomposition before feeding or excretion."
+      }
+    },
+    {
+      "id": "q_bio_2013_039",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_1",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following processes in the phosphate cycle DOES NOT return phosphate ions to the soil?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_039_a",
+          "label": "A",
+          "text_en": "Weathering of rocks",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_039_b",
+          "label": "B",
+          "text_en": "Use of fertilizers",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_039_c",
+          "label": "C",
+          "text_en": "Decomposition of dead animals",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_039_d",
+          "label": "D",
+          "text_en": "Cellular respiration",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Cellular respiration releases CO2 and water, not mineral phosphate ions to soil. Weathering, fertilizers, and decomposers return inorganic phosphate (PO4^3-) to the lithosphere.",
+        "simpler_explanation_en": "Cellular respiration releases carbon dioxide and water, not phosphate into the soil.",
+        "key_concept": "Sedimentary phosphate biogeochemical cycle.",
+        "common_pitfall": "Confusing the carbon cycle byproduct (CO2) with phosphate release."
+      }
+    },
+    {
+      "id": "q_bio_2013_040",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_3",
+      "exam_year": 2013,
+      "question_text_en": "A previously bare land was gradually occupied by lichen and mosses, annual herbs, perennial herbs, shrubs, and finally by forests. Which one of the following best describes the process indicated above?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_040_a",
+          "label": "A",
+          "text_en": "Afforestation",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_040_b",
+          "label": "B",
+          "text_en": "Succession",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_040_c",
+          "label": "C",
+          "text_en": "Climax community",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_040_d",
+          "label": "D",
+          "text_en": "Natural selection",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Primary ecological succession is the predictable, directional colonization of bare barren substrate starting with pioneer lichens/mosses and progressing to a mature climax forest.",
+        "simpler_explanation_en": "Ecological succession describes the orderly progression from pioneer species to a mature forest.",
+        "key_concept": "Primary ecological succession stages.",
+        "common_pitfall": "Confusing the whole process of succession with just the end-state climax community."
+      }
+    },
+    {
+      "id": "q_bio_2013_041",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_2",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the table below. The population number of X, Y, and Z, respectively will:\n\nCondition | Population\nNatality exceeds mortality | X\nMortality exceeds natality | Y\nMortality and natality are equal | Z",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_041_a",
+          "label": "A",
+          "text_en": "Decrease, increase, remain the same",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_041_b",
+          "label": "B",
+          "text_en": "Increase, decrease, remain the same",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_041_c",
+          "label": "C",
+          "text_en": "Decrease, remain the same, increase",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_041_d",
+          "label": "D",
+          "text_en": "Remain the same, increase, decrease",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "When birth rate (natality) > death rate (mortality), population grows (X = Increase). When mortality > natality, population drops (Y = Decrease). When equal, population stays constant (Z = Remain the same).",
+        "simpler_explanation_en": "Births > deaths means increase; deaths > births means decrease; equal means constant.",
+        "key_concept": "Fundamental demographic population change equation.",
+        "common_pitfall": "Inverting natality (births) and mortality (deaths)."
+      }
+    },
+    {
+      "id": "q_bio_2013_042",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u7",
+      "topic_id": "bio_t7_2",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the table below which shows population growth trend. Which one of the following is correct about X and Y?\n\nTime: 0, 1, 2, 3, 4, 5, 6, 7\nX: 5, 10, 15, 20, 25, 30, 35, 40\nY: 40, 80, 160, 320, 640, 1280, 2560, 5120",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_042_a",
+          "label": "A",
+          "text_en": "X is exponential growth because the numbers increase by the same fixed amount in each time period and Y is arithmetic growth because the population doubles in each time period",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_042_b",
+          "label": "B",
+          "text_en": "X and Y cannot be compared because each of them grows differently with incomparable proportions",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_042_c",
+          "label": "C",
+          "text_en": "X is arithmetic growth because the numbers increase by the same fixed amount in each time period and Y is exponential growth because the population doubles in each time period",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_042_d",
+          "label": "D",
+          "text_en": "Both X and Y are exponential growth since each of them increases regularly without interruption",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Population X adds a constant linear increment (+5 each step = arithmetic/linear growth). Population Y multiplies by a constant ratio (doubles 2x each step = geometric/exponential growth).",
+        "simpler_explanation_en": "X increases by adding 5 (arithmetic growth), while Y doubles every step (exponential growth).",
+        "key_concept": "Arithmetic (linear) growth vs Exponential (geometric) population growth.",
+        "common_pitfall": "Confusing arithmetic additive growth with exponential multiplicative growth."
+      }
+    },
+    {
+      "id": "q_bio_2013_043",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_2",
+      "exam_year": 2013,
+      "question_text_en": "Drosophila melanogaster are convenient experimental animals in genetics because they",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_043_a",
+          "label": "A",
+          "text_en": "Have 23 pairs of chromosomes per cell",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_043_b",
+          "label": "B",
+          "text_en": "Are small animals with a short life cycle",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_043_c",
+          "label": "C",
+          "text_en": "Are too cheap to breed in large numbers",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_043_d",
+          "label": "D",
+          "text_en": "Have chromosomes that can't be easily detected",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Fruit flies (Drosophila melanogaster) are premier genetic model organisms because they are small, easy to culture, produce hundreds of offspring, and have a short life cycle of ~10-12 days.",
+        "simpler_explanation_en": "Fruit flies have a short generation time (~10 days) and produce many offspring.",
+        "key_concept": "Model genetic organisms in research.",
+        "common_pitfall": "Thinking Drosophila have 23 chromosome pairs (humans have 23; Drosophila have only 4 pairs)."
+      }
+    },
+    {
+      "id": "q_bio_2013_044",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_2",
+      "exam_year": 2013,
+      "question_text_en": "Suppose a heterozygous brown-eyed father is married to a blue-eyed mother. What would be the proportion of homozygous children for eye color? (Hint: Brown is dominant over blue)",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_044_a",
+          "label": "A",
+          "text_en": "50%",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_044_b",
+          "label": "B",
+          "text_en": "100%",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_044_c",
+          "label": "C",
+          "text_en": "75%",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_044_d",
+          "label": "D",
+          "text_en": "25%",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Father is heterozygous brown (Bb) and mother is homozygous blue (bb). Cross Bb x bb yields 50% Bb (heterozygous brown) and 50% bb (homozygous blue). Thus, 50% of children are homozygous.",
+        "simpler_explanation_en": "50% of the offspring inherit bb (homozygous blue).",
+        "key_concept": "Mendelian monohybrid test cross genetics.",
+        "common_pitfall": "Counting only dominant homozygotes (BB) and missing recessive homozygotes (bb)."
+      }
+    },
+    {
+      "id": "q_bio_2013_045",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_2",
+      "exam_year": 2013,
+      "question_text_en": "The following question is based on the figure that shows the gains in productivity from hybrid vigor. In the above diagram, what best describes the breeding condition represented by letter X and Z, respectively?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_045_a",
+          "label": "A",
+          "text_en": "X involves cross-breeding and Z involves inbreeding",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_045_b",
+          "label": "B",
+          "text_en": "X involves inbreeding and Z involves cross-breeding",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_045_c",
+          "label": "C",
+          "text_en": "X represents natural selection and Z represents artificial selection",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_045_d",
+          "label": "D",
+          "text_en": "Both X and Z represent inbreeding",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Inbreeding causes inbreeding depression with reduced fitness/yield (bar X), while cross-breeding distinct lines produces heterosis / hybrid vigor with superior productivity (bar Z).",
+        "simpler_explanation_en": "X shows inbreeding depression (low productivity) and Z shows hybrid vigor from cross-breeding.",
+        "key_concept": "Heterosis (hybrid vigor) vs inbreeding depression in genetics.",
+        "common_pitfall": "Reversing inbreeding and cross-breeding labels."
+      },
+      "vector_diagram": {
+        "id": "diag_bio_hybrid_vigor",
+        "title_en": "Hybrid Vigor Productivity Pattern",
+        "title_am": "የድቅል ምርታማነት ብልጫ",
+        "raw_svg_content": "<svg viewBox='0 0 400 240'><line x1='60' y1='200' x2='360' y2='200' stroke='#334155' stroke-width='2'/><line x1='60' y1='200' x2='60' y2='40' stroke='#334155' stroke-width='2'/><rect x='100' y='140' width='45' height='60' fill='#94A3B8'/><rect x='190' y='105' width='45' height='95' fill='#64748B'/><rect x='280' y='60' width='45' height='140' fill='#0F766E'/><text x='115' y='225' font-weight='bold'>X</text><text x='205' y='225' font-weight='bold'>Y</text><text x='295' y='225' font-weight='bold'>Z</text></svg>",
+        "view_box_width": 400,
+        "view_box_height": 240,
+        "caption": "X = Inbred depression (lowest), Z = Cross-bred hybrid vigor (highest)",
+        "hotspots": [
+          {
+            "id": "h_x",
+            "x_ratio": 0.31,
+            "y_ratio": 0.7,
+            "label": "X",
+            "description_en": "X: Inbreeding depression (lowest yield)",
+            "description_am": "X: የዝምድና ጋብቻ ዝቅተኛ ምርት"
+          },
+          {
+            "id": "h_z",
+            "x_ratio": 0.76,
+            "y_ratio": 0.4,
+            "label": "Z",
+            "description_en": "Z: Cross-breeding heterosis/hybrid vigor (highest yield)",
+            "description_am": "Z: ድቅል ብልጫ (ከፍተኛ ምርት)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "q_bio_2013_046",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_2",
+      "exam_year": 2013,
+      "question_text_en": "If organisms share very similar molecules such as DNA, then they must be closely related evolutionarily. Which evidence of evolution supports the above information?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_046_a",
+          "label": "A",
+          "text_en": "Comparative embryology",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_046_b",
+          "label": "B",
+          "text_en": "Comparative anatomy",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_046_c",
+          "label": "C",
+          "text_en": "Comparative physiology",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_046_d",
+          "label": "D",
+          "text_en": "Comparative biochemistry",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Comparing molecular sequences of DNA, RNA, cytochrome c, and proteins among different taxa constitutes comparative biochemistry / molecular homology.",
+        "simpler_explanation_en": "Comparing DNA and molecular sequences is comparative biochemistry.",
+        "key_concept": "Molecular and biochemical evidences for evolution.",
+        "common_pitfall": "Confusing gross anatomical structure with molecular biochemistry."
+      }
+    },
+    {
+      "id": "q_bio_2013_047",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following CANNOT be used as evidence of evolution through paleontology?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_047_a",
+          "label": "A",
+          "text_en": "Stomach",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_047_b",
+          "label": "B",
+          "text_en": "Teeth",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_047_c",
+          "label": "C",
+          "text_en": "Hair",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_047_d",
+          "label": "D",
+          "text_en": "Bones",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Paleontology relies on fossilized hard parts (bones, teeth) and resistant structures. Soft visceral organs like the stomach decay rapidly and are not preserved as fossil evidence.",
+        "simpler_explanation_en": "The stomach is soft tissue that quickly decomposes and does not form fossils.",
+        "key_concept": "Fossilization potential and paleontological evidence.",
+        "common_pitfall": "Assuming soft internal viscera fossilize readily like bones and teeth."
+      }
+    },
+    {
+      "id": "q_bio_2013_048",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_1",
+      "exam_year": 2013,
+      "question_text_en": "The process in which individuals with a particular heritable trait survive better than others is",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_048_a",
+          "label": "A",
+          "text_en": "Adaptation",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_048_b",
+          "label": "B",
+          "text_en": "Selective breeding",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_048_c",
+          "label": "C",
+          "text_en": "Evolution",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_048_d",
+          "label": "D",
+          "text_en": "Natural selection",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Natural selection is the differential survival and reproduction of individuals due to differences in heritable phenotypic traits.",
+        "simpler_explanation_en": "Natural selection is the differential survival of organisms with advantageous traits.",
+        "key_concept": "Mechanism of Darwinian natural selection.",
+        "common_pitfall": "Confusing the mechanism (natural selection) with the resulting outcome (adaptation/evolution)."
+      }
+    },
+    {
+      "id": "q_bio_2013_049",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_1",
+      "exam_year": 2013,
+      "question_text_en": "Which type of selection favors individuals at both extremes of a range to have some advantage over those displaying the mean value?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_049_a",
+          "label": "A",
+          "text_en": "Stabilizing selection",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_049_b",
+          "label": "B",
+          "text_en": "Directional selection",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_049_c",
+          "label": "C",
+          "text_en": "Natural selection",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_049_d",
+          "label": "D",
+          "text_en": "Disruptive selection",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Disruptive (diversifying) selection favors extreme phenotypic values over intermediate/mean traits, creating a bimodal distribution.",
+        "simpler_explanation_en": "Disruptive selection favors both extremes and selects against the intermediate average.",
+        "key_concept": "Modes of natural selection: Stabilizing, Directional, Disruptive.",
+        "common_pitfall": "Confusing stabilizing selection (favors mean) with disruptive selection."
+      }
+    },
+    {
+      "id": "q_bio_2013_050",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u6",
+      "topic_id": "bio_t6_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is true about human evolution?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_050_a",
+          "label": "A",
+          "text_en": "Humans and chimpanzees both evolved from a common ancestor",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_050_b",
+          "label": "B",
+          "text_en": "Humans evolved from chimpanzees",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_050_c",
+          "label": "C",
+          "text_en": "Humans evolved from a different line of evolution than great apes",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_050_d",
+          "label": "D",
+          "text_en": "Humans evolved from great apes",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Evolutionary biology establishes that modern humans (Homo sapiens) and modern chimpanzees (Pan troglodytes) shared a common hominoid ancestor roughly 6–7 million years ago.",
+        "simpler_explanation_en": "Humans did not evolve from modern chimpanzees; both shared a common ancestor.",
+        "key_concept": "Phylogenetic relationship of hominids and great apes.",
+        "common_pitfall": "The popular misconception that humans evolved directly from modern chimpanzees."
+      }
+    },
+    {
+      "id": "q_bio_2013_051",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following organic molecules is used to make hemoglobin?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_051_a",
+          "label": "A",
+          "text_en": "Glycogen",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_051_b",
+          "label": "B",
+          "text_en": "Proteins",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_051_c",
+          "label": "C",
+          "text_en": "Lipids",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_051_d",
+          "label": "D",
+          "text_en": "Nucleic acids",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hemoglobin is a globular quaternary conjugated protein composed of four polypeptide chains (two alpha and two beta globins) bonded to iron-containing heme groups.",
+        "simpler_explanation_en": "Hemoglobin is a protein made of amino acid polypeptide chains.",
+        "key_concept": "Protein structure and function: Quaternary globular proteins.",
+        "common_pitfall": "Classifying hemoglobin as a lipid or carbohydrate."
+      }
+    },
+    {
+      "id": "q_bio_2013_052",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is the correct formula for maltose?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_052_a",
+          "label": "A",
+          "text_en": "C₁₂H₂₂O₁₁",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_052_b",
+          "label": "B",
+          "text_en": "C₆H₁₂O₆",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_052_c",
+          "label": "C",
+          "text_en": "C₅H₁₀O₅",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_052_d",
+          "label": "D",
+          "text_en": "C₁₂H₂₄O₁₂",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Maltose is a disaccharide formed by condensation of two glucose molecules (C6H12O6 + C6H12O6 - H2O = C12H22O11).",
+        "simpler_explanation_en": "Maltose formula is C12H22O11 due to the loss of water during condensation.",
+        "key_concept": "Carbohydrate chemistry: Disaccharide condensation reactions.",
+        "common_pitfall": "Forgetting that condensation removes a water molecule (H2O)."
+      }
+    },
+    {
+      "id": "q_bio_2013_053",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "A grade 11 student added Benedict's reagent on a food sample and heated the mixture for 5 minutes. Then, he observed a color change. Which one of the following is FALSE about the result?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_053_a",
+          "label": "A",
+          "text_en": "An orange color shows that a reducing sugar is present",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_053_b",
+          "label": "B",
+          "text_en": "A yellow color shows that a reducing sugar is present",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_053_c",
+          "label": "C",
+          "text_en": "An orange color shows that a non-reducing sugar is present",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_053_d",
+          "label": "D",
+          "text_en": "A red color shows that a reducing sugar is present",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Benedict's solution changes from blue to green -> yellow -> orange -> brick-red in the presence of reducing sugars. An orange color indicates reducing sugar, not non-reducing sugar.",
+        "simpler_explanation_en": "An orange precipitate confirms reducing sugar is present (statement C is false).",
+        "key_concept": "Qualitative food tests: Benedict's test for reducing sugars.",
+        "common_pitfall": "Confusing reducing sugar reactions with non-reducing sugars."
+      }
+    },
+    {
+      "id": "q_bio_2013_054",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "In a Benedict's test for sucrose, why does the test sample first boil with hydrochloric acid?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_054_a",
+          "label": "A",
+          "text_en": "To reduce Benedict's solution",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_054_b",
+          "label": "B",
+          "text_en": "To neutralize the solution",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_054_c",
+          "label": "C",
+          "text_en": "To hydrolyze non-reducing sugar",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_054_d",
+          "label": "D",
+          "text_en": "To retest the mixture with Benedict's solution",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Sucrose is a non-reducing disaccharide. Boiling with dilute HCl hydrolyzes the glycosidic bond into reducing monosaccharides (glucose and fructose).",
+        "simpler_explanation_en": "Acid hydrolysis splits non-reducing sucrose into reducing sugars.",
+        "key_concept": "Testing for non-reducing sugars via acid hydrolysis.",
+        "common_pitfall": "Thinking acid directly reduces Benedict's reagent without breaking down sucrose."
+      }
+    },
+    {
+      "id": "q_bio_2013_055",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following statements explains the specificity of enzymes? Enzymes",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_055_a",
+          "label": "A",
+          "text_en": "Catalyze one reaction only",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_055_b",
+          "label": "B",
+          "text_en": "Speed up a reaction without being used up",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_055_c",
+          "label": "C",
+          "text_en": "Can be destroyed by excessive heat",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_055_d",
+          "label": "D",
+          "text_en": "Can be used over and over again",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Enzyme specificity means an enzyme's active site possesses a precise 3D conformation that accommodates and catalyzes only one specific substrate or reaction.",
+        "simpler_explanation_en": "Enzyme specificity means each enzyme catalyzes only one specific chemical reaction.",
+        "key_concept": "Lock-and-key and induced-fit enzyme specificity.",
+        "common_pitfall": "Confusing catalytic reuse or denaturation with the definition of specificity."
+      }
+    },
+    {
+      "id": "q_bio_2013_056",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_1",
+      "exam_year": 2013,
+      "question_text_en": "The relevance and promise of biological sciences can be demonstrated by their contribution in",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_056_a",
+          "label": "A",
+          "text_en": "Finding mechanisms to feed the growing human population",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_056_b",
+          "label": "B",
+          "text_en": "Finding solutions to ethnic conflicts",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_056_c",
+          "label": "C",
+          "text_en": "Development of housing and construction sectors",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_056_d",
+          "label": "D",
+          "text_en": "Advancement of aviation technology",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Biology contributes centrally to agricultural crop breeding, pest control, biotechnology, and food security to feed the world's expanding population.",
+        "simpler_explanation_en": "Biology advances food security, agriculture, and biotechnology to feed growing populations.",
+        "key_concept": "Applied biological sciences and global food security.",
+        "common_pitfall": "Choosing non-biological disciplines like civil construction or aviation."
+      }
+    },
+    {
+      "id": "q_bio_2013_057",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "All are the roles of biology to combat the spread of HIV/AIDS EXCEPT",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_057_a",
+          "label": "A",
+          "text_en": "Producing drugs that can stop the virus from reproducing",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_057_b",
+          "label": "B",
+          "text_en": "Breaking the transmission pathway",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_057_c",
+          "label": "C",
+          "text_en": "Raising funds for infected people",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_057_d",
+          "label": "D",
+          "text_en": "Producing a vaccine against the virus",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Biological research discovers antiretrovirals (ARVs), investigates vaccines, and explains transmission pathways. Fundraising is a financial/charitable activity, not a direct biological science role.",
+        "simpler_explanation_en": "Fundraising is an economic/charitable activity rather than a biological science discipline.",
+        "key_concept": "Scientific roles of biomedical research vs social-financial programs.",
+        "common_pitfall": "Classifying monetary donations as biological scientific research."
+      }
+    },
+    {
+      "id": "q_bio_2013_058",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following statements is INCORRECT about AIDS? The rate of transmission of AIDS will reduce when",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_058_a",
+          "label": "A",
+          "text_en": "The transmission pathways are broken",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_058_b",
+          "label": "B",
+          "text_en": "Promiscuous sexual intercourse is reduced",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_058_c",
+          "label": "C",
+          "text_en": "The number of sexual partners is restricted",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_058_d",
+          "label": "D",
+          "text_en": "Men and women are circumcised",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Female genital mutilation/circumcision has zero protective effect against HIV and causes severe reproductive tract damage. Male medical circumcision only partially reduces male acquisition risk.",
+        "simpler_explanation_en": "Female circumcision does not prevent AIDS (it causes severe harm and tissue trauma).",
+        "key_concept": "Epidemiological evidence in HIV prevention.",
+        "common_pitfall": "Believing female genital mutilation provides medical protection against virus transmission."
+      }
+    },
+    {
+      "id": "q_bio_2013_059",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following statements explains the property of water? It",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_059_a",
+          "label": "A",
+          "text_en": "Takes less energy to heat water up",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_059_b",
+          "label": "B",
+          "text_en": "Has the lowest latent heat of vaporization",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_059_c",
+          "label": "C",
+          "text_en": "Is a transparent molecule",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_059_d",
+          "label": "D",
+          "text_en": "Is a highly viscous substance",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water is optically transparent, allowing sunlight to penetrate aquatic ecosystems for submerged plant and algae photosynthesis. Water has a high (not low) heat capacity and low viscosity.",
+        "simpler_explanation_en": "Water's optical transparency allows light penetration for aquatic photosynthesis.",
+        "key_concept": "Physicochemical properties of water supporting life.",
+        "common_pitfall": "Claiming water has low specific heat capacity or high viscosity."
+      }
+    },
+    {
+      "id": "q_bio_2013_060",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u4",
+      "topic_id": "bio_t4_2",
+      "exam_year": 2013,
+      "question_text_en": "Suppose there are two communities in a village. Community A actively participates in HIV/AIDS awareness creation, HIV prevention, and gets blood tests for HIV, whereas community B frequently requests food aid, participates only in afforestation activities, and HIV-positive individuals keep the secret to themselves. In which community do you think that the incidence of HIV/AIDS is most probably high?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_060_a",
+          "label": "A",
+          "text_en": "In both communities",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_060_b",
+          "label": "B",
+          "text_en": "In community B",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_060_c",
+          "label": "C",
+          "text_en": "Impossible to decide",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_060_d",
+          "label": "D",
+          "text_en": "In community A",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In Community B, lack of awareness, secrecy, stigma, and absence of testing foster unchecked viral transmission and higher incidence compared to proactive Community A.",
+        "simpler_explanation_en": "Secrecy and lack of testing in Community B lead to higher HIV incidence.",
+        "key_concept": "Public health awareness and community disease transmission.",
+        "common_pitfall": "Assuming lack of open discussion equates to absence of infection."
+      }
+    },
+    {
+      "id": "q_bio_2013_061",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Which property of water is useful for life as it continues in relatively warm water underneath through the cold weather?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_061_a",
+          "label": "A",
+          "text_en": "High specific heat capacity",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_061_b",
+          "label": "B",
+          "text_en": "Lower density in its solid form than in its liquid form",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_061_c",
+          "label": "C",
+          "text_en": "High surface tension",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_061_d",
+          "label": "D",
+          "text_en": "High latent heat of vaporization",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ice is less dense than liquid water due to an open crystalline hydrogen-bonded lattice. Ice floats on top of lakes, insulating the liquid water underneath and preserving aquatic life.",
+        "simpler_explanation_en": "Ice is less dense than water, so it floats on surface and insulates aquatic life below.",
+        "key_concept": "Anomalous expansion and density properties of water.",
+        "common_pitfall": "Assuming solid ice is denser than liquid water."
+      }
+    },
+    {
+      "id": "q_bio_2013_062",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Consider the following table, which contains organic and inorganic molecules. Which rows contain the corresponding organic and inorganic molecules correctly?\n\nRow 1: Lysine; sucrose | Salts; hydrochloric acid\nRow 2: Deoxyribose; carbon monoxide | Fructose; sodium chloride\nRow 3: Fatty acid; methane | Sodium hydroxide; carbon dioxide\nRow 4: Water; calcium carbonate | Stearic acid; starch",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_062_a",
+          "label": "A",
+          "text_en": "2 and 3",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_062_b",
+          "label": "B",
+          "text_en": "1 and 2",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_062_c",
+          "label": "C",
+          "text_en": "3 and 4",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_062_d",
+          "label": "D",
+          "text_en": "1 and 3",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Row 1: Lysine and sucrose are organic; Salts and HCl are inorganic. Row 3: Fatty acid and methane are organic; NaOH and CO2 are inorganic. Thus, rows 1 and 3 are correct.",
+        "simpler_explanation_en": "Rows 1 and 3 properly classify carbon-based biological molecules as organic and minerals/acids as inorganic.",
+        "key_concept": "Chemical classification of organic vs inorganic substances.",
+        "common_pitfall": "Confusing carbon oxides or simple minerals with organic macromolecules."
+      }
+    },
+    {
+      "id": "q_bio_2013_063",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Cellulose is",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_063_a",
+          "label": "A",
+          "text_en": "A mixture of amylose and amylopectin",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_063_b",
+          "label": "B",
+          "text_en": "A polymer of β-glucose molecules",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_063_c",
+          "label": "C",
+          "text_en": "A non-reducing monosaccharide sugar",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_063_d",
+          "label": "D",
+          "text_en": "A polymer of α-glucose molecules",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Cellulose is a structural polysaccharide composed of unbranched linear chains of beta-glucose monomers joined by beta-1,4-glycosidic bonds. Starch is made of alpha-glucose.",
+        "simpler_explanation_en": "Cellulose is built from beta-glucose units, whereas starch uses alpha-glucose.",
+        "key_concept": "Structural carbohydrates: Cellulose beta-1,4 glycosidic linkages.",
+        "common_pitfall": "Confusing cellulose with starch (alpha-glucose polymers)."
+      }
+    },
+    {
+      "id": "q_bio_2013_064",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Which organic molecules are formed when two fatty acid molecules are bound to glycerol, and the place of the third is taken by a phosphate group?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_064_a",
+          "label": "A",
+          "text_en": "Waxes",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_064_b",
+          "label": "B",
+          "text_en": "Glycolipids",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_064_c",
+          "label": "C",
+          "text_en": "Triglycerides",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_064_d",
+          "label": "D",
+          "text_en": "Phospholipids",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A phospholipid consists of a glycerol molecule esterified to two hydrophobic fatty acid tails and one hydrophilic phosphate head group.",
+        "simpler_explanation_en": "Two fatty acids + glycerol + phosphate group = phospholipid.",
+        "key_concept": "Structure of amphipathic phospholipids.",
+        "common_pitfall": "Confusing triglycerides (three fatty acids) with phospholipids."
+      }
+    },
+    {
+      "id": "q_bio_2013_065",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "All are the functions of lipids EXCEPT",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_065_a",
+          "label": "A",
+          "text_en": "Thermal insulation",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_065_b",
+          "label": "B",
+          "text_en": "Waterproofing",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_065_c",
+          "label": "C",
+          "text_en": "Respiratory substrates",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_065_d",
+          "label": "D",
+          "text_en": "Determining a particular feature",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Determining hereditary traits and genetic features is the function of nucleic acids (DNA/RNA). Lipids provide energy storage, thermal insulation, and waxy waterproofing.",
+        "simpler_explanation_en": "Determining genetic features is the job of DNA, not lipids.",
+        "key_concept": "Biological functions of lipids vs nucleic acids.",
+        "common_pitfall": "Overlooking the genetic role of nucleic acids."
+      }
+    },
+    {
+      "id": "q_bio_2013_066",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "Three different cells are in the process of transporting materials across the cell membrane as indicated below: Cell 1 = water from high concentration to low concentration; Cell 2 = Na⁺ from high concentration to low concentration; Cell 3 = glucose from low concentration to high concentration. Which types of transport mechanisms do the above cells use, respectively?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_066_a",
+          "label": "A",
+          "text_en": "Osmosis, facilitated diffusion, active transport",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_066_b",
+          "label": "B",
+          "text_en": "Osmosis, active transport, facilitated diffusion",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_066_c",
+          "label": "C",
+          "text_en": "Facilitated diffusion, osmosis, active transport",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_066_d",
+          "label": "D",
+          "text_en": "Facilitated diffusion, active transport, osmosis",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water moving down its gradient across a semipermeable membrane is Osmosis. Na+ ions moving down gradient via protein channels is Facilitated Diffusion. Glucose moving against gradient requiring ATP is Active Transport.",
+        "simpler_explanation_en": "Water down gradient = Osmosis; Na+ down gradient = Facilitated diffusion; Glucose against gradient = Active transport.",
+        "key_concept": "Membrane transport mechanisms: Passive vs Active transport.",
+        "common_pitfall": "Confusing facilitated diffusion with active transport against a gradient."
+      }
+    },
+    {
+      "id": "q_bio_2013_067",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "Suppose you took a container and divided it into two halves by a membrane which is permeable to water and labeled the two halves as A and B. Finally, you added hypertonic solution in A and hypotonic solution in B. What will be the expected result of this experiment?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 23,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_067_a",
+          "label": "A",
+          "text_en": "Rise of the water level in both halves",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_067_b",
+          "label": "B",
+          "text_en": "Rise of the water level in B",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_067_c",
+          "label": "C",
+          "text_en": "Rise of the water level in A",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_067_d",
+          "label": "D",
+          "text_en": "No change in both halves",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water moves by osmosis from a region of higher water potential (hypotonic solution in B) to lower water potential (hypertonic solution in A), causing water level in A to rise.",
+        "simpler_explanation_en": "Water flows by osmosis from hypotonic B into hypertonic A, causing water level in A to rise.",
+        "key_concept": "Osmotic water movement and tonicity across semipermeable membranes.",
+        "common_pitfall": "Inverting osmotic flow direction from hypertonic to hypotonic."
+      }
+    },
+    {
+      "id": "q_bio_2013_068",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "According to the fluid-mosaic model of the plasma membrane",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 23,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_068_a",
+          "label": "A",
+          "text_en": "The membrane has uniform composition of proteins",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_068_b",
+          "label": "B",
+          "text_en": "Glycoproteins form a double layer",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_068_c",
+          "label": "C",
+          "text_en": "Phospholipid bilayer forms the basic structure of the membrane",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_068_d",
+          "label": "D",
+          "text_en": "Peripheral proteins are tightly attached to the membrane",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Singer and Nicolson's fluid-mosaic model proposes that amphipathic phospholipids form a fluid continuous bilayer matrix in which globular proteins are embedded or float.",
+        "simpler_explanation_en": "The phospholipid bilayer forms the foundational fluid matrix of cell membranes.",
+        "key_concept": "Fluid-mosaic model of biological membranes.",
+        "common_pitfall": "Believing proteins form a rigid uniform continuous sheet."
+      }
+    },
+    {
+      "id": "q_bio_2013_069",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "A class of grade 11 students were given two solutions A and B of unknown concentration separated by a semi-permeable membrane. The teacher instructed them to observe any changes in the water levels of the two solutions. After a few minutes, the students observed that the water level in solution A had decreased. What could the students conclude from their observation?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 23,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_069_a",
+          "label": "A",
+          "text_en": "Solution B had a positive water potential",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_069_b",
+          "label": "B",
+          "text_en": "Solution A had a higher water potential",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_069_c",
+          "label": "C",
+          "text_en": "The two solutions were isotonic",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_069_d",
+          "label": "D",
+          "text_en": "Solution A was hypertonic",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water always moves by osmosis from high water potential (less negative) to low water potential. Since water left chamber A, solution A must have had a higher water potential than B.",
+        "simpler_explanation_en": "Water moved out of A into B, meaning solution A had higher water potential.",
+        "key_concept": "Water potential gradients and osmotic flow direction.",
+        "common_pitfall": "Assuming water moves toward higher water potential rather than away from it."
+      }
+    },
+    {
+      "id": "q_bio_2013_070",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "A student did an experiment and found out that catabolism of amino acid produces toxic ammonia in the liver cells, which gradually gets converted into urea and excreted through urine. What would be the result of the experiment if osmosis was blocked? The liver cells",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 24,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_070_a",
+          "label": "A",
+          "text_en": "Gain water and become turgid",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_070_b",
+          "label": "B",
+          "text_en": "Excrete more ammonia and urea",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_070_c",
+          "label": "C",
+          "text_en": "Become overactive and produce more energy",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_070_d",
+          "label": "D",
+          "text_en": "Become damaged and lose functionality",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Osmotic fluid balance and cellular hydration are vital for urea cycle enzyme kinetics. Disrupting osmosis causes metabolic accumulation of cytotoxic ammonia, cell swelling/lysis, and liver cell death.",
+        "simpler_explanation_en": "Without osmotic balance, toxic metabolites accumulate and damage liver cells.",
+        "key_concept": "Osmotic regulation and liver cellular physiology.",
+        "common_pitfall": "Assuming animal cells without cell walls become happily turgid like plant cells."
+      }
+    },
+    {
+      "id": "q_bio_2013_071",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_1",
+      "exam_year": 2013,
+      "question_text_en": "Consider the following key events in the study of cell biology:\nI. Hooke describes 'cells' in a cork.\nII. Leeuwenhoek discovers protozoa.\nIII. Schleiden and Schwann propose a cell theory.\nIV. Jansen builds the first compound microscope.\nWhich one of the following represents the correct order from ancient to the recent?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 24,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_071_a",
+          "label": "A",
+          "text_en": "I, II, III, and IV",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_071_b",
+          "label": "B",
+          "text_en": "IV, I, II, and III",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_071_c",
+          "label": "C",
+          "text_en": "III, II, I, and IV",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_071_d",
+          "label": "D",
+          "text_en": "II, III, IV, and I",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Chronological order: IV. Zacharias Jansen invented the compound microscope (~1590) -> I. Robert Hooke named cells in cork (1665) -> II. Antonie van Leeuwenhoek observed live microorganisms (1674) -> III. Schleiden & Schwann formulated cell theory (1838–1839).",
+        "simpler_explanation_en": "Order: Microscope invented (IV) -> Cork cells seen (I) -> Protozoa found (II) -> Cell theory proposed (III).",
+        "key_concept": "Historical timeline of cytology and cell theory.",
+        "common_pitfall": "Placing Hooke before the invention of the compound microscope."
+      }
+    },
+    {
+      "id": "q_bio_2013_072",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "One of the differences of prokaryotic and eukaryotic cells is their cell wall. This is because the cell wall of prokaryotic cell is",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 24,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_072_a",
+          "label": "A",
+          "text_en": "The site of energy production",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_072_b",
+          "label": "B",
+          "text_en": "Impermeable",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_072_c",
+          "label": "C",
+          "text_en": "Stronger than eukaryotic cells",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_072_d",
+          "label": "D",
+          "text_en": "Made from sugar and amino acid",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Bacterial prokaryotic cell walls are composed of peptidoglycan (murein), a polymer of repeating disaccharides (sugars) cross-linked by short peptide chains (amino acids). Plant walls use cellulose.",
+        "simpler_explanation_en": "Bacterial cell walls consist of peptidoglycan (sugar and amino acid polymers).",
+        "key_concept": "Peptidoglycan composition of prokaryotic cell walls.",
+        "common_pitfall": "Assuming bacterial cell walls are made of cellulose or chitin."
+      }
+    },
+    {
+      "id": "q_bio_2013_073",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "Consider the following features of cells: I. Have pili II. Have a chromosome III. Have circular DNA IV. Have larger ribosomes. Which of the above features of cells can be included in eukaryotic cells?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 25,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_073_a",
+          "label": "A",
+          "text_en": "II and III",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_073_b",
+          "label": "B",
+          "text_en": "I and II",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_073_c",
+          "label": "C",
+          "text_en": "II and IV",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_073_d",
+          "label": "D",
+          "text_en": "I and III",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Eukaryotes possess linear chromosomes (II) and larger 80S cytosolic ribosomes (IV). Pili and naked circular genomic plasmids/DNA are defining prokaryotic bacterial features.",
+        "simpler_explanation_en": "Eukaryotes have linear chromosomes and larger 80S ribosomes.",
+        "key_concept": "Comparative cytology: Eukaryotes vs Prokaryotes.",
+        "common_pitfall": "Confusing bacterial pili with eukaryotic cilia or flagella."
+      }
+    },
+    {
+      "id": "q_bio_2013_074",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following is correct about the structure of the cell membrane?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 25,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_074_a",
+          "label": "A",
+          "text_en": "Phospholipid molecules form a transport channel",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_074_b",
+          "label": "B",
+          "text_en": "Protein molecules form a double layer",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_074_c",
+          "label": "C",
+          "text_en": "The membrane has a fluid nature that is regulated by cholesterol",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_074_d",
+          "label": "D",
+          "text_en": "Proteins form the outer layer while phospholipids form the inner layer",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In animal cell membranes, cholesterol molecules intercalate between phospholipids to regulate membrane fluidity across fluctuating temperatures.",
+        "simpler_explanation_en": "Cholesterol buffers and stabilizes the fluid nature of the cell membrane.",
+        "key_concept": "Cholesterol function in membrane fluidity buffering.",
+        "common_pitfall": "Believing proteins form the bilayer matrix rather than phospholipids."
+      }
+    },
+    {
+      "id": "q_bio_2013_075",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_1",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following is a correct match of cellular organelles and their corresponding function?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 25,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_075_a",
+          "label": "A",
+          "text_en": "Vacuole - strength and elasticity",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_075_b",
+          "label": "B",
+          "text_en": "Mitochondria - ATP synthesis",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_075_c",
+          "label": "C",
+          "text_en": "Lysosome - modification of proteins",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_075_d",
+          "label": "D",
+          "text_en": "Golgi body - digesting foreign cells",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Mitochondria are the powerhouses of eukaryotic cells, generating cellular ATP through the Krebs cycle and oxidative phosphorylation.",
+        "simpler_explanation_en": "Mitochondria synthesize ATP through cellular respiration.",
+        "key_concept": "Organelle functions: Mitochondria as sites of ATP synthesis.",
+        "common_pitfall": "Confusing Golgi apparatus (protein modification) with lysosomes (digestion)."
+      }
+    },
+    {
+      "id": "q_bio_2013_076",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_2",
+      "exam_year": 2013,
+      "question_text_en": "What structural arrangements make chlorophyll suitable for its function?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 26,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_076_a",
+          "label": "A",
+          "text_en": "The floating of the photosystems and the electron transport chain in the cytosol",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_076_b",
+          "label": "B",
+          "text_en": "The fixing of the photosystems and the electron transport chain on the thylakoid membrane",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_076_c",
+          "label": "C",
+          "text_en": "The structural differences between Photosystem I and Photosystem II",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_076_d",
+          "label": "D",
+          "text_en": "The long distance between Photosystem I and Photosystem II",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Chlorophyll pigments are organized into photosystems embedded in the thylakoid membrane alongside electron transport complexes to facilitate efficient light harvesting and proton pumping.",
+        "simpler_explanation_en": "Photosystems and electron carriers are organized directly on the thylakoid membrane.",
+        "key_concept": "Thylakoid membrane architecture and light-dependent photosystems.",
+        "common_pitfall": "Suggesting photosynthetic light reactions float freely in the cytosol."
+      }
+    },
+    {
+      "id": "q_bio_2013_077",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_2",
+      "exam_year": 2013,
+      "question_text_en": "Why does photorespiration take place in a hot environment? Because plants close their stomata and face",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 26,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_077_a",
+          "label": "A",
+          "text_en": "H₂O shortage",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_077_b",
+          "label": "B",
+          "text_en": "O₂ accumulation",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_077_c",
+          "label": "C",
+          "text_en": "CO₂ shortage",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_077_d",
+          "label": "D",
+          "text_en": "O₂ shortage",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In hot arid conditions, C3 plants close stomata to conserve water, preventing CO2 intake. Internal CO2 levels drop while O2 accumulates, prompting RuBisCO to bind O2 and trigger photorespiration.",
+        "simpler_explanation_en": "Closed stomata cause internal CO2 starvation, causing RuBisCO to bind oxygen.",
+        "key_concept": "Photorespiration and stomatal dynamics in C3 plants.",
+        "common_pitfall": "Thinking plants experience oxygen shortage during photorespiration."
+      }
+    },
+    {
+      "id": "q_bio_2013_078",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_2",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the diagram of chloroplast given below. Which letters represent the site where photolysis and Calvin take place, respectively?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 26,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_078_a",
+          "label": "A",
+          "text_en": "D and F",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_078_b",
+          "label": "B",
+          "text_en": "C and E",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_078_c",
+          "label": "C",
+          "text_en": "B and A",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_078_d",
+          "label": "D",
+          "text_en": "F and E",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Photolysis of water occurs on the thylakoid lumen/membrane of grana (F), and the light-independent Calvin cycle takes place in the fluid stroma matrix (E).",
+        "simpler_explanation_en": "Photolysis takes place in thylakoids (F), and Calvin cycle takes place in the stroma (E).",
+        "key_concept": "Sub-chloroplast compartmentalization of photosynthetic reactions.",
+        "common_pitfall": "Reversing the thylakoid and stroma reaction sites."
+      },
+      "vector_diagram": {
+        "id": "diag_bio_chloroplast",
+        "title_en": "Chloroplast Internal Architecture (F = Granum, E = Stroma)",
+        "title_am": "የክሎሮፕላስት መዋቅር",
+        "raw_svg_content": "<svg viewBox='0 0 400 240'><ellipse cx='200' cy='120' rx='160' ry='90' fill='none' stroke='#0F766E' stroke-width='3'/><rect x='100' y='80' width='45' height='10' rx='4' fill='#0F766E'/><rect x='100' y='95' width='45' height='10' rx='4' fill='#0F766E'/><rect x='100' y='110' width='45' height='10' rx='4' fill='#0F766E'/><rect x='220' y='70' width='45' height='10' rx='4' fill='#0F766E'/><rect x='220' y='85' width='45' height='10' rx='4' fill='#0F766E'/><rect x='220' y='100' width='45' height='10' rx='4' fill='#0F766E'/><rect x='220' y='115' width='45' height='10' rx='4' fill='#0F766E'/><text x='275' y='95' font-weight='bold'>F</text><text x='170' y='150' font-weight='bold'>E</text></svg>",
+        "view_box_width": 400,
+        "view_box_height": 240,
+        "caption": "F = Thylakoid/Granum (Photolysis of water), E = Stroma matrix (Calvin cycle)",
+        "hotspots": [
+          {
+            "id": "h_f",
+            "x_ratio": 0.65,
+            "y_ratio": 0.4,
+            "label": "F",
+            "description_en": "F: Thylakoid granum stack (site of photolysis)",
+            "description_am": "F: ታይላኮይድ ግራነም (የውሃ መሰበር)"
+          },
+          {
+            "id": "h_e",
+            "x_ratio": 0.43,
+            "y_ratio": 0.62,
+            "label": "E",
+            "description_en": "E: Fluid stroma (site of Calvin cycle CO2 fixation)",
+            "description_am": "E: ስትሮማ (የካልቪን ዑደት)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "q_bio_2013_079",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_2",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following is correct about the process of glucose production in the light-independent reactions of photosynthesis?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 27,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_079_a",
+          "label": "A",
+          "text_en": "A total of 9 ATP molecules are synthesized.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_079_b",
+          "label": "B",
+          "text_en": "CO 2 reacts with GP to form RuBP.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_079_c",
+          "label": "C",
+          "text_en": "One TP is directly converted to one glucose molecule.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_079_d",
+          "label": "D",
+          "text_en": "GP is reduced to TP by reduced NADP.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In the reduction phase of the Calvin cycle, glycerate-3-phosphate (GP) is reduced to triose phosphate (TP) using ATP energy and NADPH (reduced NADP).",
+        "simpler_explanation_en": "GP is reduced to TP using NADPH and ATP in the Calvin cycle.",
+        "key_concept": "Calvin cycle biochemistry: Reduction of GP to TP.",
+        "common_pitfall": "Thinking CO2 reacts with GP (CO2 actually reacts with RuBP to form GP)."
+      }
+    },
+    {
+      "id": "q_bio_2013_080",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u3",
+      "topic_id": "bio_t3_2",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following is a correct description of the CAM pathway of photosynthesis?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 27,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_080_a",
+          "label": "A",
+          "text_en": "CO 2 is stored in the form of malate during the night.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_080_b",
+          "label": "B",
+          "text_en": "The Calvin cycle takes place during the night.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_080_c",
+          "label": "C",
+          "text_en": "The Calvin cycle takes place in the bundle sheath cells during the day.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_080_d",
+          "label": "D",
+          "text_en": "CO 2 is stored in the bundle sheath cells during the night.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Crassulacean Acid Metabolism (CAM) plants open stomata at night to capture CO2, converting it into malate (malic acid) stored in vacuoles until daytime light reactions begin.",
+        "simpler_explanation_en": "CAM plants capture and store CO2 as malate at night to save water.",
+        "key_concept": "Temporal separation of carbon fixation in CAM desert plants.",
+        "common_pitfall": "Confusing temporal separation of CAM with spatial Kranz anatomy of C4 plants."
+      }
+    },
+    {
+      "id": "q_bio_2013_081",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following statements explains how an enzyme lowers the activation energy of a reaction? By",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 27,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_081_a",
+          "label": "A",
+          "text_en": "Enabling the reaction to occur at lower physiological temperature",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_081_b",
+          "label": "B",
+          "text_en": "Making the individual substrate molecules more reactive",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_081_c",
+          "label": "C",
+          "text_en": "Lowering the kinetic energy of the reacting molecules",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_081_d",
+          "label": "D",
+          "text_en": "Changing its tertiary structure into secondary protein structure",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "By stabilizing the transition state and lowering required activation energy, enzymes allow vital biochemical reactions to proceed rapidly at normal biological body temperatures.",
+        "simpler_explanation_en": "Enzymes allow metabolic reactions to occur at normal body temperatures.",
+        "key_concept": "Activation energy lowering and physiological thermodynamics.",
+        "common_pitfall": "Claiming enzymes reduce the kinetic energy of reactants."
+      }
+    },
+    {
+      "id": "q_bio_2013_082",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Consider the following chemical reaction below: RH₂ + A —(E)→ R + AH₂. Based on the above chemical reaction, in which classes of enzymes can enzyme 'E' be grouped?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 28,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_082_a",
+          "label": "A",
+          "text_en": "Transferases",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_082_b",
+          "label": "B",
+          "text_en": "Hydrolyases",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_082_c",
+          "label": "C",
+          "text_en": "Isomerases",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_082_d",
+          "label": "D",
+          "text_en": "Oxidoreductases",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The reaction involves the transfer of hydrogen atoms (electrons) from donor RH2 (oxidized) to acceptor A (reduced), which is catalyzed by Oxidoreductases (dehydrogenases).",
+        "simpler_explanation_en": "Hydrogen transfer reactions are catalyzed by oxidoreductase enzymes.",
+        "key_concept": "IUBMB enzyme classification: Oxidoreductases.",
+        "common_pitfall": "Confusing oxidoreductases with hydrolytic or transferase enzymes."
+      },
+      "vector_diagram": {
+        "id": "diag_bio_redox_eqn",
+        "title_en": "Enzymatic Redox Reaction (RH2 + A -> R + AH2)",
+        "title_am": "የኦክሲዶሪዳክቴዝ ኬሚካላዊ ምላሽ",
+        "raw_svg_content": "<svg viewBox='0 0 400 120'><text x='30' y='65' font-size='20' font-weight='bold' fill='#0F766E'>RH₂ + A</text><path d='M150,60 L230,60' stroke='#0F766E' stroke-width='3' marker-end='url(#arrow)'/><text x='180' y='45' font-size='16' font-weight='bold' fill='#E11D48'>E</text><text x='250' y='65' font-size='20' font-weight='bold' fill='#0F766E'>R + AH₂</text></svg>",
+        "view_box_width": 400,
+        "view_box_height": 120,
+        "caption": "Redox reaction: Transfer of hydrogen electrons between donor and acceptor",
+        "hotspots": [
+          {
+            "id": "h_e",
+            "x_ratio": 0.48,
+            "y_ratio": 0.45,
+            "label": "E",
+            "description_en": "Enzyme E: Dehydrogenase / Oxidoreductase catalyzing hydrogen transfer",
+            "description_am": "ኢንዛይም E: ኦክሲዶሪዳክቴዝ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "q_bio_2013_083",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following enzymes is used as washing powders?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 28,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_083_a",
+          "label": "A",
+          "text_en": "Biochymosin",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_083_b",
+          "label": "B",
+          "text_en": "Lipase",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_083_c",
+          "label": "C",
+          "text_en": "Cellulase",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_083_d",
+          "label": "D",
+          "text_en": "Pectinase",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Lipases (along with proteases) are active ingredients in biological washing detergents that break down greasy fat and oil stains on clothing.",
+        "simpler_explanation_en": "Lipases break down oil and fat stains in laundry detergent powders.",
+        "key_concept": "Industrial biotechnology: Enzyme applications in detergents.",
+        "common_pitfall": "Confusing fruit-juice clarifying pectinase or cheese chymosin with detergents."
+      }
+    },
+    {
+      "id": "q_bio_2013_084",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "What happens when the substrate molecule binds to the active site of an enzyme?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 28,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_084_a",
+          "label": "A",
+          "text_en": "The substrate and the enzyme will bond permanently.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_084_b",
+          "label": "B",
+          "text_en": "They form a stable intermediate substance.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_084_c",
+          "label": "C",
+          "text_en": "The amino acids in the active site become unreactive.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_084_d",
+          "label": "D",
+          "text_en": "The chemical bonds of the substrate are distorted.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Under the induced-fit model, binding to the active site induces conformational strain, distorting specific chemical bonds in the substrate and lowering the energy required for bond cleavage.",
+        "simpler_explanation_en": "Binding distorts chemical bonds in the substrate, making them easier to break.",
+        "key_concept": "Induced-fit catalytic mechanisms and transition state stabilization.",
+        "common_pitfall": "Assuming substrate binding creates permanent irreversible bonds."
+      }
+    },
+    {
+      "id": "q_bio_2013_085",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Which of the following vitamins is used as a component of cofactor?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 29,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_085_a",
+          "label": "A",
+          "text_en": "Thiamin",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_085_b",
+          "label": "B",
+          "text_en": "Riboflavin",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_085_c",
+          "label": "C",
+          "text_en": "Ascorbic acid",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_085_d",
+          "label": "D",
+          "text_en": "Retinol",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Vitamin B2 (Riboflavin) forms the essential prosthetic coenzyme/cofactor building block for flavin adenine dinucleotide (FAD) and flavin mononucleotide (FMN).",
+        "simpler_explanation_en": "Riboflavin (Vitamin B2) is the precursor for FAD cofactors in metabolism.",
+        "key_concept": "Vitamins as coenzyme precursors in enzyme kinetics.",
+        "common_pitfall": "Confusing water-soluble B2 cofactors with lipid-soluble vitamins."
+      }
+    },
+    {
+      "id": "q_bio_2013_086",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_2",
+      "exam_year": 2013,
+      "question_text_en": "How does crossing over during meiosis bring variation in species?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 29,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_086_a",
+          "label": "A",
+          "text_en": "Increasing the amount of genes in one of the parents during meiosis",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_086_b",
+          "label": "B",
+          "text_en": "Combination of genes in the gametes that are not found in either parent",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_086_c",
+          "label": "C",
+          "text_en": "Combining sex and somatic cell chromosomes",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_086_d",
+          "label": "D",
+          "text_en": "Creating genes that are not found in both parents due to meiosis",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Crossing over (chiasmata formation) between non-sister chromatids of homologous chromosomes during prophase I swaps genetic alleles, creating unique recombinant combinations of alleles in gametes.",
+        "simpler_explanation_en": "Crossing over shuffles alleles to create novel gene combinations in gametes.",
+        "key_concept": "Genetic recombination during meiotic crossing over.",
+        "common_pitfall": "Claiming crossing over creates brand new genes from scratch."
+      }
+    },
+    {
+      "id": "q_bio_2013_087",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "How does our body synthesize some of the amino acids in our body?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 29,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_087_a",
+          "label": "A",
+          "text_en": "From fatty acids we consume",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_087_b",
+          "label": "B",
+          "text_en": "From intermediate molecules of different pathways",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_087_c",
+          "label": "C",
+          "text_en": "From the breakdown of pre-existing proteins",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_087_d",
+          "label": "D",
+          "text_en": "From the biological breakdown of our own cells",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Non-essential amino acids are synthesized de novo by transamination of metabolic intermediates derived from glycolysis (e.g. pyruvate, 3-phosphoglycerate) and the Krebs cycle (oxaloacetate, alpha-ketoglutarate).",
+        "simpler_explanation_en": "Non-essential amino acids are made by converting intermediate molecules from glycolysis and Krebs cycle.",
+        "key_concept": "Transamination and biosynthesis of non-essential amino acids.",
+        "common_pitfall": "Believing our bodies synthesize amino acids from pure fatty acids."
+      }
+    },
+    {
+      "id": "q_bio_2013_088",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_3",
+      "exam_year": 2013,
+      "question_text_en": "This item is based on the following list of events during cloning of an insulin gene into plasmid:\nI. Obtaining insulin-producing cells and plasmid from organisms\nII. Cutting the insulin gene and plasmid\nIII. X\nIV. Inserting the recombinant plasmid into bacteria\nV. Production of insulin by bacteria\nWhich one of the following best represents the step listed as 'X'?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 30,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_088_a",
+          "label": "A",
+          "text_en": "Inserting the insulin gene into a bacterium",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_088_b",
+          "label": "B",
+          "text_en": "Inserting the open plasmid into a bacterium",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_088_c",
+          "label": "C",
+          "text_en": "Fusing the insulin and plasmid genes to the cell wall of bacteria",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_088_d",
+          "label": "D",
+          "text_en": "Combining the insulin gene into the opened plasmid",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "After cutting both the human cDNA and bacterial plasmid with restriction endonucleases (step II), step III (X) is annealing and ligating the insulin gene into the opened plasmid vector using DNA ligase.",
+        "simpler_explanation_en": "Step X is joining the cut insulin gene into the opened plasmid ring with DNA ligase.",
+        "key_concept": "Recombinant DNA gene cloning workflow.",
+        "common_pitfall": "Attempting transformation into bacteria before ligating the gene into the plasmid."
+      }
+    },
+    {
+      "id": "q_bio_2013_089",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_1",
+      "exam_year": 2013,
+      "question_text_en": "Consider the DNA molecule containing: Strand 1: T A C G T A; Strand 2: A T G C A T. What will be the sequence of the new DNA if the DNA replicates semi-conservatively?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 30,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_089_a",
+          "label": "A",
+          "text_en": "Original strand: ATGCAT; New strand: UACGUA",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_089_b",
+          "label": "B",
+          "text_en": "Original strand: TACGTA; New strand: ATGCAU",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_089_c",
+          "label": "C",
+          "text_en": "Original strand: ATGCAT; New strand: ATGCAT",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_089_d",
+          "label": "D",
+          "text_en": "Original strand: TACGTA; New strand: ATGCAT",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In semiconservative replication, each parental strand acts as a template for synthesizing a complementary daughter strand using base-pairing rules (A-T, C-G). Original strand TACGTA pairs with newly synthesized ATGCAT.",
+        "simpler_explanation_en": "Original template strand TACGTA directs synthesis of complementary DNA strand ATGCAT.",
+        "key_concept": "Meselson-Stahl semiconservative DNA replication and base pairing.",
+        "common_pitfall": "Confusing DNA replication with RNA transcription by inserting uracil (U)."
+      }
+    },
+    {
+      "id": "q_bio_2013_090",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u5",
+      "topic_id": "bio_t5_1",
+      "exam_year": 2013,
+      "question_text_en": "During translation, the",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 30,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_090_a",
+          "label": "A",
+          "text_en": "tRNA serves as a template of the DNA molecule.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_090_b",
+          "label": "B",
+          "text_en": "ribosome moves forward over two codons at a time.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_090_c",
+          "label": "C",
+          "text_en": "mRNA brings amino acids into the ribosomes.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_090_d",
+          "label": "D",
+          "text_en": "tRNA with complementary anticodon binds on the codon of mRNA.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "During translation elongation, aminoacyl-tRNA molecules carrying specific amino acids base-pair their complementary 3-base anticodon with mRNA codons in the ribosome A-site.",
+        "simpler_explanation_en": "tRNA anticodon matches and binds to the complementary mRNA codon during translation.",
+        "key_concept": "Mechanism of translation on the ribosome.",
+        "common_pitfall": "Confusing tRNA with mRNA or thinking ribosomes move two codons at a time."
+      }
+    },
+    {
+      "id": "q_bio_2013_091",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_1",
+      "exam_year": 2013,
+      "question_text_en": "The step of the scientific method which comes after analyzing results and drawing a conclusion is",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 31,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_091_a",
+          "label": "A",
+          "text_en": "Doing background research.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_091_b",
+          "label": "B",
+          "text_en": "Constructing a hypothesis.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_091_c",
+          "label": "C",
+          "text_en": "Designing and carrying out an experiment.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_091_d",
+          "label": "D",
+          "text_en": "Accepting or rejecting the hypothesis.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "After analyzing experimental data and drawing logical conclusions, the investigator must determine whether the evidence supports accepting or rejecting the initial hypothesis.",
+        "simpler_explanation_en": "Conclusions lead directly to accepting or rejecting the initial hypothesis.",
+        "key_concept": "Steps of the scientific method and hypothesis evaluation.",
+        "common_pitfall": "Choosing initial research steps that occur prior to experimentation."
+      }
+    },
+    {
+      "id": "q_bio_2013_092",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_1",
+      "exam_year": 2013,
+      "question_text_en": "In a group of individuals in which Group A was a control and Group B was an experimental group, a student gave a placebo to the control group and an unknown drug to the experimental group. At the end, the experimental group got better. Which one of the following is true about the result?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 31,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_092_a",
+          "label": "A",
+          "text_en": "The drug has an effect.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_092_b",
+          "label": "B",
+          "text_en": "Placebo has a better effect.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_092_c",
+          "label": "C",
+          "text_en": "The experiment was wrong.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_092_d",
+          "label": "D",
+          "text_en": "Conclusion cannot be reached.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In a controlled trial, since the experimental group receiving the active drug showed significant health improvement compared to the inert placebo control, the evidence indicates the drug has a positive therapeutic effect.",
+        "simpler_explanation_en": "The experimental drug produced measurable recovery beyond the placebo baseline.",
+        "key_concept": "Controlled scientific experimentation and placebo controls.",
+        "common_pitfall": "Claiming no conclusion can be drawn from a statistically valid controlled trial."
+      }
+    },
+    {
+      "id": "q_bio_2013_093",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_1",
+      "exam_year": 2013,
+      "question_text_en": "A biologist conducted a simple experiment to investigate the effect of pH on salivary amylase. She added 5cm3 amylase solution into 5cm3 starch suspension with a neutral pH in a test tube. After ten minutes, she tested it with iodine reagent and the solution turned into blue-black color. What is the dependent variable of this experiment?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 31,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_093_a",
+          "label": "A",
+          "text_en": "Applying iodine treatment",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_093_b",
+          "label": "B",
+          "text_en": "pH of the solution",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_093_c",
+          "label": "C",
+          "text_en": "Adding salivary amylase",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_093_d",
+          "label": "D",
+          "text_en": "Formation of blue-black color",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The independent variable is pH. The measured/observed response indicating whether starch was hydrolyzed or intact (rate of enzyme digestion) is the color change / formation of blue-black color.",
+        "simpler_explanation_en": "The measured outcome (blue-black color intensity) is the dependent variable.",
+        "key_concept": "Identifying independent, dependent, and controlled variables in experiments.",
+        "common_pitfall": "Confusing the manipulated parameter (pH) with the measured outcome variable."
+      }
+    },
+    {
+      "id": "q_bio_2013_094",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_2",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following pairs of biological tools and their functions is FALSE?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 32,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_094_a",
+          "label": "A",
+          "text_en": "Petri dish - used for culturing microorganisms",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_094_b",
+          "label": "B",
+          "text_en": "Balances - used for measuring mass",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_094_c",
+          "label": "C",
+          "text_en": "Quadrate - to separate solids from liquids",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_094_d",
+          "label": "D",
+          "text_en": "Optical microscope - use beam of light to produce magnified image",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A quadrat (quadrate frame) is an ecological field tool used for quantitative sampling of plant and sessile organism population densities, not for liquid-solid filtration.",
+        "simpler_explanation_en": "A quadrat is used for sampling organism populations in ecology, not for filtering liquids.",
+        "key_concept": "Laboratory and ecological field apparatus functions.",
+        "common_pitfall": "Confusing ecological quadrats with laboratory filter funnels."
+      }
+    },
+    {
+      "id": "q_bio_2013_095",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u1",
+      "topic_id": "bio_t1_2",
+      "exam_year": 2013,
+      "question_text_en": "Grade 12 students went to a field and collected plant specimens for identification in the laboratory. They wanted to preserve the plant parts for some time and specimens can be analyzed later. Which one of the following biological tools is used for their activities?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 32,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_095_a",
+          "label": "A",
+          "text_en": "Plant press",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_095_b",
+          "label": "B",
+          "text_en": "Pitfall traps",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_095_c",
+          "label": "C",
+          "text_en": "Theodolite",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_095_d",
+          "label": "D",
+          "text_en": "Quadrat",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A plant press uses wooden frames, absorbent blotting paper, and straps to flatten and dry botanical specimens for long-term herbarium preservation and taxonomic analysis.",
+        "simpler_explanation_en": "A plant press flattens and dries collected plant specimens for preservation.",
+        "key_concept": "Botanical field preservation tools and herbarium methods.",
+        "common_pitfall": "Selecting animal traps (pitfall) or survey theodolites for plant preservation."
+      }
+    },
+    {
+      "id": "q_bio_2013_096",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_2",
+      "exam_year": 2013,
+      "question_text_en": "Some amino acids are synthesized using the transamination process in the cell. This activity more describes the cell's",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 32,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_096_a",
+          "label": "A",
+          "text_en": "Replication",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_096_b",
+          "label": "B",
+          "text_en": "Energy production",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_096_c",
+          "label": "C",
+          "text_en": "Catabolism",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_096_d",
+          "label": "D",
+          "text_en": "Anabolism",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Anabolism refers to biosynthetic metabolic pathways that construct complex biomolecules (such as synthesizing amino acids and proteins) from simpler precursors, requiring energy.",
+        "simpler_explanation_en": "Synthesizing new biomolecules like amino acids is anabolism (constructive metabolism).",
+        "key_concept": "Metabolic classification: Anabolism (synthesis) vs Catabolism (breakdown).",
+        "common_pitfall": "Confusing constructive synthesis (anabolism) with destructive breakdown (catabolism)."
+      }
+    },
+    {
+      "id": "q_bio_2013_097",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Identify the statement that correctly explains the factors of an enzyme activity.",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 33,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_097_a",
+          "label": "A",
+          "text_en": "Excessive heat breaks the ionic bonds that hold the tertiary structure of the enzyme protein.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_097_b",
+          "label": "B",
+          "text_en": "Hydrogen ion concentration affects the ionic bonds of an enzyme.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_097_c",
+          "label": "C",
+          "text_en": "Increasing concentration of substrates does not affect enzyme activity.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_097_d",
+          "label": "D",
+          "text_en": "Inhibitors increase enzyme activity by increasing their turnover rate.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Changes in pH (hydrogen ion [H+] concentration) alter the ionization state of acidic and basic amino acid R-groups, disrupting ionic bonds and salt bridges that maintain enzyme active site conformation.",
+        "simpler_explanation_en": "pH changes alter H+ concentration, disrupting ionic bonds in the enzyme.",
+        "key_concept": "Physicochemical factors affecting enzyme kinetics: pH and ionic interactions.",
+        "common_pitfall": "Attributing thermal denaturation primarily to ionic bonds rather than hydrogen bonds and hydrophobic interactions."
+      }
+    },
+    {
+      "id": "q_bio_2013_098",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Which one of the following is true about allosteric regulation?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 33,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_098_a",
+          "label": "A",
+          "text_en": "Enzymes are activated when activators attach to the active site.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_098_b",
+          "label": "B",
+          "text_en": "Inhibition by competitive inhibitors occurs when they interact at the allosteric site.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_098_c",
+          "label": "C",
+          "text_en": "Activation by activators occurs when they interact at the allosteric site.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_098_d",
+          "label": "D",
+          "text_en": "Allosteric inhibition occurs when inhibitors attach to the active site.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Allosteric regulation occurs when an effector molecule (activator or inhibitor) binds to an allosteric regulatory site distinct from the active site, inducing a conformational shift that alters catalytic activity.",
+        "simpler_explanation_en": "Allosteric activators bind at allosteric regulatory sites away from the active site.",
+        "key_concept": "Allosteric enzyme regulation and conformational kinetics.",
+        "common_pitfall": "Confusing the allosteric site with the substrate-binding active site."
+      }
+    },
+    {
+      "id": "q_bio_2013_099",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "If an enzyme from thermophilic bacteria, which catalyzes glucose 6-phosphate into fructose 6-phosphate in the process of glycolysis, is subjected to below the optimum temperature, the rate of the reaction will decrease. This is because",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 33,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_099_a",
+          "label": "A",
+          "text_en": "The particles have more kinetic energy.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_099_b",
+          "label": "B",
+          "text_en": "The enzyme is denatured.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_099_c",
+          "label": "C",
+          "text_en": "More collisions between enzyme and glucose 6-phosphate occurred.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_099_d",
+          "label": "D",
+          "text_en": "Less enzyme-glucose 6-phosphate complexes are formed.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Below optimum temperature, molecules have lower thermal kinetic energy, leading to fewer effective collisions between enzyme active sites and substrates, forming fewer enzyme-substrate complexes per second.",
+        "simpler_explanation_en": "Low temperatures decrease kinetic collisions, forming fewer enzyme-substrate complexes.",
+        "key_concept": "Temperature dependence of enzyme kinetics (kinetic collision theory).",
+        "common_pitfall": "Believing cold temperatures denature enzymes (cold slows kinetics; high heat denatures)."
+      }
+    },
+    {
+      "id": "q_bio_2013_100",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "biology_g12",
+      "unit_id": "bio_u2",
+      "topic_id": "bio_t2_3",
+      "exam_year": 2013,
+      "question_text_en": "Cyclooxygenase-2 is an enzyme that catalyzes the conversion of arachidonic acid to prostaglandins, which promote pain and fever in our body. The painkiller ibuprofen acts as a non-competitive inhibitor of cyclooxygenase-2, reducing the production of prostaglandins. What would happen if the concentration of ibuprofen increased?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Biology 2013 E.C. (2020-2021 G.C.) Booklet 12",
+      "source_page": 34,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_bio_100_a",
+          "label": "A",
+          "text_en": "Pain of the body is decreased.",
+          "is_correct": true
+        },
+        {
+          "id": "c_bio_100_b",
+          "label": "B",
+          "text_en": "Production of prostaglandin is increased.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_100_c",
+          "label": "C",
+          "text_en": "Concentration of arachidonic acid is decreased.",
+          "is_correct": false
+        },
+        {
+          "id": "c_bio_100_d",
+          "label": "D",
+          "text_en": "Substrate affinity of cyclooxygenase-2 is higher.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Increasing the concentration of ibuprofen (an inhibitor of COX-2) further suppresses prostaglandin synthesis, thereby reducing inflammatory fever and decreasing pain sensations in the body.",
+        "simpler_explanation_en": "More ibuprofen blocks more COX-2, lowering prostaglandins and decreasing pain.",
+        "key_concept": "Enzyme inhibition pharmacology: NSAIDs and pain mediation.",
+        "common_pitfall": "Thinking higher inhibitor levels increase prostaglandin production."
+      }
+    }
+  ]
+}

@@ -1,0 +1,1036 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_math_nat_2026",
+      "subject_id": "math_g12",
+      "name_en": "Grade 12 Mathematics (Natural Science)",
+      "name_am": "የ12ኛ ክፍል ሂሳብ (የተፈጥሮ ሳይንስ)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_aptitude_2026",
+      "subject_id": "aptitude_g12",
+      "name_en": "Grade 12 Scholastic Aptitude",
+      "name_am": "የ12ኛ ክፍል አፕቲትዩድ (አጠቃላይ ችሎታ)",
+      "grade": 12,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 419430,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g6_math_2026",
+      "subject_id": "math_g6",
+      "name_en": "Grade 6 Mathematics (PSLCE Exam)",
+      "name_am": "የ6ኛ ክፍል ሂሳብ (የማጠቃለያ ፈተና)",
+      "grade": 6,
+      "stream": "general",
+      "version": 1,
+      "size_bytes": 350000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g6_science_2026",
+      "subject_id": "science_g6",
+      "name_en": "Grade 6 Integrated Science",
+      "name_am": "የ6ኛ ክፍል የተቀናጀ ሳይንስ",
+      "grade": 6,
+      "stream": "general",
+      "version": 1,
+      "size_bytes": 380000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g8_math_2026",
+      "subject_id": "math_g8",
+      "name_en": "Grade 8 Mathematics (Ministry Exam)",
+      "name_am": "የ8ኛ ክፍል ሂሳብ (የሚኒስትሪ ፈተና)",
+      "grade": 8,
+      "stream": "general",
+      "version": 1,
+      "size_bytes": 450000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g8_science_2026",
+      "subject_id": "science_g8",
+      "name_en": "Grade 8 General Science (Ministry Exam)",
+      "name_am": "የ8ኛ ክፍል አጠቃላይ ሳይንስ",
+      "grade": 8,
+      "stream": "general",
+      "version": 1,
+      "size_bytes": 480000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_history_2026",
+      "subject_id": "history_g12",
+      "name_en": "Grade 12 History of Ethiopia & The Horn",
+      "name_am": "የ12ኛ ክፍል ታሪክ (የኢትዮጵያና የአፍሪካ ቀንድ)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 520000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_geography_2026",
+      "subject_id": "geography_g12",
+      "name_en": "Grade 12 Geography of Ethiopia & The Horn",
+      "name_am": "የ12ኛ ክፍል ጂኦግራፊ",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 510000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_economics_2026",
+      "subject_id": "economics_g12",
+      "name_en": "Grade 12 Economics",
+      "name_am": "የ12ኛ ክፍል ኢኮኖሚክስ",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 490000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "math_g12",
+      "code": "MATH12",
+      "name_en": "Mathematics",
+      "name_am": "ሂሳብ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "aptitude_g12",
+      "code": "APT12",
+      "name_en": "Scholastic Aptitude",
+      "name_am": "አፕቲትዩድ",
+      "grade": 12,
+      "stream": "common",
+      "icon_asset": "assets/images/aptitude_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "math_g6",
+      "code": "MATH6",
+      "name_en": "Mathematics (Grade 6)",
+      "name_am": "ሂሳብ",
+      "grade": 6,
+      "stream": "general",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "science_g6",
+      "code": "SCI6",
+      "name_en": "Integrated Science (Grade 6)",
+      "name_am": "የተቀናጀ ሳይንስ",
+      "grade": 6,
+      "stream": "general",
+      "icon_asset": "assets/images/science_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "math_g8",
+      "code": "MATH8",
+      "name_en": "Mathematics (Grade 8)",
+      "name_am": "ሂሳብ",
+      "grade": 8,
+      "stream": "general",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "science_g8",
+      "code": "SCI8",
+      "name_en": "General Science (Grade 8)",
+      "name_am": "አጠቃላይ ሳይንስ",
+      "grade": 8,
+      "stream": "general",
+      "icon_asset": "assets/images/science_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "history_g12",
+      "code": "HIST12",
+      "name_en": "History",
+      "name_am": "ታሪክ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/history_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "geography_g12",
+      "code": "GEO12",
+      "name_en": "Geography",
+      "name_am": "ጂኦግራፊ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/geography_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "economics_g12",
+      "code": "ECON12",
+      "name_en": "Economics",
+      "name_am": "ኢኮኖሚክስ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/economics_icon.png",
+      "sort_order": 3
+    }
+  ],
+  "units": [
+    {
+      "id": "math_u1",
+      "subject_id": "math_g12",
+      "unit_number": 1,
+      "title_en": "Sequences and Series",
+      "title_am": "ተከታታዮችና ድምሮች"
+    },
+    {
+      "id": "math_u2",
+      "subject_id": "math_g12",
+      "unit_number": 2,
+      "title_en": "Introduction to Calculus & Limits",
+      "title_am": "የካልኩለስ መግቢያ እና ገደቦች"
+    },
+    {
+      "id": "apt_u1",
+      "subject_id": "aptitude_g12",
+      "unit_number": 1,
+      "title_en": "Numerical Reasoning",
+      "title_am": "የቁጥር አመክንዮ"
+    },
+    {
+      "id": "apt_u2",
+      "subject_id": "aptitude_g12",
+      "unit_number": 2,
+      "title_en": "Verbal Reasoning & Analogies",
+      "title_am": "የቃል አመክንዮና ዝምድናዎች"
+    },
+    {
+      "id": "g6_math_u1",
+      "subject_id": "math_g6",
+      "unit_number": 1,
+      "title_en": "Fractions and Decimals",
+      "title_am": "ክፍልፋዮችና አስርዮሾች"
+    },
+    {
+      "id": "g6_sci_u1",
+      "subject_id": "science_g6",
+      "unit_number": 1,
+      "title_en": "Living Things & Environments",
+      "title_am": "ሕያዋን ፍጥረታትና አካባቢያቸው"
+    },
+    {
+      "id": "g8_math_u1",
+      "subject_id": "math_g8",
+      "unit_number": 1,
+      "title_en": "Geometry and Triangles",
+      "title_am": "ጂኦሜትሪ እና ባለሶስት ጎኖች"
+    },
+    {
+      "id": "g8_sci_u1",
+      "subject_id": "science_g8",
+      "unit_number": 1,
+      "title_en": "Electricity and Circuits",
+      "title_am": "ኤሌክትሪክና ዑደቶች"
+    },
+    {
+      "id": "g12_hist_u1",
+      "subject_id": "history_g12",
+      "unit_number": 1,
+      "title_en": "State Formation & Sovereignty in Ethiopia",
+      "title_am": "የሀገር ግንባታና ሉዓላዊነት በኢትዮጵያ"
+    },
+    {
+      "id": "g12_geo_u1",
+      "subject_id": "geography_g12",
+      "unit_number": 1,
+      "title_en": "Geology & Rift Valley of Ethiopia",
+      "title_am": "የኢትዮጵያ ጂኦሎጂና ስምጥ ሸለቆ"
+    },
+    {
+      "id": "g12_econ_u1",
+      "subject_id": "economics_g12",
+      "unit_number": 1,
+      "title_en": "Market Equilibrium & National Income",
+      "title_am": "የገበያ ሚዛንና ብሔራዊ ገቢ"
+    }
+  ],
+  "topics": [
+    { "id": "math_t1_1", "unit_id": "math_u1", "topic_number": 1, "title_en": "Arithmetic Progressions", "title_am": "አርቲሜቲክ ተከታታይ" },
+    { "id": "math_t1_2", "unit_id": "math_u1", "topic_number": 2, "title_en": "Geometric Series & Convergence", "title_am": "ጂኦሜትሪክ ተከታታይ" },
+    { "id": "math_t2_1", "unit_id": "math_u2", "topic_number": 1, "title_en": "Limits at Infinity", "title_am": "የወሰን ገደቦች" },
+    { "id": "math_t2_2", "unit_id": "math_u2", "topic_number": 2, "title_en": "Derivatives & Rates of Change", "title_am": "ለውጦችና ዲሪቬቲቭ" },
+    { "id": "apt_t1_1", "unit_id": "apt_u1", "topic_number": 1, "title_en": "Number Patterns & Series", "title_am": "የቁጥር ቅደም ተከተሎች" },
+    { "id": "apt_t1_2", "unit_id": "apt_u1", "topic_number": 2, "title_en": "Quantitative Proportions & Ratios", "title_am": "ተመጣጣኝነትና ንፅፅር" },
+    { "id": "apt_t2_1", "unit_id": "apt_u2", "topic_number": 1, "title_en": "Semantic Analogies", "title_am": "የቃላት ዝምድና" },
+    { "id": "apt_t2_2", "unit_id": "apt_u2", "topic_number": 2, "title_en": "Logical Deductions", "title_am": "አመክንዮአዊ ድምዳሜ" },
+    { "id": "g6_math_t1", "unit_id": "g6_math_u1", "topic_number": 1, "title_en": "Operations on Fractions", "title_am": "የክፍልፋዮች ስሌት" },
+    { "id": "g6_sci_t1", "unit_id": "g6_sci_u1", "topic_number": 1, "title_en": "Plant Ecosystems & Photosynthesis", "title_am": "የእፅዋት ስነ-ህይወት" },
+    { "id": "g8_math_t1", "unit_id": "g8_math_u1", "topic_number": 1, "title_en": "Pythagorean Theorem & Right Triangles", "title_am": "ፓይታጎረስ ቴዎረም" },
+    { "id": "g8_sci_t1", "unit_id": "g8_sci_u1", "topic_number": 1, "title_en": "Simple Direct Current Circuits", "title_am": "ቀላል የኤሌክትሪክ ዑደት" },
+    { "id": "g12_hist_t1", "unit_id": "g12_hist_u1", "topic_number": 1, "title_en": "The Battle of Adwa (1896)", "title_am": "የዓድዋ ድል (1896)" },
+    { "id": "g12_geo_t1", "unit_id": "g12_geo_u1", "topic_number": 1, "title_en": "The Great East African Rift System", "title_am": "የታላቁ ምስራቅ አፍሪካ ስምጥ ሸለቆ" },
+    { "id": "g12_econ_t1", "unit_id": "g12_econ_u1", "topic_number": 1, "title_en": "Supply, Demand & Price Elasticity", "title_am": "ፍላጎት፣ አቅርቦትና ዋጋ" }
+  ],
+  "questions": [
+    {
+      "id": "q_math_001",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "exam_year": 2023,
+      "question_text_en": "What is the 20th term of the arithmetic progression 3, 7, 11, 15, ...?",
+      "question_text_am": "የአርቲሜቲክ ተከታታይ 3፣ 7፣ 11፣ 15፣ ... 20ኛው ቁጥር ስንት ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_001_a", "label": "A", "text_en": "76", "text_am": "76", "is_correct": false },
+        { "id": "c_math_001_b", "label": "B", "text_en": "79", "text_am": "79", "is_correct": true },
+        { "id": "c_math_001_c", "label": "C", "text_en": "83", "text_am": "83", "is_correct": false },
+        { "id": "c_math_001_d", "label": "D", "text_en": "80", "text_am": "80", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "The formula for the n-th term of an AP is a_n = a_1 + (n - 1)d. Here a_1 = 3 and common difference d = 7 - 3 = 4. Therefore, a_20 = 3 + (20 - 1) * 4 = 3 + 19 * 4 = 3 + 76 = 79.",
+        "simpler_explanation_en": "Start at 3 and jump forward by 4 nineteen times: 3 + 76 = 79.",
+        "key_concept": "Arithmetic sequence n-th term: a_n = a_1 + (n-1)d",
+        "common_pitfall": "Forgetting that the multiplier is (n - 1) rather than n."
+      }
+    },
+    {
+      "id": "q_math_002",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "exam_year": 2023,
+      "question_text_en": "If the sum of the first 10 terms of an arithmetic sequence is 155 and the first term is 2, what is the common difference d?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_002_a", "label": "A", "text_en": "2.5", "is_correct": false },
+        { "id": "c_math_002_b", "label": "B", "text_en": "3", "is_correct": true },
+        { "id": "c_math_002_c", "label": "C", "text_en": "3.5", "is_correct": false },
+        { "id": "c_math_002_d", "label": "D", "text_en": "4", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Sum formula: S_n = (n/2) * [2a_1 + (n-1)d]. 155 = (10/2) * [2(2) + (10-1)d] => 155 = 5 * (4 + 9d) => 31 = 4 + 9d => 27 = 9d => d = 3.",
+        "simpler_explanation_en": "Divide 155 by 5 to get 31 for [2a + 9d]. Subtract 4 to get 27, then divide by 9.",
+        "key_concept": "S_n = (n/2)[2a_1 + (n-1)d]",
+        "common_pitfall": "Dividing sum by n instead of (n/2)."
+      }
+    },
+    {
+      "id": "q_math_003",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_2",
+      "exam_year": 2022,
+      "question_text_en": "For what values of x does the infinite geometric series sum_{n=1}^{infty} (2x - 1)^n converge?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 24,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_003_a", "label": "A", "text_en": "0 < x < 1", "is_correct": true },
+        { "id": "c_math_003_b", "label": "B", "text_en": "-1 < x < 1", "is_correct": false },
+        { "id": "c_math_003_c", "label": "C", "text_en": "-0.5 < x < 0.5", "is_correct": false },
+        { "id": "c_math_003_d", "label": "D", "text_en": "0 <= x <= 1", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "An infinite geometric series converges if and only if |r| < 1. Here r = 2x - 1. So -1 < 2x - 1 < 1. Adding 1 gives 0 < 2x < 2, dividing by 2 gives 0 < x < 1.",
+        "simpler_explanation_en": "The common ratio r must strictly be between -1 and 1.",
+        "key_concept": "Convergence of geometric series: |r| < 1",
+        "common_pitfall": "Including equality endpoints (<=)."
+      }
+    },
+    {
+      "id": "q_math_004",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_2",
+      "exam_year": 2022,
+      "question_text_en": "Find the sum to infinity of the geometric series: 12 + 4 + 4/3 + 4/9 + ...",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 27,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_004_a", "label": "A", "text_en": "16", "is_correct": false },
+        { "id": "c_math_004_b", "label": "B", "text_en": "18", "is_correct": true },
+        { "id": "c_math_004_c", "label": "C", "text_en": "20", "is_correct": false },
+        { "id": "c_math_004_d", "label": "D", "text_en": "24", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Here a = 12 and r = 4/12 = 1/3. S_infty = a / (1 - r) = 12 / (1 - 1/3) = 12 / (2/3) = 12 * 3 / 2 = 18.",
+        "simpler_explanation_en": "S_infty = 12 / (2/3) = 18.",
+        "key_concept": "S_infty = a / (1 - r) for |r| < 1",
+        "common_pitfall": "Dividing by (1 + r) instead of (1 - r)."
+      }
+    },
+    {
+      "id": "q_math_005",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "exam_year": 2023,
+      "question_text_en": "Evaluate the limit: lim_{x -> infty} (5x^2 - 3x + 2) / (2x^2 + 7x - 1).",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 40,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_005_a", "label": "A", "text_en": "5/2", "is_correct": true },
+        { "id": "c_math_005_b", "label": "B", "text_en": "0", "is_correct": false },
+        { "id": "c_math_005_c", "label": "C", "text_en": "-2", "is_correct": false },
+        { "id": "c_math_005_d", "label": "D", "text_en": "Infinity", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "When x approaches infinity for a rational function with equal degree in numerator and denominator, the limit equals the ratio of leading coefficients: 5 / 2.",
+        "simpler_explanation_en": "Degrees match (both are x^2), so take 5/2.",
+        "key_concept": "Limits of rational functions at infinity depend on leading powers.",
+        "common_pitfall": "Evaluating at x=0 instead of x -> infty."
+      }
+    },
+    {
+      "id": "q_math_006",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "exam_year": 2023,
+      "question_text_en": "Evaluate the limit: lim_{x -> 0} (sin(4x)) / (2x).",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 45,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_006_a", "label": "A", "text_en": "1", "is_correct": false },
+        { "id": "c_math_006_b", "label": "B", "text_en": "2", "is_correct": true },
+        { "id": "c_math_006_c", "label": "C", "text_en": "4", "is_correct": false },
+        { "id": "c_math_006_d", "label": "D", "text_en": "1/2", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Using the fundamental trigonometric limit lim_{u -> 0} sin(u)/u = 1. Here sin(4x)/(2x) = 2 * [sin(4x)/(4x)]. Limit is 2 * 1 = 2.",
+        "simpler_explanation_en": "sin(4x)/(2x) approaches 4x / 2x = 2 as x -> 0.",
+        "key_concept": "lim_{x->0} sin(ax)/(bx) = a/b",
+        "common_pitfall": "Inverting the ratio to 2/4."
+      }
+    },
+    {
+      "id": "q_math_007",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "exam_year": 2022,
+      "question_text_en": "If f(x) = (3x^2 + 1)^4, what is the first derivative f'(x)?",
+      "diagram_asset": "assets/images/diagrams/math_sample_diagram.svg",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 58,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_007_a", "label": "A", "text_en": "12x(3x^2 + 1)^3", "is_correct": false },
+        { "id": "c_math_007_b", "label": "B", "text_en": "24x(3x^2 + 1)^3", "is_correct": true },
+        { "id": "c_math_007_c", "label": "C", "text_en": "4(3x^2 + 1)^3", "is_correct": false },
+        { "id": "c_math_007_d", "label": "D", "text_en": "6x(3x^2 + 1)^3", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "By Chain Rule: d/dx [u^4] = 4u^3 * u'. Here u = 3x^2 + 1 and u' = 6x. Thus f'(x) = 4(3x^2 + 1)^3 * (6x) = 24x(3x^2 + 1)^3.",
+        "simpler_explanation_en": "Differentiate outer power (4) and multiply by inner derivative (6x): 4 * 6x = 24x.",
+        "key_concept": "Chain rule: d/dx[g(x)^n] = n*g(x)^(n-1)*g'(x)",
+        "common_pitfall": "Forgetting to multiply by the inner function derivative 6x."
+      }
+    },
+    {
+      "id": "q_math_008",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "exam_year": 2023,
+      "question_text_en": "What is the slope of the tangent line to the curve y = x^3 - 3x + 2 at x = 2?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 63,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_008_a", "label": "A", "text_en": "6", "is_correct": false },
+        { "id": "c_math_008_b", "label": "B", "text_en": "9", "is_correct": true },
+        { "id": "c_math_008_c", "label": "C", "text_en": "12", "is_correct": false },
+        { "id": "c_math_008_d", "label": "D", "text_en": "4", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Slope of tangent line is given by dy/dx. dy/dx = 3x^2 - 3. At x = 2: 3(2)^2 - 3 = 3(4) - 3 = 12 - 3 = 9.",
+        "simpler_explanation_en": "Derivative is 3x^2 - 3. Substitute x=2: 3(4)-3 = 9.",
+        "key_concept": "Geometric interpretation of derivative as slope of tangent.",
+        "common_pitfall": "Evaluating y(2) instead of y'(2)."
+      }
+    },
+    {
+      "id": "q_math_009",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "exam_year": 2021,
+      "question_text_en": "How many terms are there in the finite arithmetic progression: 7, 13, 19, ..., 127?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_009_a", "label": "A", "text_en": "20", "is_correct": false },
+        { "id": "c_math_009_b", "label": "B", "text_en": "21", "is_correct": true },
+        { "id": "c_math_009_c", "label": "C", "text_en": "22", "is_correct": false },
+        { "id": "c_math_009_d", "label": "D", "text_en": "19", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "a_n = a_1 + (n - 1)d. 127 = 7 + (n - 1)*6 => 120 = 6(n - 1) => 20 = n - 1 => n = 21.",
+        "simpler_explanation_en": "(127 - 7) / 6 + 1 = 120 / 6 + 1 = 20 + 1 = 21.",
+        "key_concept": "Number of terms n = (Last - First)/d + 1",
+        "common_pitfall": "Omitting the +1 offset."
+      }
+    },
+    {
+      "id": "q_math_010",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "exam_year": 2022,
+      "question_text_en": "Find the critical points of f(x) = 2x^3 - 9x^2 + 12x + 5.",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 71,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_math_010_a", "label": "A", "text_en": "x = 1 and x = 2", "is_correct": true },
+        { "id": "c_math_010_b", "label": "B", "text_en": "x = -1 and x = -2", "is_correct": false },
+        { "id": "c_math_010_c", "label": "C", "text_en": "x = 0 and x = 3", "is_correct": false },
+        { "id": "c_math_010_d", "label": "D", "text_en": "x = 2 and x = 3", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "f'(x) = 6x^2 - 18x + 12 = 0. Divide by 6: x^2 - 3x + 2 = 0 => (x - 1)(x - 2) = 0 => x = 1, x = 2.",
+        "simpler_explanation_en": "Set derivative to 0 and factor (x-1)(x-2) = 0.",
+        "key_concept": "Critical points occur where f'(x) = 0 or f'(x) is undefined.",
+        "common_pitfall": "Sign errors in factoring quadratic."
+      }
+    },
+    {
+      "id": "q_apt_001",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u1",
+      "topic_id": "apt_t1_1",
+      "exam_year": 2023,
+      "question_text_en": "What is the next number in the sequence: 2, 6, 12, 20, 30, ...?",
+      "question_text_am": "በተከታታዩ ቀጣዩ ቁጥር ስንት ነው፡ 2, 6, 12, 20, 30, ...?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_001_a", "label": "A", "text_en": "40", "is_correct": false },
+        { "id": "c_apt_001_b", "label": "B", "text_en": "42", "is_correct": true },
+        { "id": "c_apt_001_c", "label": "C", "text_en": "44", "is_correct": false },
+        { "id": "c_apt_001_d", "label": "D", "text_en": "48", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Differences between consecutive terms: +4, +6, +8, +10. The next difference must be +12. 30 + 12 = 42. (Alternatively n*(n+1): 1*2=2, 2*3=6, 3*4=12, 4*5=20, 5*6=30, 6*7=42).",
+        "simpler_explanation_en": "Add 4, 6, 8, 10, then add 12 to 30 = 42.",
+        "key_concept": "Second-order difference arithmetic or n(n+1) pattern.",
+        "common_pitfall": "Assuming constant difference of +10."
+      }
+    },
+    {
+      "id": "q_apt_002",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u1",
+      "topic_id": "apt_t1_1",
+      "exam_year": 2023,
+      "question_text_en": "Find the missing number in the series: 3, 9, 27, 81, ...?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_002_a", "label": "A", "text_en": "162", "is_correct": false },
+        { "id": "c_apt_002_b", "label": "B", "text_en": "243", "is_correct": true },
+        { "id": "c_apt_002_c", "label": "C", "text_en": "216", "is_correct": false },
+        { "id": "c_apt_002_d", "label": "D", "text_en": "324", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Each term is multiplied by 3 (powers of 3: 3^1, 3^2, 3^3, 3^4). Next is 3^5 = 243.",
+        "simpler_explanation_en": "81 * 3 = 243.",
+        "key_concept": "Geometric progression multiplier r = 3.",
+        "common_pitfall": "Multiplying 81 by 2 instead of 3."
+      }
+    },
+    {
+      "id": "q_apt_003",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u1",
+      "topic_id": "apt_t1_2",
+      "exam_year": 2022,
+      "question_text_en": "If 8 workers can complete a project in 15 days, how many days will it take 12 workers to complete the same project working at the same rate?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_003_a", "label": "A", "text_en": "10 days", "is_correct": true },
+        { "id": "c_apt_003_b", "label": "B", "text_en": "12 days", "is_correct": false },
+        { "id": "c_apt_003_c", "label": "C", "text_en": "9 days", "is_correct": false },
+        { "id": "c_apt_003_d", "label": "D", "text_en": "11.25 days", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Work is inversely proportional to the number of workers: Total work = 8 * 15 = 120 worker-days. For 12 workers: Time = 120 / 12 = 10 days.",
+        "simpler_explanation_en": "Total effort = 8 * 15 = 120. Days needed = 120 / 12 = 10.",
+        "key_concept": "Inverse proportion: W_1 * D_1 = W_2 * D_2",
+        "common_pitfall": "Using direct proportion (8/15 = 12/x)."
+      }
+    },
+    {
+      "id": "q_apt_004",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u1",
+      "topic_id": "apt_t1_2",
+      "exam_year": 2022,
+      "question_text_en": "The ratio of boys to girls in a preparatory school is 4:5. If there are 360 boys, how many total students are in the school?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_004_a", "label": "A", "text_en": "720", "is_correct": false },
+        { "id": "c_apt_004_b", "label": "B", "text_en": "810", "is_correct": true },
+        { "id": "c_apt_004_c", "label": "C", "text_en": "450", "is_correct": false },
+        { "id": "c_apt_004_d", "label": "D", "text_en": "900", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Let 1 unit = x. 4x = 360 => x = 90. Total students = 4x + 5x = 9x = 9 * 90 = 810 students.",
+        "simpler_explanation_en": "1 part = 360 / 4 = 90. Total parts = 9. Total = 9 * 90 = 810.",
+        "key_concept": "Ratio breakdown: Total = (Sum of ratio terms) * (Value per unit)",
+        "common_pitfall": "Calculating only the number of girls (450) instead of total."
+      }
+    },
+    {
+      "id": "q_apt_005",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u2",
+      "topic_id": "apt_t2_1",
+      "exam_year": 2023,
+      "question_text_en": "MICROSCOPE : MAGNIFY :: TELESCOPE : ?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 31,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_005_a", "label": "A", "text_en": "DISTANCE", "is_correct": false },
+        { "id": "c_apt_005_b", "label": "B", "text_en": "OBSERVE DISTANT OBJECTS", "is_correct": true },
+        { "id": "c_apt_005_c", "label": "C", "text_en": "LIGHT", "is_correct": false },
+        { "id": "c_apt_005_d", "label": "D", "text_en": "ASTRONOMER", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Function/Purpose analogy: A microscope is an instrument used to magnify small objects, just as a telescope is an instrument used to observe distant objects.",
+        "simpler_explanation_en": "Tool to its primary function.",
+        "key_concept": "Instrument-to-function verbal relationship.",
+        "common_pitfall": "Choosing the user (astronomer) instead of the action/function."
+      }
+    },
+    {
+      "id": "q_apt_006",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u2",
+      "topic_id": "apt_t2_1",
+      "exam_year": 2023,
+      "question_text_en": "CANDLE : ILLUMINATE :: HEATER : ?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 33,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_006_a", "label": "A", "text_en": "ELECTRICITY", "is_correct": false },
+        { "id": "c_apt_006_b", "label": "B", "text_en": "WARM", "is_correct": true },
+        { "id": "c_apt_006_c", "label": "C", "text_en": "COLD", "is_correct": false },
+        { "id": "c_apt_006_d", "label": "D", "text_en": "WINTER", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Function relationship: A candle's primary function is to illuminate; a heater's primary function is to warm.",
+        "simpler_explanation_en": "Object to purpose verb.",
+        "key_concept": "Tool to function analogy.",
+        "common_pitfall": "Selecting the power source (electricity)."
+      }
+    },
+    {
+      "id": "q_apt_007",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u2",
+      "topic_id": "apt_t2_2",
+      "exam_year": 2022,
+      "question_text_en": "All natural science students study physics. Abebe does not study physics. Which statement must logically be true?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 44,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_007_a", "label": "A", "text_en": "Abebe is a natural science student.", "is_correct": false },
+        { "id": "c_apt_007_b", "label": "B", "text_en": "Abebe is not a natural science student.", "is_correct": true },
+        { "id": "c_apt_007_c", "label": "C", "text_en": "Abebe failed physics.", "is_correct": false },
+        { "id": "c_apt_007_d", "label": "D", "text_en": "No student studies physics.", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Modus Tollens: If P -> Q (Natural science -> Studies physics), then ~Q -> ~P (Does not study physics -> Not a natural science student).",
+        "simpler_explanation_en": "Since every natural science student must study physics, anyone not studying physics cannot be one.",
+        "key_concept": "Contrapositive law of deductive logic (Modus Tollens).",
+        "common_pitfall": "Making external assumptions outside the stated premises."
+      }
+    },
+    {
+      "id": "q_apt_008",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u2",
+      "topic_id": "apt_t2_2",
+      "exam_year": 2022,
+      "question_text_en": "If today is Friday, what day of the week will it be 100 days from today?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 48,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_008_a", "label": "A", "text_en": "Saturday", "is_correct": false },
+        { "id": "c_apt_008_b", "label": "B", "text_en": "Sunday", "is_correct": true },
+        { "id": "c_apt_008_c", "label": "C", "text_en": "Monday", "is_correct": false },
+        { "id": "c_apt_008_d", "label": "D", "text_en": "Tuesday", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "100 mod 7 = 2 (since 100 = 14 * 7 + 2). Advancing 2 days from Friday: Friday + 1 = Saturday, Friday + 2 = Sunday.",
+        "simpler_explanation_en": "100 days is 14 full weeks plus 2 extra days. Friday + 2 days = Sunday.",
+        "key_concept": "Modulo arithmetic: Remainder of division by 7.",
+        "common_pitfall": "Counting from Saturday as day 0 instead of day 1."
+      }
+    },
+    {
+      "id": "q_apt_009",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u1",
+      "topic_id": "apt_t1_1",
+      "exam_year": 2021,
+      "question_text_en": "What is the next number in the alternating series: 5, 25, 7, 49, 9, 81, 11, ...?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_009_a", "label": "A", "text_en": "121", "is_correct": true },
+        { "id": "c_apt_009_b", "label": "B", "text_en": "100", "is_correct": false },
+        { "id": "c_apt_009_c", "label": "C", "text_en": "13", "is_correct": false },
+        { "id": "c_apt_009_d", "label": "D", "text_en": "99", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "The series pairs odd numbers with their squares: 5 and 5^2=25; 7 and 7^2=49; 9 and 9^2=81; 11 and 11^2=121.",
+        "simpler_explanation_en": "Square the preceding number 11: 11 * 11 = 121.",
+        "key_concept": "Interleaved sequence: n followed by n^2.",
+        "common_pitfall": "Guessing the next odd number (13) instead of its square."
+      }
+    },
+    {
+      "id": "q_apt_010",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_u2",
+      "topic_id": "apt_t2_1",
+      "exam_year": 2021,
+      "question_text_en": "THERMOMETER : TEMPERATURE :: BAROMETER : ?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn original demonstration content",
+      "source_page": 35,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_apt_010_a", "label": "A", "text_en": "HUMIDITY", "is_correct": false },
+        { "id": "c_apt_010_b", "label": "B", "text_en": "ATMOSPHERIC PRESSURE", "is_correct": true },
+        { "id": "c_apt_010_c", "label": "C", "text_en": "WIND SPEED", "is_correct": false },
+        { "id": "c_apt_010_d", "label": "D", "text_en": "ALTITUDE", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Measuring device analogy: A thermometer measures temperature, whereas a barometer measures atmospheric pressure.",
+        "simpler_explanation_en": "Instrument to what physical property it measures.",
+        "key_concept": "Scientific instrument measuring property analogy.",
+        "common_pitfall": "Confusing barometer (pressure) with hygrometer (humidity) or anemometer (wind speed)."
+      }
+    },
+    {
+      "id": "q_g6_math_001",
+      "grade": 6,
+      "stream": "general",
+      "subject_id": "math_g6",
+      "unit_id": "g6_math_u1",
+      "topic_id": "g6_math_t1",
+      "exam_year": 2024,
+      "question_text_en": "What is 3/4 + 2/5 simplified as a mixed fraction?",
+      "question_text_am": "3/4 + 2/5 ድምር ስንት ይሆናል?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn Grade 6 Primary Leaving Model Exam",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g6_m1_a", "label": "A", "text_en": "1 3/20", "is_correct": true },
+        { "id": "c_g6_m1_b", "label": "B", "text_en": "5/9", "is_correct": false },
+        { "id": "c_g6_m1_c", "label": "C", "text_en": "1 1/4", "is_correct": false },
+        { "id": "c_g6_m1_d", "label": "D", "text_en": "23/20", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Find LCD of 4 and 5 which is 20: 3/4 = 15/20 and 2/5 = 8/20. Sum = 23/20 = 1 3/20.",
+        "simpler_explanation_en": "15/20 + 8/20 = 23/20 = 1 whole and 3/20.",
+        "key_concept": "Addition of unlike fractions using least common denominator.",
+        "common_pitfall": "Adding numerators and denominators directly (3+2)/(4+5) = 5/9."
+      }
+    },
+    {
+      "id": "q_g8_math_001",
+      "grade": 8,
+      "stream": "general",
+      "subject_id": "math_g8",
+      "unit_id": "g8_math_u1",
+      "topic_id": "g8_math_t1",
+      "exam_year": 2024,
+      "question_text_en": "In the right-angled triangle ABC shown below, if adjacent side AB = 6 cm and opposite side BC = 8 cm, find hypotenuse AC.",
+      "question_text_am": "በተሰጠው ቀጤ-ነክ ባለሶስት ጎን AB = 6cm እና BC = 8cm ከሆነ፣ ሰያፉ AC ስንት ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn Grade 8 Ministry Exam Model",
+      "source_page": 14,
+      "content_version": 1,
+      "vector_diagram": {
+        "id": "diag_g8_triangle_1",
+        "title_en": "Right-Angled Triangle ABC",
+        "title_am": "ቀጤ-ነክ ባለሶስት ጎን ABC",
+        "raw_svg_content": "<svg viewBox='0 0 400 300'><polygon points='80,240 320,240 200,60' class='triangle'/></svg>",
+        "view_box_width": 400,
+        "view_box_height": 300,
+        "caption": "Geometry: Pythagorean right triangle",
+        "hotspots": [
+          {
+            "id": "h_a",
+            "x_ratio": 0.2,
+            "y_ratio": 0.8,
+            "label": "A",
+            "description_en": "Vertex A: Base adjacent leg (AB = 6 cm)",
+            "description_am": "ነጥብ A: መነሻ ጎን (6 ሳ.ሜ)"
+          },
+          {
+            "id": "h_b",
+            "x_ratio": 0.8,
+            "y_ratio": 0.8,
+            "label": "B",
+            "description_en": "Vertex B: Right angle 90° vertex",
+            "description_am": "ነጥብ B: የ90 ዲግሪ ቀጤ አንግል"
+          },
+          {
+            "id": "h_c",
+            "x_ratio": 0.5,
+            "y_ratio": 0.2,
+            "label": "C",
+            "description_en": "Vertex C: Top vertex opposite side (BC = 8 cm)",
+            "description_am": "ነጥብ C: አናት ነጥብ (8 ሳ.ሜ)"
+          }
+        ]
+      },
+      "choices": [
+        { "id": "c_g8_m1_a", "label": "A", "text_en": "10 cm", "is_correct": true },
+        { "id": "c_g8_m1_b", "label": "B", "text_en": "14 cm", "is_correct": false },
+        { "id": "c_g8_m1_c", "label": "C", "text_en": "12 cm", "is_correct": false },
+        { "id": "c_g8_m1_d", "label": "D", "text_en": "100 cm", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "By Pythagorean theorem: AC^2 = AB^2 + BC^2 = 6^2 + 8^2 = 36 + 64 = 100. Thus, AC = sqrt(100) = 10 cm.",
+        "simpler_explanation_en": "36 + 64 = 100. The square root of 100 is 10.",
+        "key_concept": "Pythagorean Theorem: a^2 + b^2 = c^2",
+        "common_pitfall": "Adding lengths directly: 6 + 8 = 14."
+      }
+    },
+    {
+      "id": "q_g12_hist_001",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "g12_hist_u1",
+      "topic_id": "g12_hist_t1",
+      "exam_year": 2023,
+      "question_text_en": "Which article of the Treaty of Wuchale (1889) was contested between Emperor Menelik II and Italy, sparking the Battle of Adwa in 1896?",
+      "question_text_am": "በዳግማዊ አፄ ምኒልክና በጣሊያን መካከል አለመግባባት ፈጥሮ ወደ ዓድዋ ጦርነት ያመራው የውጫሌ ስምምነት አንቀጽ ስንት ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "FidelLearn Grade 12 Social Science Model Exam",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g12_h1_a", "label": "A", "text_en": "Article XVII (17)", "is_correct": true },
+        { "id": "c_g12_h1_b", "label": "B", "text_en": "Article III (3)", "is_correct": false },
+        { "id": "c_g12_h1_c", "label": "C", "text_en": "Article V (5)", "is_correct": false },
+        { "id": "c_g12_h1_d", "label": "D", "text_en": "Article XII (12)", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Article 17 had contradictory translations: The Amharic version stated Ethiopia *could* use Italian good offices, while the Italian version made Ethiopia an Italian protectorate.",
+        "simpler_explanation_en": "Article 17 was the deceptive clause regarding Ethiopia's foreign affairs sovereignty.",
+        "key_concept": "Treaty of Wuchale Article 17 and diplomatic resistance.",
+        "common_pitfall": "Confusing Article 17 with border delimitation articles."
+      }
+    },
+    {
+      "id": "q_g12_econ_001",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "g12_econ_u1",
+      "topic_id": "g12_econ_t1",
+      "exam_year": 2023,
+      "question_text_en": "According to the market equilibrium diagram, if market demand shifts rightward from D1 to D2 while supply remains constant, what happens to equilibrium price and quantity?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "FidelLearn Grade 12 Social Science Model Exam",
+      "source_page": 40,
+      "content_version": 1,
+      "vector_diagram": {
+        "id": "diag_g12_econ_curve",
+        "title_en": "Supply & Demand Market Equilibrium",
+        "title_am": "የፍላጎትና አቅርቦት ገበያ ሚዛን",
+        "raw_svg_content": "<svg viewBox='0 0 400 300'><path d='M 40 240 Q 200 30 360 240' class='curve'/></svg>",
+        "view_box_width": 400,
+        "view_box_height": 300,
+        "caption": "Economics: Market Equilibrium Shift",
+        "hotspots": [
+          {
+            "id": "h_e1",
+            "x_ratio": 0.35,
+            "y_ratio": 0.55,
+            "label": "E1",
+            "description_en": "Initial Equilibrium Point E1 (P1, Q1)",
+            "description_am": "የመጀመሪያው የገበያ ሚዛን ነጥብ"
+          },
+          {
+            "id": "h_e2",
+            "x_ratio": 0.65,
+            "y_ratio": 0.35,
+            "label": "E2",
+            "description_en": "New Equilibrium Point E2 (Higher Price P2, Higher Quantity Q2)",
+            "description_am": "አዲሱ የገበያ ሚዛን ነጥብ"
+          }
+        ]
+      },
+      "choices": [
+        { "id": "c_g12_e1_a", "label": "A", "text_en": "Both equilibrium price and quantity increase", "is_correct": true },
+        { "id": "c_g12_e1_b", "label": "B", "text_en": "Price decreases and quantity increases", "is_correct": false },
+        { "id": "c_g12_e1_c", "label": "C", "text_en": "Price increases and quantity decreases", "is_correct": false },
+        { "id": "c_g12_e1_d", "label": "D", "text_en": "Both price and quantity remain unchanged", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "An increase in demand (rightward shift) causes excess demand at the initial price, bidding up the price to P2 and expanding the quantity supplied along the upward-sloping supply curve to Q2.",
+        "simpler_explanation_en": "When more buyers want the product, price goes up and sellers produce more quantity.",
+        "key_concept": "Shift in demand curve vs movement along supply curve.",
+        "common_pitfall": "Assuming price falls when demand rises."
+      }
+    }
+  ]
+}

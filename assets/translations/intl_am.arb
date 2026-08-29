@@ -1,0 +1,68 @@
+{
+  "@@locale": "am",
+  "appName": "ፊደል ሌርን",
+  "welcomeTitle": "ለሀገር አቀፍ ፈተናዎችዎ ዝግጁ ይሁኑ",
+  "welcomeSubtitle": "ያለ ኢንተርኔት የሚሰራ፣ የተረጋገጡ ዝርዝር መልሶች እና የማጠቃለያ ትንታኔዎች።",
+  "getStarted": "ጀምር",
+  "login": "ግባ",
+  "register": "ተመዝገብ",
+  "logout": "ውጣ",
+  "phoneNumber": "ስልክ ቁጥር",
+  "password": "የይለፍ ቃል",
+  "fullName": "ሙሉ ስም",
+  "selectLanguage": "ቋንቋ ይምረጡ",
+  "selectGrade": "ክፍል ይምረጡ",
+  "selectStream": "የትምህርት ዘርፍ ይምረጡ",
+  "grade12": "12ኛ ክፍል",
+  "grade8": "8ኛ ክፍል",
+  "grade6": "6ኛ ክፍል",
+  "naturalScience": "የተፈጥሮ ሳይንስ",
+  "socialScience": "የማህበራዊ ሳይንስ",
+  "home": "ዋና ገጽ",
+  "practice": "ልምምድ",
+  "progress": "ውጤትና እድገት",
+  "rewards": "ሽልማቶች",
+  "profile": "የግል ማህደር",
+  "streakDays": "የ{count} ቀናት ጉዞ",
+  "@streakDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "coinsCount": "{count} ሳንቲሞች",
+  "@coinsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "continuePractice": "ልምምድ ቀጥል",
+  "dailyGoal": "የቀኑ ግብ",
+  "subjects": "ትምህርቶች",
+  "customExam": "የግል ፈተና ማዘጋጃ",
+  "mockExam": "ሙሉ የሙከራ ፈተና",
+  "bookmarks": "የተቀመጡ ጥያቄዎች",
+  "mistakesNotebook": "የስህተቶች ማስታወሻ",
+  "examGhost": "የራስን ውጤት መወዳደሪያ (Ghost)",
+  "challenges": "ውድድሮች",
+  "questionCount": "ጥያቄ {current} ከ {total}",
+  "@questionCount": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "flagForReview": "ምልክት አድርግ",
+  "submitExam": "ፈተናውን ጨርስ",
+  "examResults": "የፈተና ውጤት",
+  "scoreSummary": "የውጤት ማጠቃለያ",
+  "reviewSolutions": "መልሶችን ከነማብራሪያቸው ተመልከት",
+  "retakeWithGhost": "ከቀደመ ውጤትህ ጋር እንደገና ተወዳደር",
+  "offlineReady": "ያለ ኢንተርኔት ይሰራል",
+  "syncPending": "ያልተመሳሰሉ መረጃዎች አሉ",
+  "syncCompleted": "ሁሉም ተመሳስሏል",
+  "weakTopics": "ትኩረት የሚሹ ርዕሶች",
+  "readinessScore": "የዝግጁነት ደረጃ",
+  "simplerExplanation": "ቀለል ያለ ማብራሪያ",
+  "keyConcept": "ዋና ፅንሰ ሀሳብ እና ቀመር",
+  "commonMistake": "የተለመደ ስህተት"
+}

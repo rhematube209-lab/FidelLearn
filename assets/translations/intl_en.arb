@@ -1,0 +1,68 @@
+{
+  "@@locale": "en",
+  "appName": "FidelLearn",
+  "welcomeTitle": "Master Your National Exams",
+  "welcomeSubtitle": "Offline-first exam preparation, verified step-by-step solutions, and smart progress tracking.",
+  "getStarted": "Get Started",
+  "login": "Log In",
+  "register": "Register",
+  "logout": "Log Out",
+  "phoneNumber": "Phone Number",
+  "password": "Password",
+  "fullName": "Full Name",
+  "selectLanguage": "Select Language",
+  "selectGrade": "Select Grade",
+  "selectStream": "Select Academic Stream",
+  "grade12": "Grade 12",
+  "grade8": "Grade 8",
+  "grade6": "Grade 6",
+  "naturalScience": "Natural Science",
+  "socialScience": "Social Science",
+  "home": "Home",
+  "practice": "Practice",
+  "progress": "Progress",
+  "rewards": "Rewards",
+  "profile": "Profile",
+  "streakDays": "{count} Day Streak",
+  "@streakDays": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "coinsCount": "{count} Coins",
+  "@coinsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "continuePractice": "Continue Practicing",
+  "dailyGoal": "Daily Goal",
+  "subjects": "Subjects",
+  "customExam": "Custom Exam Builder",
+  "mockExam": "Full Mock Exam",
+  "bookmarks": "Bookmarks",
+  "mistakesNotebook": "Mistake Notebook",
+  "examGhost": "Exam Ghost Challenge",
+  "challenges": "Challenges",
+  "questionCount": "Question {current} of {total}",
+  "@questionCount": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "flagForReview": "Flag for Review",
+  "submitExam": "Submit Exam",
+  "examResults": "Exam Results",
+  "scoreSummary": "Score Summary",
+  "reviewSolutions": "Review Solutions",
+  "retakeWithGhost": "Retake with Exam Ghost",
+  "offlineReady": "Offline Ready",
+  "syncPending": "Sync Pending",
+  "syncCompleted": "All Synced",
+  "weakTopics": "Recommended Weak Topics",
+  "readinessScore": "Readiness Score",
+  "simplerExplanation": "Simpler Explanation",
+  "keyConcept": "Key Concept & Formula",
+  "commonMistake": "Common Pitfall"
+}

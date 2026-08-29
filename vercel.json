@@ -1,0 +1,12 @@
+{
+  "buildCommand": "bash vercel-build.sh",
+  "outputDirectory": "build/web",
+  "framework": null,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
