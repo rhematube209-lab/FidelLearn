@@ -61,307 +61,264 @@ class _TeacherDashboardScreenState
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider).valueOrNull;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
 
     if (_isLoading || user == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: AppTheme.brand)),
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Teacher Portal'),
+        title: const Text('Teacher Command Portal', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () => context.push('/profile'),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Welcome Header
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppTheme.primaryGreen, AppTheme.primaryGreenDark],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.white.withValues(alpha: 0.2),
-                    child: const Icon(Icons.school, size: 32, color: Colors.white),
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 48.0 : 20.0,
+          vertical: 28.0,
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Welcome Header
+                Container(
+                  padding: const EdgeInsets.all(28),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1E1B4B), AppTheme.darkSurfaceStrong],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                    border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
+                    boxShadow: AppTheme.cardShadowDark,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Teacher ${user.displayName}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: AppTheme.brandStrong,
+                        child: const Icon(Icons.school_rounded, color: Colors.white, size: 30),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Teacher Dashboard • ${user.displayName}',
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${_classrooms.length} Active Classrooms • Section 12-A & 12-B Natural Science',
+                              style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Classroom Assignment & Analytics Hub',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
-                            fontSize: 13,
+                      ),
+                      if (isDesktop) ...[
+                        ElevatedButton.icon(
+                          onPressed: () => context.push('/create_assignment'),
+                          icon: const Icon(Icons.add_task_rounded),
+                          label: const Text('Create Exam Assignment'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.brandStrong,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                           ),
                         ),
                       ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 28),
+
+                if (isDesktop)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left: Class Selector & Assignments (50%)
+                      Expanded(
+                        flex: 50,
+                        child: Column(
+                          children: [
+                            _buildClassSelectorCard(),
+                            const SizedBox(height: 24),
+                            _buildAssignmentsCard(context),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 28),
+
+                      // Right: Class Weak Topics Heatmap (50%)
+                      Expanded(
+                        flex: 50,
+                        child: _buildTopicHeatmapCard(),
+                      ),
+                    ],
+                  )
+                else ...[
+                  _buildClassSelectorCard(),
+                  const SizedBox(height: 20),
+                  _buildAssignmentsCard(context),
+                  const SizedBox(height: 20),
+                  _buildTopicHeatmapCard(),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () => context.push('/create_assignment'),
+                    icon: const Icon(Icons.add_task_rounded),
+                    label: const Text('Create Exam Assignment'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.brandStrong,
+                      minimumSize: const Size.fromHeight(48),
                     ),
                   ),
                 ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Class Selector
-            const Text(
-              'Select Classroom',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: _classrooms.map((cls) {
-                  final isSelected = _selectedClassroom?.id == cls.id;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: ChoiceChip(
-                      selected: isSelected,
-                      label: Text('${cls.name} (${cls.studentCount} students)'),
-                      selectedColor: AppTheme.primaryGreen.withValues(alpha: 0.2),
-                      onSelected: (selected) {
-                        if (selected) {
-                          setState(() => _selectedClassroom = cls);
-                          _loadClassroomDetails(cls.id);
-                        }
-                      },
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Class Weak-Topic Heatmap
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Class Weak-Topic Heatmap',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  _selectedClassroom?.name ?? '',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                ),
               ],
             ),
-            const SizedBox(height: 12),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClassSelectorCard() {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Select Classroom', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 14),
+          DropdownButtonFormField<Classroom>(
+            value: _selectedClassroom,
+            items: _classrooms.map((c) {
+              return DropdownMenuItem(value: c, child: Text('${c.name} (Grade ${c.grade} • ${c.studentCount} Students)'));
+            }).toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() => _selectedClassroom = val);
+                _loadClassroomDetails(val.id);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAssignmentsCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Class Assignments', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 14),
+          if (_assignments.isEmpty)
+            const Text('No assignments published for this class yet.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+          else
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _assignments.length,
+              separatorBuilder: (_, __) => const Divider(color: AppTheme.darkBorder, height: 16),
+              itemBuilder: (context, index) {
+                final asg = _assignments[index];
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(asg.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                        Text('${asg.questionIds.length} Questions • Due ${asg.dueDate.month}/${asg.dueDate.day}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: AppTheme.green.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text('ACTIVE', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 10)),
+                    ),
+                  ],
+                );
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopicHeatmapCard() {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Classroom Weak Topics Diagnostic', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 14),
+          if (_topicStats.isEmpty)
+            const Text('Student attempt analytics will populate topic heatmaps automatically.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+          else
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _topicStats.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
-                final topic = _topicStats[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                final stat = _topicStats[index];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                topic.topicName,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: topic.isWeakArea
-                                    ? AppTheme.errorRed.withValues(alpha: 0.12)
-                                    : AppTheme.successGreen.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                topic.isWeakArea ? 'Needs Review' : 'Strong Mastery',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: topic.isWeakArea
-                                      ? AppTheme.errorRed
-                                      : AppTheme.successGreen,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        LinearProgressIndicator(
-                          value: topic.averageAccuracyPercentage / 100.0,
-                          color: topic.isWeakArea
-                              ? AppTheme.errorRed
-                              : AppTheme.successGreen,
-                          backgroundColor: Colors.grey.withValues(alpha: 0.2),
-                          minHeight: 8,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${topic.totalQuestionsAttempted} total student attempts',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.textMuted,
-                              ),
-                            ),
-                            Text(
-                              '${topic.averageAccuracyPercentage}% accuracy',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: topic.isWeakArea
-                                    ? AppTheme.errorRed
-                                    : AppTheme.successGreen,
-                              ),
-                            ),
-                          ],
-                        ),
+                        Text(stat.topicTitle, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text('${stat.accuracyPercentage.toStringAsFixed(0)}% Class Avg', style: const TextStyle(fontSize: 12, color: AppTheme.danger, fontWeight: FontWeight.bold)),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 6),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: stat.accuracyPercentage / 100,
+                        backgroundColor: const Color(0x1AFFFFFF),
+                        valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
+                        minHeight: 6,
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
-            const SizedBox(height: 24),
-
-            // Active Class Assignments
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Class Assignments',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextButton.icon(
-                  onPressed: () {
-                    if (_selectedClassroom != null) {
-                      context.push(
-                        '/teacher/create_assignment',
-                        extra: _selectedClassroom,
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.add, size: 18),
-                  label: const Text('Create Assignment'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            if (_assignments.isEmpty)
-              const Card(
-                child: Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Center(
-                    child: Text(
-                      'No active assignments for this classroom.',
-                      style: TextStyle(color: AppTheme.textMuted),
-                    ),
-                  ),
-                ),
-              )
-            else
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _assignments.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final asg = _assignments[index];
-                  return Card(
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        backgroundColor: Color(0xFFE2E8F0),
-                        child: Icon(Icons.assignment, color: AppTheme.primaryGreen),
-                      ),
-                      title: Text(
-                        asg.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        '${asg.subjectName} • ${asg.questionIds.length} Questions • Due in 3 days',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            '${asg.totalSubmissions} turned in',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            'Avg: ${asg.averageScorePercentage}%',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              color: AppTheme.successGreen,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          if (_selectedClassroom != null) {
-            context.push(
-              '/teacher/create_assignment',
-              extra: _selectedClassroom,
-            );
-          }
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('New Assignment'),
-        backgroundColor: AppTheme.primaryGreen,
-        foregroundColor: Colors.white,
+        ],
       ),
     );
   }

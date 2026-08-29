@@ -101,449 +101,336 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
     }
 
     final repo = ref.read(p2pRepositoryProvider);
-    final host = _hostController.text.trim();
     final port = int.tryParse(_portController.text.trim()) ?? 8088;
-    final pin = _pinController.text.trim();
-
-    // Reconstruct beacon info for peer connection
-    final mockBeacon = _activeBeacon ??
-        P2PSenderBeacon(
-          sessionId: 'client_peer_${DateTime.now().millisecondsSinceEpoch}',
-          hostAddress: host,
-          port: port,
-          pairingPin: pin,
-          availablePackages: _availablePackages,
-          startedAt: DateTime.now(),
-        );
 
     setState(() {
       _isReceiving = true;
-      _transferProgress = const P2PTransferProgress(
-        status: P2PTransferStatus.connecting,
-      );
+      _transferProgress = const P2PTransferProgress(status: P2PTransferStatus.connecting);
     });
 
-    final targetPackageId = _availablePackages.isNotEmpty
-        ? _availablePackages.first.packageId
-        : 'pkg_g12_math';
+    final stream = repo.receivePackages(
+      host: _hostController.text.trim(),
+      port: port,
+      pin: _pinController.text.trim(),
+    );
 
-    repo
-        .receivePackage(
-          beacon: mockBeacon,
-          packageId: targetPackageId,
-          pin: pin,
-        )
-        .listen(
-          (progress) {
-            if (mounted) {
-              setState(() {
-                _transferProgress = progress;
-                if (progress.status == P2PTransferStatus.completed ||
-                    progress.status == P2PTransferStatus.failed) {
-                  _isReceiving = false;
-                }
-              });
-            }
-          },
-        );
+    stream.listen(
+      (progress) {
+        if (!mounted) return;
+        setState(() {
+          _transferProgress = progress;
+          if (progress.status == P2PTransferStatus.completed ||
+              progress.status == P2PTransferStatus.failed) {
+            _isReceiving = false;
+          }
+        });
+
+        if (progress.status == P2PTransferStatus.completed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: AppTheme.green,
+              content: Text('Offline packages transferred and verified successfully!'),
+            ),
+          );
+        }
+      },
+      onError: (err) {
+        if (!mounted) return;
+        setState(() {
+          _isReceiving = false;
+          _transferProgress = const P2PTransferProgress(
+            status: P2PTransferStatus.failed,
+            errorMessage: 'Connection failed',
+          );
+        });
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Offline P2P Package Sharing'),
+        title: const Text('Offline P2P Hotspot Sharing', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: AppTheme.primaryGreen,
-          labelColor: AppTheme.primaryGreen,
-          unselectedLabelColor: AppTheme.textMuted,
+          indicatorColor: AppTheme.brand,
+          labelColor: AppTheme.brand,
+          unselectedLabelColor: AppTheme.darkMuted,
           tabs: const [
-            Tab(icon: Icon(Icons.upload), text: 'Share (Send)'),
-            Tab(icon: Icon(Icons.download), text: 'Receive'),
+            Tab(icon: Icon(Icons.wifi_tethering_rounded), text: 'Send Packages'),
+            Tab(icon: Icon(Icons.download_rounded), text: 'Receive Packages'),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [_buildSendTab(), _buildReceiveTab()],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1100),
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              _buildSendTab(isDesktop),
+              _buildReceiveTab(isDesktop),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildSendTab() {
+  Widget _buildSendTab(bool isDesktop) {
     if (_isLoadingPackages) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator(color: AppTheme.brand));
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Banner Info
+          // Beacon Status Box
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppTheme.primaryGreen.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                colors: _activeBeacon != null
+                    ? [const Color(0xFF064E3B), AppTheme.darkSurfaceStrong]
+                    : [const Color(0xFF1E1B4B), AppTheme.darkSurfaceStrong],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
               border: Border.all(
-                color: AppTheme.primaryGreen.withOpacity(0.25),
+                color: _activeBeacon != null ? AppTheme.green : AppTheme.brand.withOpacity(0.4),
               ),
             ),
-            child: const Row(
+            child: Column(
               children: [
-                Icon(
-                  Icons.wifi_tethering,
-                  color: AppTheme.primaryGreen,
-                  size: 32,
-                ),
-                SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Zero Cellular Data Transfer',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryGreen,
-                        ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Turn on your Wi-Fi Hotspot. Peers nearby can connect and download verified exam packages with high speed.',
-                        style: TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Active Beacon Card
-          if (_activeBeacon != null) ...[
-            Card(
-              color: AppTheme.accentGold.withOpacity(0.08),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(
-                  color: AppTheme.accentGold.withOpacity(0.4),
-                  width: 1.5,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.radar, color: AppTheme.accentGoldDark),
-                        SizedBox(width: 8),
                         Text(
-                          'P2P HOTSPOT ACTIVE & BROADCASTING',
+                          _activeBeacon != null ? 'P2P BEACON ACTIVE 🟢' : 'P2P BEACON READY',
                           style: TextStyle(
-                            fontSize: 13,
+                            color: _activeBeacon != null ? AppTheme.green : AppTheme.brand,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.accentGoldDark,
-                            letterSpacing: 0.5,
+                            fontSize: 11,
                           ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _activeBeacon != null ? 'Broadcasting Exam Seed Packages' : 'Select Packages to Share',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Share this 6-Digit Pairing PIN with your peer:',
-                      style: TextStyle(fontSize: 13, color: AppTheme.textDark),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 10,
+                    ElevatedButton(
+                      onPressed: _toggleSharing,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _activeBeacon != null ? AppTheme.danger : AppTheme.green,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppTheme.accentGoldDark,
-                          width: 2,
-                        ),
-                      ),
-                      child: Text(
-                        _activeBeacon!.pairingPin,
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 8,
-                          color: AppTheme.accentGoldDark,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Host Address: ${_activeBeacon!.hostAddress}:${_activeBeacon!.port}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'monospace',
-                        color: AppTheme.textMuted,
-                      ),
+                      child: Text(_activeBeacon != null ? 'Stop Sharing' : 'Start P2P Hotspot'),
                     ),
                   ],
                 ),
-              ),
+                if (_activeBeacon != null) ...[
+                  const SizedBox(height: 24),
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: const Color(0x1AFFFFFF),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                      border: Border.all(color: AppTheme.green),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            const Text('6-Digit Secret PIN', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                            const SizedBox(height: 4),
+                            Text(
+                              _activeBeacon!.pin,
+                              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 4, color: AppTheme.green),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text('Local IP Address', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${_activeBeacon!.ipAddress}:${_activeBeacon!.port}',
+                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
             ),
-            const SizedBox(height: 20),
-          ],
-
-          const Text(
-            'Select Packages to Share:',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-
-          // Packages List
-          ..._availablePackages.map((pkg) {
-            final isSelected = _selectedPackageIds.contains(pkg.packageId);
-            return Card(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: CheckboxListTile(
-                value: isSelected,
-                activeColor: AppTheme.primaryGreen,
-                onChanged: _activeBeacon == null
-                    ? (val) {
-                        setState(() {
-                          if (val == true) {
-                            _selectedPackageIds.add(pkg.packageId);
-                          } else {
-                            _selectedPackageIds.remove(pkg.packageId);
-                          }
-                        });
-                      }
-                    : null,
-                title: Text(
-                  pkg.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  '${pkg.questionCount} Questions • ${(pkg.fileSizeBytes / 1024).toStringAsFixed(0)} KB • v${pkg.version}',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                ),
-              ),
-            );
-          }),
           const SizedBox(height: 24),
 
-          // Start / Stop Button
-          ElevatedButton.icon(
-            onPressed: _toggleSharing,
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  _activeBeacon != null ? AppTheme.errorRed : AppTheme.primaryGreen,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-            icon: Icon(_activeBeacon != null ? Icons.stop : Icons.sensors),
-            label: Text(
-              _activeBeacon != null ? 'Stop P2P Sharing' : 'Start P2P Hotspot Sharing',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+          const Text('Select Packages to Broadcast:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _availablePackages.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final pkg = _availablePackages[index];
+              final isSelected = _selectedPackageIds.contains(pkg.packageId);
+
+              return CheckboxListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                  side: const BorderSide(color: AppTheme.darkBorder),
+                ),
+                tileColor: Theme.of(context).cardTheme.color,
+                title: Text(pkg.titleEn, style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text('Grade ${pkg.grade} • ${(pkg.sizeBytes / 1024).toStringAsFixed(0)} KB • SHA-256 Verified'),
+                value: isSelected,
+                activeColor: AppTheme.brandStrong,
+                onChanged: (val) {
+                  setState(() {
+                    if (val == true) {
+                      _selectedPackageIds.add(pkg.packageId);
+                    } else {
+                      _selectedPackageIds.remove(pkg.packageId);
+                    }
+                  });
+                },
+              );
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildReceiveTab() {
+  Widget _buildReceiveTab(bool isDesktop) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Connection instructions
-          const Card(
-            child: Padding(
-              padding: EdgeInsets.all(16),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+              border: Border.all(color: AppTheme.darkBorder),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Connect to Sender Device', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 6),
+                const Text('Connect your device to the sender\'s Wi-Fi hotspot, then enter the 6-digit PIN.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+                const SizedBox(height: 18),
+
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 65,
+                      child: TextField(
+                        controller: _hostController,
+                        decoration: const InputDecoration(labelText: 'Sender IP Address', prefixIcon: Icon(Icons.router_outlined)),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 35,
+                      child: TextField(
+                        controller: _portController,
+                        decoration: const InputDecoration(labelText: 'Port', prefixIcon: Icon(Icons.settings_ethernet_outlined)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                TextField(
+                  controller: _pinController,
+                  maxLength: 6,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: '6-Digit Sender PIN Code',
+                    prefixIcon: Icon(Icons.pin_outlined),
+                    counterText: '',
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                ElevatedButton.icon(
+                  onPressed: _isReceiving ? null : _startReceiving,
+                  icon: const Icon(Icons.download_rounded),
+                  label: const Text('Start Zero-Data Transfer'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.brandStrong,
+                    minimumSize: const Size.fromHeight(48),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          if (_transferProgress.status != P2PTransferStatus.idle) ...[
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardTheme.color,
+                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                border: Border.all(color: AppTheme.brand),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.info_outline, color: AppTheme.infoBlue),
-                      SizedBox(width: 8),
                       Text(
-                        'How to Receive Packages:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                        'Transfer Status: ${_transferProgress.status.name.toUpperCase()}',
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.brand),
+                      ),
+                      Text(
+                        '${(_transferProgress.percentage * 100).toInt()}%',
+                        style: const TextStyle(fontWeight: FontWeight.w900, color: AppTheme.brand),
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    '1. Connect to the sender\'s Wi-Fi Hotspot.\n2. Ask the sender for their 6-Digit Pairing PIN.\n3. Tap "Connect & Download Package".',
-                    style: TextStyle(fontSize: 13, height: 1.4),
+                  const SizedBox(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: _transferProgress.percentage,
+                      backgroundColor: const Color(0x1AFFFFFF),
+                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.brand),
+                      minHeight: 8,
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-
-          // Inputs
-          TextField(
-            controller: _hostController,
-            decoration: const InputDecoration(
-              labelText: 'Sender Hotspot IP',
-              prefixIcon: Icon(Icons.router),
-            ),
-          ),
-          const SizedBox(height: 14),
-
-          TextField(
-            controller: _pinController,
-            keyboardType: TextInputType.number,
-            maxLength: 6,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              letterSpacing: 6,
-              fontWeight: FontWeight.bold,
-            ),
-            decoration: const InputDecoration(
-              labelText: '6-Digit Pairing PIN',
-              counterText: '',
-              prefixIcon: Icon(Icons.pin),
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Transfer Progress Display
-          if (_transferProgress.status != P2PTransferStatus.idle) ...[
-            Card(
-              color: _transferProgress.status == P2PTransferStatus.failed
-                  ? AppTheme.errorRed.withOpacity(0.06)
-                  : AppTheme.primaryGreen.withOpacity(0.06),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(
-                  color: _transferProgress.status == P2PTransferStatus.failed
-                      ? AppTheme.errorRed.withOpacity(0.3)
-                      : AppTheme.primaryGreen.withOpacity(0.3),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          _transferProgress.status == P2PTransferStatus.completed
-                              ? Icons.check_circle
-                              : _transferProgress.status ==
-                                      P2PTransferStatus.failed
-                                  ? Icons.error
-                                  : Icons.sync,
-                          color: _transferProgress.status ==
-                                  P2PTransferStatus.completed
-                              ? AppTheme.successGreen
-                              : _transferProgress.status ==
-                                      P2PTransferStatus.failed
-                                  ? AppTheme.errorRed
-                                  : AppTheme.primaryGreen,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            _transferProgress.status.label,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        if (_transferProgress.speedKbps > 0)
-                          Text(
-                            '${_transferProgress.speedKbps.toStringAsFixed(0)} KB/s',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.primaryGreen,
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    LinearProgressIndicator(
-                      value: _transferProgress.progressRatio > 0
-                          ? _transferProgress.progressRatio
-                          : null,
-                      backgroundColor: const Color(0xFFE2E8F0),
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        _transferProgress.status == P2PTransferStatus.failed
-                            ? AppTheme.errorRed
-                            : AppTheme.primaryGreen,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${(_transferProgress.bytesTransferred / 1024).toStringAsFixed(0)} KB / ${(_transferProgress.totalBytes / 1024).toStringAsFixed(0)} KB',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.textMuted,
-                          ),
-                        ),
-                        Text(
-                          '${(_transferProgress.progressRatio * 100).toStringAsFixed(0)}%',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (_transferProgress.errorMessage != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        _transferProgress.errorMessage!,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.errorRed,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
-
-          ElevatedButton.icon(
-            onPressed: _isReceiving ? null : _startReceiving,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-            icon: const Icon(Icons.download),
-            label: const Text(
-              'Connect & Download Package',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
         ],
       ),
     );

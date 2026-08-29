@@ -67,7 +67,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
 
     final exam = Exam(
       id: 'mistake_retry_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Mistake Notebook Retry Practice',
+      title: 'Mistake Notebook Targeted Remediation',
       examType: ExamType.practice,
       grade: user.grade,
       stream: user.stream,
@@ -96,146 +96,192 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mistake Notebook'),
+        title: const Text('Mistake Notebook & Error Remediation', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
           : _mistakes.isEmpty
-          ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.celebration,
-                    size: 64,
-                    color: AppTheme.successGreen,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Zero Unresolved Mistakes! 🎉',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Whenever you miss a question on practice exams, it will automatically appear here for mastery.',
-                    style: TextStyle(color: AppTheme.textMuted, fontSize: 13),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            )
-          : Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  color: AppTheme.errorRed.withOpacity(0.06),
-                  child: Row(
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.info_outline, color: AppTheme.errorRed),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'You have ${_mistakes.length} questions to master. Retrying mistakes improves your retention by 70%.',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppTheme.textDark,
-                          ),
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: AppTheme.green.withOpacity(0.12),
+                          shape: BoxShape.circle,
                         ),
+                        child: const Icon(
+                          Icons.verified_rounded,
+                          size: 64,
+                          color: AppTheme.green,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Mistake Notebook is Clean!',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Any questions answered incorrectly during practice or mocks will appear here for targeted drills.',
+                        style: TextStyle(color: AppTheme.darkMuted, fontSize: 13),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(20),
-                    itemCount: _mistakes.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final m = _mistakes[index];
-                      final q = _questions[m.questionId];
-                      if (q == null) return const SizedBox.shrink();
-
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.errorRed.withOpacity(
-                                        0.12,
-                                      ),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      'Missed ${m.mistakeCount}x',
+                )
+              : SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isDesktop ? 48.0 : 20.0,
+                    vertical: 28.0,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1100),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Header Banner
+                          Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF831843), AppTheme.darkSurfaceStrong],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                              border: Border.all(color: AppTheme.pink.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${_mistakes.length} Unmastered Questions',
                                       style: const TextStyle(
-                                        fontSize: 11,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        color: AppTheme.errorRed,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    q.subjectId.toUpperCase(),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: AppTheme.textMuted,
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Re-testing errors is the fastest way to boost your national exam score.',
+                                      style: TextStyle(fontSize: 12, color: AppTheme.darkTextSoft),
                                     ),
+                                  ],
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: _startMistakeRetryExam,
+                                  icon: const Icon(Icons.refresh_rounded, size: 18),
+                                  label: const Text('Drill All Mistakes'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppTheme.brandStrong,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                q.questionTextEn,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'Key Pitfall: ${q.explanation.commonPitfall ?? "Review fundamental formula."}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.warningOrange,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                          const SizedBox(height: 24),
+
+                          // Mistakes Grid
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: isDesktop ? 520 : 600,
+                              mainAxisExtent: 180,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                            ),
+                            itemCount: _mistakes.length,
+                            itemBuilder: (context, index) {
+                              final m = _mistakes[index];
+                              final q = _questions[m.questionId];
+
+                              return Container(
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).cardTheme.color,
+                                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                                  border: Border.all(color: AppTheme.darkBorder),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                          decoration: BoxDecoration(
+                                            color: AppTheme.danger.withOpacity(0.15),
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Text(
+                                            'FAILED ${m.incorrectCount}X',
+                                            style: const TextStyle(
+                                              color: AppTheme.danger,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          q?.subjectId ?? 'General',
+                                          style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      q?.questionTextEn ?? 'Question content...',
+                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Difficulty: ${q?.difficulty.toUpperCase() ?? "MED"}',
+                                          style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                                        ),
+                                        Text(
+                                          'Mastery: ${m.mastered ? "100%" : "0%"}',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold,
+                                            color: m.mastered ? AppTheme.green : AppTheme.danger,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: const BoxDecoration(
-                    border: Border(top: BorderSide(color: Color(0xFFE2E8F0))),
-                  ),
-                  child: ElevatedButton.icon(
-                    onPressed: _startMistakeRetryExam,
-                    icon: const Icon(Icons.replay),
-                    label: Text('Retry All ${_mistakes.length} Mistakes Now'),
-                  ),
-                ),
-              ],
-            ),
     );
   }
 }

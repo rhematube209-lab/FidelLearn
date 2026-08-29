@@ -77,7 +77,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
           duration: const Duration(seconds: 1),
           content: Text(
             _bookmarkedIds.contains(q.id)
-                ? 'Question bookmarked!'
+                ? 'Question bookmarked to offline study list!'
                 : 'Bookmark removed.',
           ),
         ),
@@ -91,7 +91,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Report Question Issue'),
         content: const Text(
-          'Thank you for helping us maintain verified quality. Our content reviewers will inspect this item.',
+          'Thank you for helping us maintain verified quality. Our content reviewers will inspect this question.',
         ),
         actions: [
           TextButton(
@@ -107,11 +107,13 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
   Widget build(BuildContext context) {
     if (widget.questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Solutions')),
+        appBar: AppBar(title: const Text('Solutions Review')),
         body: const Center(child: Text('No questions available for review.')),
       );
     }
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
     final currentQ = widget.questions[_currentIndex];
     final resp = widget.attempt.responses[currentQ.id];
     final isCorrect = resp?.isCorrect ?? false;
@@ -120,20 +122,21 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Solution ${_currentIndex + 1} of ${widget.questions.length}',
+          'Solution Review: Q ${_currentIndex + 1} of ${widget.questions.length}',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
             icon: Icon(
-              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-              color: isBookmarked ? AppTheme.accentGold : null,
+              isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+              color: isBookmarked ? AppTheme.accent : null,
             ),
             tooltip: 'Bookmark Question',
             onPressed: () => _toggleBookmark(currentQ),
           ),
           IconButton(
             icon: const Icon(Icons.flag_outlined),
-            tooltip: 'Report Content Issue',
+            tooltip: 'Report Issue',
             onPressed: () => _reportContent(currentQ),
           ),
         ],
@@ -142,331 +145,372 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Question Status Badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isCorrect
-                            ? AppTheme.successGreen.withOpacity(0.1)
-                            : AppTheme.errorRed.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: isCorrect
-                              ? AppTheme.successGreen
-                              : AppTheme.errorRed,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            isCorrect ? Icons.check_circle : Icons.cancel,
-                            color: isCorrect
-                                ? AppTheme.successGreen
-                                : AppTheme.errorRed,
-                            size: 20,
+              child: isDesktop
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Left Question Navigator Drawer on Desktop
+                        Container(
+                          width: 290,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardTheme.color,
+                            border: const Border(right: BorderSide(color: AppTheme.darkBorder)),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            isCorrect
-                                ? 'Your Answer is Correct'
-                                : (resp?.selectedChoiceId == null
-                                      ? 'You Skipped This Question'
-                                      : 'Your Answer was Incorrect'),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: isCorrect
-                                  ? AppTheme.successGreen
-                                  : AppTheme.errorRed,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Question Text Card
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              currentQ.questionTextEn,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                height: 1.4,
-                              ),
-                            ),
-                            if (currentQ.questionTextAm != null) ...[
-                              const SizedBox(height: 6),
-                              Text(
-                                currentQ.questionTextAm!,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: AppTheme.textMuted,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    if (currentQ.vectorDiagram != null) ...[
-                      SvgDiagramViewer(diagram: currentQ.vectorDiagram!),
-                      const SizedBox(height: 16),
-                    ],
-
-                    // Choices list with correct/student indicators
-                    const Text(
-                      'Choices:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ...currentQ.choices.map((choice) {
-                      final isStudentChoice =
-                          resp?.selectedChoiceId == choice.id;
-                      final isThisCorrect = choice.isCorrect;
-
-                      Color bg = Colors.white;
-                      Color border = const Color(0xFFE2E8F0);
-                      Color text = AppTheme.textDark;
-
-                      if (isThisCorrect) {
-                        bg = AppTheme.successGreen.withOpacity(0.12);
-                        border = AppTheme.successGreen;
-                        text = AppTheme.successGreen;
-                      } else if (isStudentChoice && !isThisCorrect) {
-                        bg = AppTheme.errorRed.withOpacity(0.12);
-                        border = AppTheme.errorRed;
-                        text = AppTheme.errorRed;
-                      }
-
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: bg,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: border,
-                            width: isThisCorrect || isStudentChoice ? 2 : 1,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              '${choice.label}.',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: text,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                choice.textEn,
-                                style: TextStyle(
-                                  color: text,
-                                  fontWeight: isThisCorrect
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            if (isThisCorrect)
-                              const Icon(
-                                Icons.check,
-                                color: AppTheme.successGreen,
-                                size: 20,
-                              )
-                            else if (isStudentChoice)
-                              const Icon(
-                                Icons.close,
-                                color: AppTheme.errorRed,
-                                size: 20,
-                              ),
-                          ],
-                        ),
-                      );
-                    }),
-                    const SizedBox(height: 16),
-
-                    // Low-Bandwidth Voiceover Solution Player
-                    AudioPlayerCard(
-                      audioOptions: [
-                        AudioExplanation(
-                          id: 'aud_${currentQ.id}_en',
-                          questionId: currentQ.id,
-                          language: 'en',
-                          durationSeconds: 42,
-                          audioUrl:
-                              'https://cdn.fidellearn.et/audio/${currentQ.id}_en.opus',
-                          fileSizeBytes: 14500,
-                          narratorName: 'Dr. Abebe (Senior Educator)',
-                          transcription: currentQ.explanation.solutionTextEn,
-                        ),
-                        if (currentQ.explanation.solutionTextAm != null)
-                          AudioExplanation(
-                            id: 'aud_${currentQ.id}_am',
-                            questionId: currentQ.id,
-                            language: 'am',
-                            durationSeconds: 48,
-                            audioUrl:
-                                'https://cdn.fidellearn.et/audio/${currentQ.id}_am.opus',
-                            fileSizeBytes: 15800,
-                            narratorName: 'ወ/ሮ ትዕግስት (የሂሳብ መምህርት)',
-                            transcription: currentQ.explanation.solutionTextAm!,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Descriptive Solution Box
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF8FAFC),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xFFCBD5E1)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.lightbulb,
-                                color: AppTheme.accentGold,
-                                size: 20,
+                              const Text(
+                                'Exam Items & Solutions',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Step-by-Step Descriptive Solution',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: AppTheme.textDark,
+                              const SizedBox(height: 12),
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: widget.questions.length,
+                                  itemBuilder: (context, index) {
+                                    final q = widget.questions[index];
+                                    final r = widget.attempt.responses[q.id];
+                                    final corr = r?.isCorrect ?? false;
+                                    final isSelected = index == _currentIndex;
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 6.0),
+                                      child: InkWell(
+                                        onTap: () => setState(() => _currentIndex = index),
+                                        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                          decoration: BoxDecoration(
+                                            color: isSelected
+                                                ? AppTheme.brandStrong.withOpacity(0.18)
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                            border: Border.all(
+                                              color: isSelected ? AppTheme.brand : Colors.transparent,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                corr ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                                                color: corr ? AppTheme.green : AppTheme.danger,
+                                                size: 18,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                'Question ${index + 1}',
+                                                style: TextStyle(
+                                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                                  fontSize: 13,
+                                                  color: isSelected ? AppTheme.darkText : AppTheme.darkTextSoft,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            currentQ.explanation.solutionTextEn,
-                            style: const TextStyle(fontSize: 14, height: 1.4),
+                        ),
+
+                        // Center Solution Inspector
+                        Expanded(
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 28),
+                            child: Center(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 850),
+                                child: _buildSolutionContent(currentQ, resp, isCorrect),
+                              ),
+                            ),
                           ),
-                          if (currentQ.explanation.simplerExplanationEn !=
-                              null) ...[
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppTheme.infoBlue.withOpacity(0.08),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    '💡 Simpler Explanation:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                      color: AppTheme.infoBlue,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    currentQ.explanation.simplerExplanationEn!,
-                                    style: const TextStyle(fontSize: 13),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          if (currentQ.explanation.keyConcept != null) ...[
-                            const SizedBox(height: 12),
-                            Text(
-                              '📌 Key Concept: ${currentQ.explanation.keyConcept!}',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                color: AppTheme.textMuted,
-                              ),
-                            ),
-                          ],
-                          if (currentQ.explanation.commonPitfall != null) ...[
-                            const SizedBox(height: 6),
-                            Text(
-                              '⚠️ Common Pitfall: ${currentQ.explanation.commonPitfall!}',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.warningOrange,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
+                        ),
+                      ],
+                    )
+                  : SingleChildScrollView(
+                      padding: const EdgeInsets.all(20.0),
+                      child: _buildSolutionContent(currentQ, resp, isCorrect),
                     ),
-                  ],
-                ),
-              ),
             ),
 
-            // Navigation Bar
+            // Bottom Navigation Footer
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              decoration: const BoxDecoration(
-                border: Border(top: BorderSide(color: Color(0xFFE2E8F0))),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardTheme.color,
+                border: const Border(top: BorderSide(color: AppTheme.darkBorder)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OutlinedButton(
+                  OutlinedButton.icon(
                     onPressed: _currentIndex > 0
                         ? () => setState(() => _currentIndex--)
                         : null,
-                    child: const Text('Previous'),
+                    icon: const Icon(Icons.arrow_back_rounded, size: 16),
+                    label: const Text('Previous Item'),
                   ),
-                  Text(
-                    '${_currentIndex + 1} / ${widget.questions.length}',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  ElevatedButton(
-                    onPressed: _currentIndex < widget.questions.length - 1
-                        ? () => setState(() => _currentIndex++)
-                        : () => context.pop(),
-                    child: Text(
-                      _currentIndex < widget.questions.length - 1
-                          ? 'Next'
-                          : 'Done',
+                  if (_currentIndex < widget.questions.length - 1)
+                    ElevatedButton.icon(
+                      onPressed: () => setState(() => _currentIndex++),
+                      icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+                      label: const Text('Next Solution'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.brandStrong,
+                      ),
+                    )
+                  else
+                    ElevatedButton.icon(
+                      onPressed: () => context.go('/home'),
+                      icon: const Icon(Icons.dashboard_rounded, size: 16),
+                      label: const Text('Done Reviewing'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.green,
+                        foregroundColor: Colors.black,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSolutionContent(Question currentQ, QuestionResponse? resp, bool isCorrect) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Answer Outcome Banner
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isCorrect
+                ? AppTheme.green.withOpacity(0.12)
+                : AppTheme.danger.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+            border: Border.all(
+              color: isCorrect ? AppTheme.green : AppTheme.danger,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                color: isCorrect ? AppTheme.green : AppTheme.danger,
+                size: 24,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  isCorrect
+                      ? 'Your answer was correct!'
+                      : (resp?.selectedChoiceId == null
+                          ? 'You skipped this question during the exam.'
+                          : 'Your answer was incorrect.'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isCorrect ? AppTheme.green : AppTheme.danger,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+
+        // Question Statement Card
+        Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardTheme.color,
+            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+            border: Border.all(color: AppTheme.darkBorder),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                currentQ.questionTextEn,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  height: 1.45,
+                ),
+              ),
+              if (currentQ.questionTextAm != null) ...[
+                const SizedBox(height: 10),
+                Text(
+                  currentQ.questionTextAm!,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.darkTextSoft,
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+
+        // Vector Diagram (if present)
+        if (currentQ.vectorDiagram != null) ...[
+          SvgDiagramViewer(diagram: currentQ.vectorDiagram!),
+          const SizedBox(height: 20),
+        ],
+
+        // Choices
+        const Text('Choices Breakdown:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        const SizedBox(height: 10),
+
+        ...currentQ.choices.map((choice) {
+          final isStudentChoice = resp?.selectedChoiceId == choice.id;
+          final isThisCorrect = choice.isCorrect;
+
+          Color bg = Theme.of(context).cardTheme.color!;
+          Color border = AppTheme.darkBorder;
+          Color text = AppTheme.darkTextSoft;
+
+          if (isThisCorrect) {
+            bg = AppTheme.green.withOpacity(0.15);
+            border = AppTheme.green;
+            text = AppTheme.green;
+          } else if (isStudentChoice && !isThisCorrect) {
+            bg = AppTheme.danger.withOpacity(0.15);
+            border = AppTheme.danger;
+            text = AppTheme.danger;
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                border: Border.all(color: border, width: isThisCorrect || isStudentChoice ? 1.5 : 1),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: isThisCorrect
+                          ? AppTheme.green
+                          : (isStudentChoice ? AppTheme.danger : const Color(0x1AFFFFFF)),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        choice.label,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isThisCorrect || isStudentChoice ? Colors.white : AppTheme.darkText,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Text(
+                      choice.textEn,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: isThisCorrect || isStudentChoice ? FontWeight.bold : FontWeight.normal,
+                        color: isThisCorrect ? AppTheme.green : (isStudentChoice ? AppTheme.danger : AppTheme.darkText),
+                      ),
+                    ),
+                  ),
+                  if (isThisCorrect)
+                    const Icon(Icons.check_circle_rounded, color: AppTheme.green, size: 20),
+                  if (isStudentChoice && !isThisCorrect)
+                    const Icon(Icons.cancel_rounded, color: AppTheme.danger, size: 20),
+                ],
+              ),
+            ),
+          );
+        }),
+        const SizedBox(height: 20),
+
+        // Step-by-Step Educational Explanation Card
+        if (currentQ.explanation != null) ...[
+          Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              color: AppTheme.brandStrong.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+              border: Border.all(color: AppTheme.brand.withOpacity(0.3)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.lightbulb_rounded, color: AppTheme.accent, size: 22),
+                    SizedBox(width: 8),
+                    Text(
+                      'Step-by-Step Explanation',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  currentQ.explanation!.stepByStepEn,
+                  style: const TextStyle(fontSize: 14, height: 1.5, color: AppTheme.darkText),
+                ),
+                if (currentQ.explanation!.simplerExplanationEn != null) ...[
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0x0FFFFFFF),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '💡 Simpler Concept Summary:',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppTheme.accent),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          currentQ.explanation!.simplerExplanationEn!,
+                          style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+        ],
+
+        // Audio Explanation Player Card
+        AudioPlayerCard(
+          audioExplanation: AudioExplanation(
+            id: 'audio_${currentQ.id}',
+            questionId: currentQ.id,
+            audioAssetPath: 'assets/audio/${currentQ.id}.mp3',
+            durationSeconds: 45,
+            language: 'en',
+            speakerName: 'Teacher Abebe',
+            isAvailableOffline: true,
+          ),
+        ),
+      ],
     );
   }
 }

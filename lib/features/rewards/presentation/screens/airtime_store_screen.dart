@@ -36,7 +36,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
         builder: (ctx) => AlertDialog(
           title: const Row(
             children: [
-              Icon(Icons.info_outline, color: AppTheme.warningOrange),
+              Icon(Icons.info_outline_rounded, color: AppTheme.accent),
               SizedBox(width: 8),
               Text('Insufficient Study Coins'),
             ],
@@ -79,7 +79,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: AppTheme.errorRed,
+          backgroundColor: AppTheme.danger,
           content: Text('Redemption failed: $e'),
         ),
       );
@@ -93,7 +93,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.check_circle, color: AppTheme.successGreen),
+            Icon(Icons.check_circle_rounded, color: AppTheme.green),
             SizedBox(width: 8),
             Text('Recharge Voucher Ready! 🎉'),
           ],
@@ -109,20 +109,20 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
             const SizedBox(height: 6),
             Text(
               'Coins Deducted: ${receipt.coinsSpent} Study Coins',
-              style: const TextStyle(fontSize: 13, color: AppTheme.textMuted),
+              style: const TextStyle(fontSize: 13, color: AppTheme.darkMuted),
             ),
             const SizedBox(height: 16),
             const Text(
               'Voucher PIN Code (14 Digits):',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: const Color(0x1AFFFFFF),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFFCBD5E1)),
+                border: Border.all(color: AppTheme.brand),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,11 +134,11 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,
                       fontFamily: 'monospace',
-                      color: AppTheme.primaryGreen,
+                      color: AppTheme.brand,
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.copy, size: 18),
+                    icon: const Icon(Icons.copy_rounded, size: 18),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: receipt.voucherPinCode));
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -155,7 +155,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: AppTheme.infoBlue,
+                color: AppTheme.accent,
               ),
             ),
           ],
@@ -163,6 +163,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
         actions: [
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx),
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
             child: const Text('Done'),
           ),
         ],
@@ -172,6 +173,8 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
     final ledger = ref.watch(coinLedgerProvider);
     final balance = CoinLedgerService.calculateBalance(ledger);
     final service = ref.watch(airtimeRedemptionServiceProvider);
@@ -183,204 +186,195 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Airtime & Data Rewards'),
+        title: const Text('Telecom Airtime & Data Marketplace', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Coin Balance Card
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppTheme.accentGold, AppTheme.accentGoldDark],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 48.0 : 20.0,
+          vertical: 28.0,
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Top Coin Balance Banner
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF78350F), AppTheme.darkSurfaceStrong],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                    border: Border.all(color: AppTheme.accent.withOpacity(0.4)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Available Balance',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(
-                            Icons.monetization_on,
-                            color: Colors.white,
-                            size: 28,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '$balance',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            'Coins',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const Text('Available Study Coins Balance', style: TextStyle(fontSize: 13, color: AppTheme.darkMuted)),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 28),
+                              const SizedBox(width: 8),
+                              Text(
+                                '$balance Coins',
+                                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: AppTheme.accent),
+                              ),
+                            ],
                           ),
                         ],
                       ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.green.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+                          border: Border.all(color: AppTheme.green.withOpacity(0.4)),
+                        ),
+                        child: Text(
+                          '≈ ${(balance / 10).toStringAsFixed(0)} ETB RECHARGE POWER',
+                          style: const TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 11),
+                        ),
+                      ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Text(
-                      '10 Coins = 1 ETB',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 24),
 
-            // Provider Filter Chips
-            Row(
-              children: [
-                FilterChip(
-                  label: const Text('All Providers'),
-                  selected: _selectedProvider == null,
-                  onSelected: (_) => setState(() => _selectedProvider = null),
+                // Provider Filters
+                Row(
+                  children: [
+                    _buildProviderFilterChip('All Telecom Providers', null),
+                    const SizedBox(width: 10),
+                    _buildProviderFilterChip('Ethio Telecom 🇪🇹', TelecomProvider.ethioTelecom),
+                    const SizedBox(width: 10),
+                    _buildProviderFilterChip('Safaricom Ethiopia 🟢', TelecomProvider.safaricom),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                FilterChip(
-                  label: const Text('Ethio Telecom'),
-                  selected: _selectedProvider == TelecomProvider.ethioTelecom,
-                  onSelected: (_) => setState(
-                    () => _selectedProvider = TelecomProvider.ethioTelecom,
+                const SizedBox(height: 20),
+
+                // Package Cards Grid
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: isDesktop ? 380 : 500,
+                    mainAxisExtent: 220,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
                   ),
-                ),
-                const SizedBox(width: 8),
-                FilterChip(
-                  label: const Text('Safaricom'),
-                  selected: _selectedProvider == TelecomProvider.safaricom,
-                  onSelected: (_) => setState(
-                    () => _selectedProvider = TelecomProvider.safaricom,
-                  ),
+                  itemCount: filteredPackages.length,
+                  itemBuilder: (context, index) {
+                    final pkg = filteredPackages[index];
+                    final canAfford = balance >= pkg.coinCost;
+                    final isEthio = pkg.provider == TelecomProvider.ethioTelecom;
+
+                    return Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardTheme.color,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                        border: Border.all(
+                          color: isEthio ? AppTheme.brand.withOpacity(0.3) : AppTheme.green.withOpacity(0.3),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: (isEthio ? AppTheme.brand : AppTheme.green).withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  isEthio ? 'ETHIO TELECOM' : 'SAFARICOM',
+                                  style: TextStyle(
+                                    color: isEthio ? AppTheme.brand : AppTheme.green,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${pkg.birrAmount} ETB Airtime',
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            pkg.title,
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            pkg.description,
+                            style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${pkg.coinCost} Coins',
+                                style: const TextStyle(fontWeight: FontWeight.w900, color: AppTheme.accent, fontSize: 15),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => _redeemPackage(pkg),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: canAfford ? AppTheme.brandStrong : const Color(0x1FFFFFFF),
+                                  foregroundColor: canAfford ? Colors.white : AppTheme.darkMuted,
+                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                ),
+                                child: Text(canAfford ? 'Redeem PIN' : 'Need Coins'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+          ),
+        ),
+      ),
+    );
+  }
 
-            const Text(
-              'Select Reward Package:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            // Packages List
-            ...filteredPackages.map((pkg) {
-              final canAfford = balance >= pkg.coinCost;
-
-              return Card(
-                margin: const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: pkg.provider == TelecomProvider.ethioTelecom
-                              ? AppTheme.primaryGreen.withOpacity(0.12)
-                              : Colors.red.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          pkg.bundleType == RewardBundleType.airtime
-                              ? Icons.phone_android
-                              : Icons.wifi,
-                          color: pkg.provider == TelecomProvider.ethioTelecom
-                              ? AppTheme.primaryGreen
-                              : Colors.red,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              pkg.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(height: 3),
-                            Text(
-                              '${pkg.provider.displayName} • ${pkg.validityDays} Day${pkg.validityDays > 1 ? "s" : ""} Validity',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.textMuted,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              '${pkg.coinCost} Coins',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.accentGoldDark,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => _redeemPackage(pkg),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              canAfford ? AppTheme.primaryGreen : Colors.grey,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                        ),
-                        child: const Text('Redeem'),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          ],
+  Widget _buildProviderFilterChip(String label, TelecomProvider? provider) {
+    final isSelected = _selectedProvider == provider;
+    return InkWell(
+      onTap: () => setState(() => _selectedProvider = provider),
+      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.brandStrong.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+          border: Border.all(color: isSelected ? AppTheme.brand : AppTheme.darkBorder),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color: isSelected ? AppTheme.brand : AppTheme.darkTextSoft,
+          ),
         ),
       ),
     );

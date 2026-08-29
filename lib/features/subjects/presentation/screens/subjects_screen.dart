@@ -49,9 +49,9 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
       final confirm = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Remove Package?'),
+          title: const Text('Remove Offline Package?'),
           content: Text(
-            'Do you want to remove ${pkg.nameEn} from offline storage?',
+            'Do you want to remove ${pkg.nameEn} from local offline storage to free up space?',
           ),
           actions: [
             TextButton(
@@ -60,10 +60,8 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(ctx, true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.errorRed,
-              ),
-              child: const Text('Remove'),
+              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.danger),
+              child: const Text('Remove Package'),
             ),
           ],
         ),
@@ -73,7 +71,6 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
         await _loadPackages();
       }
     } else {
-      // Simulate download
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Downloading ${pkg.nameEn} package...')),
       );
@@ -83,8 +80,8 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: AppTheme.successGreen,
-            content: Text('${pkg.nameEn} is now ready for offline practice!'),
+            backgroundColor: AppTheme.green,
+            content: Text('${pkg.nameEn} is ready for 100% offline practice!'),
           ),
         );
       }
@@ -93,171 +90,184 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Subject Packages'),
+        title: const Text('Offline Subject Packages Hub', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.wifi_tethering),
-            tooltip: 'P2P Share & Receive',
-            onPressed: () => context.push('/p2p_share'),
-          ),
-        ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              padding: const EdgeInsets.all(20),
-              itemCount: _packages.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                final pkg = _packages[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          : SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: isDesktop ? 48.0 : 20.0,
+                vertical: 28.0,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Storage & Package Manager Banner
+                      Container(
+                        padding: const EdgeInsets.all(28),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF0F766E), AppTheme.darkSurfaceStrong],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          border: Border.all(color: AppTheme.green.withOpacity(0.4)),
+                          boxShadow: AppTheme.cardShadowDark,
+                        ),
+                        child: Row(
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryGreen.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.inventory_2,
-                                color: AppTheme.primaryGreen,
-                                size: 28,
-                              ),
-                            ),
-                            const SizedBox(width: 14),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    pkg.nameEn,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.green.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
+                                    child: const Text('OFFLINE-FIRST RESILIENCE', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 10)),
                                   ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    pkg.nameAm,
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: AppTheme.textMuted,
-                                    ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Download Once, Practice Forever Without Internet',
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                                   ),
                                   const SizedBox(height: 6),
-                                  Text(
-                                    'v${pkg.version} • ${(pkg.sizeBytes / 1024).toStringAsFixed(0)} KB • ${pkg.attribution}',
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      color: AppTheme.textMuted,
-                                    ),
+                                  const Text(
+                                    'Exam questions, vector diagrams, and step-by-step solutions are stored securely inside local Drift SQLite database.',
+                                    style: TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
                                   ),
                                 ],
                               ),
                             ),
+                            if (isDesktop) ...[
+                              const SizedBox(width: 24),
+                              ElevatedButton.icon(
+                                onPressed: () => context.push('/p2p_share'),
+                                icon: const Icon(Icons.wifi_tethering_rounded, size: 18),
+                                label: const Text('Share via Offline P2P'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.brandStrong,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                ),
+                              ),
+                            ],
                           ],
                         ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: pkg.isDownloaded
-                                    ? AppTheme.successGreen.withOpacity(0.12)
-                                    : const Color(0xFFF1F5F9),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    pkg.isDownloaded
-                                        ? Icons.offline_pin
-                                        : Icons.cloud_download_outlined,
-                                    size: 16,
-                                    color: pkg.isDownloaded
-                                        ? AppTheme.successGreen
-                                        : AppTheme.textMuted,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    pkg.isDownloaded
-                                        ? 'Downloaded (Offline)'
-                                        : 'Available Online',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: pkg.isDownloaded
-                                          ? AppTheme.successGreen
-                                          : AppTheme.textMuted,
-                                    ),
-                                  ),
-                                ],
+                      ),
+                      const SizedBox(height: 28),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Available Packages (${_packages.length})',
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            'Total Storage: ~4.2 MB',
+                            style: const TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Package Grid
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: isDesktop ? 380 : 500,
+                          mainAxisExtent: 220,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                        ),
+                        itemCount: _packages.length,
+                        itemBuilder: (context, index) {
+                          final pkg = _packages[index];
+                          return Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardTheme.color,
+                              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                              border: Border.all(
+                                color: pkg.isDownloaded ? AppTheme.green.withOpacity(0.35) : AppTheme.darkBorder,
                               ),
                             ),
-                            Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (pkg.isDownloaded) ...[
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.share,
-                                      size: 20,
-                                      color: AppTheme.primaryGreen,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: (pkg.isDownloaded ? AppTheme.green : AppTheme.accent).withOpacity(0.15),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Text(
+                                        pkg.isDownloaded ? 'DOWNLOADED ✅' : 'CLOUD AVAILABLE',
+                                        style: TextStyle(
+                                          color: pkg.isDownloaded ? AppTheme.green : AppTheme.accent,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-                                    tooltip: 'Share via P2P',
-                                    onPressed: () => context.push('/p2p_share'),
-                                  ),
-                                  const SizedBox(width: 4),
-                                ],
-                                OutlinedButton(
-                                  onPressed: () => _toggleDownload(pkg),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: pkg.isDownloaded
-                                        ? AppTheme.errorRed
-                                        : AppTheme.primaryGreen,
-                                    side: BorderSide(
-                                      color: pkg.isDownloaded
-                                          ? AppTheme.errorRed
-                                          : AppTheme.primaryGreen,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    pkg.isDownloaded ? 'Remove' : 'Download',
-                                  ),
+                                    Text('v${pkg.version}.0', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                                  ],
                                 ),
-                                const SizedBox(width: 8),
-                                ElevatedButton(
-                                  onPressed: () => context.push(
-                                    '/exam_builder?subjectId=${pkg.subjectId}',
-                                  ),
-                                  child: const Text('Start'),
+                                Text(
+                                  pkg.nameEn,
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Grade ${pkg.grade} • ${pkg.stream.toUpperCase()} Stream • ${(pkg.sizeBytes / 1024).toStringAsFixed(0)} KB',
+                                  style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    OutlinedButton(
+                                      onPressed: () => _toggleDownload(pkg),
+                                      child: Text(pkg.isDownloaded ? 'Remove' : 'Download'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () => context.push('/exam_builder?subjectId=${pkg.subjectId}'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppTheme.brandStrong,
+                                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                      ),
+                                      child: const Text('Practice'),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ),
             ),
     );
   }

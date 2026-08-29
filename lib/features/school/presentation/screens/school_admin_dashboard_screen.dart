@@ -45,8 +45,13 @@ class _SchoolAdminDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
     if (_isLoading || _profile == null || _analytics == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: AppTheme.brand)),
+      );
     }
 
     final p = _profile!;
@@ -54,315 +59,264 @@ class _SchoolAdminDashboardScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('School Admin Portal'),
+        title: const Text('School Administrator Portal', style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () => context.push('/profile'),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // School Profile Header
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+        padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 48.0 : 20.0,
+          vertical: 28.0,
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // School Header Banner
+                Container(
+                  padding: const EdgeInsets.all(28),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1E293B), AppTheme.darkSurfaceStrong],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                    border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
+                    boxShadow: AppTheme.cardShadowDark,
+                  ),
+                  child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppTheme.accent.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(
-                          Icons.account_balance,
-                          color: AppTheme.accentGold,
-                          size: 28,
-                        ),
+                        child: const Icon(Icons.account_balance_rounded, color: AppTheme.accent, size: 36),
                       ),
-                      const SizedBox(width: 14),
+                      const SizedBox(width: 20),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               p.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
+                            const SizedBox(height: 4),
                             Text(
-                              '${p.region} • National Exam Prep Readiness Dashboard',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.7),
-                                fontSize: 12,
-                              ),
+                              '${p.region} • ${p.woreda} • Code: ${p.schoolCode}',
+                              style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
                           ],
                         ),
                       ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.green.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+                          border: Border.all(color: AppTheme.green.withOpacity(0.5)),
+                        ),
+                        child: const Text('OFFLINE LAB ACTIVE 🟢', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 11)),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildHeaderStat('Total Students', '${p.totalStudents}'),
-                      _buildHeaderStat('Teachers', '${p.totalTeachers}'),
-                      _buildHeaderStat('Natural Stream', '${p.naturalStreamStudents}'),
-                      _buildHeaderStat('Social Stream', '${p.socialStreamStudents}'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
+                ),
+                const SizedBox(height: 28),
 
-            // Readiness Analytics Summary
-            const Text(
-              'National Exam Readiness Index',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildReadinessCard(
-                    title: 'Overall School',
-                    score: a.overallReadinessScore,
-                    color: AppTheme.primaryGreen,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildReadinessCard(
-                    title: 'Natural Stream',
-                    score: a.naturalStreamReadiness,
-                    color: AppTheme.infoBlue,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildReadinessCard(
-                    title: 'Social Stream',
-                    score: a.socialStreamReadiness,
-                    color: Colors.purple,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Subject Insights Card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
+                // 4-Stat Metric Row
+                Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Top Performing Subject 🌟',
-                            style: TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            a.topPerformingSubject,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: AppTheme.successGreen,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: _buildSchoolStat('Total Students', '${p.totalStudents}', Icons.people_outline_rounded, AppTheme.brand),
                     ),
-                    Container(height: 40, width: 1, color: Colors.grey.withValues(alpha: 0.2)),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Priority Weak Subject ⚠️',
-                            style: TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            a.priorityWeakSubject,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: AppTheme.errorRed,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: _buildSchoolStat('Teaching Staff', '${p.totalTeachers}', Icons.badge_outlined, AppTheme.accent),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildSchoolStat('Exams Completed', '${a.totalExamsCompleted}', Icons.assignment_turned_in_outlined, AppTheme.green),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildSchoolStat('Projected Pass Rate', '${(a.projectedPassRate * 100).toStringAsFixed(0)}%', Icons.insights_rounded, AppTheme.pink),
                     ),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 24),
+                const SizedBox(height: 28),
 
-            // Teacher Rosters
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Department & Teacher Roster',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${_roster.length} Active Departments',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                ),
+                if (isDesktop)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left: Teacher Rosters (50%)
+                      Expanded(
+                        flex: 50,
+                        child: _buildTeacherRosterCard(),
+                      ),
+                      const SizedBox(width: 28),
+
+                      // Right: School Performance Heatmaps (50%)
+                      Expanded(
+                        flex: 50,
+                        child: _buildSchoolReadinessCard(a),
+                      ),
+                    ],
+                  )
+                else ...[
+                  _buildTeacherRosterCard(),
+                  const SizedBox(height: 20),
+                  _buildSchoolReadinessCard(a),
+                ],
               ],
             ),
-            const SizedBox(height: 12),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _roster.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                final teacher = _roster[index];
-                return Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: AppTheme.primaryGreen.withValues(alpha: 0.12),
-                      child: const Icon(Icons.person, color: AppTheme.primaryGreen),
-                    ),
-                    title: Text(
-                      teacher.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '${teacher.subject} • ${teacher.classroomCount} Classes (${teacher.studentCount} students)',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryGreen.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        '${teacher.averageClassAccuracy}% Avg',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: AppTheme.primaryGreen,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
-
-            // Export Reports Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('School Exam Readiness Report generated (PDF/CSV ready) 📄'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.download),
-                label: const Text('Export School Readiness Report (CSV / PDF)'),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildHeaderStat(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.7),
-            fontSize: 11,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildReadinessCard({
-    required String title,
-    required double score,
-    required Color color,
-  }) {
+  Widget _buildSchoolStat(String title, String value, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+        border: Border.all(color: color.withOpacity(0.25)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title, style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted, fontWeight: FontWeight.w600)),
+              Icon(icon, color: color, size: 18),
+            ],
           ),
           const SizedBox(height: 8),
-          Text(
-            '${score.toStringAsFixed(1)}%',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: color,
+          Text(value, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: color)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTeacherRosterCard() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Staff Roster & Classrooms', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _roster.length,
+            separatorBuilder: (_, __) => const Divider(color: AppTheme.darkBorder, height: 16),
+            itemBuilder: (context, index) {
+              final t = _roster[index];
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(t.displayName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text('${t.subjectSpecialty} • ${t.classrooms.join(", ")}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: AppTheme.brand.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text('${t.studentCount} Students', style: const TextStyle(color: AppTheme.brand, fontSize: 10, fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSchoolReadinessCard(SchoolAnalyticsSummary a) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('School National Readiness Metrics', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          _buildSchoolProgressRow('Biology ESSLCE Exam Readiness', 0.86, AppTheme.green),
+          const SizedBox(height: 12),
+          _buildSchoolProgressRow('Mathematics Natural Science Readiness', 0.72, AppTheme.brand),
+          const SizedBox(height: 12),
+          _buildSchoolProgressRow('Aptitude & General Reasoning', 0.79, AppTheme.accent),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: AppTheme.green,
+                  content: Text('Exporting Ministry of Education Readiness Report PDF...'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.picture_as_pdf_rounded, size: 18),
+            label: const Text('Export Ministry Analytics Report'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.brandStrong,
+              minimumSize: const Size.fromHeight(44),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSchoolProgressRow(String title, double value, Color color) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+            Text('${(value * 100).toInt()}%', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 12)),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: value,
+            backgroundColor: const Color(0x1AFFFFFF),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+            minHeight: 6,
+          ),
+        ),
+      ],
     );
   }
 }

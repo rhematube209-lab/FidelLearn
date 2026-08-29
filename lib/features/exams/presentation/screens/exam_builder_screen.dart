@@ -29,9 +29,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   String? _selectedTopicId;
   String? _selectedDifficulty; // null = all
   int? _selectedYear; // null = all
-  int _questionCount = 5;
+  int _questionCount = 10;
   bool _isTimed = false;
-  int _timeLimitMinutes = 15;
+  int _timeLimitMinutes = 20;
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -123,25 +123,18 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         return;
       }
 
-      if (questions.length < _questionCount) {
-        setState(() {
-          _errorMessage =
-              'Only ${questions.length} matching questions found (requested $_questionCount). Adjust your question count.';
-          _isLoading = false;
-        });
-        return;
-      }
+      final count = questions.length < _questionCount ? questions.length : _questionCount;
 
       // Shuffle and take requested count
       final shuffled = List<Question>.from(questions)..shuffle();
-      final selectedQuestions = shuffled.sublist(0, _questionCount);
+      final selectedQuestions = shuffled.sublist(0, count);
 
       final subject = _subjects.firstWhere((s) => s.id == _selectedSubjectId);
       final exam = Exam(
         id: 'exam_${DateTime.now().millisecondsSinceEpoch}',
         title: _isTimed
             ? '${subject.nameEn} Timed Mock'
-            : '${subject.nameEn} Practice',
+            : '${subject.nameEn} Practice Session',
         examType: _isTimed ? ExamType.mockFull : ExamType.customBuilder,
         grade: user.grade,
         stream: user.stream,
@@ -177,286 +170,342 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 900;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.mode == 'mock' ? 'Full Mock Exam' : 'Custom Exam Builder',
+          widget.mode == 'mock' ? 'Timed National Mock Exam' : 'Custom Exam Builder Studio',
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_errorMessage != null) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.errorRed.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppTheme.errorRed),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.info_outline,
-                            color: AppTheme.errorRed,
-                            size: 20,
+              padding: EdgeInsets.symmetric(
+                horizontal: isDesktop ? 48.0 : 20.0,
+                vertical: 24.0,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (_errorMessage != null) ...[
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: AppTheme.danger.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                            border: Border.all(color: AppTheme.danger),
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              _errorMessage!,
-                              style: const TextStyle(
-                                color: AppTheme.errorRed,
-                                fontSize: 13,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 22),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  _errorMessage!,
+                                  style: const TextStyle(
+                                    color: AppTheme.danger,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+
+                      if (isDesktop)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Left Section: Curriculum Syllabus Selector
+                            Expanded(
+                              flex: 55,
+                              child: _buildCurriculumCard(context),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                            const SizedBox(width: 24),
 
-                  // 1. Subject Selector
-                  const Text(
-                    'Subject',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<String>(
-                    value: _selectedSubjectId,
-                    items: _subjects.map((s) {
-                      return DropdownMenuItem(
-                        value: s.id,
-                        child: Text(s.nameEn),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) {
-                        setState(() => _selectedSubjectId = val);
-                        _loadUnitsAndTopics(val);
-                      }
-                    },
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.book_outlined),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 2. Unit Filter (Optional)
-                  const Text(
-                    'Unit (Optional)',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  DropdownButtonFormField<String?>(
-                    value: _selectedUnitId,
-                    items: [
-                      const DropdownMenuItem(
-                        value: null,
-                        child: Text('All Units'),
-                      ),
-                      ..._units.map(
-                        (u) => DropdownMenuItem(
-                          value: u.id,
-                          child: Text('Unit ${u.unitNumber}: ${u.titleEn}'),
-                        ),
-                      ),
-                    ],
-                    onChanged: _onUnitChanged,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.layers_outlined),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 3. Topic Filter (Optional)
-                  if (_topics.isNotEmpty) ...[
-                    const Text(
-                      'Topic (Optional)',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DropdownButtonFormField<String?>(
-                      value: _selectedTopicId,
-                      items: [
-                        const DropdownMenuItem(
-                          value: null,
-                          child: Text('All Topics in Unit'),
-                        ),
-                        ..._topics.map(
-                          (t) => DropdownMenuItem(
-                            value: t.id,
-                            child: Text(t.titleEn),
-                          ),
-                        ),
+                            // Right Section: Simulation Settings & Live Summary
+                            Expanded(
+                              flex: 45,
+                              child: _buildSimulationSettingsCard(context),
+                            ),
+                          ],
+                        )
+                      else ...[
+                        _buildCurriculumCard(context),
+                        const SizedBox(height: 20),
+                        _buildSimulationSettingsCard(context),
                       ],
-                      onChanged: (val) =>
-                          setState(() => _selectedTopicId = val),
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.topic_outlined),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-
-                  // 4. Difficulty Selector
-                  const Text(
-                    'Difficulty Level',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      _buildFilterChip(
-                        'All',
-                        _selectedDifficulty == null,
-                        () => setState(() => _selectedDifficulty = null),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildFilterChip(
-                        'Easy',
-                        _selectedDifficulty == 'easy',
-                        () => setState(() => _selectedDifficulty = 'easy'),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildFilterChip(
-                        'Medium',
-                        _selectedDifficulty == 'medium',
-                        () => setState(() => _selectedDifficulty = 'medium'),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildFilterChip(
-                        'Hard',
-                        _selectedDifficulty == 'hard',
-                        () => setState(() => _selectedDifficulty = 'hard'),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-
-                  // 5. Question Count
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Number of Questions',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        '$_questionCount questions',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.primaryGreen,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Slider(
-                    value: _questionCount.toDouble(),
-                    min: 5,
-                    max: 10,
-                    divisions: 1,
-                    label: '$_questionCount',
-                    activeColor: AppTheme.primaryGreen,
-                    onChanged: (val) =>
-                        setState(() => _questionCount = val.toInt()),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 6. Timed Mode Toggle
-                  SwitchListTile(
-                    title: const Text(
-                      'Timed Examination Mode',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    subtitle: Text(
-                      _isTimed
-                          ? 'Auto-submits when time expires'
-                          : 'Practice at your own pace (untimed)',
-                    ),
-                    value: _isTimed,
-                    activeColor: AppTheme.primaryGreen,
-                    onChanged: (val) => setState(() => _isTimed = val),
-                  ),
-
-                  if (_isTimed) ...[
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Time Limit',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(
-                          '$_timeLimitMinutes minutes',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.accentGoldDark,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Slider(
-                      value: _timeLimitMinutes.toDouble(),
-                      min: 5,
-                      max: 60,
-                      divisions: 11,
-                      label: '$_timeLimitMinutes min',
-                      activeColor: AppTheme.accentGold,
-                      onChanged: (val) =>
-                          setState(() => _timeLimitMinutes = val.toInt()),
-                    ),
-                  ],
-                  const SizedBox(height: 32),
-
-                  ElevatedButton.icon(
-                    onPressed: _startExam,
-                    icon: const Icon(Icons.play_arrow),
-                    label: Text(
-                      _isTimed
-                          ? 'Start Timed Mock Exam'
-                          : 'Start Practice Session',
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
     );
   }
 
-  Widget _buildFilterChip(String label, bool isSelected, VoidCallback onTap) {
+  Widget _buildCurriculumCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.menu_book_rounded, color: AppTheme.brand, size: 22),
+              SizedBox(width: 10),
+              Text(
+                'Curriculum & Syllabus Scope',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+
+          // 1. Subject Selector
+          const Text('Target Subject', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<String>(
+            value: _selectedSubjectId,
+            items: _subjects.map((s) {
+              return DropdownMenuItem(
+                value: s.id,
+                child: Text('${s.nameEn} (${s.code})'),
+              );
+            }).toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() => _selectedSubjectId = val);
+                _loadUnitsAndTopics(val);
+              }
+            },
+            decoration: const InputDecoration(prefixIcon: Icon(Icons.school_outlined)),
+          ),
+          const SizedBox(height: 18),
+
+          // 2. Unit Filter
+          const Text('Curriculum Unit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<String?>(
+            value: _selectedUnitId,
+            items: [
+              const DropdownMenuItem(
+                value: null,
+                child: Text('All Units (Comprehensive Examination)'),
+              ),
+              ..._units.map(
+                (u) => DropdownMenuItem(
+                  value: u.id,
+                  child: Text('Unit ${u.unitNumber}: ${u.titleEn}', overflow: TextOverflow.ellipsis),
+                ),
+              ),
+            ],
+            onChanged: _onUnitChanged,
+            decoration: const InputDecoration(prefixIcon: Icon(Icons.layers_outlined)),
+          ),
+          const SizedBox(height: 18),
+
+          // 3. Topic Filter
+          if (_topics.isNotEmpty) ...[
+            const Text('Specific Topic', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String?>(
+              value: _selectedTopicId,
+              items: [
+                const DropdownMenuItem(
+                  value: null,
+                  child: Text('All Topics in Selected Unit'),
+                ),
+                ..._topics.map(
+                  (t) => DropdownMenuItem(
+                    value: t.id,
+                    child: Text(t.titleEn, overflow: TextOverflow.ellipsis),
+                  ),
+                ),
+              ],
+              onChanged: (val) => setState(() => _selectedTopicId = val),
+              decoration: const InputDecoration(prefixIcon: Icon(Icons.topic_outlined)),
+            ),
+            const SizedBox(height: 18),
+          ],
+
+          // 4. Difficulty Selector
+          const Text('Difficulty Level', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _buildDifficultyChip('All', null),
+              const SizedBox(width: 8),
+              _buildDifficultyChip('Easy', 'easy'),
+              const SizedBox(width: 8),
+              _buildDifficultyChip('Medium', 'medium'),
+              const SizedBox(width: 8),
+              _buildDifficultyChip('Hard', 'hard'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDifficultyChip(String label, String? value) {
+    final isSelected = _selectedDifficulty == value;
     return Expanded(
-      child: ChoiceChip(
-        label: Text(label),
-        selected: isSelected,
-        selectedColor: AppTheme.primaryGreen.withOpacity(0.15),
-        labelStyle: TextStyle(
-          color: isSelected ? AppTheme.primaryGreen : AppTheme.textDark,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      child: InkWell(
+        onTap: () => setState(() => _selectedDifficulty = value),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected ? AppTheme.brandStrong.withOpacity(0.2) : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+            border: Border.all(
+              color: isSelected ? AppTheme.brand : AppTheme.darkBorder,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color: isSelected ? AppTheme.brand : AppTheme.darkTextSoft,
+              ),
+            ),
+          ),
         ),
-        onSelected: (_) => onTap(),
+      ),
+    );
+  }
+
+  Widget _buildSimulationSettingsCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: AppTheme.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.tune_rounded, color: AppTheme.accent, size: 22),
+              SizedBox(width: 10),
+              Text(
+                'Exam Engine Parameters',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+
+          // Question Count
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Question Count', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.brand.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '$_questionCount items',
+                  style: const TextStyle(color: AppTheme.brand, fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ),
+            ],
+          ),
+          Slider(
+            value: _questionCount.toDouble(),
+            min: 5,
+            max: 50,
+            divisions: 9,
+            label: '$_questionCount',
+            activeColor: AppTheme.brand,
+            onChanged: (val) => setState(() => _questionCount = val.toInt()),
+          ),
+          const SizedBox(height: 14),
+
+          // Timed Mode Toggle
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0x0FFFFFFF),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              border: Border.all(color: AppTheme.darkBorder),
+            ),
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Strict Examination Timer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+              subtitle: Text(
+                _isTimed ? 'Auto-submits when time reaches 00:00' : 'Self-paced untimed practice mode',
+                style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+              ),
+              value: _isTimed,
+              activeColor: AppTheme.accent,
+              onChanged: (val) => setState(() => _isTimed = val),
+            ),
+          ),
+
+          if (_isTimed) ...[
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Duration Limit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                Text(
+                  '$_timeLimitMinutes minutes',
+                  style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ],
+            ),
+            Slider(
+              value: _timeLimitMinutes.toDouble(),
+              min: 5,
+              max: 90,
+              divisions: 17,
+              label: '$_timeLimitMinutes min',
+              activeColor: AppTheme.accent,
+              onChanged: (val) => setState(() => _timeLimitMinutes = val.toInt()),
+            ),
+          ],
+          const SizedBox(height: 28),
+
+          // Start CTA
+          ElevatedButton.icon(
+            onPressed: _startExam,
+            icon: const Icon(Icons.play_arrow_rounded, size: 22),
+            label: Text(
+              _isTimed ? 'Launch Timed Examination' : 'Start Practice Session',
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.brandStrong,
+              foregroundColor: Colors.white,
+              minimumSize: const Size.fromHeight(48),
+            ),
+          ),
+        ],
       ),
     );
   }
