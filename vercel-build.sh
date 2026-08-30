@@ -2,19 +2,25 @@
 set -e
 
 echo "=========================================="
-echo "Installing Flutter SDK on Vercel..."
+echo "Installing Official Flutter Linux SDK..."
 echo "=========================================="
 
-if [ ! -d "_flutter" ]; then
-  git clone https://github.com/flutter/flutter.git --depth 1 -b stable _flutter
+git config --global --add safe.directory "*" || true
+
+if [ ! -d "$HOME/flutter" ]; then
+  echo "Downloading pre-compiled Flutter Linux release (fast download)..."
+  curl -C - -O https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
+  tar xf flutter_linux_3.24.5-stable.tar.xz -C "$HOME"
+  rm -f flutter_linux_3.24.5-stable.tar.xz
 fi
 
-export PATH="$PATH:$(pwd)/_flutter/bin"
+export PATH="$PATH:$HOME/flutter/bin"
 
-echo "Checking Flutter installation..."
+echo "Checking Flutter SDK..."
 flutter --version
 
-echo "Building FidelLearn Web Release..."
+echo "Fetching dependencies & building web release..."
+flutter config --no-analytics
 flutter config --enable-web
 flutter pub get
 flutter build web --release --no-tree-shake-icons
