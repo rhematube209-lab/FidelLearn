@@ -26,6 +26,7 @@ class LocalContentRepository implements ContentRepository {
                 : const [
                     'assets/seed/content_seed_g12.json',
                     'assets/seed/biology_2013_seed.json',
+                    'assets/seed/math_2014_seed.json',
                   ]);
 
   @override

@@ -1,0 +1,3783 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_math_nat_2014",
+      "subject_id": "math_g12",
+      "name_en": "Grade 12 Mathematics (ESSLCE 2014 E.C. National Exam)",
+      "name_am": "የ12ኛ ክፍል ሂሳብ (የ2014 ዓ.ም. ብሔራዊ ፈተና)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 1048576,
+      "publisher": "National Educational Assessment and Examinations Agency (NEAEA)",
+      "license": "official_archive",
+      "attribution": "ESSLCE 2014 E.C. National Examination - Natural Science",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "math_g12",
+      "code": "MATH12",
+      "name_en": "Mathematics (Natural Science)",
+      "name_am": "ሂሳብ (የተፈጥሮ ሳይንስ)",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "math_u1",
+      "subject_id": "math_g12",
+      "unit_number": 1,
+      "title_en": "Algebra, Vectors, Matrices & Conic Sections",
+      "title_am": "አልጀብራ፣ ቬክተሮች፣ ማትሪክስ እና ኮኒክ ሴክሽኖች"
+    },
+    {
+      "id": "math_u2",
+      "subject_id": "math_g12",
+      "unit_number": 2,
+      "title_en": "Calculus, Limits, Trigonometry & Integration",
+      "title_am": "ካልኩለስ፣ ሊሚት፣ ትሪጎኖሜትሪ እና ኢንቴግሬሽን"
+    }
+  ],
+  "topics": [
+    {
+      "id": "math_t1_1",
+      "unit_id": "math_u1",
+      "title_en": "Vectors, Matrices, Conics & Relations",
+      "title_am": "ቬክተሮች፣ ማትሪክስ እና ኮኒክስ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "math_t1_2",
+      "unit_id": "math_u1",
+      "title_en": "Sequences, Series & Progression",
+      "title_am": "ተከታታዮችና ድምሮች",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "math_t2_1",
+      "unit_id": "math_u2",
+      "title_en": "Limits, Continuity & Trigonometry",
+      "title_am": "ሊሚት፣ ቀጣይነትና ትሪጎኖሜትሪ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "math_t2_2",
+      "unit_id": "math_u2",
+      "title_en": "Differential & Integral Calculus",
+      "title_am": "ዲፈረንሺያልና ኢንቴግራል ካልኩለስ",
+      "importance_weight": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 1,
+      "question_text_en": "What is the locus of all points in a plane for which the sum of the distances from two fixed points is constant?",
+      "question_text_am": "በአንድ ጠለል ላይ ከሁለት ቋሚ ነጥቦች ያለው የርቀቶች ድምር ቋሚ የሆነባቸው ነጥቦች ስብስብ ምን ይባላል?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "81091374-fd0d-5ba5-b5ea-d6d752295be9",
+          "question_id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+          "label": "A",
+          "text_en": "Hyperbola",
+          "text_am": "ሃይፐርቦላ",
+          "is_correct": false
+        },
+        {
+          "id": "4ab43b84-27ba-5c3c-a10c-7bd92fd429fc",
+          "question_id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+          "label": "B",
+          "text_en": "Parabola",
+          "text_am": "ፓራቦላ",
+          "is_correct": false
+        },
+        {
+          "id": "cd35e071-32ff-51b6-b77d-f0002a4e3b78",
+          "question_id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+          "label": "C",
+          "text_en": "Ellipse",
+          "text_am": "ኤሊፕስ",
+          "is_correct": true
+        },
+        {
+          "id": "86619bfb-64df-5517-b3dc-a20fb6ecdd23",
+          "question_id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+          "label": "D",
+          "text_en": "Circle",
+          "text_am": "ክብ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d5c0aff8-e4f9-5575-8d42-bf5f5eebd8cd",
+        "question_id": "d1ab7835-34c4-582d-b613-2b28da2f0141",
+        "solution_text_en": "1. An ellipse is defined as the locus of all points P in a plane where the sum of distances to two fixed foci F1 and F2 is constant: PF1 + PF2 = 2a.\\n2. A hyperbola is the locus where the absolute difference of distances is constant (|PF1 - PF2| = 2a).\\n3. A circle is the locus of points equidistant from a single fixed center.\\n4. A parabola is the set of points equidistant from a fixed focus and a directrix line.\\nTherefore, the correct answer is C (Ellipse).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Constant sum of distances from two fixed points = Ellipse.",
+        "simpler_explanation_am": null,
+        "key_concept": "Geometric definition of Ellipse: PF1 + PF2 = constant.",
+        "common_pitfall": "Confusing sum of distances (ellipse) with difference (hyperbola)."
+      }
+    },
+    {
+      "id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 2,
+      "question_text_en": "The radian measure of an angle of 120° is equal to:",
+      "question_text_am": "የ 120° አንግል የሬዲያን መለኪያ ከየትኛው ጋር እኩል ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "15f049ef-b8cd-5718-8d5a-fdb2c9aa23e5",
+          "question_id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+          "label": "A",
+          "text_en": "2π/3",
+          "text_am": "2π/3",
+          "is_correct": true
+        },
+        {
+          "id": "1e904695-63f8-58f7-8763-7c38124ceb38",
+          "question_id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+          "label": "B",
+          "text_en": "4π/3",
+          "text_am": "4π/3",
+          "is_correct": false
+        },
+        {
+          "id": "9d8285fd-b72f-5a4f-9ca6-a64d19cdbc77",
+          "question_id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+          "label": "C",
+          "text_en": "π/2",
+          "text_am": "π/2",
+          "is_correct": false
+        },
+        {
+          "id": "e6455fbc-5430-54f5-a5b5-e3adf731cd83",
+          "question_id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+          "label": "D",
+          "text_en": "π/4",
+          "text_am": "π/4",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "00860a4d-8786-5403-b300-537e5b02aa5f",
+        "question_id": "69791aac-cf67-5560-b77d-fc6bd93ccdd2",
+        "solution_text_en": "Convert degrees to radians by multiplying by π/180°:\\nθ = 120° × (π / 180°) = 120π / 180 = 2π/3 radians.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "120/180 reduces to 2/3, so 120° = 2π/3.",
+        "simpler_explanation_am": null,
+        "key_concept": "Radian conversion: radians = degrees × (π / 180°).",
+        "common_pitfall": "Inverting the conversion factor as 180/π."
+      }
+    },
+    {
+      "id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 3,
+      "question_text_en": "What is the surface area of a sphere with radius 6 cm?",
+      "question_text_am": "የራዲየሱ ርዝመት 6 ሳ.ሜ የሆነ ሉል አጠቃላይ የገጽታ ስፋት ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "c8f3654f-eeb1-5b9e-a596-45d38b37b2b2",
+          "question_id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+          "label": "A",
+          "text_en": "24π cm²",
+          "text_am": "24π ሳ.ሜ²",
+          "is_correct": false
+        },
+        {
+          "id": "be94e8c0-c4a0-502b-8185-c585ae66700c",
+          "question_id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+          "label": "B",
+          "text_en": "36π cm²",
+          "text_am": "36π ሳ.ሜ²",
+          "is_correct": false
+        },
+        {
+          "id": "e05225d7-f8e0-5b2e-83e0-0a6abbbacacc",
+          "question_id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+          "label": "C",
+          "text_en": "48π cm²",
+          "text_am": "48π ሳ.ሜ²",
+          "is_correct": false
+        },
+        {
+          "id": "c268b06b-8fd0-5c9d-854b-1fdbc28ee93e",
+          "question_id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+          "label": "D",
+          "text_en": "144π cm²",
+          "text_am": "144π ሳ.ሜ²",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "1b319480-b660-5123-bc9d-73ca99e23300",
+        "question_id": "7b98d983-85d8-558f-b53e-1e2feb7a1fa8",
+        "solution_text_en": "1. Surface area of a sphere formula: S = 4πr².\\n2. With r = 6 cm:\\nS = 4π(6²) = 4π(36) = 144π cm².\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "S = 4 × π × 6² = 4 × 36 × π = 144π cm².",
+        "simpler_explanation_am": null,
+        "key_concept": "Surface area of sphere = 4πr².",
+        "common_pitfall": "Using circle area πr² = 36π instead of 4πr²."
+      }
+    },
+    {
+      "id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 4,
+      "question_text_en": "Which of the following is the measure of an exterior angle of a regular 10-sided polygon (decagon)?",
+      "question_text_am": "ባለ 10 ጎን መደበኛ ፖሊጎን የአንድ ውጫዊ አንግል ልክ ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "dbed1fa6-6969-52c7-b998-c4014e8e71a4",
+          "question_id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+          "label": "A",
+          "text_en": "72°",
+          "text_am": "72°",
+          "is_correct": false
+        },
+        {
+          "id": "58865d73-c4de-5eec-a59a-149c1ff4b627",
+          "question_id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+          "label": "B",
+          "text_en": "144°",
+          "text_am": "144°",
+          "is_correct": false
+        },
+        {
+          "id": "b25b525c-e85b-59d0-af49-5eb1950b3814",
+          "question_id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+          "label": "C",
+          "text_en": "180°",
+          "text_am": "180°",
+          "is_correct": false
+        },
+        {
+          "id": "292c0449-67ea-51e0-b333-53a807cc1577",
+          "question_id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+          "label": "D",
+          "text_en": "36°",
+          "text_am": "36°",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "94a59911-baea-5d65-a9a1-fe44fac7d3b3",
+        "question_id": "b726f86b-6468-5aa2-80be-e082f7d5eafe",
+        "solution_text_en": "1. The sum of all exterior angles for any convex polygon is 360°.\\n2. For a regular decagon (n = 10 equal sides/angles):\\nExterior angle = 360° / 10 = 36°.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Exterior angle = 360° / n = 360° / 10 = 36°.",
+        "simpler_explanation_am": null,
+        "key_concept": "Exterior angle of regular n-gon = 360° / n.",
+        "common_pitfall": "Calculating the interior angle (180° - 36° = 144°)."
+      }
+    },
+    {
+      "id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 5,
+      "question_text_en": "If the volume of a right circular cone is 64π cm³ and the diameter of its base is 8 cm, what is the height of the cone?",
+      "question_text_am": "የአንድ ቀጥተኛ ክብ ሾጣጣ ይዘት 64π ሳ.ሜ³ እና የመሰረቱ ዲያሜትር 8 ሳ.ሜ ቢሆን፣ የሾጣጣው ቁመት ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "d129fbd0-610d-5e4e-ac5a-b19e4b6892d5",
+          "question_id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+          "label": "A",
+          "text_en": "4 cm",
+          "text_am": "4 ሳ.ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "bed0d14d-dbb9-53ac-bdc4-29023af4c78e",
+          "question_id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+          "label": "B",
+          "text_en": "12 cm",
+          "text_am": "12 ሳ.ሜ",
+          "is_correct": true
+        },
+        {
+          "id": "7d4bb223-d5a2-522b-8c1c-e28ec55750b7",
+          "question_id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+          "label": "C",
+          "text_en": "8 cm",
+          "text_am": "8 ሳ.ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "53841b08-07b5-57c3-87fe-e92a682a4400",
+          "question_id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+          "label": "D",
+          "text_en": "3 cm",
+          "text_am": "3 ሳ.ሜ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "21251744-c90f-5f28-9c32-d74cb8f352d4",
+        "question_id": "00c1d4e6-dbe1-5ce5-8907-32c74e18b322",
+        "solution_text_en": "1. Base radius r = diameter / 2 = 8 / 2 = 4 cm.\\n2. Volume formula for a cone: V = (1/3)πr²h.\\n3. Substitute values: 64π = (1/3)π(4)²h = (16/3)πh.\\n4. Cancel π: 64 = 16h / 3 ⇒ 192 = 16h ⇒ h = 12 cm.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "64π = (1/3)π(16)h ⇒ 64 = 16h/3 ⇒ h = 12 cm.",
+        "simpler_explanation_am": null,
+        "key_concept": "Cone volume V = 1/3 π r² h.",
+        "common_pitfall": "Using diameter 8 instead of radius 4."
+      }
+    },
+    {
+      "id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 6,
+      "question_text_en": "What are the quotient and remainder, respectively, when 75 is divided by 20?",
+      "question_text_am": "75 ለ 20 ሲካፈል ድርሻው እና ቀሪው በቅደም ተከተል ስንት ናቸው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "61e038e3-9faf-5512-b847-7c37ac1b6575",
+          "question_id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+          "label": "A",
+          "text_en": "3 and 15",
+          "text_am": "3 እና 15",
+          "is_correct": true
+        },
+        {
+          "id": "8fb1cb53-3016-570f-89e2-d9395d812c85",
+          "question_id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+          "label": "B",
+          "text_en": "4 and 5",
+          "text_am": "4 እና 5",
+          "is_correct": false
+        },
+        {
+          "id": "70ac8732-7e4d-5334-9d16-6e78c577fff6",
+          "question_id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+          "label": "C",
+          "text_en": "15 and 3",
+          "text_am": "15 እና 3",
+          "is_correct": false
+        },
+        {
+          "id": "ed94ffd1-f79a-589c-82fd-9d236db2b537",
+          "question_id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+          "label": "D",
+          "text_en": "2 and 19",
+          "text_am": "2 እና 19",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "fb68e5a3-0481-5705-89e5-1d2be4d72e75",
+        "question_id": "03dd91dd-f743-5188-bb63-0c05f278b9fd",
+        "solution_text_en": "By the division algorithm:\\n75 = 20(3) + 15, with 0 ≤ 15 < 20.\\nTherefore, the quotient is 3 and the remainder is 15 (Choice A).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "75 / 20 = 3 with remainder 15 because 20 × 3 = 60 and 75 - 60 = 15.",
+        "simpler_explanation_am": null,
+        "key_concept": "Division Algorithm: a = bq + r where 0 ≤ r < b.",
+        "common_pitfall": "Reversing the order of quotient and remainder."
+      }
+    },
+    {
+      "id": "fdd9743c-2005-547a-9558-618e3bd49937",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 7,
+      "question_text_en": "Given f(x) = x³ + px + 1, where f(0) and f(1) have opposite signs, which value of p can satisfy this condition?",
+      "question_text_am": "f(x) = x³ + px + 1 ተሰጥቶ የ f(0) እና f(1) ዋጋዎች ተቃራኒ ምልክት ቢኖራቸው፣ የ p ዋጋ ከየትኞቹ አንዱ ሊሆን ይችላል?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "85efb8e4-3a0f-53eb-831e-ccd95c6f25b4",
+          "question_id": "fdd9743c-2005-547a-9558-618e3bd49937",
+          "label": "A",
+          "text_en": "-1",
+          "text_am": "-1",
+          "is_correct": false
+        },
+        {
+          "id": "19c2c948-c9ae-5115-8efe-935d804460a5",
+          "question_id": "fdd9743c-2005-547a-9558-618e3bd49937",
+          "label": "B",
+          "text_en": "-2",
+          "text_am": "-2",
+          "is_correct": false
+        },
+        {
+          "id": "2063ab96-e04e-57f4-bebc-0cb6b5f0b69d",
+          "question_id": "fdd9743c-2005-547a-9558-618e3bd49937",
+          "label": "C",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": false
+        },
+        {
+          "id": "749a6f32-0c54-5a30-8d9a-d25498aabdc7",
+          "question_id": "fdd9743c-2005-547a-9558-618e3bd49937",
+          "label": "D",
+          "text_en": "-3",
+          "text_am": "-3",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "0dee3a5e-d261-5b39-8623-60620e263a8a",
+        "question_id": "fdd9743c-2005-547a-9558-618e3bd49937",
+        "solution_text_en": "1. Compute f(0): f(0) = 0³ + p(0) + 1 = 1 > 0.\\n2. For f(1) to have the opposite sign, f(1) must be strictly negative (f(1) < 0).\\n3. Compute f(1): f(1) = 1³ + p(1) + 1 = p + 2.\\n4. Set inequality: p + 2 < 0 ⇒ p < -2.\\n5. Among the values, p = -3 is strictly less than -2 (which gives f(1) = -1 < 0).\\nTherefore, the correct choice is D (-3).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "f(0) = 1 (positive). For opposite signs, f(1) = p + 2 must be negative, so p < -2. Only p = -3 works.",
+        "simpler_explanation_am": null,
+        "key_concept": "Intermediate Value Theorem condition & function evaluation.",
+        "common_pitfall": "Choosing p = -2, which makes f(1) = 0 (zero has no sign, not opposite sign)."
+      }
+    },
+    {
+      "id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 8,
+      "question_text_en": "In rolling a single fair six-sided die, what is the probability of obtaining a 3 or a 5?",
+      "question_text_am": "አንድ መደበኛ ባለ 6 ጎን ዳይስ ሲወረወር 3 ወይም 5 የማግኘት እድል ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "8dbf23a0-b562-57f0-933b-0f1251acaf0b",
+          "question_id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+          "label": "A",
+          "text_en": "1/3",
+          "text_am": "1/3",
+          "is_correct": true
+        },
+        {
+          "id": "a41f58be-be76-52ee-b405-43a129ae87cd",
+          "question_id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+          "label": "B",
+          "text_en": "1/4",
+          "text_am": "1/4",
+          "is_correct": false
+        },
+        {
+          "id": "de7c1a5d-44fe-5fc1-8af6-8757ee4f3f8b",
+          "question_id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+          "label": "C",
+          "text_en": "1/6",
+          "text_am": "1/6",
+          "is_correct": false
+        },
+        {
+          "id": "3e62f384-e876-5ac8-8bed-07a84187833e",
+          "question_id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+          "label": "D",
+          "text_en": "1/2",
+          "text_am": "1/2",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "32c85934-db3a-5115-97ae-7c0ed115fe50",
+        "question_id": "9aa03e6e-0bc9-5852-aab0-ca15bf5d32e5",
+        "solution_text_en": "1. Sample space S = {1, 2, 3, 4, 5, 6}, total outcomes n(S) = 6.\\n2. Favorable outcomes E = {3, 5}, n(E) = 2.\\n3. Probability P(E) = n(E) / n(S) = 2/6 = 1/3.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "2 favorable outcomes out of 6 total = 2/6 = 1/3.",
+        "simpler_explanation_am": null,
+        "key_concept": "Theoretical Probability: P(E) = favorable outcomes / total outcomes.",
+        "common_pitfall": "Multiplying probabilities (1/6 × 1/6) instead of adding mutually exclusive events (1/6 + 1/6)."
+      }
+    },
+    {
+      "id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 9,
+      "question_text_en": "Which one of the following statements is true regarding inverse trigonometric functions?",
+      "question_text_am": "ስለ ግልባጭ ትሪጎኖሜትሪክ ፈንክሽኖች ከሚከተሉት ውስጥ እውነት የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "952990cf-b74e-5588-9379-12476ead08d3",
+          "question_id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+          "label": "A",
+          "text_en": "The range of arctan(x) is [-π, π]",
+          "text_am": "የ arctan(x) ሬንጅ [-π, π] ነው",
+          "is_correct": false
+        },
+        {
+          "id": "fc733017-cb7d-58ee-b0a4-0633dfdc43e3",
+          "question_id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+          "label": "B",
+          "text_en": "The range of arcsin(x) is (-∞, ∞)",
+          "text_am": "የ arcsin(x) ሬንጅ (-∞, ∞) ነው",
+          "is_correct": false
+        },
+        {
+          "id": "20b12ab6-e23e-541d-8177-61e513c1ce57",
+          "question_id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+          "label": "C",
+          "text_en": "The domain of arccos(x) is [-1, 1]",
+          "text_am": "የ arccos(x) ዶሜን [-1, 1] ነው",
+          "is_correct": true
+        },
+        {
+          "id": "324e2bf1-2306-5aca-9949-dd307a5e6e80",
+          "question_id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+          "label": "D",
+          "text_en": "The domain of arcsin(x) is [0, π]",
+          "text_am": "የ arcsin(x) ዶሜን [0, π] ነው",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "2fde6e69-c2e2-530a-a002-1184e4659647",
+        "question_id": "b871e478-d7cd-5937-ba2a-917ce6c13f79",
+        "solution_text_en": "1. Since -1 ≤ cos(θ) ≤ 1 for all real θ, the domain of arccos(x) is the interval [-1, 1]. Range is [0, π].\\n2. The domain of arcsin(x) is [-1, 1], and its range is [-π/2, π/2].\\n3. The domain of arctan(x) is (-∞, ∞), and its range is (-π/2, π/2).\\nTherefore, statement C is the only true statement.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Cosine outputs between -1 and 1, so inverse cosine accepts inputs in [-1, 1].",
+        "simpler_explanation_am": null,
+        "key_concept": "Domains and ranges of inverse trigonometric functions.",
+        "common_pitfall": "Confusing the range of cos(x) with the range of arccos(x)."
+      }
+    },
+    {
+      "id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 10,
+      "question_text_en": "The angle of depression of the top of a flagpole from the top of a building is 30°. The horizontal distance between the building and the pole is 40√3 m, and the pole is 10 m high. What is the height of the building?",
+      "question_text_am": "ከአንድ ህንጻ ጫፍ ወደ ባንዲራ መስቀያ ጫፍ ያለው የቁልቁለት አንግል 30° ነው። በህንጻው እና በባንዲራው መካከል ያለው አግድም ርቀት 40√3 ሜትር ሲሆን፣ የባንዲራው ርዝመት 10 ሜትር ነው። የህንጻው ቁመት ስንት ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "7011d28f-4196-5763-a960-a79f10c0e352",
+          "question_id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+          "label": "A",
+          "text_en": "20√3 m",
+          "text_am": "20√3 ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "930d70a9-c7ef-5c4f-81f4-6c47feecf49a",
+          "question_id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+          "label": "B",
+          "text_en": "10(4/√3 + 1) m",
+          "text_am": "10(4/√3 + 1) ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "d896b0af-6608-5312-8283-3026b1f38729",
+          "question_id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+          "label": "C",
+          "text_en": "50 m",
+          "text_am": "50 ሜ",
+          "is_correct": true
+        },
+        {
+          "id": "7202ef64-a621-5765-ac5c-bd4a22ebba84",
+          "question_id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+          "label": "D",
+          "text_en": "40 m",
+          "text_am": "40 ሜ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "00a74677-4e8b-5f9b-98b4-788922943e8e",
+        "question_id": "2960dc0d-3bd0-5f4e-8c74-082fa10c31f4",
+        "solution_text_en": "1. Let H be the total height of the building.\\n2. The top of the flagpole is at height 10 m, so the vertical difference is Δy = H - 10.\\n3. The horizontal distance d = 40√3 m.\\n4. Using trigonometry for angle of depression 30°:\\ntan(30°) = (H - 10) / (40√3).\\n5. Since tan(30°) = 1/√3:\\n1/√3 = (H - 10) / (40√3) ⇒ H - 10 = 40 ⇒ H = 50 m.\\nTherefore, the correct answer is C (50 m).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "tan(30°) = 1/√3 = (H - 10)/(40√3) ⇒ H - 10 = 40 ⇒ H = 50 m.",
+        "simpler_explanation_am": null,
+        "key_concept": "Angle of depression in right triangle trigonometry: tan(θ) = opposite / adjacent.",
+        "common_pitfall": "Forgetting to add the 10 m flagpole height to the vertical difference."
+      }
+    },
+    {
+      "id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 11,
+      "question_text_en": "Let R = {(x, y) : y ≥ x² + 1 and y ≤ 5}. Which relation defines the inverse relation R⁻¹?",
+      "question_text_am": "R = {(x, y) : y ≥ x² + 1 and y ≤ 5} ቢሆን፣ የግልባጭ ዝምድናውን R⁻¹ የሚገልጸው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "ad41dbef-877b-5716-8270-4b15edf2759b",
+          "question_id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+          "label": "A",
+          "text_en": "{(x, y) : x ≥ y² + 1 and x ≤ 5}",
+          "text_am": "{(x, y) : x ≥ y² + 1 and x ≤ 5}",
+          "is_correct": true
+        },
+        {
+          "id": "0f9f253c-f43a-5b53-88c2-7ed1d5397d7f",
+          "question_id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+          "label": "B",
+          "text_en": "{(x, y) : x ≤ y² + 1 and x ≤ 5}",
+          "text_am": "{(x, y) : x ≤ y² + 1 and x ≤ 5}",
+          "is_correct": false
+        },
+        {
+          "id": "04345b7d-e5bd-587b-b138-9c34ab1f1a59",
+          "question_id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+          "label": "C",
+          "text_en": "{(x, y) : x ≥ y² - 1 and x ≤ 5}",
+          "text_am": "{(x, y) : x ≥ y² - 1 and x ≤ 5}",
+          "is_correct": false
+        },
+        {
+          "id": "63ba10f2-c764-510c-a5b8-38abdf1f0c7e",
+          "question_id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+          "label": "D",
+          "text_en": "{(x, y) : x ≤ y² - 1 and x ≤ 5}",
+          "text_am": "{(x, y) : x ≤ y² - 1 and x ≤ 5}",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "da4e8adf-9f9a-5676-a67d-54817867b9c1",
+        "question_id": "567d5944-3fea-5caa-b311-b796a977fc9b",
+        "solution_text_en": "1. The inverse relation R⁻¹ of any relation R on ℝ is obtained by interchanging the variables x and y in its defining conditions.\\n2. In R: y ≥ x² + 1 becomes x ≥ y² + 1 in R⁻¹.\\n3. In R: y ≤ 5 becomes x ≤ 5 in R⁻¹.\\n4. Therefore: R⁻¹ = {(x, y) : x ≥ y² + 1 and x ≤ 5}.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Swap x and y in all inequalities: y ≥ x² + 1 becomes x ≥ y² + 1, and y ≤ 5 becomes x ≤ 5.",
+        "simpler_explanation_am": null,
+        "key_concept": "Inverse of a relation R: R⁻¹ = {(y, x) : (x, y) ∈ R}.",
+        "common_pitfall": "Attempting algebraic subtraction instead of simply swapping coordinates x and y."
+      }
+    },
+    {
+      "id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 12,
+      "question_text_en": "Given matrices A = [2 0 5; 3 1 4; 0 6 -2] and B = [1 3 0; 6 5 2; 9 7 0], which matrix represents A - B?",
+      "question_text_am": "ማትሪክስ A = [2 0 5; 3 1 4; 0 6 -2] እና B = [1 3 0; 6 5 2; 9 7 0] ቢሆኑ፣ A - B የሚሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "da54c3a7-05b7-56da-bea1-54ca2196fcbd",
+          "question_id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+          "label": "A",
+          "text_en": "[1 3 5; -3 -4 2; 9 1 2]",
+          "text_am": "[1 3 5; -3 -4 2; 9 1 2]",
+          "is_correct": false
+        },
+        {
+          "id": "634b28ca-5746-5c93-b2d9-1d592239d6a4",
+          "question_id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+          "label": "B",
+          "text_en": "[1 -3 -5; -3 -4 2; 9 1 2]",
+          "text_am": "[1 -3 -5; -3 -4 2; 9 1 2]",
+          "is_correct": false
+        },
+        {
+          "id": "ded85be6-2e18-57fb-afcb-46af9773849c",
+          "question_id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+          "label": "C",
+          "text_en": "[1 3 5; -3 -4 -2; -9 1 2]",
+          "text_am": "[1 3 5; -3 -4 -2; -9 1 2]",
+          "is_correct": false
+        },
+        {
+          "id": "99da1698-a9a6-5f85-b54a-a95a517368ab",
+          "question_id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+          "label": "D",
+          "text_en": "[1 -3 5; -3 -4 2; -9 -1 -2]",
+          "text_am": "[1 -3 5; -3 -4 2; -9 -1 -2]",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "e7ccedea-7488-558c-a1e8-a5204ce6be7f",
+        "question_id": "4e3379e1-3422-55a9-9004-2f3bf9a87d0c",
+        "solution_text_en": "Subtract corresponding entries (A - B)ij = Aij - Bij:\\nRow 1: [2-1, 0-3, 5-0] = [1, -3, 5]\\nRow 2: [3-6, 1-5, 4-2] = [-3, -4, 2]\\nRow 3: [0-9, 6-7, -2-0] = [-9, -1, -2]\\nCombining these rows yields: [1 -3 5; -3 -4 2; -9 -1 -2].\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Subtract each element: Row 1 is (1, -3, 5), Row 2 is (-3, -4, 2), Row 3 is (-9, -1, -2).",
+        "simpler_explanation_am": null,
+        "key_concept": "Matrix subtraction element by element.",
+        "common_pitfall": "Sign errors when subtracting negative numbers or zero."
+      }
+    },
+    {
+      "id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 13,
+      "question_text_en": "Starting at the origin (0, 0, 0), move 5 units along the negative x-axis, 5 units along the positive y-axis, and 5 units along the negative z-axis. What are the coordinates of the final point?",
+      "question_text_am": "ከመነሻ ነጥብ (0, 0, 0) በመነሳት፣ 5 ዩኒት በአሉታዊ x-ዘንግ፣ 5 ዩኒት በአዎንታዊ y-ዘንግ፣ እና 5 ዩኒት በአሉታዊ z-ዘንግ ቢጓዝ የመጨረሻው ነጥብ ኮኦርዲኔት ስንት ይሆናል?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "5482a0a7-2abe-5ed3-bfc7-c5a39f7c6711",
+          "question_id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+          "label": "A",
+          "text_en": "(5, 5, 5)",
+          "text_am": "(5, 5, 5)",
+          "is_correct": false
+        },
+        {
+          "id": "d0301f1a-fe55-5700-992b-7a00f7e21c57",
+          "question_id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+          "label": "B",
+          "text_en": "(-5, 5, -5)",
+          "text_am": "(-5, 5, -5)",
+          "is_correct": true
+        },
+        {
+          "id": "785c02c0-9bfb-5e7e-a0ba-9c18d7f1b1db",
+          "question_id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+          "label": "C",
+          "text_en": "(5, -5, -5)",
+          "text_am": "(5, -5, -5)",
+          "is_correct": false
+        },
+        {
+          "id": "42fa1427-f9c9-550a-bf13-c3c5d8363c9a",
+          "question_id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+          "label": "D",
+          "text_en": "(-5, -5, 5)",
+          "text_am": "(-5, -5, 5)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "46ef7cea-b122-538d-96dd-278a4485bdd6",
+        "question_id": "6ce0b4c8-ab07-53c9-837a-7bd916d37550",
+        "solution_text_en": "1. Negative x-axis motion by 5: x = 0 - 5 = -5.\\n2. Positive y-axis motion by 5: y = 0 + 5 = 5.\\n3. Negative z-axis motion by 5: z = 0 - 5 = -5.\\n4. Resulting coordinate is (-5, 5, -5).\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "(-5 in x, +5 in y, -5 in z) = (-5, 5, -5).",
+        "simpler_explanation_am": null,
+        "key_concept": "3D Cartesian coordinate system.",
+        "common_pitfall": "Mixing signs for positive vs negative directions."
+      }
+    },
+    {
+      "id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 14,
+      "question_text_en": "Which one of the following physical quantities is a vector quantity?",
+      "question_text_am": "ከሚከተሉት መጠኖች ውስጥ ቬክተር የሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "b5fb6de1-219c-52c5-9bb1-59f77afd9f3f",
+          "question_id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+          "label": "A",
+          "text_en": "Weight of an object",
+          "text_am": "የአንድ አካል ክብደት (Weight)",
+          "is_correct": true
+        },
+        {
+          "id": "67276783-2c36-5e3c-98de-9d2e6b9355f0",
+          "question_id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+          "label": "B",
+          "text_en": "Speed of a motorbike",
+          "text_am": "የሞተር ሳይክል ፍጥነት (Speed)",
+          "is_correct": false
+        },
+        {
+          "id": "2014223a-4d67-5984-8797-85c1634dd02e",
+          "question_id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+          "label": "C",
+          "text_en": "Volume of a box",
+          "text_am": "የሳጥን ይዘት (Volume)",
+          "is_correct": false
+        },
+        {
+          "id": "68943571-ce2e-52f0-abd8-afa02caec05d",
+          "question_id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+          "label": "D",
+          "text_en": "Width of a bedroom",
+          "text_am": "የመኝታ ክፍል ወርድ (Width)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "b4962b5c-307c-5ff5-90e3-b0791f58274b",
+        "question_id": "05c4ad0b-cf7b-522e-8ade-42d53781d542",
+        "solution_text_en": "1. A vector quantity possesses both magnitude and directional orientation.\\n2. Weight is gravitational force (W = mg), which has magnitude and points downward toward Earth's center of mass.\\n3. Speed, volume, and width have only magnitude (scalars).\\nTherefore, the correct answer is A (Weight).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Weight is a force with direction (downward) = Vector.",
+        "simpler_explanation_am": null,
+        "key_concept": "Vectors vs Scalars: Vectors have magnitude and direction.",
+        "common_pitfall": "Confusing mass (scalar) with weight (vector force)."
+      }
+    },
+    {
+      "id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 15,
+      "question_text_en": "Which one of the following is the first derivative f'(x) of the function f(x) = tan(x) + 3ˣ?",
+      "question_text_am": "የፈንክሽን f(x) = tan(x) + 3ˣ የመጀመሪያ ዲሪቬቲቭ f'(x) የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "9c1c47ec-8251-56cc-9d63-d639b6711723",
+          "question_id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+          "label": "A",
+          "text_en": "sec²(x) + 3ˣ ln(3)",
+          "text_am": "sec²(x) + 3ˣ ln(3)",
+          "is_correct": true
+        },
+        {
+          "id": "10bb0905-05bb-516e-a3ac-99bc675acb08",
+          "question_id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+          "label": "B",
+          "text_en": "-csc²(x) + 3ˣ ln(3)",
+          "text_am": "-csc²(x) + 3ˣ ln(3)",
+          "is_correct": false
+        },
+        {
+          "id": "9f332fd9-047e-52de-be04-24db7da65615",
+          "question_id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+          "label": "C",
+          "text_en": "-tan(x) + 3ˣ ln(3)",
+          "text_am": "-tan(x) + 3ˣ ln(3)",
+          "is_correct": false
+        },
+        {
+          "id": "e38fce3c-8d9b-5368-95c9-dccb3ae30c41",
+          "question_id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+          "label": "D",
+          "text_en": "sec²(x) + 3ˣ",
+          "text_am": "sec²(x) + 3ˣ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "e6ec1da0-2022-5cb0-99ec-40a0044d2051",
+        "question_id": "b3fe568a-c04b-5617-9a4c-fdc2f62efcbc",
+        "solution_text_en": "1. Differentiate term by term:\\n- d/dx [tan(x)] = sec²(x)\\n- d/dx [aˣ] = aˣ ln(a), so d/dx [3ˣ] = 3ˣ ln(3)\\n2. Adding the derivatives: f'(x) = sec²(x) + 3ˣ ln(3).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Derivative of tan(x) is sec²(x), and derivative of 3ˣ is 3ˣ ln(3).",
+        "simpler_explanation_am": null,
+        "key_concept": "Derivatives of trigonometric and exponential functions: d/dx(aˣ) = aˣ ln(a).",
+        "common_pitfall": "Forgetting the ln(3) factor when differentiating 3ˣ."
+      }
+    },
+    {
+      "id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 16,
+      "question_text_en": "Which point lies inside the sphere x² + y² + z² = 5?",
+      "question_text_am": "በሉል x² + y² + z² = 5 ውስጥ የሚገኘው ነጥብ የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "37d6a361-7350-5e42-9157-b02b42ebfa3b",
+          "question_id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+          "label": "A",
+          "text_en": "(1, -2, 2)",
+          "text_am": "(1, -2, 2)",
+          "is_correct": false
+        },
+        {
+          "id": "7d791fcc-0580-5fbd-bcc5-afa43e65338a",
+          "question_id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+          "label": "B",
+          "text_en": "(1, 1, 1)",
+          "text_am": "(1, 1, 1)",
+          "is_correct": true
+        },
+        {
+          "id": "9ddc391f-a372-504d-9cee-3339298dc84f",
+          "question_id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+          "label": "C",
+          "text_en": "(1, 2, 3)",
+          "text_am": "(1, 2, 3)",
+          "is_correct": false
+        },
+        {
+          "id": "a2f73884-1c6b-5c64-acba-03d4747de617",
+          "question_id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+          "label": "D",
+          "text_en": "(0, -2, 3)",
+          "text_am": "(0, -2, 3)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d71d1723-5553-5d07-8564-bde4cd73256f",
+        "question_id": "4b7e4d0e-fb51-5b97-add9-b66129cbd189",
+        "solution_text_en": "A point (x, y, z) lies strictly inside the sphere centered at the origin of radius √5 when x² + y² + z² < 5.\\n- For (1, -2, 2): 1² + (-2)² + 2² = 1 + 4 + 4 = 9 > 5 (outside)\\n- For (1, 1, 1): 1² + 1² + 1² = 1 + 1 + 1 = 3 < 5 (inside)\\n- For (1, 2, 3): 1 + 4 + 9 = 14 > 5 (outside)\\n- For (0, -2, 3): 0 + 4 + 9 = 13 > 5 (outside)\\nTherefore, the point inside is B (1, 1, 1).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "1² + 1² + 1² = 3, which is less than 5, so (1, 1, 1) is inside the sphere.",
+        "simpler_explanation_am": null,
+        "key_concept": "Equation of a sphere: Interior region is x² + y² + z² < r².",
+        "common_pitfall": "Testing against √5 instead of 5 (r²)."
+      }
+    },
+    {
+      "id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 17,
+      "question_text_en": "Which one of the following gives the trigonometric (polar) form of the complex number z = 2 - 2√3 i?",
+      "question_text_am": "የኮምፕሌክስ ቁጥር z = 2 - 2√3 i ትሪጎኖሜትሪክ (ፖላር) ፎርም የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "53e00d9b-ef28-5924-bbdf-201a82ffd1e9",
+          "question_id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+          "label": "A",
+          "text_en": "4(cos(5π/3) + i sin(5π/3))",
+          "text_am": "4(cos(5π/3) + i sin(5π/3))",
+          "is_correct": true
+        },
+        {
+          "id": "f03534fd-e433-50ff-9aa1-358f57f64afe",
+          "question_id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+          "label": "B",
+          "text_en": "4(cos(4π/3) + i sin(4π/3))",
+          "text_am": "4(cos(4π/3) + i sin(4π/3))",
+          "is_correct": false
+        },
+        {
+          "id": "73b03bfc-94aa-5f03-a448-b0154e1b2e74",
+          "question_id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+          "label": "C",
+          "text_en": "4(cos(3π/4) + i sin(3π/4))",
+          "text_am": "4(cos(3π/4) + i sin(3π/4))",
+          "is_correct": false
+        },
+        {
+          "id": "b912a97c-0df0-5cd7-ac28-fe7cc9be3442",
+          "question_id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+          "label": "D",
+          "text_en": "4(cos(π/3) + i sin(π/3))",
+          "text_am": "4(cos(π/3) + i sin(π/3))",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "cb7c7799-dc52-5c7d-9003-ef867335e45e",
+        "question_id": "67f80349-57ea-5a0e-8aa3-60a735f1fb9a",
+        "solution_text_en": "1. Modulus: r = √(x² + y²) = √(2² + (-2√3)²) = √(4 + 12) = √16 = 4.\\n2. Argument: Since x = 2 > 0 and y = -2√3 < 0, z is in Quadrant IV.\\n3. Reference angle θ_ref = arctan(|-2√3| / 2) = arctan(√3) = π/3 (or 60°).\\n4. In Quadrant IV: θ = 2π - π/3 = 5π/3 (or 300°).\\n5. Polar form: z = r(cos θ + i sin θ) = 4(cos(5π/3) + i sin(5π/3)).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "r = √(4+12) = 4. Angle in Q4 with tan θ = -√3 is 5π/3. Form is 4(cos(5π/3) + i sin(5π/3)).",
+        "simpler_explanation_am": null,
+        "key_concept": "Polar form of complex numbers: z = r(cos θ + i sin θ).",
+        "common_pitfall": "Choosing an argument in Quadrant II (2π/3) instead of Quadrant IV (5π/3)."
+      }
+    },
+    {
+      "id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 18,
+      "question_text_en": "If vector a = (4, 3, 2) and vector b = (1, 2, -3), which vector statement is NOT correct?",
+      "question_text_am": "ቬክተር a = (4, 3, 2) እና b = (1, 2, -3) ቢሆኑ፣ ትክክል ያልሆነው አረፍተ ነገር የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "44dd8d2a-b38f-59e9-bf6e-73b4e8f7db01",
+          "question_id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+          "label": "A",
+          "text_en": "a + b = (5, 5, -1)",
+          "text_am": "a + b = (5, 5, -1)",
+          "is_correct": false
+        },
+        {
+          "id": "2a6ef83a-170a-5736-8f19-50b65911b9e1",
+          "question_id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+          "label": "B",
+          "text_en": "a + 2b = (6, 7, -4)",
+          "text_am": "a + 2b = (6, 7, -4)",
+          "is_correct": false
+        },
+        {
+          "id": "cbe0de58-1070-55c7-8a0c-bd6eb6d4e2cf",
+          "question_id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+          "label": "C",
+          "text_en": "b - a = (-3, -1, -5)",
+          "text_am": "b - a = (-3, -1, -5)",
+          "is_correct": false
+        },
+        {
+          "id": "382deb0f-9cfa-5c34-8312-eda8a6b3ae42",
+          "question_id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+          "label": "D",
+          "text_en": "a - 2b = (2, 1, 8)",
+          "text_am": "a - 2b = (2, 1, 8)",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "7e83ade4-9ec5-5db4-8b5b-f556ffa3711b",
+        "question_id": "deddab48-9dce-50db-a6cc-1e34c04d58c8",
+        "solution_text_en": "Compute each operation:\\n- a + b = (4+1, 3+2, 2-3) = (5, 5, -1) (Correct)\\n- a + 2b = (4+2, 3+4, 2-6) = (6, 7, -4) (Correct)\\n- b - a = (1-4, 2-3, -3-2) = (-3, -1, -5) (Correct)\\n- a - 2b = (4 - 2(1), 3 - 2(2), 2 - 2(-3)) = (4-2, 3-4, 2+6) = (2, -1, 8).\\nChoice D gives (2, 1, 8) with the middle component +1 instead of -1, so statement D is incorrect.\\nTherefore, the answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "a - 2b = (4-2, 3-4, 2+6) = (2, -1, 8). Statement D says (2, 1, 8), which is false.",
+        "simpler_explanation_am": null,
+        "key_concept": "Linear combinations of vectors in ℝ³.",
+        "common_pitfall": "Sign error in subtracting 2(2) from 3: 3 - 4 = -1, not +1."
+      }
+    },
+    {
+      "id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 19,
+      "question_text_en": "What is the product of the complex numbers z = 2 - 3i and w = 5 + 2i?",
+      "question_text_am": "የኮምፕሌክስ ቁጥሮች z = 2 - 3i እና w = 5 + 2i ብዜት ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "766d568a-d977-5a7d-be13-bb7786b20843",
+          "question_id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+          "label": "A",
+          "text_en": "16 + 11i",
+          "text_am": "16 + 11i",
+          "is_correct": false
+        },
+        {
+          "id": "22e54a2e-a3d6-503c-b4d0-08fe97b12851",
+          "question_id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+          "label": "B",
+          "text_en": "4 - 11i",
+          "text_am": "4 - 11i",
+          "is_correct": false
+        },
+        {
+          "id": "ca2f8d36-71d2-5354-a26c-916f6a6f52f0",
+          "question_id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+          "label": "C",
+          "text_en": "16 - 11i",
+          "text_am": "16 - 11i",
+          "is_correct": true
+        },
+        {
+          "id": "2b0c8d27-79f6-5db4-a834-4cfe4ec44fa0",
+          "question_id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+          "label": "D",
+          "text_en": "29",
+          "text_am": "29",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "6095b84c-a984-5997-969a-098e0476b662",
+        "question_id": "310b931d-5ca0-53c8-a53e-5604bfee9942",
+        "solution_text_en": "Use the distributive property (FOIL):\\n(2 - 3i)(5 + 2i) = 2(5) + 2(2i) - 3i(5) - 3i(2i)\\n= 10 + 4i - 15i - 6i².\\nSince i² = -1:\\n-6i² = -6(-1) = +6.\\nCombining real and imaginary parts:\\n(10 + 6) + (4 - 15)i = 16 - 11i.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "(2-3i)(5+2i) = 10 + 4i - 15i - 6(-1) = 16 - 11i.",
+        "simpler_explanation_am": null,
+        "key_concept": "Complex number multiplication using i² = -1.",
+        "common_pitfall": "Treating -6i² as -6 instead of +6."
+      }
+    },
+    {
+      "id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 20,
+      "question_text_en": "Which statement is true regarding the arithmetic mean of a data set?",
+      "question_text_am": "ስለ አንድ የዳታ ስብስብ አርቲሜቲክ ሚን እውነት የሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "c181c2cc-812c-5727-899a-338b517fed77",
+          "question_id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+          "label": "A",
+          "text_en": "It is affected by extreme values (outliers)",
+          "text_am": "በጣም ትላልቅ ወይም ትናንሽ ቁጥሮች ተጽዕኖ ይደርስበታል",
+          "is_correct": true
+        },
+        {
+          "id": "e54ec161-8aca-5310-b822-9cb7f98dfa06",
+          "question_id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+          "label": "B",
+          "text_en": "There can be two means for the same data set",
+          "text_am": "ለአንድ ዳታ ሁለት ሚኖች ሊኖሩ ይችላሉ",
+          "is_correct": false
+        },
+        {
+          "id": "1c95da09-ecef-5121-92d9-2733ef5a3004",
+          "question_id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+          "label": "C",
+          "text_en": "It can be used directly for qualitative data",
+          "text_am": "ለጥራት መረጃ በቀጥታ ይሰላል",
+          "is_correct": false
+        },
+        {
+          "id": "03679a1a-33ce-571c-8b48-b0f17f510455",
+          "question_id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+          "label": "D",
+          "text_en": "It can always be found when some values are missing",
+          "text_am": "የጎደሉ ቁጥሮች ቢኖሩም ሁልጊዜ ማግኘት ይቻላል",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "79342855-0472-5ba7-9a02-6755ea1186a7",
+        "question_id": "7adad33f-fc31-5fa6-b6c3-e9c618a34c99",
+        "solution_text_en": "1. The arithmetic mean (x̄ = Σx / n) incorporates every single numerical observation in its sum.\\n2. Consequently, extreme high or low values (outliers) disproportionately shift the mean.\\n3. The mean is always uniquely defined (cannot have two means), applies only to quantitative data, and requires all values.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "The mean uses all values, so high or low outliers pull the average up or down.",
+        "simpler_explanation_am": null,
+        "key_concept": "Properties of measures of central tendency (Mean vs Median).",
+        "common_pitfall": "Confusing the mean with the mode (which can have multiple values / bimodal)."
+      }
+    },
+    {
+      "id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 21,
+      "question_text_en": "In △ABC, side lengths are AB = 10, BC = 14, and AC = 8. What is the area of the triangle?",
+      "question_text_am": "በሦስት ማዕዘን △ABC ውስጥ የጎኖቹ ርዝመት AB = 10፣ BC = 14፣ እና AC = 8 ቢሆን፣ የሦስት ማዕዘኑ ስፋት ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "9f14c2d2-2ea5-5e8e-98f2-1d163a814c9a",
+          "question_id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+          "label": "A",
+          "text_en": "10√6 square units",
+          "text_am": "10√6 ስኩዌር ዩኒት",
+          "is_correct": false
+        },
+        {
+          "id": "6b7959f8-9425-5256-8e5f-050a3cb22072",
+          "question_id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+          "label": "B",
+          "text_en": "16√6 square units",
+          "text_am": "16√6 ስኩዌር ዩኒት",
+          "is_correct": true
+        },
+        {
+          "id": "7d702e1d-37ab-506d-9543-35c27a49df42",
+          "question_id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+          "label": "C",
+          "text_en": "16√3 square units",
+          "text_am": "16√3 ስኩዌር ዩኒት",
+          "is_correct": false
+        },
+        {
+          "id": "277d5b9f-8333-5aae-8f8d-73c1f365d519",
+          "question_id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+          "label": "D",
+          "text_en": "16√2 square units",
+          "text_am": "16√2 ስኩዌር ዩኒት",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "33cf3f45-a5e9-5634-be42-7527bec7b6f1",
+        "question_id": "b8aab63b-8d6f-576d-b1c8-39042c219208",
+        "solution_text_en": "1. Use Heron's formula: Area = √(s(s-a)(s-b)(s-c)).\\n2. Semiperimeter s = (10 + 14 + 8) / 2 = 32 / 2 = 16.\\n3. Compute differences:\\n- s - a = 16 - 10 = 6\\n- s - b = 16 - 14 = 2\\n- s - c = 16 - 8 = 8\\n4. Area = √(16 × 6 × 2 × 8) = √(1536) = √(256 × 6) = 16√6.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Semiperimeter s = 16. Area = √(16 × 6 × 2 × 8) = √1536 = 16√6.",
+        "simpler_explanation_am": null,
+        "key_concept": "Heron's Formula for triangle area: A = √(s(s-a)(s-b)(s-c)).",
+        "common_pitfall": "Arithmetic error under the square root when multiplying factors."
+      }
+    },
+    {
+      "id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 22,
+      "question_text_en": "Evaluate the indefinite integral: ∫ (1/√x - e⁻³ˣ + 5/x²) dx",
+      "question_text_am": "የኢንቴግራል ስሌቱን ዋጋ ፈልጉ: ∫ (1/√x - e⁻³ˣ + 5/x²) dx",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "995f90cf-360e-5b65-b87f-f872290ccfb3",
+          "question_id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+          "label": "A",
+          "text_en": "2√x + e⁻³ˣ/3 + 5/x + C",
+          "text_am": "2√x + e⁻³ˣ/3 + 5/x + C",
+          "is_correct": false
+        },
+        {
+          "id": "7c9eab8f-b125-5e30-b4bb-1ba06d422874",
+          "question_id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+          "label": "B",
+          "text_en": "2√x + e⁻³ˣ/3 - 5/x + C",
+          "text_am": "2√x + e⁻³ˣ/3 - 5/x + C",
+          "is_correct": true
+        },
+        {
+          "id": "fbd50bf6-a6d0-5be1-a186-1957cacd5cda",
+          "question_id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+          "label": "C",
+          "text_en": "2√x - e⁻³ˣ/3 - 5/x + C",
+          "text_am": "2√x - e⁻³ˣ/3 - 5/x + C",
+          "is_correct": false
+        },
+        {
+          "id": "6e587302-d59f-55eb-b528-a618e0033039",
+          "question_id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+          "label": "D",
+          "text_en": "2√x - e⁻³ˣ/3 + 5/x + C",
+          "text_am": "2√x - e⁻³ˣ/3 + 5/x + C",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "71380783-97da-52fc-8eb6-a61723bb86f8",
+        "question_id": "6a506191-1c23-5c2c-8845-46a247ecc02e",
+        "solution_text_en": "Integrate term by term:\\n1. ∫ x^(-1/2) dx = x^(1/2) / (1/2) = 2√x\\n2. ∫ -e^(-3x) dx = - (e^(-3x) / -3) = + (1/3)e^(-3x)\\n3. ∫ 5x^(-2) dx = 5 (x^(-1) / -1) = - 5/x\\nCombining terms with constant of integration C:\\n∫ (1/√x - e⁻³ˣ + 5/x²) dx = 2√x + e⁻³ˣ/3 - 5/x + C.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "∫x^(-1/2) = 2√x, ∫-e^(-3x) = +e^(-3x)/3, ∫5x^(-2) = -5/x.",
+        "simpler_explanation_am": null,
+        "key_concept": "Basic power rule & exponential integration formulas.",
+        "common_pitfall": "Negative sign error when dividing by -3 during exponential integration."
+      }
+    },
+    {
+      "id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 23,
+      "question_text_en": "A shaded relation on a coordinate plane has an upper horizontal boundary at y = 6 extending downwards, and a right vertical boundary at x = 2 extending to the left. Which pair represents its domain and range?",
+      "question_text_am": "በኮኦርዲኔት ጠለል ላይ የቀረበ ዝምድና ቀኝ ወሰኑ x = 2 ወደ ግራ እና የላይኛው ወሰኑ y = 6 ወደ ታች ቢሆን፣ ዶሜኑ እና ሬንጁ የትኛው ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "2b5447f1-78f7-53a7-990f-20945d1e6d7a",
+          "question_id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+          "label": "A",
+          "text_en": "{x : x ≤ 2} and {y : y ≤ 6}",
+          "text_am": "{x : x ≤ 2} እና {y : y ≤ 6}",
+          "is_correct": true
+        },
+        {
+          "id": "e6283b93-a90f-5495-b263-4fea34cea0df",
+          "question_id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+          "label": "B",
+          "text_en": "{x : x ≤ 2} and ℝ",
+          "text_am": "{x : x ≤ 2} እና ℝ",
+          "is_correct": false
+        },
+        {
+          "id": "8b523487-8815-5f25-92b1-8747ba37c190",
+          "question_id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+          "label": "C",
+          "text_en": "ℝ and {y : y ≤ 2}",
+          "text_am": "ℝ እና {y : y ≤ 2}",
+          "is_correct": false
+        },
+        {
+          "id": "4472a104-cdb7-552c-8000-bb6547c751b5",
+          "question_id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+          "label": "D",
+          "text_en": "ℝ and ℝ",
+          "text_am": "ℝ እና ℝ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "4c0660d8-ff59-53f3-84dd-7d12e835b91b",
+        "question_id": "80c7da17-1fc4-5b7d-b15e-12e28e0b0329",
+        "solution_text_en": "1. Domain (x-values): The region extends indefinitely to the left with maximum x = 2, so Domain = (-∞, 2] = {x : x ≤ 2}.\\n2. Range (y-values): The region extends indefinitely downward with maximum y = 6, so Range = (-∞, 6] = {y : y ≤ 6}.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "x values go up to 2 (x ≤ 2); y values go up to 6 (y ≤ 6).",
+        "simpler_explanation_am": null,
+        "key_concept": "Graph-based domain and range extraction.",
+        "common_pitfall": "Swapping the domain and range boundaries."
+      }
+    },
+    {
+      "id": "34b71525-a123-56da-87ab-8b4f722c4820",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 24,
+      "question_text_en": "Let f be a continuous function on [a, b]. Which property of definite integrals is NOT true?",
+      "question_text_am": "ፈንክሽን f በ [a, b] ላይ ቀጣይ ቢሆን፣ ከሚከተሉት የዴፊኒት ኢንቴግራል ህጎች ውስጥ ትክክል ያልሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "653ad676-db75-5322-8394-6479272d1f08",
+          "question_id": "34b71525-a123-56da-87ab-8b4f722c4820",
+          "label": "A",
+          "text_en": "∫ₐᵇ f(x) dx = - ∫ᵦᵃ f(x) dx",
+          "text_am": "∫ₐᵇ f(x) dx = - ∫ᵦᵃ f(x) dx",
+          "is_correct": false
+        },
+        {
+          "id": "95376464-6dea-5e46-9780-ed290bac2b29",
+          "question_id": "34b71525-a123-56da-87ab-8b4f722c4820",
+          "label": "B",
+          "text_en": "∫ₐᵇ k f(x) dx = k ∫ₐᵇ f(x) dx",
+          "text_am": "∫ₐᵇ k f(x) dx = k ∫ₐᵇ f(x) dx",
+          "is_correct": false
+        },
+        {
+          "id": "1367f663-ba22-52be-9a07-b374468fb36a",
+          "question_id": "34b71525-a123-56da-87ab-8b4f722c4820",
+          "label": "C",
+          "text_en": "∫ₐᵇ f(x) dx = ∫ₐᶜ f(x) dx - ∫꜀ᵇ f(x) dx",
+          "text_am": "∫ₐᵇ f(x) dx = ∫ₐᶜ f(x) dx - ∫꜀ᵇ f(x) dx",
+          "is_correct": true
+        },
+        {
+          "id": "bec380f9-bcf6-548c-a9b5-b4d724c84d90",
+          "question_id": "34b71525-a123-56da-87ab-8b4f722c4820",
+          "label": "D",
+          "text_en": "∫꜀ᶜ f(x) dx = 0",
+          "text_am": "∫꜀ᶜ f(x) dx = 0",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "e034e510-3e55-55d6-93a1-6c78106ece4b",
+        "question_id": "34b71525-a123-56da-87ab-8b4f722c4820",
+        "solution_text_en": "1. The interval addition property of definite integrals states: ∫ₐᵇ f(x) dx = ∫ₐᶜ f(x) dx + ∫꜀ᵇ f(x) dx.\\n2. Choice C has a subtraction sign instead of an addition sign, making it mathematically false.\\n3. Choices A, B, and D are standard correct integral properties.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Integral from a to b is the SUM of integrals (a to c + c to b), not the difference.",
+        "simpler_explanation_am": null,
+        "key_concept": "Fundamental linearity and interval properties of definite integrals.",
+        "common_pitfall": "Confusing interval addition with reversal of limits."
+      }
+    },
+    {
+      "id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 25,
+      "question_text_en": "Evaluate the definite integral: ∫₀¹ x eˣ dx",
+      "question_text_am": "የዴፊኒት ኢንቴግራል ስሌቱን ዋጋ ፈልጉ: ∫₀¹ x eˣ dx",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "83477a81-57f9-5d58-895d-cb02a736467c",
+          "question_id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+          "label": "A",
+          "text_en": "e",
+          "text_am": "e",
+          "is_correct": false
+        },
+        {
+          "id": "11a2a368-fb6d-5ef5-8ac6-73e55434a040",
+          "question_id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+          "label": "B",
+          "text_en": "-e",
+          "text_am": "-e",
+          "is_correct": false
+        },
+        {
+          "id": "0a3e4ae3-6785-510f-a7e6-978e90557b5b",
+          "question_id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+          "label": "C",
+          "text_en": "-1",
+          "text_am": "-1",
+          "is_correct": false
+        },
+        {
+          "id": "59bc72c1-be99-5238-8081-d4ce786e9291",
+          "question_id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+          "label": "D",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "f1cf7040-f39b-5b81-9be5-1455ea949b0f",
+        "question_id": "5b8cd397-9cfd-5d1d-bb78-e30322d6173f",
+        "solution_text_en": "1. Use integration by parts: ∫ u dv = uv - ∫ v du.\\n- Let u = x ⇒ du = dx\\n- Let dv = eˣ dx ⇒ v = eˣ\\n2. Indefinite integral: ∫ x eˣ dx = x eˣ - ∫ eˣ dx = x eˣ - eˣ = eˣ(x - 1).\\n3. Evaluate from 0 to 1:\\n[e¹(1 - 1)] - [e⁰(0 - 1)] = [e(0)] - [1(-1)] = 0 - (-1) = 1.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Integral is eˣ(x - 1). At x = 1: 0. At x = 0: -1. Top minus bottom: 0 - (-1) = 1.",
+        "simpler_explanation_am": null,
+        "key_concept": "Integration by parts formula with limits: [uv]ₐᵇ - ∫ₐᵇ v du.",
+        "common_pitfall": "Forgetting that e⁰ = 1 when evaluating the lower limit."
+      }
+    },
+    {
+      "id": "b7968511-077a-5c42-9751-65be9867b2ab",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 26,
+      "question_text_en": "Simplify the radical expression: (6√20 - 3√45) / (3√75)",
+      "question_text_am": "የራዲካል ስሌቱን አቃልሉ: (6√20 - 3√45) / (3√75)",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "71f93019-8c0c-57f4-baf6-b4c710aad55d",
+          "question_id": "b7968511-077a-5c42-9751-65be9867b2ab",
+          "label": "A",
+          "text_en": "√3",
+          "text_am": "√3",
+          "is_correct": false
+        },
+        {
+          "id": "850b3916-8cef-5419-95d3-81e745a7f9ca",
+          "question_id": "b7968511-077a-5c42-9751-65be9867b2ab",
+          "label": "B",
+          "text_en": "√15 / 15",
+          "text_am": "√15 / 15",
+          "is_correct": true
+        },
+        {
+          "id": "0e10a318-101f-5b39-9a8b-6ab784ecdce2",
+          "question_id": "b7968511-077a-5c42-9751-65be9867b2ab",
+          "label": "C",
+          "text_en": "1/5",
+          "text_am": "1/5",
+          "is_correct": false
+        },
+        {
+          "id": "84f1dcec-94e2-57c8-b371-8a87e10754d6",
+          "question_id": "b7968511-077a-5c42-9751-65be9867b2ab",
+          "label": "D",
+          "text_en": "5",
+          "text_am": "5",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d3e8ab8d-4362-5d41-a99e-1d51475593a3",
+        "question_id": "b7968511-077a-5c42-9751-65be9867b2ab",
+        "solution_text_en": "1. Simplify each radical:\\n- √20 = √(4 × 5) = 2√5\\n- √45 = √(9 × 5) = 3√5\\n- √75 = √(25 × 3) = 5√3\\n2. Numerator: 6(2√5) - 3(3√5) = 12√5 - 9√5 = 3√5.\\n3. Denominator: 3(5√3) = 15√3.\\n4. Fraction: (3√5) / (15√3) = (√5) / (5√3).\\n5. Rationalize denominator: (√5 × √3) / (5√3 × √3) = √15 / 15.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Numerator = 3√5, Denominator = 15√3. (3√5)/(15√3) = √5/(5√3) = √15/15.",
+        "simpler_explanation_am": null,
+        "key_concept": "Simplifying and rationalizing radical surds.",
+        "common_pitfall": "Forgetting to multiply 5 by 3 when multiplying √3 by √3 in denominator."
+      }
+    },
+    {
+      "id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 27,
+      "question_text_en": "Let set A = {1, 3, 5, 6, 8, 10} and set B = {2, 5, 8, 11}. What is the symmetric difference A △ B?",
+      "question_text_am": "ስብስብ A = {1, 3, 5, 6, 8, 10} እና B = {2, 5, 8, 11} ቢሆኑ፣ የሁለቱ ስብስቦች ሲሜትሪክ ልዩነት A △ B ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "edca71b6-86ef-5be1-a5ff-e33d50f26cc0",
+          "question_id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+          "label": "A",
+          "text_en": "{1, 2, 3, 5, 6, 8, 10, 11}",
+          "text_am": "{1, 2, 3, 5, 6, 8, 10, 11}",
+          "is_correct": false
+        },
+        {
+          "id": "a12ac7e0-ac69-5f16-bff1-52cf28476767",
+          "question_id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+          "label": "B",
+          "text_en": "{2, 11}",
+          "text_am": "{2, 11}",
+          "is_correct": false
+        },
+        {
+          "id": "cbd20981-04e2-5b7d-a60d-7783937bdca2",
+          "question_id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+          "label": "C",
+          "text_en": "{1, 2, 3, 6, 10, 11}",
+          "text_am": "{1, 2, 3, 6, 10, 11}",
+          "is_correct": true
+        },
+        {
+          "id": "0d15b493-09fa-55ef-b904-d0311ef9dca8",
+          "question_id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+          "label": "D",
+          "text_en": "{1, 3, 6, 10}",
+          "text_am": "{1, 3, 6, 10}",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "a346d50a-9547-5c64-8b4a-ff8dbee3c2fe",
+        "question_id": "299642fc-1ea5-5f72-a9aa-89b5dc629c56",
+        "solution_text_en": "1. Symmetric difference A △ B = (A ∪ B) \\ (A ∩ B).\\n2. Intersection A ∩ B = {5, 8}.\\n3. Elements exclusively in A or B: {1, 2, 3, 6, 10, 11}.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Remove shared numbers {5, 8} from the union: {1, 2, 3, 6, 10, 11}.",
+        "simpler_explanation_am": null,
+        "key_concept": "Symmetric difference of sets: A △ B = (A \\ B) ∪ (B \\ A).",
+        "common_pitfall": "Selecting the full union instead of removing the intersection."
+      }
+    },
+    {
+      "id": "a289beda-6182-500a-b595-c2087714bc37",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 28,
+      "question_text_en": "What is the population variance (σ²) of the dataset {2, 3, 4, 5, 7}?",
+      "question_text_am": "የዳታ ስብስብ {2, 3, 4, 5, 7} ፖፑሌሽን ቫሪያንስ (σ²) ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "28b9a761-1ab2-5058-b20e-b3fea90d9730",
+          "question_id": "a289beda-6182-500a-b595-c2087714bc37",
+          "label": "A",
+          "text_en": "2.46",
+          "text_am": "2.46",
+          "is_correct": false
+        },
+        {
+          "id": "41776c09-8e5a-5306-8986-f559ebb9b7c8",
+          "question_id": "a289beda-6182-500a-b595-c2087714bc37",
+          "label": "B",
+          "text_en": "2.96",
+          "text_am": "2.96",
+          "is_correct": true
+        },
+        {
+          "id": "0cae7919-3c8e-5485-9e2c-2875de00ae10",
+          "question_id": "a289beda-6182-500a-b595-c2087714bc37",
+          "label": "C",
+          "text_en": "3.06",
+          "text_am": "3.06",
+          "is_correct": false
+        },
+        {
+          "id": "a96e5786-a67b-5321-a581-ccbe2ad54c74",
+          "question_id": "a289beda-6182-500a-b595-c2087714bc37",
+          "label": "D",
+          "text_en": "3.70",
+          "text_am": "3.70",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "63063707-d7ba-5d63-9b9e-6d357defe3ef",
+        "question_id": "a289beda-6182-500a-b595-c2087714bc37",
+        "solution_text_en": "1. Mean μ = 21 / 5 = 4.2.\\n2. Sum of squared deviations = 4.84 + 1.44 + 0.04 + 0.64 + 7.84 = 14.80.\\n3. Population variance σ² = 14.80 / 5 = 2.96.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Mean is 4.2. Sum of squared deviations is 14.80. Variance = 14.80 / 5 = 2.96.",
+        "simpler_explanation_am": null,
+        "key_concept": "Population variance formula: σ² = Σ(x - μ)² / N.",
+        "common_pitfall": "Dividing by N-1 (sample variance, 3.70) instead of N=5."
+      }
+    },
+    {
+      "id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 29,
+      "question_text_en": "Which pair of events represents dependent events?",
+      "question_text_am": "ከሚከተሉት የክስተት ጥንዶች ውስጥ ጥገኛ የሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "80147b94-9b7c-5381-a03e-3402677e9247",
+          "question_id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+          "label": "A",
+          "text_en": "Tossing two fair coins and observing one head and one tail",
+          "text_am": "ሁለት ሳንቲሞችን መወርወር",
+          "is_correct": false
+        },
+        {
+          "id": "c32778ea-42e3-5fab-b18c-e54acdbea815",
+          "question_id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+          "label": "B",
+          "text_en": "Drawing two cards successively from a standard deck without replacement",
+          "text_am": "ከካርታ ሳጥን ውስጥ ሁለት ካርታዎችን ሳያስመልሱ በቅደም ተከተል መምዘዝ",
+          "is_correct": true
+        },
+        {
+          "id": "15f9adcc-9496-5445-bd70-aea22362e03b",
+          "question_id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+          "label": "C",
+          "text_en": "Drawing two balls successively from an urn with replacement",
+          "text_am": "ሁለት ኳሶችን መልሶ በማስቀመጥ መምዘዝ",
+          "is_correct": false
+        },
+        {
+          "id": "d871873c-69d7-5db4-9d54-ae06814cc356",
+          "question_id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+          "label": "D",
+          "text_en": "Tossing a coin and rolling a die at the same time",
+          "text_am": "ሳንቲም እና ዳይስ በአንድ ጊዜ መወርወር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "414ab329-46f3-5ef8-a5a1-5169cb8d7dc4",
+        "question_id": "8ac8fce8-0b80-5636-9850-a6d5a1c0817f",
+        "solution_text_en": "1. Drawing without replacement changes the total outcomes and probability for the next draw.\\n2. Therefore, the second draw is dependent on the first.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Without replacement means the first draw changes the deck, creating dependence.",
+        "simpler_explanation_am": null,
+        "key_concept": "Independent vs Dependent events in probability.",
+        "common_pitfall": "Confusing with replacement (independent) with without replacement (dependent)."
+      }
+    },
+    {
+      "id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 30,
+      "question_text_en": "If lim_{x→2} f(x) = 6 and lim_{x→2} g(x) = -9, what is the value of lim_{x→2} [f(x) - g(x)] / [2f(x) - 7]?",
+      "question_text_am": "lim_{x→2} f(x) = 6 እና lim_{x→2} g(x) = -9 ቢሆኑ፣ lim_{x→2} [f(x) - g(x)] / [2f(x) - 7] ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "22dcc63a-f5b7-5bfc-a774-150c458c2b14",
+          "question_id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+          "label": "A",
+          "text_en": "3",
+          "text_am": "3",
+          "is_correct": true
+        },
+        {
+          "id": "1437fe3e-b23a-5eef-bd68-8e5d727208d6",
+          "question_id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+          "label": "B",
+          "text_en": "-3",
+          "text_am": "-3",
+          "is_correct": false
+        },
+        {
+          "id": "b994c71e-42d4-5ad6-83a5-a4a372f894c8",
+          "question_id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+          "label": "C",
+          "text_en": "15",
+          "text_am": "15",
+          "is_correct": false
+        },
+        {
+          "id": "dd40d308-1271-5b6a-a5e3-10aca1495256",
+          "question_id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+          "label": "D",
+          "text_en": "-15",
+          "text_am": "-15",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "3ef8883c-ebc3-586b-8a69-eaca06a2f0a0",
+        "question_id": "3621f9a9-9317-5ca0-ad25-7dfc1c0c7d1d",
+        "solution_text_en": "Numerator = 6 - (-9) = 15.\\nDenominator = 2(6) - 7 = 5.\\nLimit = 15 / 5 = 3.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "(6 - (-9)) / (12 - 7) = 15 / 5 = 3.",
+        "simpler_explanation_am": null,
+        "key_concept": "Limit laws for rational combinations.",
+        "common_pitfall": "Sign error: 6 - (-9) = 15, not -3."
+      }
+    },
+    {
+      "id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 31,
+      "question_text_en": "Which statement is universally true for real-valued functions?",
+      "question_text_am": "ስለ ፈንክሽኖች ከሚከተሉት አረፍተ ነገሮች ውስጥ ሁልጊዜ እውነት የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "81c83ad5-a77a-568a-8158-4892668bdefc",
+          "question_id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+          "label": "A",
+          "text_en": "y = 0 is tangent to f(x) = |x| at (0, 0)",
+          "text_am": "y = 0 ለ f(x) = |x| ታንጀንት መስመር ነው",
+          "is_correct": false
+        },
+        {
+          "id": "f8330c5e-309e-5234-ac48-0903c1fdb75e",
+          "question_id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+          "label": "B",
+          "text_en": "If a function is differentiable at a, then it is continuous at a",
+          "text_am": "አንድ ፈንክሽን በ a ላይ ዲፈረንሼብል ከሆነ በ a ላይ ቀጣይ ነው",
+          "is_correct": true
+        },
+        {
+          "id": "cbf0e3a9-1d51-55eb-99be-75bc2bc4e6f9",
+          "question_id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+          "label": "C",
+          "text_en": "If f'(a) = 0, the tangent line is y = a",
+          "text_am": "f'(a) = 0 ከሆነ የታንጀንት መስመሩ y = a ነው",
+          "is_correct": false
+        },
+        {
+          "id": "cee5276b-2a3b-5883-be10-30eb6d8c9c15",
+          "question_id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+          "label": "D",
+          "text_en": "If f and g are differentiable at a, then f/g is always differentiable at a",
+          "text_am": "f እና g ዲፈረንሼብል ከሆኑ f/g ሁልጊዜ ዲፈረንሼብል ነው",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "6be899ec-bd95-5ea9-af6a-5425555a7948",
+        "question_id": "2727fe13-ad90-5a62-a988-bb31b35e46a9",
+        "solution_text_en": "1. Differentiability strictly implies continuity at a point.\\n2. The converse does not hold (e.g. |x| is continuous at 0 but not differentiable).\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Differentiable ⇒ Continuous.",
+        "simpler_explanation_am": null,
+        "key_concept": "Differentiability implies continuity.",
+        "common_pitfall": "Thinking continuity guarantees differentiability."
+      }
+    },
+    {
+      "id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 32,
+      "question_text_en": "For what value of constant 'a' is the piecewise function f(x) = { ax + 3 for x ≥ 1; x² - 2x + 3 for x < 1 } continuous at x = 1?",
+      "question_text_am": "የተከፋፈለ ፈንክሽን f(x) = { ax + 3 for x ≥ 1; x² - 2x + 3 for x < 1 } በ x = 1 ላይ ቀጣይ እንዲሆን የ a ዋጋ ስንት መሆን አለበት?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "b44adf0c-8836-522e-8a6a-d4fcbcb04bab",
+          "question_id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+          "label": "A",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": false
+        },
+        {
+          "id": "f0547830-dbd4-5743-b273-6e399a85673f",
+          "question_id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+          "label": "B",
+          "text_en": "-1",
+          "text_am": "-1",
+          "is_correct": true
+        },
+        {
+          "id": "334273d1-cfb1-54c3-9a89-a3deb294159b",
+          "question_id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+          "label": "C",
+          "text_en": "3",
+          "text_am": "3",
+          "is_correct": false
+        },
+        {
+          "id": "1bb0b146-41bf-567a-b04b-7a2ab93ffe94",
+          "question_id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+          "label": "D",
+          "text_en": "4",
+          "text_am": "4",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "b3f3360a-5c88-57ac-abc6-831e78342b08",
+        "question_id": "7cef3229-6d1f-528b-b57c-138326f28e7c",
+        "solution_text_en": "Left limit at x=1 is 1² - 2(1) + 3 = 2.\\nRight value is a(1) + 3 = a + 3.\\nSet equal: a + 3 = 2 ⇒ a = -1.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Left limit = 2. Right limit = a + 3. So a = -1.",
+        "simpler_explanation_am": null,
+        "key_concept": "Piecewise function continuity condition.",
+        "common_pitfall": "Arithmetic sign error: 2 - 3 = -1."
+      }
+    },
+    {
+      "id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 33,
+      "question_text_en": "Find the derivative f'(0) at x = 0 for the function f(x) = (x eˣ) / cos(x).",
+      "question_text_am": "የፈንክሽን f(x) = (x eˣ) / cos(x) ዲሪቬቲቭ በ x = 0 ላይ ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "5e11d658-f1f3-51db-a85f-b3f23e5af430",
+          "question_id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+          "label": "A",
+          "text_en": "2",
+          "text_am": "2",
+          "is_correct": false
+        },
+        {
+          "id": "0e45678c-3c05-565c-a674-d43d4d1dc8b2",
+          "question_id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+          "label": "B",
+          "text_en": "-1",
+          "text_am": "-1",
+          "is_correct": false
+        },
+        {
+          "id": "2a5cf0dc-75b4-59e3-9681-a5b431350ebe",
+          "question_id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+          "label": "C",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": true
+        },
+        {
+          "id": "114997bf-e3e6-50cb-a351-28c5006848ac",
+          "question_id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+          "label": "D",
+          "text_en": "0",
+          "text_am": "0",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "330a074e-a9e7-5d44-b7ce-87436d4f3df3",
+        "question_id": "3e40f82a-40ce-5674-a702-da3e727a3932",
+        "solution_text_en": "f(x) = x eˣ sec(x).\\nf'(0) = (1)(e⁰)(sec 0) + (0)(...) = 1(1)(1) = 1.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "At x = 0, the only non-zero term is (d/dx x) · e⁰ · sec(0) = 1.",
+        "simpler_explanation_am": null,
+        "key_concept": "Product rule for calculus derivatives.",
+        "common_pitfall": "Assuming the whole expression evaluates to 0 because of x."
+      }
+    },
+    {
+      "id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 34,
+      "question_text_en": "Which statement is true regarding bounded sequences of real numbers?",
+      "question_text_am": "ስለ ወሰን ያላቸው ቅደም ተከተሎች እውነት የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "aaa0a4c6-0df1-5743-afa8-7e9399cccd0f",
+          "question_id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+          "label": "A",
+          "text_en": "Every bounded sequence converges",
+          "text_am": "ማንኛውም ወሰን ያለው ተከታታይ ይሰበሰባል",
+          "is_correct": false
+        },
+        {
+          "id": "35770216-0996-5eb9-a427-d0b216c521ac",
+          "question_id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+          "label": "B",
+          "text_en": "Every increasing bounded sequence converges to its greatest lower bound",
+          "text_am": "እየጨመረ የሚሄድ ተከታታይ ወደ ትንሹ ወሰን ይሰበሰባል",
+          "is_correct": false
+        },
+        {
+          "id": "415c9910-bba0-5ec1-9c14-2fa00ccb946b",
+          "question_id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+          "label": "C",
+          "text_en": "Every decreasing bounded sequence converges to its least upper bound",
+          "text_am": "እየቀነሰ የሚሄድ ተከታታይ ወደ ትልቁ ወሰን ይሰበሰባል",
+          "is_correct": false
+        },
+        {
+          "id": "259406a6-cbfc-5130-b0f5-6b18f3604db6",
+          "question_id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+          "label": "D",
+          "text_en": "Every monotone bounded sequence converges",
+          "text_am": "ማንኛውም ሞኖቶን እና ወሰን ያለው ተከታታይ ይሰበሰባል",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "95fa4105-8d40-522c-87dc-11189d0a0223",
+        "question_id": "69cd4dd6-a722-5f5e-8a67-e0217ea5b583",
+        "solution_text_en": "By the Monotone Convergence Theorem, every sequence that is both monotone and bounded converges.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Monotone + Bounded = Convergent.",
+        "simpler_explanation_am": null,
+        "key_concept": "Monotone Convergence Theorem.",
+        "common_pitfall": "Thinking all bounded sequences converge (e.g. (-1)ⁿ oscillates)."
+      }
+    },
+    {
+      "id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 35,
+      "question_text_en": "Suppose f is twice continuously differentiable, f''(3) = 5, and g(x) = f(2x + 3). What is the value of g''(0)?",
+      "question_text_am": "f ሁለት ጊዜ ዲፈረንሼብል ሆኖ f''(3) = 5 እና g(x) = f(2x + 3) ቢሆን፣ የ g''(0) ዋጋ ስንት ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "f3dfd908-b9f4-5878-ba69-c0f6fb266f2b",
+          "question_id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+          "label": "A",
+          "text_en": "40",
+          "text_am": "40",
+          "is_correct": false
+        },
+        {
+          "id": "e92b46dd-e405-59cb-bfb9-e417a4e0021b",
+          "question_id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+          "label": "B",
+          "text_en": "20",
+          "text_am": "20",
+          "is_correct": true
+        },
+        {
+          "id": "9c05e34c-fa89-5892-9539-001d31ec9cc6",
+          "question_id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+          "label": "C",
+          "text_en": "5",
+          "text_am": "5",
+          "is_correct": false
+        },
+        {
+          "id": "bf1de1ca-1076-5de8-8569-c6370f82ab63",
+          "question_id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+          "label": "D",
+          "text_en": "10",
+          "text_am": "10",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "b88da3fe-e778-58e2-8cf8-e63b2eb43a00",
+        "question_id": "f8170da4-42af-5dd7-9b25-0f3a036922c4",
+        "solution_text_en": "g'(x) = 2 f'(2x + 3)\\ng''(x) = 4 f''(2x + 3)\\ng''(0) = 4 f''(3) = 4(5) = 20.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Differentiating twice multiplies by 2 × 2 = 4. 4 × 5 = 20.",
+        "simpler_explanation_am": null,
+        "key_concept": "Chain rule for second derivatives.",
+        "common_pitfall": "Multiplying by 2 only once."
+      }
+    },
+    {
+      "id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 36,
+      "question_text_en": "If f and g are continuous at x = a, which expression may fail to be continuous at a?",
+      "question_text_am": "f እና g በ x = a ላይ ቀጣይ ቢሆኑ፣ በ a ላይ ቀጣይ ሳይሆን ሊቀር የሚችለው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "0d9cec29-88e2-5abc-bafc-e7ef4bd07833",
+          "question_id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+          "label": "A",
+          "text_en": "2f + 3g",
+          "text_am": "2f + 3g",
+          "is_correct": false
+        },
+        {
+          "id": "3c445bf9-4279-5977-9ee1-6763da9f65bf",
+          "question_id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+          "label": "B",
+          "text_en": "f · g",
+          "text_am": "f · g",
+          "is_correct": false
+        },
+        {
+          "id": "ff76f25e-bc26-5080-99d7-63e32dd4c098",
+          "question_id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+          "label": "C",
+          "text_en": "f / g",
+          "text_am": "f / g",
+          "is_correct": true
+        },
+        {
+          "id": "c77a900d-5ca7-5e55-bdc2-b31200bb37de",
+          "question_id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+          "label": "D",
+          "text_en": "f - 2g",
+          "text_am": "f - 2g",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "ec612a81-7ef7-5ec9-87e5-ae18ca6e4dbf",
+        "question_id": "ab8101c9-6106-5ac3-9951-d1289ea1c502",
+        "solution_text_en": "The quotient f / g is undefined and not continuous whenever the denominator g(a) = 0.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "f/g fails if the denominator g(a) = 0.",
+        "simpler_explanation_am": null,
+        "key_concept": "Continuity of rational combinations.",
+        "common_pitfall": "Ignoring the zero-denominator condition."
+      }
+    },
+    {
+      "id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 37,
+      "question_text_en": "Let f be a continuous function on ℝ and let c be in its domain. Which statement MUST be true?",
+      "question_text_am": "f በ ℝ ላይ ቀጣይ ፈንክሽን ቢሆን እና c በዶሜኑ ውስጥ ቢገኝ፣ የግድ እውነት የሆነው የቱ ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "9884afe1-e066-5685-a8c1-46ead2a04b39",
+          "question_id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+          "label": "A",
+          "text_en": "An absolute maximum attained at an interior critical number is also a local maximum",
+          "text_am": "በክሪቲካል ነጥብ ላይ የሚገኝ አብሶሉት ማክሲመም ሎካል ማክሲመምም ጭምር ነው",
+          "is_correct": true
+        },
+        {
+          "id": "bffbd5df-33fb-51e6-a575-c898aa419df8",
+          "question_id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+          "label": "B",
+          "text_en": "If f'(c) = 0, then (c, f(c)) is an inflection point",
+          "text_am": "f'(c) = 0 ከሆነ (c, f(c)) የኢንፍሌክሽን ነጥብ ነው",
+          "is_correct": false
+        },
+        {
+          "id": "06361702-3ae9-5f1e-bcfa-b6b791aebc8a",
+          "question_id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+          "label": "C",
+          "text_en": "If f(c) is a local minimum, then f'(c) = 0",
+          "text_am": "f(c) ሎካል ሚኒመም ከሆነ f'(c) = 0 ነው",
+          "is_correct": false
+        },
+        {
+          "id": "bd5cfc02-53b7-5920-94c2-92166308b20f",
+          "question_id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+          "label": "D",
+          "text_en": "Every critical number produces a local extremum",
+          "text_am": "ማንኛውም ክሪቲካል ነጥብ ሎካል ኤክስትሪመም ይሰጣል",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "943bef36-0bcf-5c45-a449-2ac41c3dcf47",
+        "question_id": "27925b4f-3c8f-51c9-b913-130d3695050b",
+        "solution_text_en": "An absolute maximum is ≥ all points in the entire domain, so it is also ≥ all points in a local neighborhood (local maximum).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "The global highest point is also the local highest point in its neighborhood.",
+        "simpler_explanation_am": null,
+        "key_concept": "Local vs global extrema definitions.",
+        "common_pitfall": "Assuming local extrema must have f'(c)=0 (ignores non-differentiable points)."
+      }
+    },
+    {
+      "id": "9813fc4b-a84b-5574-853e-338592020d4c",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 38,
+      "question_text_en": "What is the seventh term (a₇) of an arithmetic progression whose third term is a₃ = -4 and whose common difference is d = 5?",
+      "question_text_am": "ሦስተኛ ተርሙ a₃ = -4 እና የጋራ ልዩነቱ d = 5 የሆነ አርቲሜቲክ ተከታታይ ሰባተኛ ተርም (a₇) ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "44079663-b899-5562-8b9c-85c47e9b0bea",
+          "question_id": "9813fc4b-a84b-5574-853e-338592020d4c",
+          "label": "A",
+          "text_en": "15",
+          "text_am": "15",
+          "is_correct": false
+        },
+        {
+          "id": "542505f9-aa0d-56da-a2c9-ff33aa684a5d",
+          "question_id": "9813fc4b-a84b-5574-853e-338592020d4c",
+          "label": "B",
+          "text_en": "-15",
+          "text_am": "-15",
+          "is_correct": false
+        },
+        {
+          "id": "c8868093-9be8-58c7-b8b4-b77d77932bcf",
+          "question_id": "9813fc4b-a84b-5574-853e-338592020d4c",
+          "label": "C",
+          "text_en": "16",
+          "text_am": "16",
+          "is_correct": true
+        },
+        {
+          "id": "496776d3-b1d8-59b5-a61b-bc10a900ff21",
+          "question_id": "9813fc4b-a84b-5574-853e-338592020d4c",
+          "label": "D",
+          "text_en": "-16",
+          "text_am": "-16",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "8be23f05-e44f-5f2e-ad98-553eedd5fed4",
+        "question_id": "9813fc4b-a84b-5574-853e-338592020d4c",
+        "solution_text_en": "a₇ = a₃ + (7 - 3)d = -4 + 4(5) = -4 + 20 = 16.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "a₇ = -4 + 4(5) = 16.",
+        "simpler_explanation_am": null,
+        "key_concept": "Arithmetic progression term relations.",
+        "common_pitfall": "Multiplying by 7 instead of the step difference 4."
+      }
+    },
+    {
+      "id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 39,
+      "question_text_en": "A rectangle has a fixed perimeter of 120 m. Which dimensions will maximize its enclosed area?",
+      "question_text_am": "አጠቃላይ ዙሪያው 120 ሜትር የሆነ ሬክታንግል ከፍተኛ ስፋት እንዲኖረው የጎኖቹ ልክ ስንት መሆን አለበት?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "c628a195-ce60-5c35-8019-a25ae5db1d78",
+          "question_id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+          "label": "A",
+          "text_en": "50 m by 10 m",
+          "text_am": "50 ሜ በ 10 ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "7d78420a-2a6c-51c7-9cc6-0628d565071a",
+          "question_id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+          "label": "B",
+          "text_en": "30 m by 30 m",
+          "text_am": "30 ሜ በ 30 ሜ",
+          "is_correct": true
+        },
+        {
+          "id": "dcbe2e48-bdfc-5554-9120-873d9c845689",
+          "question_id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+          "label": "C",
+          "text_en": "35 m by 25 m",
+          "text_am": "35 ሜ በ 25 ሜ",
+          "is_correct": false
+        },
+        {
+          "id": "4f07a7a5-035f-521c-a17d-6cef33e75a00",
+          "question_id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+          "label": "D",
+          "text_en": "40 m by 20 m",
+          "text_am": "40 ሜ በ 20 ሜ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "646dd818-bb32-5c46-832a-a8bc2307225c",
+        "question_id": "cf46a9ef-10d0-55c6-9312-191ef113b33a",
+        "solution_text_en": "Perimeter = 2(l + w) = 120 ⇒ l + w = 60. Area = l(60 - l). Max at vertex l = 30, w = 30.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "For a fixed perimeter, a square has the largest area: 120 / 4 = 30 by 30.",
+        "simpler_explanation_am": null,
+        "key_concept": "Quadratic optimization of geometric area.",
+        "common_pitfall": "Choosing non-square pairs that sum to 60."
+      }
+    },
+    {
+      "id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 40,
+      "question_text_en": "Find the sum of the first 8 terms (S₈) of a geometric progression with first term a = 0.3 and common ratio r = 1/10.",
+      "question_text_am": "የመጀመሪያ ተርሙ a = 0.3 እና የጋራ ሬሾው r = 1/10 የሆነ የጂኦሜትሪክ ተከታታይ የመጀመሪያ 8 ተርሞች ድምር (S₈) ስንት ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "8f2488fe-a476-5a0b-8971-2132a5bc094d",
+          "question_id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+          "label": "A",
+          "text_en": "(3/10) · (10⁸ - 1)/10⁸",
+          "text_am": "(3/10) · (10⁸ - 1)/10⁸",
+          "is_correct": false
+        },
+        {
+          "id": "f4c9c71c-9f92-50d9-83a5-3cbcbdeac12b",
+          "question_id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+          "label": "B",
+          "text_en": "(1/3) · (10⁸ - 1)/10⁸",
+          "text_am": "(1/3) · (10⁸ - 1)/10⁸",
+          "is_correct": true
+        },
+        {
+          "id": "ab1861dc-8a39-5960-a230-f37b4e8b277a",
+          "question_id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+          "label": "C",
+          "text_en": "(1/3) · (10⁸ - 1)/10⁷",
+          "text_am": "(1/3) · (10⁸ - 1)/10⁷",
+          "is_correct": false
+        },
+        {
+          "id": "3a0018b8-d209-5968-bd09-ae2be66a423e",
+          "question_id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+          "label": "D",
+          "text_en": "(3/10) · (10⁸ - 1)/10⁹",
+          "text_am": "(3/10) · (10⁸ - 1)/10⁹",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "7ec891bc-7e07-50e8-9a52-309784ce3c5d",
+        "question_id": "6a8d74a2-389e-5506-8ec0-be34b9cbf461",
+        "solution_text_en": "S₈ = (3/10)(1 - 10⁻⁸) / (1 - 1/10) = (3/10)/(9/10) · (10⁸ - 1)/10⁸ = (1/3) · (10⁸ - 1)/10⁸.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "a / (1-r) = (3/10)/(9/10) = 1/3. Multiplied by (1 - 10⁻⁸) gives (1/3)(10⁸ - 1)/10⁸.",
+        "simpler_explanation_am": null,
+        "key_concept": "Geometric series sum formula: Sₙ = a(1 - rⁿ)/(1 - r).",
+        "common_pitfall": "Failing to simplify (3/10)/(9/10) to 1/3."
+      }
+    },
+    {
+      "id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 41,
+      "question_text_en": "Suppose f is continuous on [a, b], differentiable on (a, b), and f(a) = f(b). Which theorem applies and what conclusion MUST hold?",
+      "question_text_am": "f በ [a, b] ላይ ቀጣይ፣ በ (a, b) ላይ ዲፈረንሼብል ሆኖ f(a) = f(b) ቢሆን፣ የግድ እውነት የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "42d63c23-9129-5c8d-9f11-3fe6c227007d",
+          "question_id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+          "label": "A",
+          "text_en": "The function has a zero in (a, b)",
+          "text_am": "ፈንክሽኑ በ (a, b) ውስጥ ዜሮ አለው",
+          "is_correct": false
+        },
+        {
+          "id": "4772415e-94bb-570e-a5bb-3906272e8134",
+          "question_id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+          "label": "B",
+          "text_en": "The function has a minimum in (a, b)",
+          "text_am": "ፈንክሽኑ በ (a, b) ውስጥ ሚኒመም አለው",
+          "is_correct": false
+        },
+        {
+          "id": "e02ae7c7-943c-5dcf-bfbd-66d86b8b7c63",
+          "question_id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+          "label": "C",
+          "text_en": "The function has a maximum in (a, b)",
+          "text_am": "ፈንክሽኑ በ (a, b) ውስጥ ማክሲመም አለው",
+          "is_correct": false
+        },
+        {
+          "id": "110cb9c5-b83c-53ec-a414-6797f36fe058",
+          "question_id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+          "label": "D",
+          "text_en": "There is some c ∈ (a, b) where the graph has a horizontal tangent (f'(c) = 0)",
+          "text_am": "በ (a, b) ውስጥ አግድም ታንጀንት (f'(c) = 0) ያለው ነጥብ c አለ",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "ceca43ca-5ac8-5db1-adfe-95f0633b54ba",
+        "question_id": "cb037be6-9b03-5b8b-b7ed-49fd65ef1666",
+        "solution_text_en": "By Rolle's Theorem, there exists c ∈ (a, b) such that f'(c) = 0 (horizontal tangent).\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Rolle's Theorem guarantees a horizontal tangent (f'(c) = 0).",
+        "simpler_explanation_am": null,
+        "key_concept": "Rolle's Theorem in differential calculus.",
+        "common_pitfall": "Assuming the function must cross y=0."
+      }
+    },
+    {
+      "id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 42,
+      "question_text_en": "What is the perpendicular distance from point P(3, 4) to the line 3x + 4y - 5 = 0?",
+      "question_text_am": "ከነጥብ P(3, 4) እስከ ቀጥተኛ መስመር 3x + 4y - 5 = 0 ያለው ቀጥተኛ ርቀት ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "55f13395-9bbd-5c4c-bd66-ed943d3d175c",
+          "question_id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+          "label": "A",
+          "text_en": "5 units",
+          "text_am": "5 ዩኒት",
+          "is_correct": false
+        },
+        {
+          "id": "536ca692-9f50-5d85-a430-c4311d697371",
+          "question_id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+          "label": "B",
+          "text_en": "6 units",
+          "text_am": "6 ዩኒት",
+          "is_correct": false
+        },
+        {
+          "id": "551f3f06-c1d7-5f9e-998f-bb8eaca1992f",
+          "question_id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+          "label": "C",
+          "text_en": "4 units",
+          "text_am": "4 ዩኒት",
+          "is_correct": true
+        },
+        {
+          "id": "10609996-41c8-5dac-b79c-58bc9d831c84",
+          "question_id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+          "label": "D",
+          "text_en": "7 units",
+          "text_am": "7 ዩኒት",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "0fe2c548-c8bd-5b51-b327-bb9b15e9fe92",
+        "question_id": "52b63fa3-4ffb-540a-80e6-895104a6ad27",
+        "solution_text_en": "d = |3(3) + 4(4) - 5| / √(3² + 4²) = |9 + 16 - 5| / 5 = 20 / 5 = 4 units.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "|20| / 5 = 4 units.",
+        "simpler_explanation_am": null,
+        "key_concept": "Point to line distance formula.",
+        "common_pitfall": "Forgetting the denominator √(3²+4²) = 5."
+      }
+    },
+    {
+      "id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 43,
+      "question_text_en": "A chord of an ellipse that passes through the center and is perpendicular to the major axis is called the:",
+      "question_text_am": "በኤሊፕስ መሃል ነጥብ የሚያልፍ እና ለዋናው ዘንግ ቋሚ የሆነ ኮርድ ምን ይባላል?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "0e462a51-cff7-5505-9086-072eb1b58cb4",
+          "question_id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+          "label": "A",
+          "text_en": "Semi-major axis",
+          "text_am": "ሴሚ-ሜጀር አክሲስ",
+          "is_correct": false
+        },
+        {
+          "id": "5845d774-f456-53b2-a91b-48f3db42574b",
+          "question_id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+          "label": "B",
+          "text_en": "Minor axis",
+          "text_am": "ማይነር አክሲስ",
+          "is_correct": true
+        },
+        {
+          "id": "2d3bbd30-018d-51c2-ac00-ae7276c7591c",
+          "question_id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+          "label": "C",
+          "text_en": "Eccentricity",
+          "text_am": "ኤክሴንትሪሲቲ",
+          "is_correct": false
+        },
+        {
+          "id": "ddb0fdf5-b898-5d6d-a0c7-e23215761f7e",
+          "question_id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+          "label": "D",
+          "text_en": "Latus rectum",
+          "text_am": "ላተስ ሬክተም",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "c4c994f4-d477-5cb0-a9aa-d249033065e1",
+        "question_id": "ad37a11a-ea08-5d4c-b1ef-7a3a74acf982",
+        "solution_text_en": "The central chord perpendicular to the major axis is the minor axis.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Perpendicular central chord of an ellipse = Minor axis.",
+        "simpler_explanation_am": null,
+        "key_concept": "Geometry of ellipse axes.",
+        "common_pitfall": "Confusing minor axis with latus rectum."
+      }
+    },
+    {
+      "id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 44,
+      "question_text_en": "If A is a 3 × 3 square matrix and det(A) = 5, what is the value of det(2A)?",
+      "question_text_am": "A ባለ 3 × 3 ማትሪክስ ሆኖ det(A) = 5 ቢሆን፣ የ det(2A) ዋጋ ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "14ff0b88-03fa-5e24-81b8-322ccc121567",
+          "question_id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+          "label": "A",
+          "text_en": "10",
+          "text_am": "10",
+          "is_correct": false
+        },
+        {
+          "id": "c4b79583-4c51-5919-8c29-f2b7ec5f8a43",
+          "question_id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+          "label": "B",
+          "text_en": "2/5",
+          "text_am": "2/5",
+          "is_correct": false
+        },
+        {
+          "id": "df04f322-a830-57af-a9e6-cc86a5c0bce2",
+          "question_id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+          "label": "C",
+          "text_en": "40",
+          "text_am": "40",
+          "is_correct": true
+        },
+        {
+          "id": "51a2eaa5-7188-5224-ae12-6511f77f29aa",
+          "question_id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+          "label": "D",
+          "text_en": "30",
+          "text_am": "30",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "9c3132ad-ad9f-5412-ade8-930ac9cfecec",
+        "question_id": "406c7369-ce38-5ced-ae6c-bfd5ccf59101",
+        "solution_text_en": "det(2A) = 2³ det(A) = 8(5) = 40.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "det(2A) = 2³ × 5 = 8 × 5 = 40.",
+        "simpler_explanation_am": null,
+        "key_concept": "Determinant scalar rule: det(kA) = kⁿ det(A).",
+        "common_pitfall": "Multiplying by 2 instead of 2³ = 8."
+      }
+    },
+    {
+      "id": "dee5371c-9db7-5898-a262-a937da80a774",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 45,
+      "question_text_en": "Which augmented matrix represents the linear system { 2x + y + 3z = 4, x - z = 1, -4x + y = 3 }?",
+      "question_text_am": "የቀረበውን ሊኒየር ሲስተም { 2x + y + 3z = 4, x - z = 1, -4x + y = 3 } የሚወክለው አውግሜንትድ ማትሪክስ የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "2553c951-6a09-5e26-9f69-1b9dd4e0c6ed",
+          "question_id": "dee5371c-9db7-5898-a262-a937da80a774",
+          "label": "A",
+          "text_en": "[3 2 1 | 1; -1 1 -1 | 3; -1 -4 1 | 4]",
+          "text_am": "[3 2 1 | 1; -1 1 -1 | 3; -1 -4 1 | 4]",
+          "is_correct": false
+        },
+        {
+          "id": "0fc1c549-143a-5ba0-84f7-42c1923c55c0",
+          "question_id": "dee5371c-9db7-5898-a262-a937da80a774",
+          "label": "B",
+          "text_en": "[3 1 2 | 4; -1 0 1 | 1; -4 1 -3 | 0]",
+          "text_am": "[3 1 2 | 4; -1 0 1 | 1; -4 1 -3 | 0]",
+          "is_correct": false
+        },
+        {
+          "id": "4bfead37-a1d4-5472-b820-db568d7af056",
+          "question_id": "dee5371c-9db7-5898-a262-a937da80a774",
+          "label": "C",
+          "text_en": "[1 2 3 | 4; -1 1 -1 | 1; 1 -4 -1 | 3]",
+          "text_am": "[1 2 3 | 4; -1 1 -1 | 1; 1 -4 -1 | 3]",
+          "is_correct": false
+        },
+        {
+          "id": "c59c2ac5-b18a-5a48-b758-b88f5cc14f3f",
+          "question_id": "dee5371c-9db7-5898-a262-a937da80a774",
+          "label": "D",
+          "text_en": "[2 1 3 | 4; 1 0 -1 | 1; -4 1 0 | 3]",
+          "text_am": "[2 1 3 | 4; 1 0 -1 | 1; -4 1 0 | 3]",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "5664e1b1-a140-58df-a605-6bb0db564f20",
+        "question_id": "dee5371c-9db7-5898-a262-a937da80a774",
+        "solution_text_en": "Row 1: [2, 1, 3 | 4], Row 2: [1, 0, -1 | 1], Row 3: [-4, 1, 0 | 3].\\nMatches choice D.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Coefficients: row 1 (2,1,3|4), row 2 (1,0,-1|1), row 3 (-4,1,0|3).",
+        "simpler_explanation_am": null,
+        "key_concept": "Augmented matrix form.",
+        "common_pitfall": "Missing zeros for absent variables."
+      }
+    },
+    {
+      "id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 46,
+      "question_text_en": "Which statement is NOT true regarding arguments and deductive validity in mathematical logic?",
+      "question_text_am": "በማቲማቲካል ሎጂክ ውስጥ ስለ አርጉመንቶች እና ትክክለኛነት (validity) እውነት ያልሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "3e496720-0eee-55cc-b66e-9944b8d8ff3e",
+          "question_id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+          "label": "A",
+          "text_en": "An invalid argument is sometimes informally described as fallacious",
+          "text_am": "ትክክል ያልሆነ አርጉመንት ስህተት (fallacious) ይባላል",
+          "is_correct": false
+        },
+        {
+          "id": "1519ae34-0bdd-5575-a85d-8f81a84bda80",
+          "question_id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+          "label": "B",
+          "text_en": "Validity can be formally checked using a truth table",
+          "text_am": "ትክክለኛነትን በ Truth Table ማረጋገጥ ይቻላል",
+          "is_correct": false
+        },
+        {
+          "id": "8b0ca487-4b8c-5ee5-8981-f05c05620d50",
+          "question_id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+          "label": "C",
+          "text_en": "In a valid argument, the conclusion may be false when all premises are true",
+          "text_am": "በቫሊድ አርጉመንት ውስጥ ሁሉም መነሻዎች እውነት ሆነው መደምደሚያው ውሸት ሊሆን ይችላል",
+          "is_correct": true
+        },
+        {
+          "id": "ced31c75-d2dc-5732-bab0-565785140442",
+          "question_id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+          "label": "D",
+          "text_en": "In a valid argument, true premises guarantee a true conclusion",
+          "text_am": "በቫሊድ አርጉመንት ውስጥ እውነተኛ መነሻዎች እውነተኛ መደምደሚያን ያረጋግጣሉ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "0b7522ae-f2b9-59c4-8884-c58156fea01e",
+        "question_id": "1b88cb91-6915-55b6-af94-24dc23bb9450",
+        "solution_text_en": "1. By definition, a deductive argument is valid if and only if it is impossible for all premises to be true while the conclusion is false simultaneously.\\n2. Statement C asserts that the conclusion may be false with true premises, which directly contradicts the definition of validity.\\nTherefore, the statement that is NOT true is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "A valid argument cannot have true premises and a false conclusion.",
+        "simpler_explanation_am": null,
+        "key_concept": "Definition of logical validity in deductive logic.",
+        "common_pitfall": "Confusing validity of an argument structure with soundness or empirical truth."
+      }
+    },
+    {
+      "id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 47,
+      "question_text_en": "Which conditional statement has a converse whose truth value is FALSE?",
+      "question_text_am": "ከሚከተሉት ሁኔታዊ አረፍተ ነገሮች (conditional statements) ውስጥ ግልባጩ (converse) ውሸት (False) የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "f745e362-ff70-5d8c-858f-8697a417b712",
+          "question_id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+          "label": "A",
+          "text_en": "If 6 is prime, then 4 is even",
+          "text_am": "6 ፕራይም ቁጥር ከሆነ፣ 4 ኢቭን (ተጋማሽ) ቁጥር ነው",
+          "is_correct": true
+        },
+        {
+          "id": "8229033f-3993-5a4e-a6d3-e61b852058f9",
+          "question_id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+          "label": "B",
+          "text_en": "If humans are immortal, then Earth does not rotate around the Sun",
+          "text_am": "ሰዎች ሟቾች ካልሆኑ፣ ምድር በፀሐይ ዙሪያ አትዞርም",
+          "is_correct": false
+        },
+        {
+          "id": "ea9d72ab-5295-586d-afd2-a10879ef1410",
+          "question_id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+          "label": "C",
+          "text_en": "If Derartu Tulu was born on October 21, 1971, then 6 is prime",
+          "text_am": "ደራርቱ ቱሉ በጥቅምት 21 1971 ከተወለደች፣ 6 ፕራይም ቁጥር ነው",
+          "is_correct": false
+        },
+        {
+          "id": "a80c798b-2588-5f5a-b1b1-f12e00be107b",
+          "question_id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+          "label": "D",
+          "text_en": "If humans are mortal, then Earth does not rotate around the Sun",
+          "text_am": "ሰዎች ሟች ከሆኑ፣ ምድር በፀሐይ ዙሪያ አትዞርም",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "eef9dd4a-1fdc-539c-9437-ce65e84c5e7a",
+        "question_id": "b7390af9-6f88-50bd-9311-0362107ecd31",
+        "solution_text_en": "1. For the conditional 'If P, then Q' (P ⇒ Q), its converse is 'If Q, then P' (Q ⇒ P).\\n2. For choice A: P = '6 is prime' (False), Q = '4 is even' (True).\\n3. The converse is: 'If 4 is even, then 6 is prime' (True ⇒ False), which is FALSE.\\n4. In all other choices, the converse has a false hypothesis or true conclusion, resulting in a truth value of True.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Converse of A is 'If 4 is even (True), then 6 is prime (False)', which evaluates to False.",
+        "simpler_explanation_am": null,
+        "key_concept": "Truth tables of conditional (P ⇒ Q) and converse (Q ⇒ P) propositions.",
+        "common_pitfall": "Evaluating the original statement instead of its converse."
+      }
+    },
+    {
+      "id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 48,
+      "question_text_en": "Solve the logarithmic equation: log(x² - 3) = 2 log(x - 1)",
+      "question_text_am": "የሎጋሪዝም እኩልዮሹን መፍትሔ ፈልጉ: log(x² - 3) = 2 log(x - 1)",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "b8fcf1ba-c810-57cc-9c74-18a11a3a0230",
+          "question_id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+          "label": "A",
+          "text_en": "{1}",
+          "text_am": "{1}",
+          "is_correct": false
+        },
+        {
+          "id": "fe2187db-fc4b-5a9f-9943-62503fab6014",
+          "question_id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+          "label": "B",
+          "text_en": "{2}",
+          "text_am": "{2}",
+          "is_correct": true
+        },
+        {
+          "id": "a363f8ca-71ce-5343-a511-4d13b3e43dbc",
+          "question_id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+          "label": "C",
+          "text_en": "{4}",
+          "text_am": "{4}",
+          "is_correct": false
+        },
+        {
+          "id": "b6d13052-dadf-5084-a64a-b4907b32708d",
+          "question_id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+          "label": "D",
+          "text_en": "∅ (Empty set)",
+          "text_am": "∅ (ባዶ ስብስብ)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "daf2dfd1-4264-55ab-89fc-c0fcdac318c3",
+        "question_id": "009071f9-4abf-500f-8c0a-473f77db64f3",
+        "solution_text_en": "1. Domain restrictions: x - 1 > 0 ⇒ x > 1, and x² - 3 > 0 ⇒ x > √3 ≈ 1.732.\\n2. Use power rule: 2 log(x - 1) = log((x - 1)²).\\n3. Equate arguments: x² - 3 = (x - 1)² = x² - 2x + 1.\\n4. Cancel x²: -3 = -2x + 1 ⇒ 2x = 4 ⇒ x = 2.\\n5. Check domain: x = 2 > √3, valid.\\nTherefore, the solution set is {2} (Choice B).",
+        "solution_text_am": null,
+        "simpler_explanation_en": "x² - 3 = (x - 1)² ⇒ x² - 3 = x² - 2x + 1 ⇒ 2x = 4 ⇒ x = 2.",
+        "simpler_explanation_am": null,
+        "key_concept": "Properties of logarithms and domain validation for extraneous solutions.",
+        "common_pitfall": "Failing to verify the domain restriction x > 1."
+      }
+    },
+    {
+      "id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 49,
+      "question_text_en": "Which trigonometric identity/equality is true for all angles?",
+      "question_text_am": "ከሚከተሉት የትሪጎኖሜትሪ እኩልነቶች ውስጥ ትክክል የሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "3ce50936-3a53-5b24-a44a-b542b5204abb",
+          "question_id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+          "label": "A",
+          "text_en": "tan(75°) = tan(105°)",
+          "text_am": "tan(75°) = tan(105°)",
+          "is_correct": false
+        },
+        {
+          "id": "728e419c-9c64-5530-a0e2-133ccb4a49cd",
+          "question_id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+          "label": "B",
+          "text_en": "sin(75°) = cos(105°)",
+          "text_am": "sin(75°) = cos(105°)",
+          "is_correct": false
+        },
+        {
+          "id": "a56050ff-a97b-5b1c-ba36-bfef00156882",
+          "question_id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+          "label": "C",
+          "text_en": "cos(120°) = cos(60°)",
+          "text_am": "cos(120°) = cos(60°)",
+          "is_correct": false
+        },
+        {
+          "id": "f0dd08df-6f69-5875-8ff9-a0318a8b9d21",
+          "question_id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+          "label": "D",
+          "text_en": "sin(120°) = sin(60°)",
+          "text_am": "sin(120°) = sin(60°)",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "0aace992-7140-59b7-aced-70901713e3cb",
+        "question_id": "bc6c8947-6819-5815-895c-36f0e6c57e96",
+        "solution_text_en": "1. Using the supplementary angle identity: sin(180° - θ) = sin(θ).\\n2. For θ = 60°: sin(180° - 60°) = sin(120°) = sin(60°) = √3/2.\\n3. cos(120°) = -cos(60°), tan(105°) = -tan(75°).\\nTherefore, the correct identity is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "sin(120°) = sin(180° - 60°) = sin(60°) = √3/2.",
+        "simpler_explanation_am": null,
+        "key_concept": "Quadrant II trigonometric reduction formulas.",
+        "common_pitfall": "Thinking cosine is positive in the second quadrant."
+      }
+    },
+    {
+      "id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 50,
+      "question_text_en": "Solve the quadratic inequality: x² - 5x + 6 ≤ 0",
+      "question_text_am": "የኳድራቲክ ኢኳሊቲውን መፍትሔ ፈልጉ: x² - 5x + 6 ≤ 0",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "c2ae86c3-6e95-561f-8d09-94fadd1cb7da",
+          "question_id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+          "label": "A",
+          "text_en": "[0, 2]",
+          "text_am": "[0, 2]",
+          "is_correct": false
+        },
+        {
+          "id": "a9509c71-f27e-5904-b940-bd4789f66814",
+          "question_id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+          "label": "B",
+          "text_en": "[2, 3]",
+          "text_am": "[2, 3]",
+          "is_correct": true
+        },
+        {
+          "id": "6af0966f-9c57-5803-80f9-d183450b925f",
+          "question_id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+          "label": "C",
+          "text_en": "(3, ∞)",
+          "text_am": "(3, ∞)",
+          "is_correct": false
+        },
+        {
+          "id": "2831de18-bdf3-5c86-86b3-22099d456f29",
+          "question_id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+          "label": "D",
+          "text_en": "(-∞, 2]",
+          "text_am": "(-∞, 2]",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "fd2c8ae8-cd3b-5ac8-90e8-8df1374c4bf4",
+        "question_id": "0c4d00ae-ac33-5fd1-85c2-0cd03076be29",
+        "solution_text_en": "1. Factor the quadratic polynomial: x² - 5x + 6 = (x - 2)(x - 3).\\n2. The roots are x = 2 and x = 3.\\n3. The parabola y = (x - 2)(x - 3) opens upward, so it is ≤ 0 between and including its real roots.\\n4. Solution interval: 2 ≤ x ≤ 3, or [2, 3].\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "(x - 2)(x - 3) ≤ 0 has roots 2 and 3, so solution is [2, 3].",
+        "simpler_explanation_am": null,
+        "key_concept": "Solving quadratic inequalities using sign charts / parabolas.",
+        "common_pitfall": "Using open interval (2, 3) instead of closed interval [2, 3] for ≤."
+      }
+    },
+    {
+      "id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 51,
+      "question_text_en": "What point divides the directed line segment from P(0, 1) to Q(5, 6) in the ratio 2 : 3 measured from P?",
+      "question_text_am": "ከነጥብ P(0, 1) እስከ Q(5, 6) ያለውን የመስመር ክፍል በ 2:3 ንፅፅር ከ P አንጻር የሚከፍለው ነጥብ የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "9d584c20-9532-5fe0-b30b-4d582bab82df",
+          "question_id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+          "label": "A",
+          "text_en": "(2, 3)",
+          "text_am": "(2, 3)",
+          "is_correct": true
+        },
+        {
+          "id": "5f6d8173-771a-587b-8b7f-f5d3fb8a8b8d",
+          "question_id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+          "label": "B",
+          "text_en": "(0, 2)",
+          "text_am": "(0, 2)",
+          "is_correct": false
+        },
+        {
+          "id": "71e2cd5a-5b23-5ffb-805a-7032bafdc196",
+          "question_id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+          "label": "C",
+          "text_en": "(3, 2)",
+          "text_am": "(3, 2)",
+          "is_correct": false
+        },
+        {
+          "id": "23f806fb-4919-55de-9730-904f35a6af87",
+          "question_id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+          "label": "D",
+          "text_en": "(0, 3)",
+          "text_am": "(0, 3)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d7cc957d-a300-5b8e-bf93-bbc7d22b09f4",
+        "question_id": "2f9f930c-3a93-5d1f-90a0-5ba8a3bb17e6",
+        "solution_text_en": "1. Section formula for ratio m : n (here m=2, n=3):\\n- x = (m x₂ + n x₁) / (m + n) = (2(5) + 3(0)) / (2 + 3) = 10 / 5 = 2\\n- y = (m y₂ + n y₁) / (m + n) = (2(6) + 3(1)) / (2 + 3) = (12 + 3) / 5 = 15 / 5 = 3\\n2. The dividing point is (2, 3).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "x = (2×5 + 3×0)/5 = 2. y = (2×6 + 3×1)/5 = 3. Point is (2, 3).",
+        "simpler_explanation_am": null,
+        "key_concept": "Internal section formula for dividing a line segment in a given ratio.",
+        "common_pitfall": "Dividing by 3 or 2 instead of the sum m + n = 5."
+      }
+    },
+    {
+      "id": "ae36c708-db80-5541-b74c-1933f33056e9",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 52,
+      "question_text_en": "Which exact trigonometric evaluation is correct?",
+      "question_text_am": "ከሚከተሉት የትሪጎኖሜትሪ ዋጋዎች ውስጥ ትክክል የሆነው የቱ ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "fd8a42ce-cd7f-55b6-b397-d31de029b195",
+          "question_id": "ae36c708-db80-5541-b74c-1933f33056e9",
+          "label": "A",
+          "text_en": "sin(-120°) = 0.5",
+          "text_am": "sin(-120°) = 0.5",
+          "is_correct": false
+        },
+        {
+          "id": "ddbfba24-75be-5242-8ecd-8e4a1e81175a",
+          "question_id": "ae36c708-db80-5541-b74c-1933f33056e9",
+          "label": "B",
+          "text_en": "cos(-120°) = -0.5",
+          "text_am": "cos(-120°) = -0.5",
+          "is_correct": true
+        },
+        {
+          "id": "d6955a98-62d9-52ec-86a9-35491029b319",
+          "question_id": "ae36c708-db80-5541-b74c-1933f33056e9",
+          "label": "C",
+          "text_en": "tan(-120°) = -1",
+          "text_am": "tan(-120°) = -1",
+          "is_correct": false
+        },
+        {
+          "id": "bd93c67e-d4d4-5cb0-a45a-2429a6bbf4c1",
+          "question_id": "ae36c708-db80-5541-b74c-1933f33056e9",
+          "label": "D",
+          "text_en": "cos(-60°) = √3/2",
+          "text_am": "cos(-60°) = √3/2",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "dcc8c0b9-87f6-50b8-813f-37e60a7de139",
+        "question_id": "ae36c708-db80-5541-b74c-1933f33056e9",
+        "solution_text_en": "1. Cosine is an even function: cos(-θ) = cos(θ).\\n2. cos(-120°) = cos(120°).\\n3. In Quadrant II: cos(120°) = cos(180° - 60°) = -cos(60°) = -1/2 = -0.5.\\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "cos(-120°) = cos(120°) = -cos(60°) = -0.5.",
+        "simpler_explanation_am": null,
+        "key_concept": "Even/Odd parity and reference angles of trigonometric functions.",
+        "common_pitfall": "Treating cosine as an odd function (negating the angle)."
+      }
+    },
+    {
+      "id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 53,
+      "question_text_en": "Which function maps the set of all real numbers ℝ onto the interval [0, ∞)?",
+      "question_text_am": "የሁሉንም ሪል ቁጥሮች ℝ ወደ ኢንተርቫል [0, ∞) የሚያገናኘው (onto) ፈንክሽን የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "a95b306c-e0b7-50e0-92b4-86b999169fcf",
+          "question_id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+          "label": "A",
+          "text_en": "f(x) = √(x²)",
+          "text_am": "f(x) = √(x²)",
+          "is_correct": true
+        },
+        {
+          "id": "a9efc2d9-841d-531a-89a4-6c8cbd394f06",
+          "question_id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+          "label": "B",
+          "text_en": "f(x) = |x| + 2",
+          "text_am": "f(x) = |x| + 2",
+          "is_correct": false
+        },
+        {
+          "id": "8d5eb7b7-cc9d-5e4b-a65c-0eb070a3e1c2",
+          "question_id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+          "label": "C",
+          "text_en": "f(x) = x² + 1",
+          "text_am": "f(x) = x² + 1",
+          "is_correct": false
+        },
+        {
+          "id": "4b79943c-1b85-548c-97b6-f83c03a97af2",
+          "question_id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+          "label": "D",
+          "text_en": "f(x) = 2ˣ",
+          "text_am": "f(x) = 2ˣ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "ff5b069d-b406-50fa-9c75-00bdfbbc1158",
+        "question_id": "a7efa161-5504-5ebe-8c25-dc5f4fa4495e",
+        "solution_text_en": "1. By principal square root definition, √(x²) = |x|.\\n2. For all x ∈ ℝ, |x| ≥ 0, and for any y ∈ [0, ∞), choosing x = y gives f(y) = y, so the range is exactly [0, ∞).\\n3. Ranges of the others: |x| + 2 gives [2, ∞); x² + 1 gives [1, ∞); 2ˣ gives (0, ∞) (never equals 0).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "√(x²) = |x|, whose range is exactly [0, ∞) including 0.",
+        "simpler_explanation_am": null,
+        "key_concept": "Range determination of absolute value, radical, and exponential functions.",
+        "common_pitfall": "Thinking 2ˣ includes 0 (exponential function range is strictly positive (0, ∞))."
+      }
+    },
+    {
+      "id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 54,
+      "question_text_en": "Simplify the rational expression for x ≠ 2: (4x⁴ - 64) / (2 - x)",
+      "question_text_am": "የአልጀብራ ክፍልፋዩን አቃልሉ (x ≠ 2): (4x⁴ - 64) / (2 - x)",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "d98ff06a-519e-5171-9801-8f03d082149b",
+          "question_id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+          "label": "A",
+          "text_en": "4(x + 2)(x² + 4)",
+          "text_am": "4(x + 2)(x² + 4)",
+          "is_correct": false
+        },
+        {
+          "id": "529eec58-5a07-5b1c-84e7-213ec3fedde6",
+          "question_id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+          "label": "B",
+          "text_en": "4(x - 2)(x² - 4)",
+          "text_am": "4(x - 2)(x² - 4)",
+          "is_correct": false
+        },
+        {
+          "id": "a09a0453-3396-53a8-893f-16b59ac36dea",
+          "question_id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+          "label": "C",
+          "text_en": "-4(x + 2)(x² + 4)",
+          "text_am": "-4(x + 2)(x² + 4)",
+          "is_correct": true
+        },
+        {
+          "id": "3ac8e1f3-2db9-5cb3-8b98-705380ccdcb1",
+          "question_id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+          "label": "D",
+          "text_en": "-4(x - 2)(x² + 4)",
+          "text_am": "-4(x - 2)(x² + 4)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "a0bda402-1236-5079-8415-23aa6abc242f",
+        "question_id": "c0d2ea31-17fe-5e3b-ac48-19554a3542c2",
+        "solution_text_en": "1. Factor numerator using difference of squares:\\n4x⁴ - 64 = 4(x⁴ - 16) = 4(x² - 4)(x² + 4) = 4(x - 2)(x + 2)(x² + 4).\\n2. Denominator is (2 - x) = -(x - 2).\\n3. Cancel the common factor (x - 2):\\n[4(x - 2)(x + 2)(x² + 4)] / [-(x - 2)] = -4(x + 2)(x² + 4).\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "4(x-2)(x+2)(x²+4) / -(x-2) = -4(x+2)(x²+4).",
+        "simpler_explanation_am": null,
+        "key_concept": "Factoring polynomials using difference of squares and sign reversal.",
+        "common_pitfall": "Forgetting that (2 - x) = -(x - 2), missing the negative sign."
+      }
+    },
+    {
+      "id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 55,
+      "question_text_en": "Birr 20,000 is deposited at a 12% nominal annual interest rate compounded monthly. How many years will it take for the investment to double?",
+      "question_text_am": "20,000 ብር በየወሩ በሚታሰብ 12% ዓመታዊ ወለድ ቢቀመጥ፣ ገንዘቡ እጥፍ (40,000) ለመሆን ስንት ዓመታት ይፈጃል?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "908f42e6-000d-578d-b381-52c3770c9ea0",
+          "question_id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+          "label": "A",
+          "text_en": "7.59 years",
+          "text_am": "7.59 ዓመታት",
+          "is_correct": false
+        },
+        {
+          "id": "b7996539-422a-54b9-ba5a-b149e49bb728",
+          "question_id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+          "label": "B",
+          "text_en": "6.00 years",
+          "text_am": "6.00 ዓመታት",
+          "is_correct": false
+        },
+        {
+          "id": "7f72586f-98fa-52cb-a1d2-2400e35370e5",
+          "question_id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+          "label": "C",
+          "text_en": "5.81 years",
+          "text_am": "5.81 ዓመታት",
+          "is_correct": true
+        },
+        {
+          "id": "aacec783-8dfd-55f8-a476-7a74b06b97cb",
+          "question_id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+          "label": "D",
+          "text_en": "5.00 years",
+          "text_am": "5.00 ዓመታት",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "78391368-9b8a-53c0-a79e-49977dcde5a8",
+        "question_id": "38d59825-33c0-5965-8c34-9dc0e544d2a7",
+        "solution_text_en": "1. Compound interest formula: A = P(1 + r/n)^(nt).\\n2. To double: A/P = 2, with r = 0.12, n = 12 months/year.\\n3. Monthly multiplier: 1 + 0.12/12 = 1 + 0.01 = 1.01.\\n4. Equation: 2 = (1.01)^(12t).\\n5. Take natural logs: ln(2) = 12t · ln(1.01) ⇒ t = ln(2) / [12 ln(1.01)].\\n6. Computation: ln(2) ≈ 0.693147, 12 × ln(1.01) ≈ 12 × 0.0099503 = 0.119404.\\n7. t = 0.693147 / 0.119404 ≈ 5.805 ≈ 5.81 years.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "t = ln(2) / (12 × ln(1.01)) ≈ 0.6931 / 0.1194 ≈ 5.81 years.",
+        "simpler_explanation_am": null,
+        "key_concept": "Compound interest doubling time formula.",
+        "common_pitfall": "Using simple interest (100/12 = 8.33) or annual compounding (ln2/ln1.12 = 6.12)."
+      }
+    },
+    {
+      "id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 56,
+      "question_text_en": "For the 3 × 3 matrix A = [1 3 5; 6 4 2; 9 7 0], which statement regarding minors and cofactors is TRUE?",
+      "question_text_am": "ለ 3 × 3 ማትሪክስ A = [1 3 5; 6 4 2; 9 7 0] ስለ ማይነሮች እና ኮፋክተሮች እውነት የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "4bf576c0-3d6d-5e00-84b5-241e4f1eb2ba",
+          "question_id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+          "label": "A",
+          "text_en": "The minor of entry 3 is 18",
+          "text_am": "የቁጥር 3 ማይነር 18 ነው",
+          "is_correct": false
+        },
+        {
+          "id": "0b298124-6ad2-573a-9a6c-d451af595dfa",
+          "question_id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+          "label": "B",
+          "text_en": "The cofactor of entry 5 is -6",
+          "text_am": "የቁጥር 5 ኮፋክተር -6 ነው",
+          "is_correct": false
+        },
+        {
+          "id": "457ee3af-50dc-50ca-90ec-4c97a29fe45e",
+          "question_id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+          "label": "C",
+          "text_en": "The minor of entry 0 is 14",
+          "text_am": "የቁጥር 0 ማይነር 14 ነው",
+          "is_correct": false
+        },
+        {
+          "id": "2529e0d6-66c2-5fdf-b57f-9cd45b04055f",
+          "question_id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+          "label": "D",
+          "text_en": "The cofactor of the entry 1 is -14",
+          "text_am": "የቁጥር 1 ኮፋክተር -14 ነው",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "be0610dd-f385-5b63-a9d8-7d1d88d2e0f5",
+        "question_id": "1146c50c-b30e-54e0-813c-65ed3a1f1969",
+        "solution_text_en": "1. Entry a₁₁ = 1 is in Row 1, Column 1.\\n2. Minor M₁₁ = det([4 2; 7 0]) = 4(0) - 2(7) = 0 - 14 = -14.\\n3. Cofactor C₁₁ = (-1)^(1+1) M₁₁ = (+1)(-14) = -14.\\n4. Let's check others: Minor of 3 (M₁₂) = det([6 2; 9 0]) = 0 - 18 = -18 (not 18); Cofactor of 5 (C₁₃) = +det([6 4; 9 7]) = 42 - 36 = +6 (not -6).\\nTherefore, statement D is TRUE.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "For entry 1: C₁₁ = +1 × det([4 2; 7 0]) = 0 - 14 = -14.",
+        "simpler_explanation_am": null,
+        "key_concept": "Definitions of Matrix Minors and Signed Cofactors: C_ij = (-1)^(i+j) M_ij.",
+        "common_pitfall": "Sign errors in cofactor formula (-1)^(i+j)."
+      }
+    },
+    {
+      "id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 57,
+      "question_text_en": "Consider points A(-2, 1), B(3, 0), C(3, -1), and D(1, 1). If u = AB and v = CD, what is the vector u - v?",
+      "question_text_am": "ነጥቦች A(-2, 1)፣ B(3, 0)፣ C(3, -1) እና D(1, 1) ተሰጥተው u = AB እና v = CD ቢሆኑ፣ ቬክተር u - v ስንት ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "17a7e348-2ad2-5420-910b-2c935453d640",
+          "question_id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+          "label": "A",
+          "text_en": "(3, 1)",
+          "text_am": "(3, 1)",
+          "is_correct": false
+        },
+        {
+          "id": "6e72439f-7f78-5fbf-a1f0-4dc8b2552699",
+          "question_id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+          "label": "B",
+          "text_en": "(-7, 1)",
+          "text_am": "(-7, 1)",
+          "is_correct": false
+        },
+        {
+          "id": "7bef64b2-4547-5b38-b1d3-6f45821a40d9",
+          "question_id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+          "label": "C",
+          "text_en": "(1, 3)",
+          "text_am": "(1, 3)",
+          "is_correct": false
+        },
+        {
+          "id": "2f88b449-42c0-5d2e-895f-0d15f511961d",
+          "question_id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+          "label": "D",
+          "text_en": "(7, -3)",
+          "text_am": "(7, -3)",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "45a4f6f5-4aa0-5bb5-a60e-96414daf3ec3",
+        "question_id": "b6fffad1-b704-55a6-a316-21638788ee2b",
+        "solution_text_en": "1. Vector u = B - A = (3 - (-2), 0 - 1) = (5, -1).\\n2. Vector v = D - C = (1 - 3, 1 - (-1)) = (-2, 2).\\n3. Vector difference u - v = (5 - (-2), -1 - 2) = (5 + 2, -3) = (7, -3).\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "u = (5, -1), v = (-2, 2). u - v = (5 - (-2), -1 - 2) = (7, -3).",
+        "simpler_explanation_am": null,
+        "key_concept": "Directed vectors between Cartesian points and vector subtraction.",
+        "common_pitfall": "Subtracting coordinates in reverse order (A - B instead of B - A)."
+      }
+    },
+    {
+      "id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 58,
+      "question_text_en": "Find the centroid (G) of the triangle with vertices A(0, 0), B(6, 0), and C(0, 4).",
+      "question_text_am": "የሦስት ማዕዘን ጫፎች A(0, 0)፣ B(6, 0) እና C(0, 4) ቢሆኑ ሴንትሮይድ (G) ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "52808661-ab88-5455-912c-18d37215037f",
+          "question_id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+          "label": "A",
+          "text_en": "(2, 4/3)",
+          "text_am": "(2, 4/3)",
+          "is_correct": true
+        },
+        {
+          "id": "aa6ef631-4aa9-531d-a3a4-34ddee3fe719",
+          "question_id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+          "label": "B",
+          "text_en": "(1, 2/3)",
+          "text_am": "(1, 2/3)",
+          "is_correct": false
+        },
+        {
+          "id": "c92194b6-77d9-56cd-a9f0-3489800d1d48",
+          "question_id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+          "label": "C",
+          "text_en": "(9, 6/5)",
+          "text_am": "(9, 6/5)",
+          "is_correct": false
+        },
+        {
+          "id": "77f2cd38-2724-59d1-8399-50cba3ebcd2f",
+          "question_id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+          "label": "D",
+          "text_en": "(6, 4/5)",
+          "text_am": "(6, 4/5)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "3768e5f4-9c43-59e9-a965-2527f84c453a",
+        "question_id": "949c98bd-dd05-5fb2-aa29-f9b8ac8ca639",
+        "solution_text_en": "1. Centroid formula for triangle with vertices (x₁,y₁), (x₂,y₂), (x₃,y₃):\\nG = ((x₁ + x₂ + x₃)/3, (y₁ + y₂ + y₃)/3).\\n2. x-coordinate: (0 + 6 + 0) / 3 = 6 / 3 = 2.\\n3. y-coordinate: (0 + 0 + 4) / 3 = 4 / 3.\\n4. Centroid G = (2, 4/3).\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "G = ((0+6+0)/3, (0+0+4)/3) = (2, 4/3).",
+        "simpler_explanation_am": null,
+        "key_concept": "Triangle centroid coordinate formula.",
+        "common_pitfall": "Dividing by 2 (midpoint) instead of 3."
+      }
+    },
+    {
+      "id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 59,
+      "question_text_en": "The circle (x + 2)² + (y - 2)² = 1 is rotated counterclockwise by an angle of π/6 (30°) about the origin. What is the equation of the transformed image circle?",
+      "question_text_am": "ክብ (x + 2)² + (y - 2)² = 1 ከመነሻ ነጥብ አንጻር በ π/6 (30°) በሰዓት ተቃራኒ አቅጣጫ ቢዞር አዲሱ የክቡ እኩልዮሽ ምን ይሆናል?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "7c16ffb2-45fe-5902-beee-6b3a81b81f97",
+          "question_id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+          "label": "A",
+          "text_en": "(x + (√3 - 1))² + (y - (√3 - 1))² = 1",
+          "text_am": "(x + (√3 - 1))² + (y - (√3 - 1))² = 1",
+          "is_correct": false
+        },
+        {
+          "id": "6ebd378c-6c2a-5671-97f5-28116591f462",
+          "question_id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+          "label": "B",
+          "text_en": "(x - (√3 + 1))² + (y + (√3 - 1))² = 1",
+          "text_am": "(x - (√3 + 1))² + (y + (√3 - 1))² = 1",
+          "is_correct": false
+        },
+        {
+          "id": "ba3bff81-34fa-5735-81c7-20dc518ef47e",
+          "question_id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+          "label": "C",
+          "text_en": "(x + (√3 + 1))² + (y - (√3 - 1))² = 1",
+          "text_am": "(x + (√3 + 1))² + (y - (√3 - 1))² = 1",
+          "is_correct": true
+        },
+        {
+          "id": "2d50a7a5-4033-5a1e-a645-f2f241140fd7",
+          "question_id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+          "label": "D",
+          "text_en": "(x - (√3 - 1))² + (y + (√3 + 1))² = 1",
+          "text_am": "(x - (√3 - 1))² + (y + (√3 + 1))² = 1",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "85aae35a-1aeb-5c37-aff6-c13cb6f105da",
+        "question_id": "454770a2-f2c3-5394-a437-dc0ba9e84ec6",
+        "solution_text_en": "1. Original center of the circle is (h, k) = (-2, 2), with radius r = 1.\\n2. Counterclockwise rotation formulas for angle θ = 30° (cos 30° = √3/2, sin 30° = 1/2):\\n- h' = h cos θ - k sin θ = -2(√3/2) - 2(1/2) = -√3 - 1 = -(√3 + 1)\\n- k' = h sin θ + k cos θ = -2(1/2) + 2(√3/2) = -1 + √3 = (√3 - 1)\\n3. Equation of rotated circle centered at (h', k'):\\n(x - h')² + (y - k')² = 1 ⇒ (x - (-(√3 + 1)))² + (y - (√3 - 1))² = 1\\n⇒ (x + (√3 + 1))² + (y - (√3 - 1))² = 1.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "New center is (-(√3+1), √3-1). Equation is (x + (√3+1))² + (y - (√3-1))² = 1.",
+        "simpler_explanation_am": null,
+        "key_concept": "Planar rotation of geometric curves around the origin.",
+        "common_pitfall": "Sign errors when plugging negative center coordinates into (x - h)²."
+      }
+    },
+    {
+      "id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 60,
+      "question_text_en": "Find the dot product (scalar product) of vectors u = i + 2j and v = -2i + 4j.",
+      "question_text_am": "የቬክተሮች u = i + 2j እና v = -2i + 4j ዶት ፕሮዳክት (dot product) ስንት ነው?",
+      "difficulty": "easy",
+      "choices": [
+        {
+          "id": "0aaa471f-5c9e-54fe-a4f6-89572a8bf863",
+          "question_id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+          "label": "A",
+          "text_en": "-8",
+          "text_am": "-8",
+          "is_correct": false
+        },
+        {
+          "id": "492e122d-927c-5139-9924-7450bcbba922",
+          "question_id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+          "label": "B",
+          "text_en": "5",
+          "text_am": "5",
+          "is_correct": false
+        },
+        {
+          "id": "e7e2c73c-641e-5c07-bf17-55bf35ad08a3",
+          "question_id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+          "label": "C",
+          "text_en": "6",
+          "text_am": "6",
+          "is_correct": true
+        },
+        {
+          "id": "19d56d3d-6f54-52df-9f36-50a2d156c09b",
+          "question_id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+          "label": "D",
+          "text_en": "7",
+          "text_am": "7",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "974d37c4-9032-5543-a3f7-515b2e992bf0",
+        "question_id": "f2910098-21b3-544a-ba8e-d8ba26f64b95",
+        "solution_text_en": "1. In components: u = (1, 2) and v = (-2, 4).\\n2. Dot product: u · v = u_x v_x + u_y v_y = (1)(-2) + (2)(4) = -2 + 8 = 6.\\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "u · v = 1(-2) + 2(4) = -2 + 8 = 6.",
+        "simpler_explanation_am": null,
+        "key_concept": "Dot product of 2D orthogonal unit vectors: u · v = u₁ v₁ + u₂ v₂.",
+        "common_pitfall": "Arithmetic sign error: 8 - 2 = 6, not -8."
+      }
+    },
+    {
+      "id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_2",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 61,
+      "question_text_en": "Evaluate the indefinite integral: ∫ (x³ + x² - x) / (x² + x - 2) dx",
+      "question_text_am": "የኢንቴግራል ስሌቱን ዋጋ ፈልጉ: ∫ (x³ + x² - x) / (x² + x - 2) dx",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "2e5cd545-2ca9-5c04-9d6b-e4cacece7489",
+          "question_id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+          "label": "A",
+          "text_en": "x²/2 + (1/3)ln|x - 1| + (2/3)ln|x + 2| + C",
+          "text_am": "x²/2 + (1/3)ln|x - 1| + (2/3)ln|x + 2| + C",
+          "is_correct": true
+        },
+        {
+          "id": "8a43f116-fea4-51b5-a17d-3cd6cc02f317",
+          "question_id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+          "label": "B",
+          "text_en": "x²/2 - (1/3)ln|x - 1| - (2/3)ln|x + 2| + C",
+          "text_am": "x²/2 - (1/3)ln|x - 1| - (2/3)ln|x + 2| + C",
+          "is_correct": false
+        },
+        {
+          "id": "7b7b291a-20c9-5b97-ad5f-9020bba0bc77",
+          "question_id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+          "label": "C",
+          "text_en": "x²/2 - (1/3)ln|x - 1| + (2/3)ln|x + 2| + C",
+          "text_am": "x²/2 - (1/3)ln|x - 1| + (2/3)ln|x + 2| + C",
+          "is_correct": false
+        },
+        {
+          "id": "c632fcf1-16c8-517e-8ecd-1b0391f41cce",
+          "question_id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+          "label": "D",
+          "text_en": "x²/2 + (1/3)ln|x - 1| - (2/3)ln|x + 2| + C",
+          "text_am": "x²/2 + (1/3)ln|x - 1| - (2/3)ln|x + 2| + C",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "61717b33-2630-5acd-bff4-b6fba0519872",
+        "question_id": "6365c034-702e-5619-b7a3-e9da2a9cad45",
+        "solution_text_en": "1. Polynomial long division:\\n(x³ + x² - x) = x(x² + x - 2) + x ⇒ (x³ + x² - x)/(x² + x - 2) = x + x/(x² + x - 2).\\n2. Factor denominator: x² + x - 2 = (x - 1)(x + 2).\\n3. Partial fraction decomposition for x / [(x - 1)(x + 2)] = A/(x - 1) + B/(x + 2):\\n- Multiply by (x - 1) at x = 1: A = 1 / (1 + 2) = 1/3\\n- Multiply by (x + 2) at x = -2: B = -2 / (-2 - 1) = -2 / -3 = 2/3\\n4. Integrate term by term:\\n∫ [x + (1/3)/(x - 1) + (2/3)/(x + 2)] dx = x²/2 + (1/3)ln|x - 1| + (2/3)ln|x + 2| + C.\\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Division gives x + partial fractions 1/[3(x-1)] + 2/[3(x+2)]. Integration yields x²/2 + (1/3)ln|x-1| + (2/3)ln|x+2| + C.",
+        "simpler_explanation_am": null,
+        "key_concept": "Integration of improper rational functions using polynomial division and partial fractions.",
+        "common_pitfall": "Skipping polynomial division when degree of numerator ≥ denominator."
+      }
+    },
+    {
+      "id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 62,
+      "question_text_en": "If r₁ and r₂ are the roots of the quadratic equation 3x² + 9x + 16 = 0, which equality is TRUE?",
+      "question_text_am": "r₁ እና r₂ የኳድራቲክ እኩልዮሽ 3x² + 9x + 16 = 0 ሥሮች (roots) ቢሆኑ፣ ትክክል የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "fe2ed119-42ac-5984-be48-8a125206f283",
+          "question_id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+          "label": "A",
+          "text_en": "r₁ + r₂ = 3",
+          "text_am": "r₁ + r₂ = 3",
+          "is_correct": false
+        },
+        {
+          "id": "1677995b-b0b6-5ba6-b3f4-765e6bb72901",
+          "question_id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+          "label": "B",
+          "text_en": "r₁ r₂ = -16/3",
+          "text_am": "r₁ r₂ = -16/3",
+          "is_correct": false
+        },
+        {
+          "id": "f61e1f48-c0fa-5c16-b85a-fe9dec0eb5c8",
+          "question_id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+          "label": "C",
+          "text_en": "r₁² + r₂² = 9/16",
+          "text_am": "r₁² + r₂² = 9/16",
+          "is_correct": false
+        },
+        {
+          "id": "fb1f0ca7-ad90-5133-87e2-89dd0ac42962",
+          "question_id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+          "label": "D",
+          "text_en": "r₁² + r₂² = -5/3",
+          "text_am": "r₁² + r₂² = -5/3",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "b45b5f8e-9af6-5da8-9443-851752970daf",
+        "question_id": "76f5c2a0-17d1-580e-95de-3ee1e2bcf548",
+        "solution_text_en": "1. By Vieta's formulas for ax² + bx + c = 0:\\n- Sum of roots: r₁ + r₂ = -b / a = -9 / 3 = -3\\n- Product of roots: r₁ r₂ = c / a = 16 / 3\\n2. Identity for sum of squares: r₁² + r₂² = (r₁ + r₂)² - 2(r₁ r₂).\\n3. Substitute values:\\nr₁² + r₂² = (-3)² - 2(16/3) = 9 - 32/3 = 27/3 - 32/3 = -5/3.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "r₁ + r₂ = -3, r₁ r₂ = 16/3. r₁² + r₂² = (-3)² - 2(16/3) = 9 - 32/3 = -5/3.",
+        "simpler_explanation_am": null,
+        "key_concept": "Vieta's formulas for polynomial roots.",
+        "common_pitfall": "Assuming r₁² + r₂² must be positive (roots are complex numbers with non-zero imaginary parts)."
+      }
+    },
+    {
+      "id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 63,
+      "question_text_en": "The grouped frequency distribution gives marks out of 50: [20–25: 15], [26–31: 30], [32–37: 25], [38–43: 20], [44–49: 10]. Find the first quartile (Q₁).",
+      "question_text_am": "ከ 50 የተሰጡ ውጤቶች ስርጭት: [20–25: 15]፣ [26–31: 30]፣ [32–37: 25]፣ [38–43: 20]፣ [44–49: 10] ቢሆን፣ የመጀመሪያው ኳርታይል (Q₁) ስንት ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "08a90bf6-4034-5f3c-9b30-e5c0f4ae6c81",
+          "question_id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+          "label": "A",
+          "text_en": "28.0",
+          "text_am": "28.0",
+          "is_correct": false
+        },
+        {
+          "id": "0b02c6d9-f4b9-5a79-ae3b-bb1b9c8251c1",
+          "question_id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+          "label": "B",
+          "text_en": "26.0",
+          "text_am": "26.0",
+          "is_correct": false
+        },
+        {
+          "id": "cd450862-dffd-5ff5-a025-6835838ebb82",
+          "question_id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+          "label": "C",
+          "text_en": "26.5",
+          "text_am": "26.5",
+          "is_correct": false
+        },
+        {
+          "id": "2cd4aded-4245-554a-b2b7-025648cc0d51",
+          "question_id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+          "label": "D",
+          "text_en": "27.5",
+          "text_am": "27.5",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "912c4f54-dadc-5928-809e-0c67fdbaf261",
+        "question_id": "37716e8c-1765-5b72-be6d-07a52ac36dff",
+        "solution_text_en": "1. Total frequency N = 15 + 30 + 25 + 20 + 10 = 100.\\n2. First quartile position = N / 4 = 100 / 4 = 25th observation.\\n3. Cumulative frequencies: Class 1 (20–25) = 15; Class 2 (26–31) = 45.\\n4. Quartile class is 26–31, with lower boundary L = 25.5, class width h = 6, prior cumulative frequency cf = 15, class frequency f = 30.\\n5. Q₁ = L + [(N/4 - cf) / f] · h = 25.5 + [(25 - 15) / 30] · 6 = 25.5 + (10/30) · 6 = 25.5 + 2.0 = 27.5.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Q₁ = 25.5 + ((25 - 15) / 30) × 6 = 25.5 + 2 = 27.5.",
+        "simpler_explanation_am": null,
+        "key_concept": "Grouped data quartile interpolation formula: Q₁ = L + [(N/4 - cf)/f] h.",
+        "common_pitfall": "Using integer class limit (26) instead of exact continuous class boundary (25.5)."
+      }
+    },
+    {
+      "id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+      "subject_id": "math_g12",
+      "unit_id": "math_u1",
+      "topic_id": "math_t1_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 64,
+      "question_text_en": "Let p and q be propositional statements. Which compound statement is a TAUTOLOGY (always true)?",
+      "question_text_am": "p እና q የፕሮፖዚሽን አረፍተ ነገሮች ቢሆኑ፣ ቶቶሎጂ (ሁልጊዜ እውነት) የሆነው የቱ ነው?",
+      "difficulty": "medium",
+      "choices": [
+        {
+          "id": "d4b1918c-0f28-5e72-850e-c2e977c098dc",
+          "question_id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+          "label": "A",
+          "text_en": "(p ∨ q) ↔ p",
+          "text_am": "(p ∨ q) ↔ p",
+          "is_correct": false
+        },
+        {
+          "id": "1f95d01d-9018-5c8a-9cbd-f43f6715afe1",
+          "question_id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+          "label": "B",
+          "text_en": "(p ⇒ q) ↔ p",
+          "text_am": "(p ⇒ q) ↔ p",
+          "is_correct": false
+        },
+        {
+          "id": "45789964-c196-52db-a74f-37b52058415a",
+          "question_id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+          "label": "C",
+          "text_en": "(p ∧ q) ↔ p",
+          "text_am": "(p ∧ q) ↔ p",
+          "is_correct": false
+        },
+        {
+          "id": "e222d313-eead-5d79-8a55-22dd4fdd4a9e",
+          "question_id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+          "label": "D",
+          "text_en": "(p ⇒ q) ↔ (¬p ∨ q)",
+          "text_am": "(p ⇒ q) ↔ (¬p ∨ q)",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "72ef0d22-c453-5565-bcd0-d4f89a2da4bf",
+        "question_id": "1b6eff0d-775f-53a8-9a40-f2efe2e8ae72",
+        "solution_text_en": "1. By the fundamental Conditional-Disjunction equivalence rule, the implication (p ⇒ q) is logically equivalent to (¬p ∨ q).\\n2. Because both sides have identical truth values in every possible truth assignment (T/T, T/F, F/T, F/F), their biconditional (A ↔ B) is TRUE in all cases.\\n3. A statement that is true in every row of its truth table is a Tautology.\\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "(p ⇒ q) is identically equivalent to (¬p ∨ q), making their biconditional always true (tautology).",
+        "simpler_explanation_am": null,
+        "key_concept": "Logical equivalences and tautologies.",
+        "common_pitfall": "Confusing material implication equivalence with conjunction."
+      }
+    },
+    {
+      "id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+      "subject_id": "math_g12",
+      "unit_id": "math_u2",
+      "topic_id": "math_t2_1",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 65,
+      "question_text_en": "Which statement is NOT TRUE about the graph of the rational function f(x) = 5 + |x| / (x + 1)?",
+      "question_text_am": "ስለ ፈንክሽን f(x) = 5 + |x| / (x + 1) ግራፍ እውነት ያልሆነው የትኛው ነው?",
+      "difficulty": "hard",
+      "choices": [
+        {
+          "id": "b774f4da-ecb5-57da-a937-f8db1e6f8290",
+          "question_id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+          "label": "A",
+          "text_en": "y = 5 + x is an oblique asymptote of the graph",
+          "text_am": "y = 5 + x የግራፉ ኦብሊክ አስምፕቶት ነው",
+          "is_correct": true
+        },
+        {
+          "id": "17bbd65e-e3c6-5397-ab40-91169ce82a40",
+          "question_id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+          "label": "B",
+          "text_en": "y = 6 is a horizontal asymptote as x → +∞",
+          "text_am": "x → +∞ ሲሆን y = 6 አግድም አስምፕቶት ነው",
+          "is_correct": false
+        },
+        {
+          "id": "cb32a41f-4982-56d3-8f06-bf7f5b9cd812",
+          "question_id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+          "label": "C",
+          "text_en": "y = 4 is a horizontal asymptote as x → -∞",
+          "text_am": "x → -∞ ሲሆን y = 4 አግድም አስምፕቶት ነው",
+          "is_correct": false
+        },
+        {
+          "id": "017a82d0-4540-582b-8f2f-4a0dfa6044be",
+          "question_id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+          "label": "D",
+          "text_en": "x = -1 is a vertical asymptote of the graph",
+          "text_am": "x = -1 የግራፉ ቋሚ አስምፕቶት ነው",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "8d32f8da-1ce9-50ed-9f26-1588cd00291a",
+        "question_id": "bf5c4b39-09e5-5f3f-8295-3991c2fef185",
+        "solution_text_en": "1. For x > 0: |x| = x, so f(x) = 5 + x/(x+1) = 5 + 1 - 1/(x+1) = 6 - 1/(x+1). As x → +∞, f(x) → 6, so y = 6 is a horizontal asymptote (Statement B is true).\\n2. For x < 0 (x ≠ -1): |x| = -x, so f(x) = 5 - x/(x+1) = 5 - [1 - 1/(x+1)] = 4 + 1/(x+1). As x → -∞, f(x) → 4, so y = 4 is a horizontal asymptote (Statement C is true).\\n3. At x = -1, the denominator vanishes while the numerator is 1 ≠ 0, giving a vertical asymptote at x = -1 (Statement D is true).\\n4. Since both horizontal asymptotes exist as x → ±∞, there is NO oblique asymptote.\\nTherefore, statement A is NOT TRUE.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "As x → +∞ the graph approaches y = 6, and as x → -∞ it approaches y = 4. There is no slant/oblique asymptote y = 5 + x.",
+        "simpler_explanation_am": null,
+        "key_concept": "Horizontal, vertical, and oblique asymptotes of piecewise rational functions.",
+        "common_pitfall": "Failing to split |x| into cases for x > 0 and x < 0."
+      }
+    }
+  ]
+}

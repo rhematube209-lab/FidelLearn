@@ -296,25 +296,31 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'FidelLearn',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: AppTheme.darkText,
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'FidelLearn',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: AppTheme.darkText,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    'National Exam Prep',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppTheme.darkMuted,
+                    Text(
+                      'National Exam Prep',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.darkMuted,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -456,12 +462,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 color: isActive ? AppTheme.brand : AppTheme.darkMuted,
               ),
               const SizedBox(width: 12),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                  color: isActive ? AppTheme.darkText : AppTheme.darkTextSoft,
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                    color: isActive ? AppTheme.darkText : AppTheme.darkTextSoft,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -478,27 +488,29 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              isAmharic ? 'ሰላም, ${user.displayName} 👋' : 'Welcome Back, ${user.displayName} 👋',
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.5,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isAmharic ? 'ሰላም, ${user.displayName} 👋' : 'Welcome Back, ${user.displayName} 👋',
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.5,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Grade ${user.grade} National Curriculum • ${user.stream.toUpperCase()} Science Stream',
-              style: const TextStyle(fontSize: 14, color: AppTheme.darkMuted),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                'Grade ${user.grade} National Curriculum • ${user.stream.toUpperCase()} Science Stream',
+                style: const TextStyle(fontSize: 14, color: AppTheme.darkMuted),
+              ),
+            ],
+          ),
         ),
         Row(
           children: [
-            const SyncIndicatorWidget(isCompact: false),
+            const SyncIndicatorWidget(isCompact: true),
             const SizedBox(width: 14),
             // Coin Balance Pill
             InkWell(
@@ -785,12 +797,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.darkMuted,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.darkMuted,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Icon(icon, color: accentColor, size: 18),
@@ -829,9 +845,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'National Exam Subjects & Packages',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const Expanded(
+              child: Text(
+                'National Exam Subjects & Packages',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
             TextButton.icon(
               onPressed: () => context.push('/subjects'),
@@ -918,12 +936,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Practice Subject →',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.brand,
+                        const Expanded(
+                          child: Text(
+                            'Practice Subject →',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.brand,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Icon(
@@ -1095,9 +1117,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   ),
                 ),
               ),
-              const Text(
-                '2013 E.C. (2021 G.C.)',
-                style: TextStyle(color: AppTheme.darkMuted, fontSize: 11),
+              const Flexible(
+                child: Text(
+                  '2013 E.C. (2021 G.C.)',
+                  style: TextStyle(color: AppTheme.darkMuted, fontSize: 11),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -1148,9 +1174,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Priority Focus Areas',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              Expanded(
+                child: Text(
+                  'Priority Focus Areas',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Icon(Icons.radar_rounded, color: AppTheme.pink, size: 20),
             ],
