@@ -247,36 +247,67 @@ ALTER TABLE public.exam_ghost_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.coin_ledger ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Users manage own profile
+DROP POLICY IF EXISTS "Profiles are viewable by owner" ON public.profiles;
 CREATE POLICY "Profiles are viewable by owner" ON public.profiles FOR SELECT USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
+CREATE POLICY "Users can insert own profile" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
+
 -- Public Published Educational Content
-CREATE POLICY "Published content is viewable by all authenticated users" ON public.subjects FOR SELECT TO authenticated USING (TRUE);
-CREATE POLICY "Units are viewable by all authenticated users" ON public.units FOR SELECT TO authenticated USING (TRUE);
-CREATE POLICY "Topics are viewable by all authenticated users" ON public.topics FOR SELECT TO authenticated USING (TRUE);
-CREATE POLICY "Published questions viewable" ON public.questions FOR SELECT TO authenticated USING (verification_status = 'published');
-CREATE POLICY "Answer choices viewable for published questions" ON public.answer_choices FOR SELECT TO authenticated USING (
+DROP POLICY IF EXISTS "Published content is viewable by all authenticated users" ON public.subjects;
+CREATE POLICY "Published content is viewable by all authenticated users" ON public.subjects FOR SELECT USING (TRUE);
+
+DROP POLICY IF EXISTS "Units are viewable by all authenticated users" ON public.units;
+CREATE POLICY "Units are viewable by all authenticated users" ON public.units FOR SELECT USING (TRUE);
+
+DROP POLICY IF EXISTS "Topics are viewable by all authenticated users" ON public.topics;
+CREATE POLICY "Topics are viewable by all authenticated users" ON public.topics FOR SELECT USING (TRUE);
+
+DROP POLICY IF EXISTS "Published questions viewable" ON public.questions;
+CREATE POLICY "Published questions viewable" ON public.questions FOR SELECT USING (verification_status = 'published');
+
+DROP POLICY IF EXISTS "Answer choices viewable for published questions" ON public.answer_choices;
+CREATE POLICY "Answer choices viewable for published questions" ON public.answer_choices FOR SELECT USING (
     EXISTS (SELECT 1 FROM public.questions q WHERE q.id = answer_choices.question_id AND q.verification_status = 'published')
 );
-CREATE POLICY "Explanations viewable for published questions" ON public.explanations FOR SELECT TO authenticated USING (
+
+DROP POLICY IF EXISTS "Explanations viewable for published questions" ON public.explanations;
+CREATE POLICY "Explanations viewable for published questions" ON public.explanations FOR SELECT USING (
     EXISTS (SELECT 1 FROM public.questions q WHERE q.id = explanations.question_id AND q.verification_status = 'published')
 );
 
 -- Attempts & Responses: Strict isolation per user
+DROP POLICY IF EXISTS "Users view own attempts" ON public.attempts;
 CREATE POLICY "Users view own attempts" ON public.attempts FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users insert own attempts" ON public.attempts FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users insert own attempts" ON public.attempts FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users update own attempts" ON public.attempts;
+CREATE POLICY "Users update own attempts" ON public.attempts FOR UPDATE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users view own attempt responses" ON public.attempt_responses;
 CREATE POLICY "Users view own attempt responses" ON public.attempt_responses FOR SELECT USING (
     EXISTS (SELECT 1 FROM public.attempts a WHERE a.id = attempt_responses.attempt_id AND a.user_id = auth.uid())
 );
+
+DROP POLICY IF EXISTS "Users insert own attempt responses" ON public.attempt_responses;
 CREATE POLICY "Users insert own attempt responses" ON public.attempt_responses FOR INSERT WITH CHECK (
     EXISTS (SELECT 1 FROM public.attempts a WHERE a.id = attempt_responses.attempt_id AND a.user_id = auth.uid())
 );
 
 -- Bookmarks & Mistakes
+DROP POLICY IF EXISTS "Users manage own bookmarks" ON public.bookmarks;
 CREATE POLICY "Users manage own bookmarks" ON public.bookmarks FOR ALL USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users manage own mistakes" ON public.mistake_records;
 CREATE POLICY "Users manage own mistakes" ON public.mistake_records FOR ALL USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users manage own ghost records" ON public.exam_ghost_records;
 CREATE POLICY "Users manage own ghost records" ON public.exam_ghost_records FOR ALL USING (auth.uid() = user_id);
 
 -- Coin Ledger: Read own, Insert ONLY through verified server functions
+DROP POLICY IF EXISTS "Users view own coin ledger" ON public.coin_ledger;
 CREATE POLICY "Users view own coin ledger" ON public.coin_ledger FOR SELECT USING (auth.uid() = user_id);
