@@ -4,19 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/auth/data/repositories/mock_auth_repository.dart';
+import '../../features/auth/data/repositories/supabase_auth_repository.dart';
 import '../../features/auth/domain/models/user_profile.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/bookmarks/data/repositories/local_bookmark_repository.dart';
+import '../../features/bookmarks/data/repositories/supabase_bookmark_repository.dart';
 import '../../features/bookmarks/domain/repositories/bookmark_repository.dart';
 import '../../features/challenges/data/repositories/local_challenge_repository.dart';
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
 import '../../features/exams/data/repositories/local_exam_repository.dart';
+import '../../features/exams/data/repositories/supabase_exam_repository.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
 import '../../features/mistakes/data/repositories/local_mistake_repository.dart';
+import '../../features/mistakes/data/repositories/supabase_mistake_repository.dart';
 import '../../features/mistakes/domain/repositories/mistake_repository.dart';
 import '../../features/rewards/domain/models/coin_ledger_entry.dart';
 import '../../features/rewards/domain/services/coin_ledger_service.dart';
 import '../../features/subjects/data/repositories/local_content_repository.dart';
+import '../../features/subjects/data/repositories/supabase_content_repository.dart';
 import '../../features/subjects/domain/repositories/content_repository.dart';
 import '../../features/admin/data/repositories/local_admin_repository.dart';
 import '../../features/admin/domain/repositories/admin_repository.dart';
@@ -30,6 +35,7 @@ import '../../features/subjects/domain/services/delta_package_service.dart';
 import '../../features/payments/data/repositories/local_payment_repository.dart';
 import '../../features/auth/domain/services/sms_gateway_service.dart';
 import '../../features/rewards/domain/services/airtime_redemption_service.dart';
+import '../config/env_config.dart';
 import '../networking/connectivity_service.dart';
 import '../sync/models/sync_models.dart';
 import '../sync/repositories/sync_queue_repository.dart';
@@ -82,22 +88,47 @@ class SyncStateNotifier extends StateNotifier<SyncStatus> {
 
 // --- Global Repositories ---
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseAuthRepository();
+    } catch (_) {}
+  }
   return MockAuthRepository();
 });
 
 final contentRepositoryProvider = Provider<ContentRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseContentRepository();
+    } catch (_) {}
+  }
   return LocalContentRepository();
 });
 
 final examRepositoryProvider = Provider<ExamRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseExamRepository();
+    } catch (_) {}
+  }
   return LocalExamRepository();
 });
 
 final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseBookmarkRepository();
+    } catch (_) {}
+  }
   return LocalBookmarkRepository();
 });
 
 final mistakeRepositoryProvider = Provider<MistakeRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseMistakeRepository();
+    } catch (_) {}
+  }
   return LocalMistakeRepository();
 });
 
