@@ -112,7 +112,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
     final exam = Exam(
       id: 'exam_${challenge.id}',
       title: challenge.titleEn,
-      examType: ExamType.challenge,
+      examType: ExamType.practice,
       grade: challenge.grade,
       stream: user.stream,
       subjectId: challenge.subjectId,
@@ -132,7 +132,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
 
     if (mounted) {
       await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
-      if (mounted) _loadChallenges();
+      if (mounted) await _loadChallenges();
     }
   }
 
@@ -351,7 +351,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(c.titleEn, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                          Text('${c.participantCount} Students Joined • Code: ${c.inviteCode}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                          Text('${c.participants.length} Students Joined • Code: ${c.inviteCode}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
                         ],
                       ),
                       ElevatedButton(

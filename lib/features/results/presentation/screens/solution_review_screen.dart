@@ -283,7 +283,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
     );
   }
 
-  Widget _buildSolutionContent(Question currentQ, QuestionResponse? resp, bool isCorrect) {
+  Widget _buildSolutionContent(Question currentQ, UserResponse? resp, bool isCorrect) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -377,16 +377,13 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
 
           Color bg = Theme.of(context).cardTheme.color!;
           Color border = AppTheme.darkBorder;
-          Color text = AppTheme.darkTextSoft;
 
           if (isThisCorrect) {
             bg = AppTheme.green.withOpacity(0.15);
             border = AppTheme.green;
-            text = AppTheme.green;
           } else if (isStudentChoice && !isThisCorrect) {
             bg = AppTheme.danger.withOpacity(0.15);
             border = AppTheme.danger;
-            text = AppTheme.danger;
           }
 
           return Padding(
@@ -442,73 +439,74 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
         const SizedBox(height: 20),
 
         // Step-by-Step Educational Explanation Card
-        if (currentQ.explanation != null) ...[
-          Container(
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              color: AppTheme.brandStrong.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-              border: Border.all(color: AppTheme.brand.withOpacity(0.3)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Row(
-                  children: [
-                    Icon(Icons.lightbulb_rounded, color: AppTheme.accent, size: 22),
-                    SizedBox(width: 8),
-                    Text(
-                      'Step-by-Step Explanation',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  currentQ.explanation!.stepByStepEn,
-                  style: const TextStyle(fontSize: 14, height: 1.5, color: AppTheme.darkText),
-                ),
-                if (currentQ.explanation!.simplerExplanationEn != null) ...[
-                  const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0x0FFFFFFF),
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '💡 Simpler Concept Summary:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppTheme.accent),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          currentQ.explanation!.simplerExplanationEn!,
-                          style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
-                        ),
-                      ],
-                    ),
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: AppTheme.brandStrong.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+            border: Border.all(color: AppTheme.brand.withOpacity(0.3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.lightbulb_rounded, color: AppTheme.accent, size: 22),
+                  SizedBox(width: 8),
+                  Text(
+                    'Step-by-Step Explanation',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                currentQ.explanation.solutionTextEn,
+                style: const TextStyle(fontSize: 14, height: 1.5, color: AppTheme.darkText),
+              ),
+              if (currentQ.explanation.simplerExplanationEn != null) ...[
+                const SizedBox(height: 14),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0x0FFFFFFF),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '💡 Simpler Concept Summary:',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppTheme.accent),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        currentQ.explanation.simplerExplanationEn!,
+                        style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            ),
+            ],
           ),
-          const SizedBox(height: 20),
-        ],
+        ),
+        const SizedBox(height: 20),
 
         // Audio Explanation Player Card
         AudioPlayerCard(
-          audioExplanation: AudioExplanation(
-            id: 'audio_${currentQ.id}',
-            questionId: currentQ.id,
-            audioAssetPath: 'assets/audio/${currentQ.id}.mp3',
-            durationSeconds: 45,
-            language: 'en',
-            speakerName: 'Teacher Abebe',
-            isAvailableOffline: true,
-          ),
+          audioOptions: [
+            AudioExplanation(
+              id: 'audio_${currentQ.id}',
+              questionId: currentQ.id,
+              audioUrl: 'assets/audio/${currentQ.id}.mp3',
+              durationSeconds: 45,
+              language: 'en',
+              narratorName: 'Teacher Abebe',
+              fileSizeBytes: 0,
+              transcription: '',
+            ),
+          ],
         ),
       ],
     );

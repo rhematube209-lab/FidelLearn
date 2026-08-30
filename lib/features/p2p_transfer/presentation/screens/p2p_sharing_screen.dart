@@ -102,20 +102,32 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
 
     final repo = ref.read(p2pRepositoryProvider);
     final port = int.tryParse(_portController.text.trim()) ?? 8088;
+    final enteredPin = _pinController.text.trim();
+    final host = _hostController.text.trim();
 
     setState(() {
       _isReceiving = true;
       _transferProgress = const P2PTransferProgress(status: P2PTransferStatus.connecting);
     });
 
-    final stream = repo.receivePackages(
-      host: _hostController.text.trim(),
+    // Build a minimal beacon from manually entered connection details
+    final beacon = P2PSenderBeacon(
+      sessionId: 'manual_${DateTime.now().millisecondsSinceEpoch}',
+      hostAddress: host,
       port: port,
-      pin: _pinController.text.trim(),
+      pairingPin: enteredPin,
+      availablePackages: const [],
+      startedAt: DateTime.now(),
+    );
+
+    final stream = repo.receivePackage(
+      beacon: beacon,
+      packageId: 'unknown',
+      pin: enteredPin,
     );
 
     stream.listen(
-      (progress) {
+      (P2PTransferProgress progress) {
         if (!mounted) return;
         setState(() {
           _transferProgress = progress;
@@ -262,7 +274,7 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                             const Text('6-Digit Secret PIN', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
                             const SizedBox(height: 4),
                             Text(
-                              _activeBeacon!.pin,
+                              _activeBeacon!.pairingPin,
                               style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 4, color: AppTheme.green),
                             ),
                           ],
@@ -272,7 +284,7 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                             const Text('Local IP Address', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
                             const SizedBox(height: 4),
                             Text(
-                              '${_activeBeacon!.ipAddress}:${_activeBeacon!.port}',
+                              '${_activeBeacon!.hostAddress}:${_activeBeacon!.port}',
                               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                           ],
@@ -304,8 +316,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                   side: const BorderSide(color: AppTheme.darkBorder),
                 ),
                 tileColor: Theme.of(context).cardTheme.color,
-                title: Text(pkg.titleEn, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('Grade ${pkg.grade} • ${(pkg.sizeBytes / 1024).toStringAsFixed(0)} KB • SHA-256 Verified'),
+                title: Text(pkg.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text('Grade ${pkg.grade} • ${(pkg.fileSizeBytes / 1024).toStringAsFixed(0)} KB • SHA-256 Verified'),
                 value: isSelected,
                 activeColor: AppTheme.brandStrong,
                 onChanged: (val) {
@@ -412,7 +424,7 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                         style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.brand),
                       ),
                       Text(
-                        '${(_transferProgress.percentage * 100).toInt()}%',
+                        '${(_transferProgress.progressRatio * 100).toInt()}%',
                         style: const TextStyle(fontWeight: FontWeight.w900, color: AppTheme.brand),
                       ),
                     ],
@@ -421,7 +433,7 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                   ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
-                      value: _transferProgress.percentage,
+                      value: _transferProgress.progressRatio,
                       backgroundColor: const Color(0x1AFFFFFF),
                       valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.brand),
                       minHeight: 8,

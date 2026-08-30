@@ -110,7 +110,7 @@ class _SchoolAdminDashboardScreenState
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '${p.region} • ${p.woreda} • Code: ${p.schoolCode}',
+                              'Region: ${p.region} • ${p.naturalStreamStudents} Natural / ${p.socialStreamStudents} Social',
                               style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
                           ],
@@ -142,11 +142,11 @@ class _SchoolAdminDashboardScreenState
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildSchoolStat('Exams Completed', '${a.totalExamsCompleted}', Icons.assignment_turned_in_outlined, AppTheme.green),
+                      child: _buildSchoolStat('Exams Completed', '${a.totalMockExamsCompleted}', Icons.assignment_turned_in_outlined, AppTheme.green),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildSchoolStat('Projected Pass Rate', '${(a.projectedPassRate * 100).toStringAsFixed(0)}%', Icons.insights_rounded, AppTheme.pink),
+                      child: _buildSchoolStat('School Readiness', '${(a.overallReadinessScore * 100).toStringAsFixed(0)}%', Icons.insights_rounded, AppTheme.pink),
                     ),
                   ],
                 ),
@@ -234,8 +234,8 @@ class _SchoolAdminDashboardScreenState
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(t.displayName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      Text('${t.subjectSpecialty} • ${t.classrooms.join(", ")}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                      Text(t.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text('${t.subject} • ${t.classroomCount} Class(es)', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
                     ],
                   ),
                   Container(

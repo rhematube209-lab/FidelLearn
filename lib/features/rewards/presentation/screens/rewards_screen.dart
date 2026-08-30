@@ -26,9 +26,9 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
       showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Voluntary Sponsor Reward'),
-          content: const Column(
+        builder: (ctx) => const AlertDialog(
+          title: Text('Voluntary Sponsor Reward'),
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.ondemand_video_rounded, size: 48, color: AppTheme.accent),
@@ -75,31 +75,8 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     }
   }
 
-  void _spendOnBonusExam() {
-    final user = ref.read(currentUserProvider).valueOrNull;
-    if (user == null) return;
 
-    try {
-      final key = 'bonus_exam_${DateTime.now().millisecondsSinceEpoch}';
-      ref.read(coinLedgerProvider.notifier).spendCoins(
-            userId: user.id,
-            amount: 20,
-            reason: 'Unlocked 1x Premium Mock Exam Simulation',
-            idempotencyKey: key,
-          );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: AppTheme.green,
-          content: Text('Unlocked 1x Full National Exam Simulation!'),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(backgroundColor: AppTheme.danger, content: Text('$e')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,10 +238,10 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      builder: (ctx) => const TelebirrCheckoutModal(
-                        packageId: 'pkg_coins_100',
-                        packageName: '100 Study Coins Booster',
-                        priceEtb: 10.0,
+                      builder: (ctx) => TelebirrCheckoutModal(
+                        amountEtb: 10.0,
+                        itemDescription: '100 Study Coins Booster',
+                        onPaymentSuccess: () => Navigator.pop(ctx),
                       ),
                     );
                   },

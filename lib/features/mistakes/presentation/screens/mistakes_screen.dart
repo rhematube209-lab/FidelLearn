@@ -235,7 +235,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                                             borderRadius: BorderRadius.circular(6),
                                           ),
                                           child: Text(
-                                            'FAILED ${m.incorrectCount}X',
+                                            'FAILED ${m.mistakeCount}X',
                                             style: const TextStyle(
                                               color: AppTheme.danger,
                                               fontSize: 10,
@@ -263,11 +263,11 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                                           style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
                                         ),
                                         Text(
-                                          'Mastery: ${m.mastered ? "100%" : "0%"}',
+                                          'Mastery: ${m.isMastered ? "100%" : "0%"}',
                                           style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
-                                            color: m.mastered ? AppTheme.green : AppTheme.danger,
+                                            color: m.isMastered ? AppTheme.green : AppTheme.danger,
                                           ),
                                         ),
                                       ],

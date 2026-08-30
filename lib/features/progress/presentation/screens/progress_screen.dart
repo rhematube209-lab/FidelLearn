@@ -348,12 +348,12 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              wt.topicTitle,
+                              wt.topicTitleEn,
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              '${wt.accuracyPercentage.toStringAsFixed(0)}% Accuracy (${wt.correctCount}/${wt.attemptCount} correct)',
+                              '${wt.accuracyPercentage.toStringAsFixed(0)}% Accuracy (${wt.mistakeCount} mistakes / ${wt.totalAttempts} attempts)',
                               style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
                             ),
                           ],

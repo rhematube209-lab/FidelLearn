@@ -179,9 +179,9 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                             'Available Packages (${_packages.length})',
                             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          Text(
+                          const Text(
                             'Total Storage: ~4.2 MB',
-                            style: const TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                            style: TextStyle(fontSize: 13, color: AppTheme.darkMuted),
                           ),
                         ],
                       ),

@@ -196,7 +196,7 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
-                                      'Topic: ${b.topicId ?? "Comprehensive"} • ${q?.examYear != null ? "${q!.examYear} E.C." : "National Seed"}',
+                                      'Topic: ${b.topicId.isNotEmpty ? b.topicId : "Comprehensive"} • ${q?.examYear != null ? "${q!.examYear} E.C." : "National Seed"}',
                                       style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
                                     ),
                                   ],

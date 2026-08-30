@@ -7,8 +7,6 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
-import '../../domain/models/exam_ghost_models.dart';
-import '../../domain/services/exam_ghost_comparator.dart';
 
 class ExamGhostScreen extends ConsumerStatefulWidget {
   final String examId;
@@ -21,7 +19,6 @@ class ExamGhostScreen extends ConsumerStatefulWidget {
 
 class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
   ExamAttempt? _bestAttempt;
-  ExamGhostComparison? _latestComparison;
   List<Question> _examQuestions = [];
   bool _isLoading = true;
 
@@ -52,17 +49,6 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
         _bestAttempt = sorted.first;
 
-        if (examAttempts.length >= 2) {
-          final latest = examAttempts.first;
-          final previousBest = sorted[1];
-          _latestComparison = ExamGhostComparator.compare(
-            currentScore: latest.score,
-            currentDurationSeconds: latest.durationSeconds,
-            previousBestScore: previousBest.score,
-            previousBestDurationSeconds: previousBest.durationSeconds,
-          );
-        }
-
         final qs = await contentRepo.getQuestions(
           grade: user.grade,
           subjectId: _bestAttempt!.subjectId,
@@ -78,12 +64,13 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
   Future<void> _launchGhostRetake() async {
     final user = ref.read(currentUserProvider).valueOrNull;
-    final examRepo = ref.read(examRepositoryProvider);
     if (user == null || _bestAttempt == null || _examQuestions.isEmpty) return;
 
+    final examRepo = ref.read(examRepositoryProvider);
+
     final exam = Exam(
-      id: _bestAttempt!.examId,
-      title: '${_bestAttempt!.examTitle} (Ghost Challenge)',
+      id: 'ghost_${_bestAttempt!.examId}_${DateTime.now().millisecondsSinceEpoch}',
+      title: '👻 Ghost Match: ${_bestAttempt!.examTitle}',
       examType: ExamType.practice,
       grade: user.grade,
       stream: user.stream,
@@ -104,7 +91,7 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
     if (mounted) {
       await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
-      if (mounted) _loadGhostData();
+      if (mounted) await _loadGhostData();
     }
   }
 

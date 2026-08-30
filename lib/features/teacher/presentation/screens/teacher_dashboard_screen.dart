@@ -104,10 +104,10 @@ class _TeacherDashboardScreenState
                   ),
                   child: Row(
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 30,
                         backgroundColor: AppTheme.brandStrong,
-                        child: const Icon(Icons.school_rounded, color: Colors.white, size: 30),
+                        child: Icon(Icons.school_rounded, color: Colors.white, size: 30),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
@@ -251,7 +251,7 @@ class _TeacherDashboardScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(asg.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text('${asg.questionIds.length} Questions • Due ${asg.dueDate.month}/${asg.dueDate.day}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                        Text('${asg.questionIds.length} Questions • Due ${asg.dueAt.month}/${asg.dueAt.day}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
                       ],
                     ),
                     Container(
@@ -300,15 +300,15 @@ class _TeacherDashboardScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(stat.topicTitle, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                        Text('${stat.accuracyPercentage.toStringAsFixed(0)}% Class Avg', style: const TextStyle(fontSize: 12, color: AppTheme.danger, fontWeight: FontWeight.bold)),
+                        Text(stat.topicName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text('${stat.averageAccuracyPercentage.toStringAsFixed(0)}% Class Avg', style: const TextStyle(fontSize: 12, color: AppTheme.danger, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 6),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
-                        value: stat.accuracyPercentage / 100,
+                        value: stat.averageAccuracyPercentage / 100,
                         backgroundColor: const Color(0x1AFFFFFF),
                         valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
                         minHeight: 6,

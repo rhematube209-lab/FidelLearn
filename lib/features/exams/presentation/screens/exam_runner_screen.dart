@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../question_bank/domain/models/question_models.dart';
 import '../../../question_bank/presentation/widgets/svg_diagram_viewer.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/services/exam_engine.dart';
@@ -152,21 +153,27 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     _timer?.cancel();
 
     try {
-      final finishedAttempt = ExamEngine.finishAttempt(
+      final finishedAttempt = ExamEngine.submitAttempt(
         currentAttempt: _attempt,
-        exam: widget.exam,
+        questions: widget.exam.questions,
+        totalDurationSeconds: _elapsedSeconds,
       );
 
       final examRepo = ref.read(examRepositoryProvider);
       await examRepo.saveCompletedAttempt(finishedAttempt);
 
       // Award Study Coins for completed exam
-      final ledger = ref.read(coinLedgerProvider.notifier);
-      await ledger.awardExamCoins(
-        score: finishedAttempt.score,
-        total: finishedAttempt.totalQuestions,
-        examId: widget.exam.id,
-      );
+      final user = ref.read(currentUserProvider).valueOrNull;
+      if (user != null) {
+        final earnedCoins = (finishedAttempt.score * 2).clamp(5, 50);
+        ref.read(coinLedgerProvider.notifier).awardCoins(
+          userId: user.id,
+          amount: earnedCoins,
+          reason: 'Completed exam: ${widget.exam.title}',
+          idempotencyKey: 'exam_${finishedAttempt.id}',
+          relatedEntityId: finishedAttempt.id,
+        );
+      }
 
       if (mounted) {
         context.go('/results/${finishedAttempt.id}', extra: {
@@ -185,7 +192,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   }
 
   void _showMobileQuestionPalette() {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Theme.of(context).cardTheme.color,
@@ -483,7 +490,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     );
   }
 
-  Widget _buildQuestionContent(Question currentQ, QuestionResponse? currentResp) {
+  Widget _buildQuestionContent(Question currentQ, UserResponse? currentResp) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

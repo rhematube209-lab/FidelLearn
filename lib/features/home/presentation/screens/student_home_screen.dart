@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
+import '../../../auth/domain/models/user_profile.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 
@@ -257,12 +258,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 🖥️ DESKTOP NAVIGATION RAIL
   // ==========================================
-  Widget _buildDesktopNavigationRail(BuildContext context, dynamic user, int coinBalance) {
+  Widget _buildDesktopNavigationRail(BuildContext context, UserProfile user, int coinBalance) {
     return Container(
       width: 250,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppTheme.darkSurfaceStrong,
-        border: const Border(right: BorderSide(color: AppTheme.darkBorder)),
+        border: Border(right: BorderSide(color: AppTheme.darkBorder)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(

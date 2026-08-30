@@ -312,7 +312,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                                 ),
                               ),
                               Text(
-                                '${pkg.birrAmount} ETB Airtime',
+                                '${pkg.valueEtb.toStringAsFixed(0)} ETB Airtime',
                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                             ],
@@ -322,7 +322,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            pkg.description,
+                            pkg.bundleType.displayName,
                             style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
                           ),
                           Row(
