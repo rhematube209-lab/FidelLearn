@@ -1,27 +1,28 @@
 #!/bin/bash
 set -e
+set -x
 
-echo "=== 1. Setting up Git safe directory ==="
+echo "=== STEP 1: Git Safe Directory ==="
 git config --global --add safe.directory "*" || true
 
-echo "=== 2. Downloading Official Flutter Linux SDK ==="
+echo "=== STEP 2: Clone Flutter Stable SDK ==="
 if [ ! -d "$HOME/flutter" ]; then
-  curl -s -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz -o /tmp/flutter.tar.xz
-  tar -xf /tmp/flutter.tar.xz -C "$HOME"
-  rm -f /tmp/flutter.tar.xz
+  git clone --depth 1 -b stable https://github.com/flutter/flutter.git "$HOME/flutter"
 fi
 
 export PATH="$PATH:$HOME/flutter/bin"
 
-echo "=== 3. Checking Flutter Installation ==="
-flutter --version
-
-echo "=== 4. Enabling Web & Getting Packages ==="
+echo "=== STEP 3: Configure Flutter Web ==="
 flutter config --no-analytics
 flutter config --enable-web
+
+echo "=== STEP 4: Install Dependencies ==="
 flutter pub get
 
-echo "=== 5. Building Flutter Web Release ==="
+echo "=== STEP 5: Compile Web Release ==="
 flutter build web --release --no-tree-shake-icons
 
-echo "=== 6. Build Completed Successfully in build/web ==="
+echo "=== STEP 6: Verify Output in build/web ==="
+ls -la build/web
+
+echo "=== BUILD COMPLETE ==="
