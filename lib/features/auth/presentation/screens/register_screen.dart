@@ -71,11 +71,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       }
     } catch (e) {
       if (mounted) {
-        setState(() {
-          _errorMessage = e
-              .toString()
+        String msg = e.toString();
+        if (msg.contains('AuthFailure(')) {
+          msg = msg.replaceAll('AuthFailure(', '').replaceAll(')', '');
+        } else {
+          msg = msg
               .replaceAll('Exception: ', '')
-              .replaceAll('Failure: ', '');
+              .replaceAll('Failure: ', '')
+              .replaceAll('minified:', '')
+              .trim();
+        }
+        setState(() {
+          _errorMessage = msg;
           _isLoading = false;
         });
       }

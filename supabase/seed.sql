@@ -42,3 +42,38 @@ INSERT INTO public.topics (id, unit_id, topic_number, title_en, title_am) VALUES
 INSERT INTO public.topics (id, unit_id, topic_number, title_en, title_am) VALUES ('g12_hist_t1', 'g12_hist_u1', 1, 'The Battle of Adwa (1896)', 'የዓድዋ ድል (1896)') ON CONFLICT (id) DO UPDATE SET title_en=EXCLUDED.title_en;
 INSERT INTO public.topics (id, unit_id, topic_number, title_en, title_am) VALUES ('g12_geo_t1', 'g12_geo_u1', 1, 'The Great East African Rift System', 'የታላቁ ምስራቅ አፍሪካ ስምጥ ሸለቆ') ON CONFLICT (id) DO UPDATE SET title_en=EXCLUDED.title_en;
 INSERT INTO public.topics (id, unit_id, topic_number, title_en, title_am) VALUES ('g12_econ_t1', 'g12_econ_u1', 1, 'Supply, Demand & Price Elasticity', 'ፍላጎት፣ አቅርቦትና ዋጋ') ON CONFLICT (id) DO UPDATE SET title_en=EXCLUDED.title_en;
+
+-- Automatic Profile Provisioning Trigger
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (
+    id,
+    phone_number,
+    display_name,
+    grade,
+    stream,
+    preferred_language,
+    role
+  ) VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'phone_number', NEW.phone, NEW.email, 'student_' || SUBSTRING(NEW.id::TEXT, 1, 8)),
+    COALESCE(NEW.raw_user_meta_data->>'display_name', 'Student'),
+    COALESCE((NEW.raw_user_meta_data->>'grade')::INT, 12),
+    COALESCE(NEW.raw_user_meta_data->>'stream', 'natural'),
+    COALESCE(NEW.raw_user_meta_data->>'preferred_language', 'en'),
+    COALESCE(NEW.raw_user_meta_data->>'role', 'student')
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    display_name = COALESCE(EXCLUDED.display_name, profiles.display_name),
+    grade = COALESCE(EXCLUDED.grade, profiles.grade),
+    stream = COALESCE(EXCLUDED.stream, profiles.stream),
+    preferred_language = COALESCE(EXCLUDED.preferred_language, profiles.preferred_language);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();

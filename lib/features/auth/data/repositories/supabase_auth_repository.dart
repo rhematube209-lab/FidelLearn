@@ -69,34 +69,91 @@ class SupabaseAuthRepository implements AuthRepository {
     return _cachedProfile;
   }
 
+  String _cleanPhone(String phone) => phone.replaceAll(RegExp(r'[^0-9]'), '');
+  String _phoneToEmail(String phone) => 'phone_${_cleanPhone(phone)}@fidellearn.app';
+
+  String _formatErrorMessage(dynamic e) {
+    final msg = e.toString();
+    if (msg.contains('User already registered') || msg.contains('user_already_exists') || msg.contains('already been registered')) {
+      return 'An account with this phone number already exists. Please log in.';
+    }
+    if (msg.contains('Invalid login credentials') || msg.contains('invalid_grant')) {
+      return 'Incorrect phone number or password. Please try again.';
+    }
+    if (msg.contains('Password should be at least')) {
+      return 'Password must be at least 6 characters.';
+    }
+    if (msg.contains('Network') || msg.contains('SocketException') || msg.contains('Failed host lookup')) {
+      return 'Network connection error. Operating in offline mode.';
+    }
+    return msg
+        .replaceAll('AuthException(', '')
+        .replaceAll('Exception: ', '')
+        .replaceAll('Failure: ', '')
+        .replaceAll('PostgrestException(', '')
+        .replaceAll('minified:', '')
+        .split(')')[0]
+        .trim();
+  }
+
   @override
   Future<UserProfile> loginWithPhone({
     required String phoneNumber,
     required String password,
   }) async {
     try {
-      final res = await _client.auth.signInWithPassword(
-        phone: phoneNumber,
-        password: password,
-      );
+      final clean = _cleanPhone(phoneNumber);
+      if (clean.length < 9) {
+        throw const AuthFailure('Please enter a valid phone number (at least 9 digits).');
+      }
+
+      AuthResponse res;
+      try {
+        // 1. Try email-backed phone auth (standard on all Supabase setups)
+        res = await _client.auth.signInWithPassword(
+          email: _phoneToEmail(phoneNumber),
+          password: password,
+        );
+      } on AuthException catch (emailErr) {
+        // 2. Fallback to native phone auth if configured
+        try {
+          res = await _client.auth.signInWithPassword(
+            phone: phoneNumber,
+            password: password,
+          );
+        } catch (_) {
+          throw emailErr;
+        }
+      }
 
       final user = res.user;
       if (user == null) {
         throw const AuthFailure('Login failed. User session not established.');
       }
 
-      final profile = await _fetchProfile(user.id);
+      var profile = await _fetchProfile(user.id);
       if (profile == null) {
-        throw const AuthFailure('User profile record not found in database.');
+        // Build fallback profile from user metadata
+        final meta = user.userMetadata ?? {};
+        profile = UserProfile(
+          id: user.id,
+          phoneNumber: meta['phone_number'] as String? ?? phoneNumber,
+          displayName: meta['display_name'] as String? ?? 'Student',
+          grade: int.tryParse(meta['grade']?.toString() ?? '12') ?? 12,
+          stream: meta['stream'] as String? ?? 'natural',
+          preferredLanguage: meta['preferred_language'] as String? ?? 'en',
+          role: UserRole.fromString(meta['role'] as String? ?? 'student'),
+          createdAt: DateTime.now(),
+        );
       }
 
       _cachedProfile = profile;
       _controller.add(profile);
       return profile;
     } on AuthException catch (e) {
-      throw AuthFailure(e.message);
+      throw AuthFailure(_formatErrorMessage(e.message));
     } catch (e) {
-      throw AuthFailure(e.toString());
+      throw AuthFailure(_formatErrorMessage(e));
     }
   }
 
@@ -111,30 +168,89 @@ class SupabaseAuthRepository implements AuthRepository {
     UserRole role = UserRole.student,
   }) async {
     try {
-      final res = await _client.auth.signUp(
-        phone: phoneNumber,
-        password: password,
-      );
-
-      final user = res.user;
-      if (user == null) {
-        throw const AuthFailure('Registration failed.');
+      final clean = _cleanPhone(phoneNumber);
+      if (clean.length < 9) {
+        throw const AuthFailure('Please enter a valid Ethiopian phone number (at least 9 digits).');
+      }
+      if (password.length < 6) {
+        throw const AuthFailure('Password must be at least 6 characters.');
       }
 
-      final now = DateTime.now();
-      await _client.from('profiles').upsert({
-        'id': user.id,
+      final userMetadata = {
         'phone_number': phoneNumber,
         'display_name': displayName,
         'grade': grade,
         'stream': stream,
         'preferred_language': preferredLanguage,
         'role': role.name,
-        'created_at': now.toIso8601String(),
-      });
+      };
+
+      AuthResponse res;
+      try {
+        // 1. Sign up with email-backed phone auth (reliable without third-party SMS gateway billing)
+        res = await _client.auth.signUp(
+          email: _phoneToEmail(phoneNumber),
+          password: password,
+          data: userMetadata,
+        );
+      } on AuthException catch (emailErr) {
+        if (emailErr.message.contains('already registered') || emailErr.message.contains('already exists')) {
+          rethrow;
+        }
+        // Fallback to phone sign up if enabled
+        try {
+          res = await _client.auth.signUp(
+            phone: phoneNumber,
+            password: password,
+            data: userMetadata,
+          );
+        } catch (_) {
+          throw emailErr;
+        }
+      }
+
+      var registeredUser = res.user;
+      if (registeredUser == null) {
+        throw const AuthFailure('Registration failed. Please try again.');
+      }
+
+      // If session is null (e.g. Supabase returned user without active session), sign in immediately
+      if (res.session == null) {
+        try {
+          final loginRes = await _client.auth.signInWithPassword(
+            email: _phoneToEmail(phoneNumber),
+            password: password,
+          );
+          if (loginRes.user != null) {
+            registeredUser = loginRes.user!;
+          }
+        } catch (_) {}
+      }
+
+      final userId = registeredUser?.id ?? res.user?.id;
+      if (userId == null) {
+        throw const AuthFailure('Registration failed. User ID could not be established.');
+      }
+      final now = DateTime.now();
+
+      // Upsert profile in Supabase table
+      try {
+        await _client.from('profiles').upsert({
+          'id': userId,
+          'phone_number': phoneNumber,
+          'display_name': displayName,
+          'grade': grade,
+          'stream': stream,
+          'preferred_language': preferredLanguage,
+          'role': role.name,
+          'created_at': now.toIso8601String(),
+        });
+      } catch (_) {
+        // Non-fatal: if RLS or database trigger already populated it, continue gracefully
+      }
 
       final profile = UserProfile(
-        id: user.id,
+        id: userId,
         phoneNumber: phoneNumber,
         displayName: displayName,
         grade: grade,
@@ -148,9 +264,9 @@ class SupabaseAuthRepository implements AuthRepository {
       _controller.add(profile);
       return profile;
     } on AuthException catch (e) {
-      throw AuthFailure(e.message);
+      throw AuthFailure(_formatErrorMessage(e.message));
     } catch (e) {
-      throw AuthFailure(e.toString());
+      throw AuthFailure(_formatErrorMessage(e));
     }
   }
 
