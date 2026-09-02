@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../auth/domain/models/user_profile.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -30,7 +31,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       if (user != null) {
         await ref.read(currentUserProvider.notifier).updateProfile(user);
         if (!mounted) return;
-        context.go('/home');
+        switch (user.role) {
+          case UserRole.teacher:
+            context.go('/teacher');
+            break;
+          case UserRole.schoolAdmin:
+            context.go('/school_admin');
+            break;
+          case UserRole.platformAdmin:
+            context.go('/admin');
+            break;
+          case UserRole.student:
+            context.go('/home');
+            break;
+        }
       } else {
         context.go('/onboarding');
       }
