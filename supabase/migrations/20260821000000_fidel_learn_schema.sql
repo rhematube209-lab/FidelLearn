@@ -283,7 +283,8 @@ CREATE POLICY "Explanations viewable for published questions" ON public.explanat
 DROP POLICY IF EXISTS "Users view own attempts" ON public.attempts;
 CREATE POLICY "Users view own attempts" ON public.attempts FOR SELECT USING (auth.uid() = user_id);
 
-DROP POLICY IF EXISTS "Users insert own attempts" ON public.attempts FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users insert own attempts" ON public.attempts;
+CREATE POLICY "Users insert own attempts" ON public.attempts FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 DROP POLICY IF EXISTS "Users update own attempts" ON public.attempts;
 CREATE POLICY "Users update own attempts" ON public.attempts FOR UPDATE USING (auth.uid() = user_id);
