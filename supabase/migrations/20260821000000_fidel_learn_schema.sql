@@ -318,6 +318,8 @@ CREATE POLICY "Users view own coin ledger" ON public.coin_ledger FOR SELECT USIN
 -- -----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  v_role TEXT;
 BEGIN
   INSERT INTO public.profiles (
     id,
@@ -325,22 +327,26 @@ BEGIN
     display_name,
     grade,
     stream,
-    preferred_language,
-    role
+    preferred_language
   ) VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'phone_number', NEW.phone, NEW.email, 'student_' || SUBSTRING(NEW.id::TEXT, 1, 8)),
     COALESCE(NEW.raw_user_meta_data->>'display_name', 'Student'),
     COALESCE((NEW.raw_user_meta_data->>'grade')::INT, 12),
     COALESCE(NEW.raw_user_meta_data->>'stream', 'natural'),
-    COALESCE(NEW.raw_user_meta_data->>'preferred_language', 'en'),
-    COALESCE(NEW.raw_user_meta_data->>'role', 'student')
+    COALESCE(NEW.raw_user_meta_data->>'preferred_language', 'en')
   )
   ON CONFLICT (id) DO UPDATE SET
     display_name = COALESCE(EXCLUDED.display_name, profiles.display_name),
     grade = COALESCE(EXCLUDED.grade, profiles.grade),
     stream = COALESCE(EXCLUDED.stream, profiles.stream),
     preferred_language = COALESCE(EXCLUDED.preferred_language, profiles.preferred_language);
+
+  v_role := COALESCE(NEW.raw_user_meta_data->>'role', 'student');
+  INSERT INTO public.user_roles (user_id, role_id)
+  VALUES (NEW.id, v_role)
+  ON CONFLICT (user_id, role_id) DO NOTHING;
+
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
