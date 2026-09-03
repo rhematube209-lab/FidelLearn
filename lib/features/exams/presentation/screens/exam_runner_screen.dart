@@ -6,6 +6,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_badge.dart';
+import '../../../../core/widgets/fidel_card.dart';
+import '../../../../core/widgets/fidel_option_card.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../question_bank/presentation/widgets/svg_diagram_viewer.dart';
 import '../../domain/models/exam_models.dart';
@@ -70,8 +73,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     if (_isSubmitting) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        backgroundColor: AppTheme.accent,
-        content: Text('Time has expired! Submitting examination.'),
+        backgroundColor: AppTheme.danger,
+        content: Text('Time has expired! Submitting your examination answers.'),
       ),
     );
     await _performSubmission();
@@ -111,21 +114,47 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     final shouldSubmit = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Submit Examination?'),
+        title: const Text('Submit Examination?', style: TextStyle(fontWeight: FontWeight.w700)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('You have answered ${_attempt.responses.length} of ${widget.exam.totalQuestions} questions.'),
+            Text(
+              'You have answered ${_attempt.responses.length} of ${widget.exam.totalQuestions} questions.',
+              style: const TextStyle(fontSize: 14),
+            ),
             if (unansweredCount > 0) ...[
-              const SizedBox(height: 8),
-              Text(
-                '⚠️ $unansweredCount questions are still unanswered!',
-                style: const TextStyle(color: AppTheme.danger, fontWeight: FontWeight.bold),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.danger.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                  border: Border.all(color: AppTheme.danger.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 18),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '$unansweredCount questions are unanswered!',
+                        style: const TextStyle(
+                          color: AppTheme.danger,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
-            const SizedBox(height: 12),
-            const Text('Once submitted, your final score and step-by-step solutions will be generated.'),
+            const SizedBox(height: 14),
+            const Text(
+              'Once submitted, your final score, readiness analytics, and step-by-step solutions will be generated.',
+              style: TextStyle(fontSize: 12.5, color: AppTheme.darkMuted),
+            ),
           ],
         ),
         actions: [
@@ -192,12 +221,14 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   }
 
   void _showMobileQuestionPalette() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).cardTheme.color,
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusLg)),
       ),
       builder: (ctx) => Padding(
         padding: const EdgeInsets.all(24.0),
@@ -205,29 +236,38 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Question Palette',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Question Palette',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  '${_attempt.responses.length}/${widget.exam.totalQuestions} Answered',
+                  style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-            _buildPaletteGrid(),
+            _buildPaletteGrid(isDark),
             const SizedBox(height: 20),
-            _buildPaletteLegend(),
+            _buildPaletteLegend(isDark),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPaletteGrid() {
+  Widget _buildPaletteGrid(bool isDark) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 5,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        childAspectRatio: 1.1,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+        childAspectRatio: 1.15,
       ),
       itemCount: widget.exam.questions.length,
       itemBuilder: (context, index) {
@@ -237,45 +277,51 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         final isAnswered = resp != null && resp.selectedChoiceId != null;
         final isFlagged = resp?.isFlagged == true;
 
-        Color bgColor = AppTheme.darkSurfaceStrong;
-        Color borderColor = AppTheme.darkBorder;
-        Color textColor = AppTheme.darkTextSoft;
+        Color bgColor = isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9);
+        Color borderColor = isDark ? AppTheme.darkBorder : AppTheme.lightBorder;
+        Color textColor = isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft;
 
         if (isCurrent) {
           bgColor = AppTheme.brandStrong;
-          borderColor = AppTheme.brand;
+          borderColor = AppTheme.brandStrong;
           textColor = Colors.white;
         } else if (isFlagged) {
-          bgColor = AppTheme.accent.withOpacity(0.2);
+          bgColor = isDark ? const Color(0x33F59E0B) : const Color(0xFFFEF3C7);
           borderColor = AppTheme.accent;
-          textColor = AppTheme.accent;
+          textColor = AppTheme.accentDark;
         } else if (isAnswered) {
-          bgColor = AppTheme.green.withOpacity(0.2);
+          bgColor = isDark ? const Color(0x3310B981) : const Color(0xFFD1FAE5);
           borderColor = AppTheme.green;
-          textColor = AppTheme.green;
+          textColor = isDark ? const Color(0xFF6EE7B7) : AppTheme.greenDark;
         }
 
-        return InkWell(
-          onTap: () {
-            setState(() => _currentIndex = index);
-            if (Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            }
-          },
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: borderColor, width: isCurrent ? 2 : 1),
-            ),
-            child: Center(
-              child: Text(
-                '${index + 1}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  fontSize: 13,
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              setState(() => _currentIndex = index);
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              }
+            },
+            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+            child: Container(
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                border: Border.all(
+                  color: borderColor,
+                  width: isCurrent ? 2 : 1,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  '${index + 1}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ),
@@ -285,7 +331,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     );
   }
 
-  Widget _buildPaletteLegend() {
+  Widget _buildPaletteLegend(bool isDark) {
     return const Wrap(
       spacing: 16,
       runSpacing: 8,
@@ -302,44 +348,54 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentQ = widget.exam.questions[_currentIndex];
     final currentResp = _attempt.responses[currentQ.id];
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           '${widget.exam.title} • Q ${_currentIndex + 1}/${widget.exam.totalQuestions}',
           style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
         actions: [
-          // Timer HUD
+          // Urgency Color-Shifting Timer HUD
           if (widget.exam.isTimed)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               margin: const EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
                 color: _remainingSeconds < 120
-                    ? AppTheme.danger.withOpacity(0.2)
-                    : AppTheme.brandStrong.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
+                    ? AppTheme.danger.withValues(alpha: 0.15)
+                    : (_remainingSeconds < 300
+                        ? AppTheme.accent.withValues(alpha: 0.15)
+                        : AppTheme.brandStrong.withValues(alpha: 0.12)),
+                borderRadius: BorderRadius.circular(AppTheme.radiusPill),
                 border: Border.all(
-                  color: _remainingSeconds < 120 ? AppTheme.danger : AppTheme.brand,
+                  color: _remainingSeconds < 120
+                      ? AppTheme.danger
+                      : (_remainingSeconds < 300 ? AppTheme.accent : AppTheme.brand),
                 ),
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.timer_outlined,
-                    size: 16,
-                    color: _remainingSeconds < 120 ? AppTheme.danger : AppTheme.brand,
+                    size: 15,
+                    color: _remainingSeconds < 120
+                        ? AppTheme.danger
+                        : (_remainingSeconds < 300 ? AppTheme.accent : AppTheme.brand),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 5),
                   Text(
                     '${(_remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(_remainingSeconds % 60).toString().padLeft(2, '0')}',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: _remainingSeconds < 120 ? AppTheme.danger : AppTheme.brand,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12.5,
+                      color: _remainingSeconds < 120
+                          ? AppTheme.danger
+                          : (_remainingSeconds < 300 ? AppTheme.accentDark : AppTheme.brand),
                     ),
                   ),
                 ],
@@ -351,14 +407,14 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
               currentResp?.isFlagged == true ? Icons.flag_rounded : Icons.flag_outlined,
               color: currentResp?.isFlagged == true ? AppTheme.accent : null,
             ),
-            tooltip: 'Flag for review',
+            tooltip: 'Flag question for review',
             onPressed: _handleToggleFlag,
           ),
 
           if (!isDesktop)
             IconButton(
               icon: const Icon(Icons.grid_view_rounded),
-              tooltip: 'Palette',
+              tooltip: 'Question palette',
               onPressed: _showMobileQuestionPalette,
             ),
 
@@ -368,7 +424,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
               onPressed: _confirmAndSubmit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.brandStrong,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               ),
               child: const Text('Finish Exam'),
             ),
@@ -378,10 +434,10 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Linear Progress Bar
+            // Smooth Progress Bar
             LinearProgressIndicator(
               value: (_currentIndex + 1) / widget.exam.totalQuestions,
-              backgroundColor: const Color(0x1AFFFFFF),
+              backgroundColor: isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
               valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.brand),
               minHeight: 4,
             ),
@@ -395,8 +451,12 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                         Container(
                           width: 280,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).cardTheme.color,
-                            border: const Border(right: BorderSide(color: AppTheme.darkBorder)),
+                            color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                            border: Border(
+                              right: BorderSide(
+                                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                              ),
+                            ),
                           ),
                           padding: const EdgeInsets.all(20),
                           child: SingleChildScrollView(
@@ -405,25 +465,25 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                               children: [
                                 const Text(
                                   'Exam Question Grid',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                                 ),
                                 const SizedBox(height: 14),
-                                _buildPaletteGrid(),
+                                _buildPaletteGrid(isDark),
                                 const SizedBox(height: 20),
-                                _buildPaletteLegend(),
+                                _buildPaletteLegend(isDark),
                               ],
                             ),
                           ),
                         ),
 
-                        // Center Question Cockpit
+                        // Center Focused Question Runner
                         Expanded(
                           child: SingleChildScrollView(
                             padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 28),
                             child: Center(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 850),
-                                child: _buildQuestionContent(currentQ, currentResp),
+                                constraints: const BoxConstraints(maxWidth: 820),
+                                child: _buildQuestionContent(currentQ, currentResp, isDark),
                               ),
                             ),
                           ),
@@ -431,17 +491,21 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                       ],
                     )
                   : SingleChildScrollView(
-                      padding: const EdgeInsets.all(20.0),
-                      child: _buildQuestionContent(currentQ, currentResp),
+                      padding: const EdgeInsets.all(18.0),
+                      child: _buildQuestionContent(currentQ, currentResp, isDark),
                     ),
             ),
 
-            // Bottom Navigation Footer
+            // Bottom Sticky Navigation Dock
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardTheme.color,
-                border: const Border(top: BorderSide(color: AppTheme.darkBorder)),
+                color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                border: Border(
+                  top: BorderSide(
+                    color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                  ),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -457,9 +521,13 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     children: [
                       Text(
                         'Answered: ${_attempt.responses.length}/${widget.exam.totalQuestions}',
-                        style: const TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 14),
                       if (_currentIndex < widget.exam.questions.length - 1)
                         ElevatedButton.icon(
                           onPressed: () => setState(() => _currentIndex++),
@@ -476,7 +544,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                           label: const Text('Submit Final Exam'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.green,
-                            foregroundColor: Colors.black,
+                            foregroundColor: Colors.white,
                           ),
                         ),
                     ],
@@ -490,66 +558,57 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     );
   }
 
-  Widget _buildQuestionContent(Question currentQ, UserResponse? currentResp) {
+  Widget _buildQuestionContent(
+    Question currentQ,
+    UserResponse? currentResp,
+    bool isDark,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Question Statement Card
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardTheme.color,
-            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-            border: Border.all(color: AppTheme.darkBorder),
-          ),
+        FidelCard(
+          padding: const EdgeInsets.all(22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.brand.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      'DIFFICULTY: ${currentQ.difficulty.toUpperCase()}',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.brand,
-                      ),
-                    ),
+                  FidelBadge(
+                    text: 'DIFFICULTY: ${currentQ.difficulty.toUpperCase()}',
+                    variant: currentQ.difficulty == 'hard'
+                        ? FidelBadgeVariant.danger
+                        : (currentQ.difficulty == 'medium'
+                            ? FidelBadgeVariant.warning
+                            : FidelBadgeVariant.primary),
+                    isSmall: true,
                   ),
                   if (currentQ.examYear != null)
-                    Text(
-                      'ESSLCE ${currentQ.examYear} E.C.',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.darkMuted,
-                      ),
+                    FidelBadge(
+                      text: 'ESSLCE ${currentQ.examYear} E.C.',
+                      variant: FidelBadgeVariant.neutral,
+                      isSmall: true,
                     ),
                 ],
               ),
               const SizedBox(height: 16),
               Text(
                 currentQ.questionTextEn,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: 17,
                   fontWeight: FontWeight.w700,
                   height: 1.45,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
                 ),
               ),
-              if (currentQ.questionTextAm != null) ...[
+              if (currentQ.questionTextAm != null && currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 Text(
                   currentQ.questionTextAm!,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: AppTheme.darkTextSoft,
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                     height: 1.4,
                   ),
                 ),
@@ -566,66 +625,24 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         ],
 
         // Choices
-        const Text(
-          'Select Single Best Choice:',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        Text(
+          'Select the single best answer:',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 13.5,
+            color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+          ),
         ),
         const SizedBox(height: 12),
 
         ...currentQ.choices.map((choice) {
           final isSelected = currentResp?.selectedChoiceId == choice.id;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: InkWell(
-              onTap: () => _handleSelectChoice(choice.id),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? AppTheme.brandStrong.withOpacity(0.18)
-                      : Theme.of(context).cardTheme.color,
-                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                  border: Border.all(
-                    color: isSelected ? AppTheme.brand : AppTheme.darkBorder,
-                    width: isSelected ? 2 : 1,
-                  ),
-                  boxShadow: isSelected ? AppTheme.brandGlow : null,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppTheme.brandStrong : const Color(0x1AFFFFFF),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          choice.label,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: isSelected ? Colors.white : AppTheme.darkText,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        choice.textEn,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                          color: isSelected ? AppTheme.darkText : AppTheme.darkTextSoft,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          return FidelOptionCard(
+            label: choice.label,
+            textEn: choice.textEn,
+            textAm: choice.textAm,
+            state: isSelected ? FidelOptionState.selected : FidelOptionState.unselected,
+            onTap: () => _handleSelectChoice(choice.id),
           );
         }),
       ],
@@ -645,12 +662,12 @@ class _LegendItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 10,
+          height: 10,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             border: Border.all(color: color),
-            borderRadius: BorderRadius.circular(3),
+            borderRadius: BorderRadius.circular(2),
           ),
         ),
         const SizedBox(width: 6),

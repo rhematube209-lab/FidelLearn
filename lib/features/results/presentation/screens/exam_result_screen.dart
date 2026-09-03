@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_button.dart';
+import '../../../../core/widgets/fidel_card.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 
@@ -68,10 +70,12 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: const Center(
           child: CircularProgressIndicator(color: AppTheme.brand),
         ),
       );
@@ -85,17 +89,23 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
     }
 
     final isPass = _attempt!.percentage >= 50.0;
+    final isDistinction = _attempt!.percentage >= 80.0;
     final avgTimePerQ = _attempt!.totalQuestions > 0
         ? (_attempt!.durationSeconds / _attempt!.totalQuestions).round()
         : 0;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('National Exam Performance Report', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Examination Performance Report',
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.close_rounded),
+            tooltip: 'Close report',
             onPressed: () => context.go('/home'),
           ),
         ],
@@ -107,7 +117,7 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
         ),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1100),
+            constraints: const BoxConstraints(maxWidth: 1040),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -115,21 +125,21 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Left Column: Radial Score & Pass Indicator
+                      // Left Column: Grand Score Hero
                       Expanded(
-                        flex: 45,
-                        child: _buildGrandScoreCard(context, isPass),
+                        flex: 48,
+                        child: _buildGrandScoreCard(context, isPass, isDistinction, isDark),
                       ),
-                      const SizedBox(width: 28),
+                      const SizedBox(width: 24),
 
                       // Right Column: Metric Breakdown & Action Deck
                       Expanded(
-                        flex: 55,
+                        flex: 52,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildPerformanceMetrics(avgTimePerQ),
-                            const SizedBox(height: 24),
+                            _buildPerformanceMetrics(avgTimePerQ, isDark),
+                            const SizedBox(height: 20),
                             _buildActionDeck(context),
                           ],
                         ),
@@ -137,9 +147,9 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                     ],
                   )
                 else ...[
-                  _buildGrandScoreCard(context, isPass),
+                  _buildGrandScoreCard(context, isPass, isDistinction, isDark),
                   const SizedBox(height: 20),
-                  _buildPerformanceMetrics(avgTimePerQ),
+                  _buildPerformanceMetrics(avgTimePerQ, isDark),
                   const SizedBox(height: 24),
                   _buildActionDeck(context),
                 ],
@@ -151,36 +161,36 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
     );
   }
 
-  Widget _buildGrandScoreCard(BuildContext context, bool isPass) {
+  Widget _buildGrandScoreCard(
+    BuildContext context,
+    bool isPass,
+    bool isDistinction,
+    bool isDark,
+  ) {
     final percentage = _attempt!.percentage;
-    final accentColor = isPass ? AppTheme.green : AppTheme.accent;
+    final scoreColor = isDistinction
+        ? AppTheme.green
+        : (isPass ? AppTheme.accentDark : AppTheme.danger);
 
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isPass
-              ? [const Color(0xFF064E3B), AppTheme.darkSurfaceStrong]
-              : [const Color(0xFF7C2D12), AppTheme.darkSurfaceStrong],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: accentColor.withOpacity(0.4)),
-        boxShadow: AppTheme.cardShadowDark,
-      ),
+    return FidelCard(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      backgroundColor: isDark
+          ? (isPass ? const Color(0xFF0F2420) : const Color(0xFF241515))
+          : (isPass ? const Color(0xFFF0FDF4) : const Color(0xFFFEF2F2)),
+      borderColor: scoreColor.withValues(alpha: 0.35),
       child: Column(
         children: [
+          // Circular Score Gauge
           Container(
             width: 120,
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.darkBg.withOpacity(0.7),
-              border: Border.all(color: accentColor, width: 4),
+              color: isDark ? AppTheme.darkSurface : Colors.white,
+              border: Border.all(color: scoreColor, width: 4),
               boxShadow: [
                 BoxShadow(
-                  color: accentColor.withOpacity(0.3),
+                  color: scoreColor.withValues(alpha: 0.15),
                   blurRadius: 20,
                 ),
               ],
@@ -194,36 +204,58 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
-                      color: accentColor,
+                      color: scoreColor,
+                      letterSpacing: -0.5,
                     ),
                   ),
-                  const Text(
-                    'SCORE',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.darkMuted),
+                  Text(
+                    'FINAL SCORE',
+                    style: TextStyle(
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 20),
+
+          // Headline Message
           Text(
-            isPass ? 'Outstanding Performance! 🎉' : 'Keep Practicing & Mastering! 📚',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+            isDistinction
+                ? 'Outstanding Mastery! 🏆'
+                : (isPass ? 'Good Job, Exam Passed! 🎉' : 'Keep Practicing & Mastering! 📚'),
+            style: TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.w800,
+              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+              letterSpacing: -0.3,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 6),
           Text(
-            '${_attempt!.examTitle} • ESSLCE Standard',
-            style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+            '${_attempt!.examTitle} • Grade ${_attempt!.subjectId}',
+            style: TextStyle(
+              fontSize: 13,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
+
+          // Study Coins Reward Pill
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
             decoration: BoxDecoration(
-              color: AppTheme.accent.withOpacity(0.15),
+              color: isDark ? const Color(0x26F59E0B) : const Color(0xFFFEF3C7),
               borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-              border: Border.all(color: AppTheme.accent.withOpacity(0.4)),
+              border: Border.all(
+                color: AppTheme.accent.withValues(alpha: 0.4),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -231,10 +263,10 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                 const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 18),
                 const SizedBox(width: 6),
                 Text(
-                  '+${(_attempt!.score * 2)} Study Coins Earned',
+                  '+${(_attempt!.score * 2).clamp(5, 50)} Study Coins Earned',
                   style: const TextStyle(
-                    color: AppTheme.accent,
-                    fontWeight: FontWeight.bold,
+                    color: AppTheme.accentDark,
+                    fontWeight: FontWeight.w700,
                     fontSize: 13,
                   ),
                 ),
@@ -246,39 +278,40 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
     );
   }
 
-  Widget _buildPerformanceMetrics(int avgTimePerQ) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
-      ),
+  Widget _buildPerformanceMetrics(int avgTimePerQ, bool isDark) {
+    return FidelCard(
+      padding: const EdgeInsets.all(22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Examination Analytics Breakdown',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Text(
+            'Performance Breakdown',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            ),
           ),
           const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: _buildMetricTile(
-                  'Correct Items',
+                  'Correct Answers',
                   '${_attempt!.score} / ${_attempt!.totalQuestions}',
                   AppTheme.green,
                   Icons.check_circle_outline_rounded,
+                  isDark,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildMetricTile(
-                  'Mistakes',
+                  'Incorrect Items',
                   '${_attempt!.totalQuestions - _attempt!.score}',
                   AppTheme.danger,
                   Icons.cancel_outlined,
+                  isDark,
                 ),
               ),
             ],
@@ -292,15 +325,17 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                   '${_attempt!.durationSeconds}s',
                   AppTheme.brand,
                   Icons.timer_outlined,
+                  isDark,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _buildMetricTile(
-                  'Pace / Question',
+                  'Pace per Question',
                   '${avgTimePerQ}s',
                   AppTheme.accent,
                   Icons.speed_rounded,
+                  isDark,
                 ),
               ),
             ],
@@ -310,34 +345,49 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
     );
   }
 
-  Widget _buildMetricTile(String label, String value, Color color, IconData icon) {
+  Widget _buildMetricTile(
+    String label,
+    String value,
+    Color color,
+    IconData icon,
+    bool isDark,
+  ) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: isDark
+            ? color.withValues(alpha: 0.08)
+            : color.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: Row(
         children: [
           Icon(icon, color: color, size: 22),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: color,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -348,34 +398,31 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ElevatedButton.icon(
+        FidelButton(
+          label: 'Review Step-by-Step Solutions',
+          icon: Icons.menu_book_rounded,
           onPressed: () {
-            context.push('/solution_review', extra: {
+            context.push('/solutions', extra: {
               'questions': _questions,
               'attempt': _attempt!,
             });
           },
-          icon: const Icon(Icons.menu_book_rounded),
-          label: const Text('Review Step-by-Step Solutions'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.brandStrong,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-          ),
+          isFullWidth: true,
+          height: 48,
         ),
         const SizedBox(height: 12),
-        OutlinedButton.icon(
+        FidelButton(
+          label: 'Race Personal-Best Exam Ghost',
+          icon: Icons.flash_on_rounded,
+          variant: FidelButtonVariant.outline,
           onPressed: () => context.push('/exam_ghost/${_attempt!.examId}'),
-          icon: const Icon(Icons.flash_on, color: AppTheme.accent),
-          label: const Text('Race Personal-Best Exam Ghost'),
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-          ),
+          isFullWidth: true,
+          height: 48,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         TextButton(
           onPressed: () => context.go('/home'),
-          child: const Text('Back to Student Dashboard'),
+          child: const Text('Return to Student Dashboard'),
         ),
       ],
     );

@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_badge.dart';
+import '../../../../core/widgets/fidel_card.dart';
+import '../../../../core/widgets/fidel_section_header.dart';
+import '../../../../core/widgets/fidel_stat_card.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
 import '../../../exams/domain/models/exam_models.dart';
@@ -55,10 +59,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     final userAsync = ref.watch(currentUserProvider);
     final user = userAsync.valueOrNull;
     final coinBalance = ref.watch(coinLedgerProvider.notifier).balance;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading || user == null) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: const Center(
           child: CircularProgressIndicator(color: AppTheme.brand),
         ),
       );
@@ -74,19 +80,15 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       appBar: isDesktop
           ? null
           : AppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Row(
                 children: [
                   Container(
-                    width: 34,
-                    height: 34,
+                    width: 32,
+                    height: 32,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [AppTheme.brandStrong, AppTheme.brand],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: AppTheme.brandGlow,
+                      color: AppTheme.brandStrong,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusXs),
                     ),
                     child: const Center(
                       child: Text(
@@ -103,8 +105,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   const Text(
                     'FidelLearn',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.5,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.4,
+                      fontSize: 19,
                     ),
                   ),
                 ],
@@ -115,101 +118,98 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   child: SyncIndicatorWidget(isCompact: true),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.person_outline),
+                  icon: const Icon(Icons.person_outline_rounded),
                   onPressed: () => context.push('/profile'),
                 ),
               ],
             ),
       body: Row(
         children: [
-          // 🖥️ 1. Futuristic Desktop Left Navigation Rail (Visible on Desktop)
-          if (isDesktop) _buildDesktopNavigationRail(context, user, coinBalance),
+          // 🖥️ Desktop Navigation Rail
+          if (isDesktop) _buildDesktopNavRail(context, user, coinBalance, isDark),
 
-          // 📱/🖥️ 2. Main Content Canvas
+          // 📱/🖥️ Main Content Canvas
           Expanded(
             child: RefreshIndicator(
               onRefresh: _loadDashboardData,
+              color: AppTheme.brand,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 36.0 : (isTablet ? 24.0 : 16.0),
-                  vertical: isDesktop ? 32.0 : 20.0,
+                  horizontal: isDesktop ? 40.0 : (isTablet ? 24.0 : 16.0),
+                  vertical: isDesktop ? 32.0 : 16.0,
                 ),
                 child: Center(
                   child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1300),
+                    constraints: const BoxConstraints(maxWidth: 1240),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // Top Header (Desktop View)
+                        // Desktop Header
                         if (isDesktop) ...[
-                          _buildDesktopHeader(context, user, coinBalance, isAmharic),
-                          const SizedBox(height: 28),
+                          _buildDesktopHeader(context, user, coinBalance, isAmharic, isDark),
+                          const SizedBox(height: 24),
                         ],
 
-                        // Futuristic Cosmic Hero Banner (Exam Countdown & Diagnostic)
-                        _buildFuturisticHeroBanner(context, user, isAmharic),
+                        // Modern Mission Control Hero Banner
+                        _buildMissionControlHero(context, user, isAmharic, isDark),
                         const SizedBox(height: 24),
 
-                        // 4-Stat Metric Counter Grid
-                        _buildMetricCardsGrid(context, coinBalance, isDesktop),
+                        // 4-Stat Metric Row
+                        _buildMetricCards(context, coinBalance, isDesktop),
                         const SizedBox(height: 32),
 
-                        // Multi-Column Desktop Layout
+                        // Multi-Column Desktop Layout vs Single-Column Mobile
                         if (isDesktop)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Left Main Section (Subjects & Quick Action Hub)
+                              // Left: Subject Packages & Quick Actions (60%)
                               Expanded(
-                                flex: 62,
+                                flex: 60,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
-                                    _buildSubjectPackageSection(context, isAmharic),
+                                    _buildSubjectSection(context, isAmharic, isDark),
                                     const SizedBox(height: 32),
-                                    _buildQuickActionsHub(context),
+                                    _buildQuickActions(context, isDark),
                                   ],
                                 ),
                               ),
                               const SizedBox(width: 28),
 
-                              // Right Intelligence Section (Weak Topics & Performance)
+                              // Right: Focus Areas & Recent Attempts (40%)
                               Expanded(
-                                flex: 38,
+                                flex: 40,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
-                                    _buildFeaturedBiologyExamCard(context),
+                                    _buildFeaturedExamCard(context, isDark),
                                     const SizedBox(height: 24),
-                                    _buildWeakTopicRadarCard(context),
-                                    const SizedBox(height: 24),
-                                    if (_recentAttempt != null)
-                                      _buildRecentPerformanceCard(context),
+                                    _buildWeakTopicRadarCard(context, isDark),
+                                    if (_recentAttempt != null) ...[
+                                      const SizedBox(height: 24),
+                                      _buildRecentPerformanceCard(context, isDark),
+                                    ],
                                   ],
                                 ),
                               ),
                             ],
                           )
-                        else
-                          // Single-Column Mobile/Tablet Flow
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              _buildFeaturedBiologyExamCard(context),
-                              const SizedBox(height: 24),
-                              _buildQuickActionsHub(context),
-                              const SizedBox(height: 28),
-                              _buildSubjectPackageSection(context, isAmharic),
-                              const SizedBox(height: 28),
-                              _buildWeakTopicRadarCard(context),
-                              const SizedBox(height: 24),
-                              if (_recentAttempt != null) ...[
-                                _buildRecentPerformanceCard(context),
-                                const SizedBox(height: 24),
-                              ],
-                            ],
-                          ),
+                        else ...[
+                          _buildFeaturedExamCard(context, isDark),
+                          const SizedBox(height: 24),
+                          _buildQuickActions(context, isDark),
+                          const SizedBox(height: 28),
+                          _buildSubjectSection(context, isAmharic, isDark),
+                          const SizedBox(height: 28),
+                          _buildWeakTopicRadarCard(context, isDark),
+                          if (_recentAttempt != null) ...[
+                            const SizedBox(height: 24),
+                            _buildRecentPerformanceCard(context, isDark),
+                          ],
+                        ],
+                        const SizedBox(height: 40),
                       ],
                     ),
                   ),
@@ -221,19 +221,41 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       ),
       bottomNavigationBar: isDesktop
           ? null
-          : BottomNavigationBar(
-              currentIndex: 0,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: AppTheme.brand,
-              unselectedItemColor: AppTheme.darkMuted,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'Home'),
-                BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded), label: 'Practice'),
-                BottomNavigationBarItem(icon: Icon(Icons.insights_rounded), label: 'Analytics'),
-                BottomNavigationBarItem(icon: Icon(Icons.military_tech_rounded), label: 'Rewards'),
-                BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
+          : NavigationBar(
+              selectedIndex: 0,
+              backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+              indicatorColor: isDark
+                  ? AppTheme.brand.withValues(alpha: 0.25)
+                  : AppTheme.brandSubtle,
+              elevation: 0,
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.dashboard_outlined),
+                  selectedIcon: Icon(Icons.dashboard_rounded, color: AppTheme.brand),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.menu_book_outlined),
+                  selectedIcon: Icon(Icons.menu_book_rounded, color: AppTheme.brand),
+                  label: 'Practice',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.insights_outlined),
+                  selectedIcon: Icon(Icons.insights_rounded, color: AppTheme.brand),
+                  label: 'Analytics',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.military_tech_outlined),
+                  selectedIcon: Icon(Icons.military_tech_rounded, color: AppTheme.brand),
+                  label: 'Rewards',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.person_outline_rounded),
+                  selectedIcon: Icon(Icons.person_rounded, color: AppTheme.brand),
+                  label: 'Profile',
+                ),
               ],
-              onTap: (index) {
+              onDestinationSelected: (int index) {
                 switch (index) {
                   case 0:
                     break;
@@ -258,31 +280,34 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 🖥️ DESKTOP NAVIGATION RAIL
   // ==========================================
-  Widget _buildDesktopNavigationRail(BuildContext context, UserProfile user, int coinBalance) {
+  Widget _buildDesktopNavRail(
+    BuildContext context,
+    UserProfile user,
+    int coinBalance,
+    bool isDark,
+  ) {
     return Container(
       width: 250,
-      decoration: const BoxDecoration(
-        color: AppTheme.darkSurfaceStrong,
-        border: Border(right: BorderSide(color: AppTheme.darkBorder)),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        border: Border(
+          right: BorderSide(
+            color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+          ),
+        ),
       ),
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Brand Logo
           Row(
             children: [
               Container(
-                width: 38,
-                height: 38,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppTheme.brandStrong, AppTheme.brand],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: AppTheme.brandGlow,
+                  color: AppTheme.brandStrong,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 child: const Center(
                   child: Text(
@@ -296,137 +321,141 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'FidelLearn',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                         fontSize: 18,
-                        color: AppTheme.darkText,
+                        letterSpacing: -0.4,
+                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       'National Exam Prep',
                       style: TextStyle(
                         fontSize: 11,
-                        color: AppTheme.darkMuted,
+                        color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 28),
 
-          // Nav Items
           _buildNavRailItem(
             icon: Icons.dashboard_rounded,
             label: 'Dashboard',
             isActive: true,
+            isDark: isDark,
             onTap: () {},
           ),
           _buildNavRailItem(
             icon: Icons.tune_rounded,
-            label: 'Custom Exam Builder',
+            label: 'Exam Builder',
+            isDark: isDark,
             onTap: () => context.push('/exam_builder'),
           ),
           _buildNavRailItem(
             icon: Icons.history_edu_rounded,
             label: 'Mistake Notebook',
+            isDark: isDark,
             onTap: () => context.push('/mistakes'),
           ),
           _buildNavRailItem(
-            icon: Icons.bookmark_rounded,
+            icon: Icons.bookmark_outline_rounded,
             label: 'Saved Bookmarks',
+            isDark: isDark,
             onTap: () => context.push('/bookmarks'),
           ),
           _buildNavRailItem(
-            icon: Icons.emoji_events_rounded,
+            icon: Icons.emoji_events_outlined,
             label: 'Championship Duels',
+            isDark: isDark,
             onTap: () => context.push('/challenges'),
           ),
           _buildNavRailItem(
             icon: Icons.phone_android_rounded,
             label: 'Airtime Store',
+            isDark: isDark,
             onTap: () => context.push('/airtime_store'),
           ),
           _buildNavRailItem(
             icon: Icons.wifi_tethering_rounded,
             label: 'P2P Offline Share',
+            isDark: isDark,
             onTap: () => context.push('/p2p_share'),
           ),
           _buildNavRailItem(
             icon: Icons.insights_rounded,
             label: 'Weak Topics & IRT',
+            isDark: isDark,
             onTap: () => context.push('/progress'),
           ),
 
           const Spacer(),
 
-          // Desktop Bottom Profile Card
-          InkWell(
-            onTap: () => context.push('/profile'),
-            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0x0FFFFFFF),
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                border: Border.all(color: AppTheme.darkBorder),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0x26334155) : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              border: Border.all(
+                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
               ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundColor: AppTheme.brandStrong,
-                    child: Text(
-                      user.displayName.isNotEmpty ? user.displayName[0] : 'S',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 17,
+                  backgroundColor: AppTheme.brandStrong,
+                  child: Text(
+                    user.displayName.isNotEmpty ? user.displayName[0] : 'S',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.displayName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          user.displayName,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: AppTheme.darkText,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                      Text(
+                        'Grade ${user.grade} • ${user.stream.toUpperCase()}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                         ),
-                        Text(
-                          'Grade ${user.grade} • ${user.stream}',
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: AppTheme.darkMuted,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const Icon(
-                    Icons.settings_outlined,
-                    size: 16,
-                    color: AppTheme.darkMuted,
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined, size: 18),
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                  onPressed: () => context.push('/profile'),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
           ),
         ],
@@ -438,43 +467,53 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     required IconData icon,
     required String label,
     bool isActive = false,
+    required bool isDark,
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: InkWell(
-        onTap: onTap,
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-            color: isActive ? AppTheme.brandStrong.withOpacity(0.18) : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-            border: Border.all(
-              color: isActive ? AppTheme.brand.withOpacity(0.4) : Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+            decoration: BoxDecoration(
+              color: isActive
+                  ? (isDark
+                      ? AppTheme.brand.withValues(alpha: 0.16)
+                      : AppTheme.brandSubtle)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
             ),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 20,
-                color: isActive ? AppTheme.brand : AppTheme.darkMuted,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                    color: isActive ? AppTheme.darkText : AppTheme.darkTextSoft,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  size: 19,
+                  color: isActive
+                      ? AppTheme.brand
+                      : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                      color: isActive
+                          ? (isDark ? Colors.white : AppTheme.brandStrong)
+                          : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -484,7 +523,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 🖥️ TOP DESKTOP HEADER
   // ==========================================
-  Widget _buildDesktopHeader(BuildContext context, dynamic user, int coinBalance, bool isAmharic) {
+  Widget _buildDesktopHeader(
+    BuildContext context,
+    UserProfile user,
+    int coinBalance,
+    bool isAmharic,
+    bool isDark,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -493,46 +538,58 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isAmharic ? 'ሰላም, ${user.displayName} 👋' : 'Welcome Back, ${user.displayName} 👋',
-                style: const TextStyle(
-                  fontSize: 26,
+                isAmharic ? 'ሰላም, ${user.displayName} 👋' : 'Welcome back, ${user.displayName} 👋',
+                style: TextStyle(
+                  fontSize: 23,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: -0.5,
+                  letterSpacing: -0.4,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 3),
               Text(
-                'Grade ${user.grade} National Curriculum • ${user.stream.toUpperCase()} Science Stream',
-                style: const TextStyle(fontSize: 14, color: AppTheme.darkMuted),
+                'Grade ${user.grade} National Exam Curriculum • ${user.stream.toUpperCase()} Stream',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
+        const SizedBox(width: 16),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const SyncIndicatorWidget(isCompact: true),
-            const SizedBox(width: 14),
-            // Coin Balance Pill
+            const SizedBox(width: 12),
             InkWell(
               onTap: () => context.push('/rewards'),
               borderRadius: BorderRadius.circular(AppTheme.radiusPill),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
-                  color: AppTheme.accent.withOpacity(0.12),
+                  color: isDark ? const Color(0x26F59E0B) : const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-                  border: Border.all(color: AppTheme.accent.withOpacity(0.5)),
+                  border: Border.all(
+                    color: AppTheme.accent.withValues(alpha: 0.4),
+                  ),
                 ),
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.monetization_on, color: AppTheme.accent, size: 20),
-                    const SizedBox(width: 8),
+                    const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 18),
+                    const SizedBox(width: 6),
                     Text(
                       '$coinBalance Coins',
                       style: const TextStyle(
-                        color: AppTheme.accent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        color: AppTheme.accentDark,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
                       ),
                     ),
                   ],
@@ -546,163 +603,133 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // 🌌 FUTURISTIC HERO BANNER
+  // 🎯 MISSION CONTROL HERO BANNER
   // ==========================================
-  Widget _buildFuturisticHeroBanner(BuildContext context, dynamic user, bool isAmharic) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2E1065), Color(0xFF0F172A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.brand.withOpacity(0.35)),
-        boxShadow: AppTheme.cardShadowDark,
-      ),
-      child: Stack(
+  Widget _buildMissionControlHero(
+    BuildContext context,
+    UserProfile user,
+    bool isAmharic,
+    bool isDark,
+  ) {
+    return FidelCard(
+      padding: const EdgeInsets.all(22),
+      backgroundColor: isDark ? const Color(0xFF131B2E) : const Color(0xFFF1F5F9),
+      borderColor: isDark ? const Color(0xFF26334D) : const Color(0xFFCBD5E1),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Background subtle ambient glow
-          Positioned(
-            right: -20,
-            bottom: -30,
-            child: Container(
-              width: 180,
-              height: 180,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppTheme.brand.withOpacity(0.15),
-              ),
-            ),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.brand.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                        border: Border.all(color: AppTheme.brand.withOpacity(0.5)),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.timer_outlined, color: AppTheme.brand, size: 14),
-                          SizedBox(width: 6),
-                          Text(
-                            'ESSLCE / PSLCE NATIONAL EXAM 2026',
-                            style: TextStyle(
-                              color: AppTheme.brand,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const FidelBadge(
+                      text: 'ESSLCE / PSLCE 2026',
+                      icon: Icons.school_rounded,
+                      variant: FidelBadgeVariant.primary,
+                      isSmall: true,
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      isAmharic
-                          ? 'የፈተና ዝግጁነትዎን ያረጋግጡ'
-                          : 'Master Your National Exam Score',
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'AI-free verified questions with step-by-step solutions, offline Exam Ghost personal bests, and weak-topic diagnostics.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppTheme.darkTextSoft,
-                        height: 1.4,
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () => context.push('/exam_builder'),
-                          icon: const Icon(Icons.play_arrow_rounded, size: 20),
-                          label: const Text('Start Adaptive Practice'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.brandStrong,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          ),
-                        ),
-                        OutlinedButton.icon(
-                          onPressed: () => context.push('/challenges'),
-                          icon: const Icon(Icons.flash_on, size: 18, color: AppTheme.accent),
-                          label: const Text(
-                            'Exam Ghost Duels',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: AppTheme.brand.withOpacity(0.4)),
-                            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(width: 8),
+                    FidelBadge(
+                      text: 'GRADE ${user.grade} ${user.stream.toUpperCase()}',
+                      variant: FidelBadgeVariant.neutral,
+                      isSmall: true,
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 20),
-
-              // Radial Readiness Gauge
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: AppTheme.darkSurfaceStrong.withOpacity(0.8),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppTheme.green.withOpacity(0.5), width: 3),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.green.withOpacity(0.2),
-                      blurRadius: 16,
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '84%',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          color: AppTheme.green,
-                        ),
-                      ),
-                      Text(
-                        'READINESS',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.darkMuted,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 12),
+                Text(
+                  isAmharic
+                      ? 'የፈተና ዝግጁነትዎን ያረጋግጡ'
+                      : 'Master Your National Exam Score',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.4,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  isAmharic
+                      ? 'የተረጋገጡ የፈተና ጥያቄዎች ከደረጃ-በ-ደረጃ ማብራሪያዎች ጋር፣ ያለ ኢንተርኔት ይለማመዱ።'
+                      : 'Verified syllabus questions with step-by-step solutions, offline diagnostics, and Exam Ghost.',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.4,
+                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 8,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => context.push('/exam_builder'),
+                      icon: const Icon(Icons.play_arrow_rounded, size: 20),
+                      label: const Text('Start Adaptive Practice'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.brandStrong,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () => context.push('/challenges'),
+                      icon: const Icon(Icons.flash_on_rounded, size: 18, color: AppTheme.accent),
+                      label: const Text('Exam Ghost Duels'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20),
+
+          // Clean Circular Readiness Gauge
+          Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.darkSurface : Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppTheme.green.withValues(alpha: 0.4),
+                width: 3,
               ),
-            ],
+              boxShadow: [
+                BoxShadow(
+                  color: AppTheme.green.withValues(alpha: 0.12),
+                  blurRadius: 16,
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '84%',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w900,
+                      color: AppTheme.green,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  Text(
+                    'READINESS',
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      color: AppTheme.darkMuted,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -710,11 +737,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // 📊 4-STAT METRIC CARDS GRID
+  // 📊 4-STAT METRIC ROW
   // ==========================================
-  Widget _buildMetricCardsGrid(BuildContext context, int coinBalance, bool isDesktop) {
+  Widget _buildMetricCards(BuildContext context, int coinBalance, bool isDesktop) {
     final cards = [
-      _buildStatCard(
+      FidelStatCard(
         title: 'Study Coins',
         value: '$coinBalance 🪙',
         subtitle: '10 Coins = 1 ETB (Telebirr)',
@@ -722,7 +749,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         accentColor: AppTheme.accent,
         onTap: () => context.push('/rewards'),
       ),
-      _buildStatCard(
+      FidelStatCard(
         title: 'Daily Streak',
         value: '5 Days 🔥',
         subtitle: 'Freeze Shield Active',
@@ -730,7 +757,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         accentColor: AppTheme.pink,
         onTap: () => context.push('/rewards'),
       ),
-      _buildStatCard(
+      FidelStatCard(
         title: 'Exam Accuracy',
         value: '88.4%',
         subtitle: '100+ Questions Solved',
@@ -738,10 +765,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         accentColor: AppTheme.green,
         onTap: () => context.push('/progress'),
       ),
-      _buildStatCard(
-        title: 'Avg Speed',
+      FidelStatCard(
+        title: 'Avg Pace',
         value: '42s / Q',
-        subtitle: 'Top 5% National Pace',
+        subtitle: 'Top 5% National Speed',
         icon: Icons.speed_rounded,
         accentColor: AppTheme.brand,
         onTap: () => context.push('/progress'),
@@ -750,213 +777,137 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
 
     if (isDesktop) {
       return Row(
-        children: cards.map((c) => Expanded(child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-          child: c,
-        ))).toList(),
+        children: cards
+            .map((c) => Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: c,
+                  ),
+                ))
+            .toList(),
       );
     }
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return GridView.count(
-          crossAxisCount: constraints.maxWidth > 500 ? 4 : 2,
+          crossAxisCount: constraints.maxWidth > 520 ? 4 : 2,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 1.5,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 1.45,
           children: cards,
         );
       },
     );
   }
 
-  Widget _buildStatCard({
-    required String title,
-    required String value,
-    required String subtitle,
-    required IconData icon,
-    required Color accentColor,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          border: Border.all(color: accentColor.withOpacity(0.2)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.darkMuted,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Icon(icon, color: accentColor, size: 18),
-              ],
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: accentColor,
-              ),
-            ),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 11,
-                color: AppTheme.darkMuted,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   // ==========================================
   // 📚 SUBJECT PACKAGE SECTION
   // ==========================================
-  Widget _buildSubjectPackageSection(BuildContext context, bool isAmharic) {
+  Widget _buildSubjectSection(BuildContext context, bool isAmharic, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Expanded(
-              child: Text(
-                'National Exam Subjects & Packages',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            TextButton.icon(
-              onPressed: () => context.push('/subjects'),
-              icon: const Icon(Icons.folder_zip_outlined, size: 16),
-              label: const Text('Manage Packages'),
-            ),
-          ],
+        FidelSectionHeader(
+          title: 'National Exam Subjects',
+          subtitle: 'Choose a subject to practice syllabus units & mock exams',
+          trailing: TextButton.icon(
+            onPressed: () => context.push('/subjects'),
+            icon: const Icon(Icons.folder_zip_outlined, size: 16),
+            label: const Text('Manage Packages'),
+          ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 14),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 320,
-            mainAxisExtent: 130,
-            mainAxisSpacing: 14,
-            crossAxisSpacing: 14,
+            mainAxisExtent: 136,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
           ),
           itemCount: _subjects.length,
           itemBuilder: (context, index) {
             final sub = _subjects[index];
-            return InkWell(
+            return FidelCard(
+              padding: const EdgeInsets.all(15),
               onTap: () => context.push('/exam_builder?subjectId=${sub.id}'),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardTheme.color,
-                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                  border: Border.all(color: AppTheme.darkBorder),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: AppTheme.brand.withOpacity(0.15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: AppTheme.brand.withValues(alpha: 0.14),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                        ),
+                        child: Center(
                           child: Text(
-                            sub.nameEn[0],
+                            sub.nameEn.isNotEmpty ? sub.nameEn[0] : 'S',
                             style: const TextStyle(
                               color: AppTheme.brand,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            isAmharic ? sub.nameAm : sub.nameEn,
-                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppTheme.green.withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(6),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          isAmharic ? sub.nameAm : sub.nameEn,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13.5,
+                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
                           ),
-                          child: const Text(
-                            'OFFLINE',
-                            style: TextStyle(
-                              color: AppTheme.green,
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
+                      ),
+                      const SizedBox(width: 4),
+                      const FidelBadge(
+                        text: 'OFFLINE',
+                        variant: FidelBadgeVariant.success,
+                        isSmall: true,
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '${sub.code} • Verified Questions & Diagrams',
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                     ),
-                    Text(
-                      '${sub.code} • Comprehensive Question Bank & Vector Diagrams',
-                      style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Practice Subject →',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.brand,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Practice Subject →',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.brand,
                         ),
-                        Icon(
-                          Icons.arrow_forward_rounded,
-                          size: 14,
-                          color: AppTheme.brand.withOpacity(0.8),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 14,
+                        color: AppTheme.brand.withValues(alpha: 0.8),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
           },
@@ -968,15 +919,15 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // ⚡ QUICK ACTIONS HUB
   // ==========================================
-  Widget _buildQuickActionsHub(BuildContext context) {
+  Widget _buildQuickActions(BuildContext context, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Quick Actions & Command Center',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        const FidelSectionHeader(
+          title: 'Quick Actions',
+          subtitle: 'Instant shortcuts for focused study sessions',
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 14),
         Row(
           children: [
             Expanded(
@@ -985,6 +936,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 title: 'Custom Exam',
                 subtitle: 'Filter by year & topic',
                 color: AppTheme.brand,
+                isDark: isDark,
                 onTap: () => context.push('/exam_builder'),
               ),
             ),
@@ -993,8 +945,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               child: _buildActionTile(
                 icon: Icons.timer_outlined,
                 title: 'Timed Mock',
-                subtitle: 'Real national conditions',
+                subtitle: 'Simulate national rules',
                 color: AppTheme.accent,
+                isDark: isDark,
                 onTap: () => context.push('/exam_builder?mode=mock'),
               ),
             ),
@@ -1009,6 +962,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 title: 'Mistake Notebook',
                 subtitle: 'Review & retry errors',
                 color: AppTheme.danger,
+                isDark: isDark,
                 onTap: () => context.push('/mistakes'),
               ),
             ),
@@ -1019,6 +973,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 title: 'P2P Offline Share',
                 subtitle: 'Zero data transfer',
                 color: AppTheme.green,
+                isDark: isDark,
                 onTap: () => context.push('/p2p_share'),
               ),
             ),
@@ -1033,122 +988,113 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     required String title,
     required String subtitle,
     required Color color,
+    required bool isDark,
     required VoidCallback onTap,
   }) {
-    return InkWell(
+    return FidelCard(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          border: Border.all(color: color.withOpacity(0.25)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: color, size: 20),
+      padding: const EdgeInsets.all(13),
+      backgroundColor: isDark
+          ? color.withValues(alpha: 0.08)
+          : color.withValues(alpha: 0.04),
+      borderColor: color.withValues(alpha: 0.25),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(7),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.14),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: color,
-                    ),
+            child: Icon(icon, color: color, size: 18),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.5,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
                   ),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                   ),
-                ],
-              ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   // ==========================================
-  // 🧬 FEATURED BIOLOGY 2013 EXAM CARD
+  // 🧬 FEATURED BIOLOGY EXAM CARD
   // ==========================================
-  Widget _buildFeaturedBiologyExamCard(BuildContext context) {
-    return Container(
+  Widget _buildFeaturedExamCard(BuildContext context, bool isDark) {
+    return FidelCard(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF134E4A), Color(0xFF1E293B)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.green.withOpacity(0.4)),
-      ),
+      backgroundColor: isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4),
+      borderColor: AppTheme.green.withValues(alpha: 0.35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppTheme.green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: const Text(
-                  'NEW EXAM PAPER',
-                  style: TextStyle(
-                    color: AppTheme.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                  ),
-                ),
+              FidelBadge(
+                text: 'OFFICIAL EXAM',
+                variant: FidelBadgeVariant.success,
+                isSmall: true,
               ),
-              const Flexible(
+              Flexible(
                 child: Text(
                   '2013 E.C. (2021 G.C.)',
-                  style: TextStyle(color: AppTheme.darkMuted, fontSize: 11),
+                  style: TextStyle(color: AppTheme.darkMuted, fontSize: 11.5),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          const Text(
+          const SizedBox(height: 12),
+          Text(
             'ESSLCE Biology (100 Questions)',
             style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+              fontSize: 15.5,
+              fontWeight: FontWeight.w700,
+              color: isDark ? AppTheme.darkText : AppTheme.lightText,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Official National Exam with vector diagrams, bacteriophage models, & complete solutions.',
-            style: TextStyle(fontSize: 12, color: AppTheme.darkTextSoft, height: 1.3),
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 14),
           ElevatedButton.icon(
             onPressed: () => context.push('/exam_builder?subjectId=biology_g12'),
-            icon: const Icon(Icons.play_circle_outline, size: 18),
+            icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
             label: const Text('Start 100-Question Exam'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.green,
-              foregroundColor: Colors.black,
+              backgroundColor: AppTheme.greenDark,
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             ),
           ),
@@ -1160,51 +1106,50 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 🎯 WEAK TOPIC RADAR CARD
   // ==========================================
-  Widget _buildWeakTopicRadarCard(BuildContext context) {
-    return Container(
+  Widget _buildWeakTopicRadarCard(BuildContext context, bool isDark) {
+    return FidelCard(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Text(
-                  'Priority Focus Areas',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  'Priority Weak Topics',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Icon(Icons.radar_rounded, color: AppTheme.pink, size: 20),
+              const Icon(Icons.radar_rounded, color: AppTheme.danger, size: 20),
             ],
           ),
+          const SizedBox(height: 14),
+          _buildWeakTopicRow('Cellular Respiration & Krebs Cycle', 'Biology (Grade 12)', 0.45, isDark),
           const SizedBox(height: 12),
-          _buildWeakTopicRow('Cellular Respiration & Krebs Cycle', 'Biology (Grade 12)', 0.45),
-          const SizedBox(height: 10),
-          _buildWeakTopicRow('Arithmetic & Geometric Sequences', 'Math (Grade 12)', 0.58),
-          const SizedBox(height: 10),
-          _buildWeakTopicRow('Battle of Adwa Treaties', 'History (Grade 12)', 0.62),
+          _buildWeakTopicRow('Arithmetic & Geometric Sequences', 'Math (Grade 12)', 0.58, isDark),
+          const SizedBox(height: 12),
+          _buildWeakTopicRow('Battle of Adwa Treaties', 'History (Grade 12)', 0.62, isDark),
           const SizedBox(height: 14),
           OutlinedButton(
             onPressed: () => context.push('/progress'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(38),
             ),
-            child: const Text('View Full Analytics & IRT Projection'),
+            child: const Text('View Full Weak Topic Analytics'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildWeakTopicRow(String title, String subject, double accuracy) {
+  Widget _buildWeakTopicRow(String title, String subject, double accuracy, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1214,29 +1159,34 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: 8),
             Text(
               '${(accuracy * 100).toInt()}%',
               style: const TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
                 color: AppTheme.danger,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 5),
         ClipRRect(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
           child: LinearProgressIndicator(
             value: accuracy,
-            backgroundColor: const Color(0x1FFFFFFF),
+            backgroundColor: isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
             valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
-            minHeight: 5,
+            minHeight: 6,
           ),
         ),
       ],
@@ -1246,53 +1196,53 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 🏆 RECENT PERFORMANCE CARD
   // ==========================================
-  Widget _buildRecentPerformanceCard(BuildContext context) {
+  Widget _buildRecentPerformanceCard(BuildContext context, bool isDark) {
     final attempt = _recentAttempt!;
     final isGoodScore = attempt.percentage >= 70.0;
 
-    return Container(
+    return FidelCard(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Recent Performance',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: (isGoodScore ? AppTheme.green : AppTheme.accent).withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(6),
-                ),
+              Expanded(
                 child: Text(
-                  '${attempt.percentage.toStringAsFixed(0)}%',
+                  'Recent Performance',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: isGoodScore ? AppTheme.green : AppTheme.accent,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              ),
+              FidelBadge(
+                text: '${attempt.percentage.toStringAsFixed(0)}%',
+                variant: isGoodScore ? FidelBadgeVariant.success : FidelBadgeVariant.warning,
+                isSmall: true,
               ),
             ],
           ),
           const SizedBox(height: 10),
           Text(
             attempt.examTitle,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
-            'Score: ${attempt.score}/${attempt.totalQuestions} • Time: ${attempt.durationSeconds}s',
-            style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+            'Score: ${attempt.score}/${attempt.totalQuestions} questions • Time: ${attempt.durationSeconds}s',
+            style: TextStyle(
+              fontSize: 12,
+              color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+            ),
           ),
           const SizedBox(height: 14),
           Row(

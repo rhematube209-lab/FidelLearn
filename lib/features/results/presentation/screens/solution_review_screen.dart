@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_badge.dart';
+import '../../../../core/widgets/fidel_card.dart';
+import '../../../../core/widgets/fidel_option_card.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/audio_explanation_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
@@ -77,7 +80,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
           duration: const Duration(seconds: 1),
           content: Text(
             _bookmarkedIds.contains(q.id)
-                ? 'Question bookmarked to offline study list!'
+                ? 'Question saved to offline bookmarks!'
                 : 'Bookmark removed.',
           ),
         ),
@@ -89,14 +92,14 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Report Question Issue'),
+        title: const Text('Report Question Issue', style: TextStyle(fontWeight: FontWeight.w700)),
         content: const Text(
-          'Thank you for helping us maintain verified quality. Our content reviewers will inspect this question.',
+          'Thank you for maintaining exam content quality. Our curriculum team will review this question and verify syllabus accuracy.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('OK'),
+            child: const Text('Understood'),
           ),
         ],
       ),
@@ -114,16 +117,18 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
 
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentQ = widget.questions[_currentIndex];
     final resp = widget.attempt.responses[currentQ.id];
     final isCorrect = resp?.isCorrect ?? false;
     final isBookmarked = _bookmarkedIds.contains(currentQ.id);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Solution Review: Q ${_currentIndex + 1} of ${widget.questions.length}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          'Solution Review: Q ${_currentIndex + 1}/${widget.questions.length}',
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
         actions: [
           IconButton(
@@ -131,12 +136,12 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
               isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
               color: isBookmarked ? AppTheme.accent : null,
             ),
-            tooltip: 'Bookmark Question',
+            tooltip: 'Bookmark question',
             onPressed: () => _toggleBookmark(currentQ),
           ),
           IconButton(
             icon: const Icon(Icons.flag_outlined),
-            tooltip: 'Report Issue',
+            tooltip: 'Report issue',
             onPressed: () => _reportContent(currentQ),
           ),
         ],
@@ -153,16 +158,20 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         Container(
                           width: 290,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).cardTheme.color,
-                            border: const Border(right: BorderSide(color: AppTheme.darkBorder)),
+                            color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                            border: Border(
+                              right: BorderSide(
+                                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                              ),
+                            ),
                           ),
                           padding: const EdgeInsets.all(18),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Exam Items & Solutions',
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                'Exam Questions',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                               ),
                               const SizedBox(height: 12),
                               Expanded(
@@ -175,38 +184,46 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                                     final isSelected = index == _currentIndex;
 
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 6.0),
-                                      child: InkWell(
-                                        onTap: () => setState(() => _currentIndex = index),
+                                      padding: const EdgeInsets.only(bottom: 4.0),
+                                      child: Material(
+                                        color: Colors.transparent,
                                         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? AppTheme.brandStrong.withOpacity(0.18)
-                                                : Colors.transparent,
-                                            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                                            border: Border.all(
-                                              color: isSelected ? AppTheme.brand : Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () => setState(() => _currentIndex = index),
+                                          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? (isDark
+                                                      ? AppTheme.brand.withValues(alpha: 0.16)
+                                                      : AppTheme.brandSubtle)
+                                                  : Colors.transparent,
+                                              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                              border: Border.all(
+                                                color: isSelected ? AppTheme.brand : Colors.transparent,
+                                              ),
                                             ),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                corr ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                                                color: corr ? AppTheme.green : AppTheme.danger,
-                                                size: 18,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Text(
-                                                'Question ${index + 1}',
-                                                style: TextStyle(
-                                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                                  fontSize: 13,
-                                                  color: isSelected ? AppTheme.darkText : AppTheme.darkTextSoft,
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  corr ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                                                  color: corr ? AppTheme.green : AppTheme.danger,
+                                                  size: 18,
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  'Question ${index + 1}',
+                                                  style: TextStyle(
+                                                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                                    fontSize: 13,
+                                                    color: isSelected
+                                                        ? (isDark ? Colors.white : AppTheme.brandStrong)
+                                                        : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -224,8 +241,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 28),
                             child: Center(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 850),
-                                child: _buildSolutionContent(currentQ, resp, isCorrect),
+                                constraints: const BoxConstraints(maxWidth: 820),
+                                child: _buildSolutionContent(currentQ, resp, isCorrect, isDark),
                               ),
                             ),
                           ),
@@ -233,17 +250,21 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                       ],
                     )
                   : SingleChildScrollView(
-                      padding: const EdgeInsets.all(20.0),
-                      child: _buildSolutionContent(currentQ, resp, isCorrect),
+                      padding: const EdgeInsets.all(18.0),
+                      child: _buildSolutionContent(currentQ, resp, isCorrect, isDark),
                     ),
             ),
 
-            // Bottom Navigation Footer
+            // Bottom Navigation Dock
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
-                color: Theme.of(context).cardTheme.color,
-                border: const Border(top: BorderSide(color: AppTheme.darkBorder)),
+                color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                border: Border(
+                  top: BorderSide(
+                    color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                  ),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,7 +292,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                       label: const Text('Done Reviewing'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.green,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                       ),
                     ),
                 ],
@@ -283,7 +304,12 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
     );
   }
 
-  Widget _buildSolutionContent(Question currentQ, UserResponse? resp, bool isCorrect) {
+  Widget _buildSolutionContent(
+    Question currentQ,
+    UserResponse? resp,
+    bool isCorrect,
+    bool isDark,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -292,11 +318,13 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: isCorrect
-                ? AppTheme.green.withOpacity(0.12)
-                : AppTheme.danger.withOpacity(0.12),
+                ? (isDark ? const Color(0x2610B981) : const Color(0xFFECFDF5))
+                : (isDark ? const Color(0x26EF4444) : const Color(0xFFFEF2F2)),
             borderRadius: BorderRadius.circular(AppTheme.radiusMd),
             border: Border.all(
-              color: isCorrect ? AppTheme.green : AppTheme.danger,
+              color: isCorrect
+                  ? AppTheme.green.withValues(alpha: 0.4)
+                  : AppTheme.danger.withValues(alpha: 0.4),
             ),
           ),
           child: Row(
@@ -304,7 +332,7 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
               Icon(
                 isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
                 color: isCorrect ? AppTheme.green : AppTheme.danger,
-                size: 24,
+                size: 22,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -312,46 +340,63 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                   isCorrect
                       ? 'Your answer was correct!'
                       : (resp?.selectedChoiceId == null
-                          ? 'You skipped this question during the exam.'
+                          ? 'You skipped this question during the exam session.'
                           : 'Your answer was incorrect.'),
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isCorrect ? AppTheme.green : AppTheme.danger,
-                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: isCorrect ? AppTheme.greenDark : AppTheme.dangerDark,
+                    fontSize: 13.5,
                   ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 18),
 
         // Question Statement Card
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardTheme.color,
-            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-            border: Border.all(color: AppTheme.darkBorder),
-          ),
+        FidelCard(
+          padding: const EdgeInsets.all(22),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FidelBadge(
+                    text: 'DIFFICULTY: ${currentQ.difficulty.toUpperCase()}',
+                    variant: currentQ.difficulty == 'hard'
+                        ? FidelBadgeVariant.danger
+                        : (currentQ.difficulty == 'medium'
+                            ? FidelBadgeVariant.warning
+                            : FidelBadgeVariant.primary),
+                    isSmall: true,
+                  ),
+                  if (currentQ.examYear != null)
+                    FidelBadge(
+                      text: 'ESSLCE ${currentQ.examYear} E.C.',
+                      variant: FidelBadgeVariant.neutral,
+                      isSmall: true,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16),
               Text(
                 currentQ.questionTextEn,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   height: 1.45,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
                 ),
               ),
-              if (currentQ.questionTextAm != null) ...[
+              if (currentQ.questionTextAm != null && currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 Text(
                   currentQ.questionTextAm!,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.darkTextSoft,
+                  style: TextStyle(
+                    fontSize: 14.5,
+                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                     height: 1.4,
                   ),
                 ),
@@ -367,85 +412,46 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
           const SizedBox(height: 20),
         ],
 
-        // Choices
-        const Text('Choices Breakdown:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        const SizedBox(height: 10),
+        // Choices with verified state
+        Text(
+          'Answer Verification & Choices:',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 13.5,
+            color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+          ),
+        ),
+        const SizedBox(height: 12),
 
         ...currentQ.choices.map((choice) {
           final isStudentChoice = resp?.selectedChoiceId == choice.id;
           final isThisCorrect = choice.isCorrect;
 
-          Color bg = Theme.of(context).cardTheme.color!;
-          Color border = AppTheme.darkBorder;
-
+          FidelOptionState optionState;
           if (isThisCorrect) {
-            bg = AppTheme.green.withOpacity(0.15);
-            border = AppTheme.green;
+            optionState = FidelOptionState.correct;
           } else if (isStudentChoice && !isThisCorrect) {
-            bg = AppTheme.danger.withOpacity(0.15);
-            border = AppTheme.danger;
+            optionState = FidelOptionState.incorrect;
+          } else {
+            optionState = FidelOptionState.unselected;
           }
 
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              decoration: BoxDecoration(
-                color: bg,
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                border: Border.all(color: border, width: isThisCorrect || isStudentChoice ? 1.5 : 1),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: isThisCorrect
-                          ? AppTheme.green
-                          : (isStudentChoice ? AppTheme.danger : const Color(0x1AFFFFFF)),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        choice.label,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isThisCorrect || isStudentChoice ? Colors.white : AppTheme.darkText,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Text(
-                      choice.textEn,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: isThisCorrect || isStudentChoice ? FontWeight.bold : FontWeight.normal,
-                        color: isThisCorrect ? AppTheme.green : (isStudentChoice ? AppTheme.danger : AppTheme.darkText),
-                      ),
-                    ),
-                  ),
-                  if (isThisCorrect)
-                    const Icon(Icons.check_circle_rounded, color: AppTheme.green, size: 20),
-                  if (isStudentChoice && !isThisCorrect)
-                    const Icon(Icons.cancel_rounded, color: AppTheme.danger, size: 20),
-                ],
-              ),
-            ),
+          return FidelOptionCard(
+            label: choice.label,
+            textEn: choice.textEn,
+            textAm: choice.textAm,
+            state: optionState,
           );
         }),
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
 
         // Step-by-Step Educational Explanation Card
-        Container(
+        FidelCard(
           padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: AppTheme.brandStrong.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-            border: Border.all(color: AppTheme.brand.withOpacity(0.3)),
-          ),
+          backgroundColor: isDark
+              ? AppTheme.brand.withValues(alpha: 0.08)
+              : AppTheme.brandSubtle,
+          borderColor: AppTheme.brand.withValues(alpha: 0.3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -455,34 +461,49 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                   SizedBox(width: 8),
                   Text(
                     'Step-by-Step Explanation',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
               Text(
                 currentQ.explanation.solutionTextEn,
-                style: const TextStyle(fontSize: 14, height: 1.5, color: AppTheme.darkText),
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 1.5,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
               ),
               if (currentQ.explanation.simplerExplanationEn != null) ...[
                 const SizedBox(height: 14),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0x0FFFFFFF),
+                    color: isDark ? const Color(0x1A000000) : Colors.white,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    border: Border.all(
+                      color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        '💡 Simpler Concept Summary:',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppTheme.accent),
+                        '💡 Quick Concept Summary:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12.5,
+                          color: AppTheme.accentDark,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         currentQ.explanation.simplerExplanationEn!,
-                        style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                          height: 1.35,
+                        ),
                       ),
                     ],
                   ),

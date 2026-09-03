@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_badge.dart';
+import '../../../../core/widgets/fidel_button.dart';
+import '../../../../core/widgets/fidel_card.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/exam_models.dart';
@@ -39,7 +42,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   void initState() {
     super.initState();
     _isTimed = widget.mode == 'mock';
-    if (_isTimed) _questionCount = 10;
+    if (_isTimed) _questionCount = 20;
     _loadInitialData();
   }
 
@@ -117,7 +120,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       if (questions.isEmpty) {
         setState(() {
           _errorMessage =
-              'No questions match the selected criteria. Try removing filters.';
+              'No questions match the selected filter criteria. Try selecting all units or clearing difficulty.';
           _isLoading = false;
         });
         return;
@@ -125,7 +128,6 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
       final count = questions.length < _questionCount ? questions.length : _questionCount;
 
-      // Shuffle and take requested count
       final shuffled = List<Question>.from(questions)..shuffle();
       final selectedQuestions = shuffled.sublist(0, count);
 
@@ -172,12 +174,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          widget.mode == 'mock' ? 'Timed National Mock Exam' : 'Custom Exam Builder Studio',
-          style: const TextStyle(fontWeight: FontWeight.w700),
+          _isTimed ? 'Timed National Mock Exam' : 'Custom Exam Builder',
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
@@ -193,21 +197,27 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               ),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
+                  constraints: const BoxConstraints(maxWidth: 1100),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      // Mode Selector Pill
+                      _buildModeSelector(isDark),
+                      const SizedBox(height: 20),
+
                       if (_errorMessage != null) ...[
                         Container(
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: AppTheme.danger.withOpacity(0.12),
+                            color: AppTheme.danger.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                            border: Border.all(color: AppTheme.danger),
+                            border: Border.all(
+                              color: AppTheme.danger.withValues(alpha: 0.4),
+                            ),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 22),
+                              const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 20),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
@@ -229,24 +239,21 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Left Section: Curriculum Syllabus Selector
                             Expanded(
                               flex: 55,
-                              child: _buildCurriculumCard(context),
+                              child: _buildCurriculumCard(context, isDark),
                             ),
                             const SizedBox(width: 24),
-
-                            // Right Section: Simulation Settings & Live Summary
                             Expanded(
                               flex: 45,
-                              child: _buildSimulationSettingsCard(context),
+                              child: _buildSimulationSettingsCard(context, isDark),
                             ),
                           ],
                         )
                       else ...[
-                        _buildCurriculumCard(context),
+                        _buildCurriculumCard(context, isDark),
                         const SizedBox(height: 20),
-                        _buildSimulationSettingsCard(context),
+                        _buildSimulationSettingsCard(context, isDark),
                       ],
                     ],
                   ),
@@ -256,31 +263,149 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     );
   }
 
-  Widget _buildCurriculumCard(BuildContext context) {
+  Widget _buildModeSelector(bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
       ),
+      child: Row(
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () => setState(() => _isTimed = false),
+              borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: !_isTimed
+                      ? (isDark ? AppTheme.brandStrong : Colors.white)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+                  boxShadow: !_isTimed
+                      ? (isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight)
+                      : null,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.self_improvement_rounded,
+                        size: 18,
+                        color: !_isTimed
+                            ? (isDark ? Colors.white : AppTheme.brandStrong)
+                            : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Self-Paced Practice',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: !_isTimed ? FontWeight.w700 : FontWeight.w500,
+                          color: !_isTimed
+                              ? (isDark ? Colors.white : AppTheme.brandStrong)
+                              : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () => setState(() => _isTimed = true),
+              borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: _isTimed
+                      ? (isDark ? AppTheme.brandStrong : Colors.white)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+                  boxShadow: _isTimed
+                      ? (isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight)
+                      : null,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 18,
+                        color: _isTimed
+                            ? (isDark ? Colors.white : AppTheme.brandStrong)
+                            : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Timed National Mock',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: _isTimed ? FontWeight.w700 : FontWeight.w500,
+                          color: _isTimed
+                              ? (isDark ? Colors.white : AppTheme.brandStrong)
+                              : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCurriculumCard(BuildContext context, bool isDark) {
+    return FidelCard(
+      padding: const EdgeInsets.all(22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.menu_book_rounded, color: AppTheme.brand, size: 22),
-              SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: AppTheme.brand.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                ),
+                child: const Icon(Icons.menu_book_rounded, color: AppTheme.brand, size: 20),
+              ),
+              const SizedBox(width: 10),
               Text(
-                'Curriculum & Syllabus Scope',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                'Curriculum Scope',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 18),
 
           // 1. Subject Selector
-          const Text('Target Subject', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(
+            'Target Subject',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+            ),
+          ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
             value: _selectedSubjectId,
@@ -301,7 +426,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           const SizedBox(height: 18),
 
           // 2. Unit Filter
-          const Text('Curriculum Unit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(
+            'Curriculum Unit',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+            ),
+          ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String?>(
             value: _selectedUnitId,
@@ -324,7 +456,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
           // 3. Topic Filter
           if (_topics.isNotEmpty) ...[
-            const Text('Specific Topic', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+            Text(
+              'Specific Topic',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+                color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+              ),
+            ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String?>(
               value: _selectedTopicId,
@@ -347,17 +486,24 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ],
 
           // 4. Difficulty Selector
-          const Text('Difficulty Level', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(
+            'Difficulty Level',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+            ),
+          ),
           const SizedBox(height: 10),
           Row(
             children: [
-              _buildDifficultyChip('All', null),
+              _buildDifficultyChip('All', null, isDark),
               const SizedBox(width: 8),
-              _buildDifficultyChip('Easy', 'easy'),
+              _buildDifficultyChip('Easy', 'easy', isDark),
               const SizedBox(width: 8),
-              _buildDifficultyChip('Medium', 'medium'),
+              _buildDifficultyChip('Medium', 'medium', isDark),
               const SizedBox(width: 8),
-              _buildDifficultyChip('Hard', 'hard'),
+              _buildDifficultyChip('Hard', 'hard', isDark),
             ],
           ),
         ],
@@ -365,7 +511,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     );
   }
 
-  Widget _buildDifficultyChip(String label, String? value) {
+  Widget _buildDifficultyChip(String label, String? value, bool isDark) {
     final isSelected = _selectedDifficulty == value;
     return Expanded(
       child: InkWell(
@@ -374,19 +520,25 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.brandStrong.withOpacity(0.2) : Colors.transparent,
+            color: isSelected
+                ? (isDark ? const Color(0x334F46E5) : const Color(0xFFEEF2FF))
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(AppTheme.radiusSm),
             border: Border.all(
-              color: isSelected ? AppTheme.brand : AppTheme.darkBorder,
+              color: isSelected
+                  ? AppTheme.brand
+                  : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
             ),
           ),
           child: Center(
             child: Text(
               label,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? AppTheme.brand : AppTheme.darkTextSoft,
+                fontSize: 12.5,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected
+                    ? (isDark ? Colors.white : AppTheme.brandStrong)
+                    : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
               ),
             ),
           ),
@@ -395,88 +547,129 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     );
   }
 
-  Widget _buildSimulationSettingsCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
-      ),
+  Widget _buildSimulationSettingsCard(BuildContext context, bool isDark) {
+    return FidelCard(
+      padding: const EdgeInsets.all(22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.tune_rounded, color: AppTheme.accent, size: 22),
-              SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: AppTheme.accent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                ),
+                child: const Icon(Icons.tune_rounded, color: AppTheme.accent, size: 20),
+              ),
+              const SizedBox(width: 10),
               Text(
-                'Exam Engine Parameters',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                'Exam Parameters',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 18),
 
-          // Question Count
+          // Question Count Preset Pills
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Question Count', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppTheme.brand.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+              Text(
+                'Question Count',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                  color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                 ),
-                child: Text(
-                  '$_questionCount items',
-                  style: const TextStyle(color: AppTheme.brand, fontWeight: FontWeight.bold, fontSize: 13),
-                ),
+              ),
+              FidelBadge(
+                text: '$_questionCount Questions',
+                variant: FidelBadgeVariant.primary,
+                isSmall: true,
               ),
             ],
           ),
+          const SizedBox(height: 10),
+          Row(
+            children: [10, 20, 30, 50].map((preset) {
+              final isSelected = _questionCount == preset;
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: InkWell(
+                    onTap: () => setState(() => _questionCount = preset),
+                    borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? (isDark ? const Color(0x334F46E5) : const Color(0xFFEEF2FF))
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                        border: Border.all(
+                          color: isSelected
+                              ? AppTheme.brand
+                              : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$preset Qs',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            color: isSelected
+                                ? (isDark ? Colors.white : AppTheme.brandStrong)
+                                : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 14),
+
+          // Slider for fine tuning
           Slider(
             value: _questionCount.toDouble(),
             min: 5,
             max: 50,
             divisions: 9,
-            label: '$_questionCount',
+            label: '$_questionCount Qs',
             activeColor: AppTheme.brand,
             onChanged: (val) => setState(() => _questionCount = val.toInt()),
           ),
           const SizedBox(height: 14),
 
-          // Timed Mode Toggle
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0x0FFFFFFF),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-              border: Border.all(color: AppTheme.darkBorder),
-            ),
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Strict Examination Timer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-              subtitle: Text(
-                _isTimed ? 'Auto-submits when time reaches 00:00' : 'Self-paced untimed practice mode',
-                style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
-              ),
-              value: _isTimed,
-              activeColor: AppTheme.accent,
-              onChanged: (val) => setState(() => _isTimed = val),
-            ),
-          ),
-
+          // Timed Mode Settings
           if (_isTimed) ...[
-            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Duration Limit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                 Text(
-                  '$_timeLimitMinutes minutes',
-                  style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 13),
+                  'Time Limit',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                  ),
+                ),
+                Text(
+                  '$_timeLimitMinutes min (${(_timeLimitMinutes * 60 ~/ _questionCount)}s / question)',
+                  style: const TextStyle(
+                    color: AppTheme.accentDark,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
@@ -489,21 +682,18 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               activeColor: AppTheme.accent,
               onChanged: (val) => setState(() => _timeLimitMinutes = val.toInt()),
             ),
+            const SizedBox(height: 10),
           ],
-          const SizedBox(height: 28),
 
-          // Start CTA
-          ElevatedButton.icon(
+          const SizedBox(height: 16),
+
+          // Start CTA Button
+          FidelButton(
+            label: _isTimed ? 'Launch Timed Mock Exam' : 'Start Practice Session',
+            icon: Icons.play_arrow_rounded,
             onPressed: _startExam,
-            icon: const Icon(Icons.play_arrow_rounded, size: 22),
-            label: Text(
-              _isTimed ? 'Launch Timed Examination' : 'Start Practice Session',
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.brandStrong,
-              foregroundColor: Colors.white,
-              minimumSize: const Size.fromHeight(48),
-            ),
+            isFullWidth: true,
+            height: 48,
           ),
         ],
       ),

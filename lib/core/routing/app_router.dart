@@ -114,6 +114,15 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/solution_review',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final questions = extra?['questions'] as List<Question>? ?? [];
+        final attempt = extra?['attempt'] as ExamAttempt;
+        return SolutionReviewScreen(questions: questions, attempt: attempt);
+      },
+    ),
+    GoRoute(
       path: '/bookmarks',
       builder: (context, state) => const BookmarksScreen(),
     ),
