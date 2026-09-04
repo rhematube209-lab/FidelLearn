@@ -54,7 +54,8 @@ class FidelStatCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                          color:
+                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                           letterSpacing: 0.2,
                         ),
                         maxLines: 1,
@@ -90,7 +91,9 @@ class FidelStatCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                      color: isDark
+                          ? AppTheme.darkTextSoft
+                          : AppTheme.lightTextSoft,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

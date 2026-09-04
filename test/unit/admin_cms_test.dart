@@ -20,7 +20,8 @@ void main() {
       expect(logs.first.actorRole, isNotNull);
     });
 
-    test('saves authored question in review state and logs audit trail', () async {
+    test('saves authored question in review state and logs audit trail',
+        () async {
       const question = Question(
         id: 'q_test_author',
         subjectId: 'math_g12',
@@ -61,7 +62,8 @@ void main() {
       expect(logs.first.targetEntityId, 'q_test_author');
     });
 
-    test('approves question and records status change in immutable audit log', () async {
+    test('approves question and records status change in immutable audit log',
+        () async {
       await repository.updateVerificationStatus(
         questionId: 'q_draft_calc_1',
         status: 'published',

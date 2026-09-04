@@ -95,19 +95,19 @@ class ClassAssignment extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    classroomId,
-    classroomName,
-    title,
-    subjectId,
-    subjectName,
-    questionIds,
-    timeLimitMinutes,
-    dueAt,
-    createdAt,
-    totalSubmissions,
-    averageScorePercentage,
-  ];
+        id,
+        classroomId,
+        classroomName,
+        title,
+        subjectId,
+        subjectName,
+        questionIds,
+        timeLimitMinutes,
+        dueAt,
+        createdAt,
+        totalSubmissions,
+        averageScorePercentage,
+      ];
 }
 
 class ClassroomTopicStats extends Equatable {
@@ -127,10 +127,10 @@ class ClassroomTopicStats extends Equatable {
 
   @override
   List<Object?> get props => [
-    topicId,
-    topicName,
-    averageAccuracyPercentage,
-    totalQuestionsAttempted,
-    isWeakArea,
-  ];
+        topicId,
+        topicName,
+        averageAccuracyPercentage,
+        totalQuestionsAttempted,
+        isWeakArea,
+      ];
 }

@@ -49,15 +49,15 @@ class Subject extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    code,
-    nameEn,
-    nameAm,
-    grade,
-    stream,
-    iconAsset,
-    sortOrder,
-  ];
+        id,
+        code,
+        nameEn,
+        nameAm,
+        grade,
+        stream,
+        iconAsset,
+        sortOrder,
+      ];
 }
 
 class Unit extends Equatable {
@@ -180,8 +180,7 @@ class ContentPackage extends Equatable {
       publisher:
           json['publisher'] as String? ?? 'FidelLearn Original Demonstration',
       license: json['license'] as String? ?? 'demo_evaluation',
-      attribution:
-          json['attribution'] as String? ??
+      attribution: json['attribution'] as String? ??
           'FidelLearn original demonstration content',
       isDownloaded: json['is_downloaded'] as bool? ?? false,
     );
@@ -206,17 +205,17 @@ class ContentPackage extends Equatable {
 
   @override
   List<Object?> get props => [
-    packageId,
-    subjectId,
-    nameEn,
-    nameAm,
-    grade,
-    stream,
-    version,
-    sizeBytes,
-    publisher,
-    license,
-    attribution,
-    isDownloaded,
-  ];
+        packageId,
+        subjectId,
+        nameEn,
+        nameAm,
+        grade,
+        stream,
+        version,
+        sizeBytes,
+        publisher,
+        license,
+        attribution,
+        isDownloaded,
+      ];
 }

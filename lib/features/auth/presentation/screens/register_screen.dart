@@ -63,12 +63,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final confirmPass = _confirmPassController.text.trim();
 
     if (name.isEmpty) {
-      setState(() => _errorMessage = 'Please enter your full name or screen name.');
+      setState(
+          () => _errorMessage = 'Please enter your full name or screen name.');
       return;
     }
 
     if (phone.replaceAll(RegExp(r'[^0-9]'), '').length < 9) {
-      setState(() => _errorMessage = 'Please enter a valid Ethiopian phone number (e.g. +251 911 223 344).');
+      setState(() => _errorMessage =
+          'Please enter a valid Ethiopian phone number (e.g. +251 911 223 344).');
       return;
     }
 
@@ -78,7 +80,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     }
 
     if (pass != confirmPass) {
-      setState(() => _errorMessage = 'Passwords do not match. Please re-enter.');
+      setState(
+          () => _errorMessage = 'Passwords do not match. Please re-enter.');
       return;
     }
 
@@ -88,7 +91,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
 
     try {
-      await ref.read(currentUserProvider.notifier).register(
+      final user = await ref.read(currentUserProvider.notifier).register(
             phone: phone,
             pass: pass,
             name: name,
@@ -98,12 +101,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           );
 
       if (mounted) {
-        if (_role == UserRole.teacher) {
-          context.go('/teacher');
-        } else if (_role == UserRole.schoolAdmin) {
-          context.go('/school_admin');
-        } else {
-          context.go('/home');
+        switch (user.role) {
+          case UserRole.teacher:
+            context.go('/teacher');
+            break;
+          case UserRole.schoolAdmin:
+            context.go('/school_admin');
+            break;
+          case UserRole.platformAdmin:
+            context.go('/admin');
+            break;
+          case UserRole.student:
+            context.go('/home');
+            break;
         }
       }
     } catch (e) {
@@ -184,7 +194,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            isAmharic ? 'የ50 የጥናት ሳንቲሞች ስጦታ!' : '50 Free Study Coins!',
+                            isAmharic
+                                ? 'የ50 የጥናት ሳንቲሞች ስጦታ!'
+                                : '50 Free Study Coins!',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -196,7 +208,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             isAmharic
                                 ? 'መለያ በመክፈት ፈተናዎችን በነፃ ይለማመዱ'
                                 : 'Sign up to unlock offline exams & step-by-step solutions.',
-                            style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                            style: const TextStyle(
+                                fontSize: 12, color: AppTheme.darkMuted),
                           ),
                         ],
                       ),
@@ -212,16 +225,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   decoration: BoxDecoration(
                     color: AppTheme.errorRed.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.errorRed.withOpacity(0.5)),
+                    border:
+                        Border.all(color: AppTheme.errorRed.withOpacity(0.5)),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.error_outline, color: AppTheme.errorRed, size: 20),
+                      const Icon(Icons.error_outline,
+                          color: AppTheme.errorRed, size: 20),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           _errorMessage!,
-                          style: const TextStyle(color: AppTheme.errorRed, fontSize: 13),
+                          style: const TextStyle(
+                              color: AppTheme.errorRed, fontSize: 13),
                         ),
                       ),
                     ],
@@ -235,7 +251,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
-                  labelText: isAmharic ? 'ሙሉ ስም / ስክሪን ስም' : 'Full Name / Screen Name',
+                  labelText:
+                      isAmharic ? 'ሙሉ ስም / ስክሪን ስም' : 'Full Name / Screen Name',
                   hintText: 'e.g. Abebe Balcha',
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
@@ -250,7 +267,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   labelText: isAmharic ? 'ስልክ ቁጥር' : 'Ethiopian Phone Number',
                   hintText: '+251 911 223 344',
                   prefixIcon: const Icon(Icons.phone_android),
-                  helperText: isAmharic ? 'የኢትዮጵያ ስልክ ቁጥር (+251 ወይም 09...)' : 'Format: +251 9... or 09...',
+                  helperText: isAmharic
+                      ? 'የኢትዮጵያ ስልክ ቁጥር (+251 ወይም 09...)'
+                      : 'Format: +251 9... or 09...',
                 ),
               ),
               const SizedBox(height: 16),
@@ -260,11 +279,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 controller: _passController,
                 obscureText: _obscurePass,
                 decoration: InputDecoration(
-                  labelText: isAmharic ? 'የይለፍ ቃል (ቢያንስ 6 ፊደላት)' : 'Password (min. 6 characters)',
+                  labelText: isAmharic
+                      ? 'የይለፍ ቃል (ቢያንስ 6 ፊደላት)'
+                      : 'Password (min. 6 characters)',
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
-                    icon: Icon(_obscurePass ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () => setState(() => _obscurePass = !_obscurePass),
+                    icon: Icon(
+                        _obscurePass ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () =>
+                        setState(() => _obscurePass = !_obscurePass),
                   ),
                 ),
               ),
@@ -278,8 +301,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   labelText: isAmharic ? 'የይለፍ ቃል ያረጋግጡ' : 'Confirm Password',
                   prefixIcon: const Icon(Icons.lock_reset),
                   suffixIcon: IconButton(
-                    icon: Icon(_obscureConfirmPass ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () => setState(() => _obscureConfirmPass = !_obscureConfirmPass),
+                    icon: Icon(_obscureConfirmPass
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: () => setState(
+                        () => _obscureConfirmPass = !_obscureConfirmPass),
                   ),
                 ),
               ),
@@ -288,7 +314,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // Educational Grade Selector
               Text(
                 isAmharic ? 'የትምህርት ደረጃ ይምረጡ' : 'Select Academic Grade',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 8),
               Row(
@@ -306,7 +333,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                         selected: isSelected,
@@ -330,7 +359,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               if (_grade == 12) ...[
                 Text(
                   isAmharic ? 'የትምህርት ዘርፍ (ስትሪም)' : 'Grade 12 Academic Stream',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -338,7 +368,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     Expanded(
                       child: ChoiceChip(
                         avatar: const Text('🧪'),
-                        label: Text(isAmharic ? 'የተፈጥሮ ሳይንስ' : 'Natural Science'),
+                        label:
+                            Text(isAmharic ? 'የተፈጥሮ ሳይንስ' : 'Natural Science'),
                         selected: _stream == 'natural',
                         selectedColor: AppTheme.green.withOpacity(0.25),
                         onSelected: (val) {
@@ -350,7 +381,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     Expanded(
                       child: ChoiceChip(
                         avatar: const Text('📚'),
-                        label: Text(isAmharic ? 'የማህበራዊ ሳይንስ' : 'Social Science'),
+                        label:
+                            Text(isAmharic ? 'የማህበራዊ ሳይንስ' : 'Social Science'),
                         selected: _stream == 'social',
                         selectedColor: AppTheme.accent.withOpacity(0.25),
                         onSelected: (val) {
@@ -366,7 +398,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // Role Selector (Student vs Teacher)
               Text(
                 isAmharic ? 'የመለያ ዓይነት' : 'Account Type',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 8),
               Row(
@@ -406,11 +439,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white),
                       )
                     : Text(
-                        isAmharic ? 'መለያ ክፈትና 50 ሳንቲሞች አግኝ' : 'Create Account & Earn 50 Coins',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        isAmharic
+                            ? 'መለያ ክፈትና 50 ሳንቲሞች አግኝ'
+                            : 'Create Account & Earn 50 Coins',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
               ),
               const SizedBox(height: 16),
@@ -425,7 +462,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.push('/login?grade=$_grade&stream=$_stream&lang=$_lang');
+                      context.push(
+                          '/login?grade=$_grade&stream=$_stream&lang=$_lang');
                     },
                     child: Text(
                       isAmharic ? 'ይግቡ (Sign In)' : 'Sign In',

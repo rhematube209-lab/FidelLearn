@@ -115,7 +115,8 @@ void main() {
       );
     });
 
-    test('excludes draft or unapproved questions from student queries', () async {
+    test('excludes draft or unapproved questions from student queries',
+        () async {
       final questions = await repository.getQuestions(
         grade: 12,
         subjectId: 'math_g12',

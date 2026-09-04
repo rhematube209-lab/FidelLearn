@@ -21,7 +21,8 @@ void main() {
       expect(sponsored.any((c) => c.id == 'chal_sponsored_1'), isTrue);
     });
 
-    test('creates friend challenge with invite code and creator participant', () async {
+    test('creates friend challenge with invite code and creator participant',
+        () async {
       final challenge = await repository.createFriendChallenge(
         creatorUserId: 'user_abebe',
         creatorName: 'Abebe B.',
@@ -38,7 +39,8 @@ void main() {
       expect(challenge.participants.length, 1);
       expect(challenge.participants.first.userId, 'user_abebe');
 
-      final fetched = await repository.getChallengeByInviteCode(challenge.inviteCode!);
+      final fetched =
+          await repository.getChallengeByInviteCode(challenge.inviteCode!);
       expect(fetched, isNotNull);
       expect(fetched!.id, challenge.id);
     });
@@ -75,7 +77,8 @@ void main() {
       );
 
       updated = await repository.getChallengeById(challenge.id);
-      final chalaRecord = updated!.participants.firstWhere((p) => p.userId == 'user_chala');
+      final chalaRecord =
+          updated!.participants.firstWhere((p) => p.userId == 'user_chala');
       expect(chalaRecord.hasCompleted, isTrue);
       expect(chalaRecord.score, 9);
       expect(chalaRecord.percentage, 90.0);

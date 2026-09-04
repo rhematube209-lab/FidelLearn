@@ -16,7 +16,8 @@ void main() {
       expect(classrooms.first.studentCount, greaterThan(0));
     });
 
-    test('creates new class assignment with question set and deadline', () async {
+    test('creates new class assignment with question set and deadline',
+        () async {
       final assignment = await repository.createAssignment(
         classroomId: 'cls_12A',
         classroomName: 'Grade 12 Natural - Section A',
@@ -36,7 +37,9 @@ void main() {
       expect(list.any((a) => a.id == assignment.id), isTrue);
     });
 
-    test('computes classroom weak-topic analytics and flags areas needing review', () async {
+    test(
+        'computes classroom weak-topic analytics and flags areas needing review',
+        () async {
       final stats = await repository.getClassroomWeakTopics('cls_12A');
       expect(stats.isNotEmpty, isTrue);
 

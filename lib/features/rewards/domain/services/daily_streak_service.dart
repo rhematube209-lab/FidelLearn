@@ -19,13 +19,13 @@ class DailyStreakResult extends Equatable {
 
   @override
   List<Object?> get props => [
-    currentStreakDays,
-    bestStreakDays,
-    streakFreezesUsed,
-    isStreakActiveToday,
-    isAtRisk,
-    earnedBadges,
-  ];
+        currentStreakDays,
+        bestStreakDays,
+        streakFreezesUsed,
+        isStreakActiveToday,
+        isAtRisk,
+        earnedBadges,
+      ];
 }
 
 class DailyStreakService {

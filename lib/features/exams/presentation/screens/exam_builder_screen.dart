@@ -126,7 +126,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         return;
       }
 
-      final count = questions.length < _questionCount ? questions.length : _questionCount;
+      final count =
+          questions.length < _questionCount ? questions.length : _questionCount;
 
       final shuffled = List<Question>.from(questions)..shuffle();
       final selectedQuestions = shuffled.sublist(0, count);
@@ -156,7 +157,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       await examRepo.saveActiveAttempt(attempt);
 
       if (mounted) {
-        await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+        await context
+            .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
       }
     } catch (e) {
       if (mounted) {
@@ -189,7 +191,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isDesktop ? 48.0 : 20.0,
@@ -210,14 +213,16 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
                             color: AppTheme.danger.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusMd),
                             border: Border.all(
                               color: AppTheme.danger.withValues(alpha: 0.4),
                             ),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 20),
+                              const Icon(Icons.warning_amber_rounded,
+                                  color: AppTheme.danger, size: 20),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
@@ -246,7 +251,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                             const SizedBox(width: 24),
                             Expanded(
                               flex: 45,
-                              child: _buildSimulationSettingsCard(context, isDark),
+                              child:
+                                  _buildSimulationSettingsCard(context, isDark),
                             ),
                           ],
                         )
@@ -288,7 +294,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(AppTheme.radiusPill),
                   boxShadow: !_isTimed
-                      ? (isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight)
+                      ? (isDark
+                          ? AppTheme.cardShadowDark
+                          : AppTheme.cardShadowLight)
                       : null,
                 ),
                 child: Center(
@@ -300,17 +308,22 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         size: 18,
                         color: !_isTimed
                             ? (isDark ? Colors.white : AppTheme.brandStrong)
-                            : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                            : (isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Self-Paced Practice',
                         style: TextStyle(
                           fontSize: 13.5,
-                          fontWeight: !_isTimed ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight:
+                              !_isTimed ? FontWeight.w700 : FontWeight.w500,
                           color: !_isTimed
                               ? (isDark ? Colors.white : AppTheme.brandStrong)
-                              : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                              : (isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted),
                         ),
                       ),
                     ],
@@ -332,7 +345,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(AppTheme.radiusPill),
                   boxShadow: _isTimed
-                      ? (isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight)
+                      ? (isDark
+                          ? AppTheme.cardShadowDark
+                          : AppTheme.cardShadowLight)
                       : null,
                 ),
                 child: Center(
@@ -344,17 +359,22 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         size: 18,
                         color: _isTimed
                             ? (isDark ? Colors.white : AppTheme.brandStrong)
-                            : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                            : (isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Timed National Mock',
                         style: TextStyle(
                           fontSize: 13.5,
-                          fontWeight: _isTimed ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight:
+                              _isTimed ? FontWeight.w700 : FontWeight.w500,
                           color: _isTimed
                               ? (isDark ? Colors.white : AppTheme.brandStrong)
-                              : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+                              : (isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted),
                         ),
                       ),
                     ],
@@ -382,7 +402,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   color: AppTheme.brand.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
-                child: const Icon(Icons.menu_book_rounded, color: AppTheme.brand, size: 20),
+                child: const Icon(Icons.menu_book_rounded,
+                    color: AppTheme.brand, size: 20),
               ),
               const SizedBox(width: 10),
               Text(
@@ -421,7 +442,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 _loadUnitsAndTopics(val);
               }
             },
-            decoration: const InputDecoration(prefixIcon: Icon(Icons.school_outlined)),
+            decoration:
+                const InputDecoration(prefixIcon: Icon(Icons.school_outlined)),
           ),
           const SizedBox(height: 18),
 
@@ -445,12 +467,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               ..._units.map(
                 (u) => DropdownMenuItem(
                   value: u.id,
-                  child: Text('Unit ${u.unitNumber}: ${u.titleEn}', overflow: TextOverflow.ellipsis),
+                  child: Text('Unit ${u.unitNumber}: ${u.titleEn}',
+                      overflow: TextOverflow.ellipsis),
                 ),
               ),
             ],
             onChanged: _onUnitChanged,
-            decoration: const InputDecoration(prefixIcon: Icon(Icons.layers_outlined)),
+            decoration:
+                const InputDecoration(prefixIcon: Icon(Icons.layers_outlined)),
           ),
           const SizedBox(height: 18),
 
@@ -480,7 +504,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 ),
               ],
               onChanged: (val) => setState(() => _selectedTopicId = val),
-              decoration: const InputDecoration(prefixIcon: Icon(Icons.topic_outlined)),
+              decoration:
+                  const InputDecoration(prefixIcon: Icon(Icons.topic_outlined)),
             ),
             const SizedBox(height: 18),
           ],
@@ -561,7 +586,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   color: AppTheme.accent.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
-                child: const Icon(Icons.tune_rounded, color: AppTheme.accent, size: 20),
+                child: const Icon(Icons.tune_rounded,
+                    color: AppTheme.accent, size: 20),
               ),
               const SizedBox(width: 10),
               Text(
@@ -585,7 +611,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
-                  color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                  color:
+                      isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                 ),
               ),
               FidelBadge(
@@ -609,13 +636,17 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? (isDark ? const Color(0x334F46E5) : const Color(0xFFEEF2FF))
+                            ? (isDark
+                                ? const Color(0x334F46E5)
+                                : const Color(0xFFEEF2FF))
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                         border: Border.all(
                           color: isSelected
                               ? AppTheme.brand
-                              : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
+                              : (isDark
+                                  ? AppTheme.darkBorder
+                                  : AppTheme.lightBorder),
                         ),
                       ),
                       child: Center(
@@ -623,10 +654,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           '$preset Qs',
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            fontWeight:
+                                isSelected ? FontWeight.w700 : FontWeight.w500,
                             color: isSelected
                                 ? (isDark ? Colors.white : AppTheme.brandStrong)
-                                : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                                : (isDark
+                                    ? AppTheme.darkTextSoft
+                                    : AppTheme.lightTextSoft),
                           ),
                         ),
                       ),
@@ -660,7 +694,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
-                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                    color:
+                        isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                   ),
                 ),
                 Text(
@@ -680,7 +715,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               divisions: 17,
               label: '$_timeLimitMinutes min',
               activeColor: AppTheme.accent,
-              onChanged: (val) => setState(() => _timeLimitMinutes = val.toInt()),
+              onChanged: (val) =>
+                  setState(() => _timeLimitMinutes = val.toInt()),
             ),
             const SizedBox(height: 10),
           ],
@@ -689,7 +725,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
           // Start CTA Button
           FidelButton(
-            label: _isTimed ? 'Launch Timed Mock Exam' : 'Start Practice Session',
+            label:
+                _isTimed ? 'Launch Timed Mock Exam' : 'Start Practice Session',
             icon: Icons.play_arrow_rounded,
             onPressed: _startExam,
             isFullWidth: true,

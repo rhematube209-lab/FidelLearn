@@ -153,10 +153,9 @@ class _QuestionEditorScreenState extends ConsumerState<QuestionEditorScreen> {
                     child: Text('Grade 12 Scholastic Aptitude'),
                   ),
                 ],
-                onChanged:
-                    (val) => setState(
-                      () => _selectedSubjectId = val ?? 'math_g12',
-                    ),
+                onChanged: (val) => setState(
+                  () => _selectedSubjectId = val ?? 'math_g12',
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -168,8 +167,8 @@ class _QuestionEditorScreenState extends ConsumerState<QuestionEditorScreen> {
                   labelText: 'Question Prompt (English / LaTeX)',
                   hintText: 'e.g. Find the limit...',
                 ),
-                validator:
-                    (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -203,19 +202,19 @@ class _QuestionEditorScreenState extends ConsumerState<QuestionEditorScreen> {
                               value: i,
                               groupValue: _correctChoiceIndex,
                               activeColor: AppTheme.successGreen,
-                              onChanged:
-                                  (val) => setState(
-                                    () => _correctChoiceIndex = val ?? 0,
-                                  ),
+                              onChanged: (val) => setState(
+                                () => _correctChoiceIndex = val ?? 0,
+                              ),
                             ),
                             Text(
-                              isCorrect ? 'Correct Choice' : 'Distractor ${i + 1}',
+                              isCorrect
+                                  ? 'Correct Choice'
+                                  : 'Distractor ${i + 1}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    isCorrect
-                                        ? AppTheme.successGreen
-                                        : AppTheme.textMuted,
+                                color: isCorrect
+                                    ? AppTheme.successGreen
+                                    : AppTheme.textMuted,
                               ),
                             ),
                           ],
@@ -223,17 +222,18 @@ class _QuestionEditorScreenState extends ConsumerState<QuestionEditorScreen> {
                         TextFormField(
                           controller: _choiceControllers[i],
                           decoration: InputDecoration(
-                            labelText: 'Choice Label (${String.fromCharCode(65 + i)})',
+                            labelText:
+                                'Choice Label (${String.fromCharCode(65 + i)})',
                           ),
-                          validator:
-                              (val) =>
-                                  val == null || val.isEmpty ? 'Required' : null,
+                          validator: (val) =>
+                              val == null || val.isEmpty ? 'Required' : null,
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _rationaleControllers[i],
                           decoration: const InputDecoration(
-                            labelText: 'Why is this choice correct / wrong? (Rationale)',
+                            labelText:
+                                'Why is this choice correct / wrong? (Rationale)',
                           ),
                         ),
                       ],
@@ -255,8 +255,8 @@ class _QuestionEditorScreenState extends ConsumerState<QuestionEditorScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Step-by-Step Solution (LaTeX supported)',
                 ),
-                validator:
-                    (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(

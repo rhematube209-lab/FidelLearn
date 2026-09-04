@@ -122,12 +122,12 @@ class Explanation extends Equatable {
 
   @override
   List<Object?> get props => [
-    solutionTextEn,
-    solutionTextAm,
-    simplerExplanationEn,
-    keyConcept,
-    commonPitfall,
-  ];
+        solutionTextEn,
+        solutionTextAm,
+        simplerExplanationEn,
+        keyConcept,
+        commonPitfall,
+      ];
 }
 
 class Question extends Equatable {
@@ -236,13 +236,11 @@ class Question extends Equatable {
       verificationStatus: VerificationStatus.fromString(
         json['verification_status'] as String? ?? 'published',
       ),
-      sourceName:
-          json['source_name'] as String? ??
+      sourceName: json['source_name'] as String? ??
           'FidelLearn original demonstration content',
       sourcePage: json['source_page'] as int?,
       contentVersion: json['content_version'] as int? ?? 1,
-      choices:
-          (json['choices'] as List<dynamic>?)
+      choices: (json['choices'] as List<dynamic>?)
               ?.map((c) => AnswerChoice.fromJson(c as Map<String, dynamic>))
               .toList() ??
           [],
@@ -277,23 +275,23 @@ class Question extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    grade,
-    stream,
-    subjectId,
-    unitId,
-    topicId,
-    examYear,
-    questionTextEn,
-    questionTextAm,
-    diagramAsset,
-    vectorDiagram,
-    difficulty,
-    verificationStatus,
-    sourceName,
-    sourcePage,
-    contentVersion,
-    choices,
-    explanation,
-  ];
+        id,
+        grade,
+        stream,
+        subjectId,
+        unitId,
+        topicId,
+        examYear,
+        questionTextEn,
+        questionTextAm,
+        diagramAsset,
+        vectorDiagram,
+        difficulty,
+        verificationStatus,
+        sourceName,
+        sourcePage,
+        contentVersion,
+        choices,
+        explanation,
+      ];
 }

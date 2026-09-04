@@ -91,7 +91,8 @@ class P2PTransferService {
       yield P2PTransferProgress(
         status: P2PTransferStatus.failed,
         currentPackageId: packageId,
-        errorMessage: 'Invalid 6-digit pairing PIN. Authorization rejected by sender.',
+        errorMessage:
+            'Invalid 6-digit pairing PIN. Authorization rejected by sender.',
       );
       return;
     }
@@ -102,7 +103,8 @@ class P2PTransferService {
     );
 
     final rawBytes = _packagePayloads[packageId] ??
-        utf8.encode(jsonEncode({'packageId': packageId, 'title': manifest.title}));
+        utf8.encode(
+            jsonEncode({'packageId': packageId, 'title': manifest.title}));
     final totalBytes = rawBytes.length;
     const chunkSize = 256;
     int transferred = 0;

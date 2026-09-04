@@ -104,7 +104,9 @@ void main() {
       expect(weakTopics, isEmpty);
     });
 
-    test('correctly flags weak topic when attempts >= threshold and accuracy < 60%', () {
+    test(
+        'correctly flags weak topic when attempts >= threshold and accuracy < 60%',
+        () {
       const detector = WeakTopicDetector(
         minAttemptsThreshold: 2,
         weakAccuracyThreshold: 60.0,
@@ -153,7 +155,9 @@ void main() {
       expect(weakTopics.first.urgencyLevel, 'high');
     });
 
-    test('calculateReadinessScore bounds result between 0 and 100 with accurate weights', () {
+    test(
+        'calculateReadinessScore bounds result between 0 and 100 with accurate weights',
+        () {
       final zeroScore = WeakTopicDetector.calculateReadinessScore(
         totalExamsCompleted: 0,
         averageScorePercentage: 0.0,

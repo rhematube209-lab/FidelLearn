@@ -54,8 +54,7 @@ class ExamEngine {
       orElse: () => question.choices.first,
     );
 
-    final existingResp =
-        currentAttempt.responses[question.id] ??
+    final existingResp = currentAttempt.responses[question.id] ??
         UserResponse(questionId: question.id, isCorrect: false);
 
     final updatedResp = existingResp.copyWith(
@@ -123,9 +122,8 @@ class ExamEngine {
       }
     }
 
-    final total = questions.isNotEmpty
-        ? questions.length
-        : currentAttempt.totalQuestions;
+    final total =
+        questions.isNotEmpty ? questions.length : currentAttempt.totalQuestions;
     final percentage = total > 0 ? (correct / total) * 100.0 : 0.0;
 
     return currentAttempt.copyWith(

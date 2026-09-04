@@ -128,7 +128,8 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                       // Left Column: Grand Score Hero
                       Expanded(
                         flex: 48,
-                        child: _buildGrandScoreCard(context, isPass, isDistinction, isDark),
+                        child: _buildGrandScoreCard(
+                            context, isPass, isDistinction, isDark),
                       ),
                       const SizedBox(width: 24),
 
@@ -227,7 +228,9 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
           Text(
             isDistinction
                 ? 'Outstanding Mastery! 🏆'
-                : (isPass ? 'Good Job, Exam Passed! 🎉' : 'Keep Practicing & Mastering! 📚'),
+                : (isPass
+                    ? 'Good Job, Exam Passed! 🎉'
+                    : 'Keep Practicing & Mastering! 📚'),
             style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.w800,
@@ -260,7 +263,8 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 18),
+                const Icon(Icons.monetization_on_rounded,
+                    color: AppTheme.accent, size: 18),
                 const SizedBox(width: 6),
                 Text(
                   '+${(_attempt!.score * 2).clamp(5, 50)} Study Coins Earned',

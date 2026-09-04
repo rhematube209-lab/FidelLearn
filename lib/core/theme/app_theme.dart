@@ -95,7 +95,8 @@ class AppTheme {
   // ==========================================
   static const double radiusXs = 6.0;
   static const double radiusSm = 10.0; // Badges, chips, small buttons
-  static const double radiusMd = 14.0; // Input fields, select boxes, choice options
+  static const double radiusMd =
+      14.0; // Input fields, select boxes, choice options
   static const double radiusLg = 20.0; // Cards, modals, dialogs
   static const double radiusXl = 28.0; // Hero banners, floating overlays
   static const double radiusPill = 999.0; // Filter pills, circular badges

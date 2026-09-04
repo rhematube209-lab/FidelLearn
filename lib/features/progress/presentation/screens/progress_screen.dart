@@ -49,7 +49,12 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
       );
 
       final Map<String, Question> qMap = {
-        for (final q in [...allQuestions, ...allAptQuestions, ...allBioQuestions]) q.id: q,
+        for (final q in [
+          ...allQuestions,
+          ...allAptQuestions,
+          ...allBioQuestions
+        ])
+          q.id: q,
       };
 
       final Map<String, String> topicMap = {
@@ -117,7 +122,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Readiness & IRT Analytics Studio', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Readiness & IRT Analytics Studio',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -204,7 +210,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 children: [
                   Text(
                     'National Exam Readiness',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   Text(
                     'AI-Free Item Response Theory (IRT) Projection',
@@ -213,7 +222,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppTheme.green.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
@@ -221,7 +231,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 ),
                 child: const Text(
                   'ON TRACK 🎯',
-                  style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 11),
+                  style: TextStyle(
+                      color: AppTheme.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11),
                 ),
               ),
             ],
@@ -252,7 +265,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                   ),
                   const Text(
                     'READINESS',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.darkMuted),
+                    style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.darkMuted),
                   ),
                 ],
               ),
@@ -261,12 +277,16 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           const SizedBox(height: 20),
           const Text(
             'Projected National Score: 580 – 625 / 700',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppTheme.accent),
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.accent),
           ),
           const SizedBox(height: 4),
           const Text(
             'Based on completed practice sessions, speed accuracy curve, and streak consistency.',
-            style: TextStyle(fontSize: 12, color: AppTheme.darkTextSoft, height: 1.3),
+            style: TextStyle(
+                fontSize: 12, color: AppTheme.darkTextSoft, height: 1.3),
             textAlign: TextAlign.center,
           ),
         ],
@@ -300,7 +320,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 ),
                 child: Text(
                   '${_weakTopics.length} Areas',
-                  style: const TextStyle(color: AppTheme.danger, fontWeight: FontWeight.bold, fontSize: 11),
+                  style: const TextStyle(
+                      color: AppTheme.danger,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11),
                 ),
               ),
             ],
@@ -340,7 +363,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                           color: AppTheme.danger.withOpacity(0.12),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.priority_high_rounded, color: AppTheme.danger, size: 18),
+                        child: const Icon(Icons.priority_high_rounded,
+                            color: AppTheme.danger, size: 18),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -349,12 +373,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                           children: [
                             Text(
                               wt.topicTitleEn,
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 13),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               '${wt.accuracyPercentage.toStringAsFixed(0)}% Accuracy (${wt.mistakeCount} mistakes / ${wt.totalAttempts} attempts)',
-                              style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                              style: const TextStyle(
+                                  fontSize: 11, color: AppTheme.darkMuted),
                             ),
                           ],
                         ),
@@ -363,8 +389,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                         onPressed: () => context.push('/exam_builder'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.brandStrong,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          textStyle: const TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.bold),
                         ),
                         child: const Text('Drill Topic'),
                       ),
@@ -394,13 +422,17 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          _buildMasteryProgressRow('Grade 12 Biology (2013 ESSLCE)', 0.88, AppTheme.green),
+          _buildMasteryProgressRow(
+              'Grade 12 Biology (2013 ESSLCE)', 0.88, AppTheme.green),
           const SizedBox(height: 12),
-          _buildMasteryProgressRow('Grade 12 Mathematics (Calculus & Vectors)', 0.74, AppTheme.brand),
+          _buildMasteryProgressRow('Grade 12 Mathematics (Calculus & Vectors)',
+              0.74, AppTheme.brand),
           const SizedBox(height: 12),
-          _buildMasteryProgressRow('Aptitude & Logical Reasoning', 0.81, AppTheme.accent),
+          _buildMasteryProgressRow(
+              'Aptitude & Logical Reasoning', 0.81, AppTheme.accent),
           const SizedBox(height: 12),
-          _buildMasteryProgressRow('Grade 12 Physics & Chemistry', 0.65, AppTheme.pink),
+          _buildMasteryProgressRow(
+              'Grade 12 Physics & Chemistry', 0.65, AppTheme.pink),
         ],
       ),
     );
@@ -413,8 +445,12 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            Text('${(progress * 100).toInt()}%', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 13)),
+            Text(title,
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            Text('${(progress * 100).toInt()}%',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: color, fontSize: 13)),
           ],
         ),
         const SizedBox(height: 6),
@@ -460,7 +496,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _attempts.length > 4 ? 4 : _attempts.length,
-              separatorBuilder: (_, __) => const Divider(color: AppTheme.darkBorder, height: 16),
+              separatorBuilder: (_, __) =>
+                  const Divider(color: AppTheme.darkBorder, height: 16),
               itemBuilder: (context, index) {
                 final att = _attempts[index];
                 return Row(
@@ -469,8 +506,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(att.examTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text('${att.score}/${att.totalQuestions} questions • ${att.durationSeconds}s', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                        Text(att.examTitle,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13)),
+                        Text(
+                            '${att.score}/${att.totalQuestions} questions • ${att.durationSeconds}s',
+                            style: const TextStyle(
+                                fontSize: 11, color: AppTheme.darkMuted)),
                       ],
                     ),
                     Text(
@@ -478,7 +520,9 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: att.percentage >= 70.0 ? AppTheme.green : AppTheme.accent,
+                        color: att.percentage >= 70.0
+                            ? AppTheme.green
+                            : AppTheme.accent,
                       ),
                     ),
                   ],

@@ -14,7 +14,8 @@ class PaymentGatewayService {
   }) {
     final now = DateTime.now();
     final rand = Random();
-    final invoiceNumber = 'INV-${now.year}${now.month.toString().padLeft(2, '0')}-${rand.nextInt(90000) + 10000}';
+    final invoiceNumber =
+        'INV-${now.year}${now.month.toString().padLeft(2, '0')}-${rand.nextInt(90000) + 10000}';
     final txId = 'tx_pay_${now.millisecondsSinceEpoch}';
 
     final qrPayload = method == PaymentMethod.telebirr
@@ -58,7 +59,8 @@ class PaymentGatewayService {
       final completed = tx.copyWith(
         status: PaymentStatus.completed,
         completedAt: DateTime.now(),
-        referenceMessage: 'Payment verified successfully via ${tx.paymentMethod.displayName}.',
+        referenceMessage:
+            'Payment verified successfully via ${tx.paymentMethod.displayName}.',
       );
       _transactions[transactionId] = completed;
       return completed;

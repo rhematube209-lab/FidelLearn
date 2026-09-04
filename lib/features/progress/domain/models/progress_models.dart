@@ -23,15 +23,15 @@ class WeakTopicRecommendation extends Equatable {
 
   @override
   List<Object?> get props => [
-    topicId,
-    topicTitleEn,
-    subjectId,
-    accuracyPercentage,
-    totalAttempts,
-    mistakeCount,
-    urgencyLevel,
-    recommendationReason,
-  ];
+        topicId,
+        topicTitleEn,
+        subjectId,
+        accuracyPercentage,
+        totalAttempts,
+        mistakeCount,
+        urgencyLevel,
+        recommendationReason,
+      ];
 }
 
 class ProgressSummary extends Equatable {
@@ -57,13 +57,13 @@ class ProgressSummary extends Equatable {
 
   @override
   List<Object?> get props => [
-    examsCompleted,
-    questionsAnswered,
-    averageScore,
-    totalStudyTimeMinutes,
-    currentStreakDays,
-    bestStreakDays,
-    readinessScore,
-    weakTopics,
-  ];
+        examsCompleted,
+        questionsAnswered,
+        averageScore,
+        totalStudyTimeMinutes,
+        currentStreakDays,
+        bestStreakDays,
+        readinessScore,
+        weakTopics,
+      ];
 }

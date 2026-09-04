@@ -217,7 +217,9 @@ class _AudioPlayerCardState extends State<AudioPlayerCard> {
                 thumbColor: AppTheme.primaryGreen,
               ),
               child: Slider(
-                value: _currentSeconds.toDouble().clamp(0.0, totalDuration.toDouble()),
+                value: _currentSeconds
+                    .toDouble()
+                    .clamp(0.0, totalDuration.toDouble()),
                 max: totalDuration > 0 ? totalDuration.toDouble() : 1.0,
                 onChanged: (val) => _seek(val.toInt()),
               ),

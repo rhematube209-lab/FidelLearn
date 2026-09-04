@@ -50,7 +50,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final pass = _passController.text.trim();
 
     if (phone.replaceAll(RegExp(r'[^0-9]'), '').length < 9) {
-      setState(() => _errorMessage = 'Please enter a valid Ethiopian phone number.');
+      setState(
+          () => _errorMessage = 'Please enter a valid Ethiopian phone number.');
       return;
     }
 
@@ -65,29 +66,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
-      await ref.read(currentUserProvider.notifier).login(phone, pass);
-
-      final userAsync = ref.read(currentUserProvider);
-      final user = userAsync.value;
+      final user =
+          await ref.read(currentUserProvider.notifier).login(phone, pass);
 
       if (mounted) {
-        if (user != null) {
-          switch (user.role) {
-            case UserRole.teacher:
-              context.go('/teacher');
-              break;
-            case UserRole.schoolAdmin:
-              context.go('/school_admin');
-              break;
-            case UserRole.platformAdmin:
-              context.go('/admin');
-              break;
-            case UserRole.student:
-              context.go('/home');
-              break;
-          }
-        } else {
-          context.go('/home');
+        switch (user.role) {
+          case UserRole.teacher:
+            context.go('/teacher');
+            break;
+          case UserRole.schoolAdmin:
+            context.go('/school_admin');
+            break;
+          case UserRole.platformAdmin:
+            context.go('/admin');
+            break;
+          case UserRole.student:
+            context.go('/home');
+            break;
         }
       }
     } catch (e) {
@@ -114,7 +109,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _showForgotPasswordDialog(BuildContext context) {
     final isAmharic = _lang == 'am';
-    final recoveryPhoneController = TextEditingController(text: _phoneController.text);
+    final recoveryPhoneController =
+        TextEditingController(text: _phoneController.text);
 
     showDialog<void>(
       context: context,
@@ -231,16 +227,58 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   decoration: BoxDecoration(
                     color: AppTheme.errorRed.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.errorRed.withOpacity(0.5)),
+                    border:
+                        Border.all(color: AppTheme.errorRed.withOpacity(0.5)),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.error_outline, color: AppTheme.errorRed, size: 20),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: const TextStyle(color: AppTheme.errorRed, fontSize: 13),
+                      Row(
+                        children: [
+                          const Icon(Icons.error_outline,
+                              color: AppTheme.errorRed, size: 20),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              _errorMessage!,
+                              style: const TextStyle(
+                                  color: AppTheme.errorRed, fontSize: 13),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          icon:
+                              const Icon(Icons.offline_bolt_outlined, size: 16),
+                          label: Text(
+                            isAmharic
+                                ? 'ከመስመር ውጭ (Offline) ግባ'
+                                : 'Continue in Offline Mode',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.brand,
+                            ),
+                          ),
+                          onPressed: () async {
+                            await ref
+                                .read(currentUserProvider.notifier)
+                                .register(
+                                  phone: _phoneController.text.trim(),
+                                  pass: _passController.text.trim().isEmpty
+                                      ? 'password123'
+                                      : _passController.text.trim(),
+                                  name: 'Student',
+                                  grade: widget.initialGrade ?? 12,
+                                  stream: widget.initialStream ?? 'natural',
+                                  lang: _lang,
+                                );
+                            if (!context.mounted) return;
+                            context.go('/home');
+                          },
                         ),
                       ),
                     ],
@@ -257,7 +295,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   labelText: isAmharic ? 'ስልክ ቁጥር' : 'Ethiopian Phone Number',
                   hintText: '+251 911 223 344',
                   prefixIcon: const Icon(Icons.phone_android),
-                  helperText: isAmharic ? 'ምሳሌ: +251 9... ወይም 09...' : 'e.g. +251 9... or 09...',
+                  helperText: isAmharic
+                      ? 'ምሳሌ: +251 9... ወይም 09...'
+                      : 'e.g. +251 9... or 09...',
                 ),
               ),
               const SizedBox(height: 16),
@@ -270,8 +310,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   labelText: isAmharic ? 'የይለፍ ቃል' : 'Password',
                   prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
-                    icon: Icon(_obscurePass ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () => setState(() => _obscurePass = !_obscurePass),
+                    icon: Icon(
+                        _obscurePass ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () =>
+                        setState(() => _obscurePass = !_obscurePass),
                   ),
                 ),
               ),
@@ -300,11 +342,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white),
                       )
                     : Text(
                         isAmharic ? 'ግባ (Sign In)' : 'Sign In',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
               ),
               const SizedBox(height: 20),
@@ -321,7 +365,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isAmharic ? 'የሙከራ መለያዎች (Demo Accounts)' : 'Quick-Fill Demo Accounts',
+                      isAmharic
+                          ? 'የሙከራ መለያዎች (Demo Accounts)'
+                          : 'Quick-Fill Demo Accounts',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -335,18 +381,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         ActionChip(
                           avatar: const Text('🎓'),
-                          label: const Text('Student', style: TextStyle(fontSize: 11)),
-                          onPressed: () => _quickFillDemo('+251911223344', 'password123'),
+                          label: const Text('Student',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () =>
+                              _quickFillDemo('+251911223344', 'password123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('⭐'),
+                          label: const Text('+251949652355',
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.bold)),
+                          onPressed: () =>
+                              _quickFillDemo('+251949652355', 'password123'),
                         ),
                         ActionChip(
                           avatar: const Text('👩‍🏫'),
-                          label: const Text('Teacher', style: TextStyle(fontSize: 11)),
-                          onPressed: () => _quickFillDemo('+251922334455', 'teacherPass123'),
+                          label: const Text('Teacher',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () =>
+                              _quickFillDemo('+251922334455', 'teacherPass123'),
                         ),
                         ActionChip(
                           avatar: const Text('🏛️'),
-                          label: const Text('School Admin', style: TextStyle(fontSize: 11)),
-                          onPressed: () => _quickFillDemo('+251933445566', 'adminPass123'),
+                          label: const Text('School Admin',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () =>
+                              _quickFillDemo('+251933445566', 'adminPass123'),
                         ),
                       ],
                     ),

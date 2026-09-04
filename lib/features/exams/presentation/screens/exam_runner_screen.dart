@@ -40,9 +40,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   void initState() {
     super.initState();
     _attempt = widget.initialAttempt;
-    _remainingSeconds = widget.exam.isTimed
-        ? widget.exam.timeLimitMinutes * 60
-        : 0;
+    _remainingSeconds =
+        widget.exam.isTimed ? widget.exam.timeLimitMinutes * 60 : 0;
     _startTimer();
   }
 
@@ -114,7 +113,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     final shouldSubmit = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Submit Examination?', style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Text('Submit Examination?',
+            style: TextStyle(fontWeight: FontWeight.w700)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,15 +126,18 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             if (unansweredCount > 0) ...[
               const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: AppTheme.danger.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                  border: Border.all(color: AppTheme.danger.withValues(alpha: 0.3)),
+                  border:
+                      Border.all(color: AppTheme.danger.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 18),
+                    const Icon(Icons.warning_amber_rounded,
+                        color: AppTheme.danger, size: 18),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -164,7 +167,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
             child: const Text('Submit Now'),
           ),
         ],
@@ -196,12 +200,12 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       if (user != null) {
         final earnedCoins = (finishedAttempt.score * 2).clamp(5, 50);
         ref.read(coinLedgerProvider.notifier).awardCoins(
-          userId: user.id,
-          amount: earnedCoins,
-          reason: 'Completed exam: ${widget.exam.title}',
-          idempotencyKey: 'exam_${finishedAttempt.id}',
-          relatedEntityId: finishedAttempt.id,
-        );
+              userId: user.id,
+              amount: earnedCoins,
+              reason: 'Completed exam: ${widget.exam.title}',
+              idempotencyKey: 'exam_${finishedAttempt.id}',
+              relatedEntityId: finishedAttempt.id,
+            );
       }
 
       if (mounted) {
@@ -228,7 +232,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       isScrollControlled: true,
       backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusLg)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppTheme.radiusLg)),
       ),
       builder: (ctx) => Padding(
         padding: const EdgeInsets.all(24.0),
@@ -245,7 +250,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 ),
                 Text(
                   '${_attempt.responses.length}/${widget.exam.totalQuestions} Answered',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                  style:
+                      const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
                 ),
               ],
             ),
@@ -277,9 +283,11 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         final isAnswered = resp != null && resp.selectedChoiceId != null;
         final isFlagged = resp?.isFlagged == true;
 
-        Color bgColor = isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9);
+        Color bgColor =
+            isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9);
         Color borderColor = isDark ? AppTheme.darkBorder : AppTheme.lightBorder;
-        Color textColor = isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft;
+        Color textColor =
+            isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft;
 
         if (isCurrent) {
           bgColor = AppTheme.brandStrong;
@@ -375,7 +383,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 border: Border.all(
                   color: _remainingSeconds < 120
                       ? AppTheme.danger
-                      : (_remainingSeconds < 300 ? AppTheme.accent : AppTheme.brand),
+                      : (_remainingSeconds < 300
+                          ? AppTheme.accent
+                          : AppTheme.brand),
                 ),
               ),
               child: Row(
@@ -385,7 +395,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     size: 15,
                     color: _remainingSeconds < 120
                         ? AppTheme.danger
-                        : (_remainingSeconds < 300 ? AppTheme.accent : AppTheme.brand),
+                        : (_remainingSeconds < 300
+                            ? AppTheme.accent
+                            : AppTheme.brand),
                   ),
                   const SizedBox(width: 5),
                   Text(
@@ -395,7 +407,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                       fontSize: 12.5,
                       color: _remainingSeconds < 120
                           ? AppTheme.danger
-                          : (_remainingSeconds < 300 ? AppTheme.accentDark : AppTheme.brand),
+                          : (_remainingSeconds < 300
+                              ? AppTheme.accentDark
+                              : AppTheme.brand),
                     ),
                   ),
                 ],
@@ -404,7 +418,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
           IconButton(
             icon: Icon(
-              currentResp?.isFlagged == true ? Icons.flag_rounded : Icons.flag_outlined,
+              currentResp?.isFlagged == true
+                  ? Icons.flag_rounded
+                  : Icons.flag_outlined,
               color: currentResp?.isFlagged == true ? AppTheme.accent : null,
             ),
             tooltip: 'Flag question for review',
@@ -424,7 +440,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
               onPressed: _confirmAndSubmit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.brandStrong,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               ),
               child: const Text('Finish Exam'),
             ),
@@ -437,7 +454,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             // Smooth Progress Bar
             LinearProgressIndicator(
               value: (_currentIndex + 1) / widget.exam.totalQuestions,
-              backgroundColor: isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
+              backgroundColor:
+                  isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
               valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.brand),
               minHeight: 4,
             ),
@@ -451,10 +469,14 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                         Container(
                           width: 280,
                           decoration: BoxDecoration(
-                            color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                            color: isDark
+                                ? AppTheme.darkSurface
+                                : AppTheme.lightSurface,
                             border: Border(
                               right: BorderSide(
-                                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                                color: isDark
+                                    ? AppTheme.darkBorder
+                                    : AppTheme.lightBorder,
                               ),
                             ),
                           ),
@@ -465,7 +487,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                               children: [
                                 const Text(
                                   'Exam Question Grid',
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700),
                                 ),
                                 const SizedBox(height: 14),
                                 _buildPaletteGrid(isDark),
@@ -479,11 +503,14 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                         // Center Focused Question Runner
                         Expanded(
                           child: SingleChildScrollView(
-                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 28),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 48, vertical: 28),
                             child: Center(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 820),
-                                child: _buildQuestionContent(currentQ, currentResp, isDark),
+                                constraints:
+                                    const BoxConstraints(maxWidth: 820),
+                                child: _buildQuestionContent(
+                                    currentQ, currentResp, isDark),
                               ),
                             ),
                           ),
@@ -492,7 +519,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     )
                   : SingleChildScrollView(
                       padding: const EdgeInsets.all(18.0),
-                      child: _buildQuestionContent(currentQ, currentResp, isDark),
+                      child:
+                          _buildQuestionContent(currentQ, currentResp, isDark),
                     ),
             ),
 
@@ -523,7 +551,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                         'Answered: ${_attempt.responses.length}/${widget.exam.totalQuestions}',
                         style: TextStyle(
                           fontSize: 12.5,
-                          color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                          color:
+                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -531,7 +560,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                       if (_currentIndex < widget.exam.questions.length - 1)
                         ElevatedButton.icon(
                           onPressed: () => setState(() => _currentIndex++),
-                          icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+                          icon:
+                              const Icon(Icons.arrow_forward_rounded, size: 16),
                           label: const Text('Next Question'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.brandStrong,
@@ -540,7 +570,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                       else
                         ElevatedButton.icon(
                           onPressed: _confirmAndSubmit,
-                          icon: const Icon(Icons.check_circle_rounded, size: 16),
+                          icon:
+                              const Icon(Icons.check_circle_rounded, size: 16),
                           label: const Text('Submit Final Exam'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.green,
@@ -602,13 +633,15 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                   color: isDark ? AppTheme.darkText : AppTheme.lightText,
                 ),
               ),
-              if (currentQ.questionTextAm != null && currentQ.questionTextAm!.isNotEmpty) ...[
+              if (currentQ.questionTextAm != null &&
+                  currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 Text(
                   currentQ.questionTextAm!,
                   style: TextStyle(
                     fontSize: 14.5,
-                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                    color:
+                        isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                     height: 1.4,
                   ),
                 ),
@@ -641,7 +674,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             label: choice.label,
             textEn: choice.textEn,
             textAm: choice.textAm,
-            state: isSelected ? FidelOptionState.selected : FidelOptionState.unselected,
+            state: isSelected
+                ? FidelOptionState.selected
+                : FidelOptionState.unselected,
             onTap: () => _handleSelectChoice(choice.id),
           );
         }),

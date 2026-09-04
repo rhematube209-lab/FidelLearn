@@ -64,9 +64,8 @@ class WeakTopicDetector {
 
       // 2. Identify weak topics below threshold
       if (accuracy < weakAccuracyThreshold) {
-        final urgency = accuracy < 40.0
-            ? 'high'
-            : (accuracy < 55.0 ? 'medium' : 'low');
+        final urgency =
+            accuracy < 40.0 ? 'high' : (accuracy < 55.0 ? 'medium' : 'low');
 
         final reason =
             'Accuracy is ${accuracy.toStringAsFixed(0)}% across ${stats.totalAttempts} practice questions with ${stats.mistakeCount} mistakes.';

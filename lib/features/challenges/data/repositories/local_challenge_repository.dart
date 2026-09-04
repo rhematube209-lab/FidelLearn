@@ -132,8 +132,7 @@ class LocalChallengeRepository implements ChallengeRepository {
     required int timeLimitMinutes,
   }) async {
     final now = DateTime.now();
-    final randomCode =
-        'F${Random().nextInt(9000) + 1000}'; // e.g. F4829
+    final randomCode = 'F${Random().nextInt(9000) + 1000}'; // e.g. F4829
 
     final newChallenge = Challenge(
       id: 'chal_friend_${now.millisecondsSinceEpoch}',
@@ -176,8 +175,7 @@ class LocalChallengeRepository implements ChallengeRepository {
     }
 
     final challenge = _challenges[index];
-    final alreadyJoined =
-        challenge.participants.any((p) => p.userId == userId);
+    final alreadyJoined = challenge.participants.any((p) => p.userId == userId);
     if (alreadyJoined) return;
 
     final updatedParticipants = [

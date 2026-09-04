@@ -32,7 +32,9 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
   Future<List<SyncOperation>> getPendingOperations({int limit = 20}) async {
     final now = DateTime.now();
     final eligible = _queue
-        .where((op) => op.nextRetryAt.isBefore(now) || op.nextRetryAt.isAtSameMomentAs(now))
+        .where((op) =>
+            op.nextRetryAt.isBefore(now) ||
+            op.nextRetryAt.isAtSameMomentAs(now))
         .toList()
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt)); // FIFO
 

@@ -87,7 +87,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     await examRepo.saveActiveAttempt(attempt);
 
     if (mounted) {
-      await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
       if (mounted) {
         await _loadMistakes();
       }
@@ -101,14 +102,16 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mistake Notebook & Error Remediation', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Mistake Notebook & Error Remediation',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : _mistakes.isEmpty
               ? Center(
                   child: Column(
@@ -129,12 +132,14 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                       const SizedBox(height: 20),
                       const Text(
                         'Mistake Notebook is Clean!',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 6),
                       const Text(
                         'Any questions answered incorrectly during practice or mocks will appear here for targeted drills.',
-                        style: TextStyle(color: AppTheme.darkMuted, fontSize: 13),
+                        style:
+                            TextStyle(color: AppTheme.darkMuted, fontSize: 13),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -156,12 +161,17 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                             padding: const EdgeInsets.all(24),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFF831843), AppTheme.darkSurfaceStrong],
+                                colors: [
+                                  Color(0xFF831843),
+                                  AppTheme.darkSurfaceStrong
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                              border: Border.all(color: AppTheme.pink.withOpacity(0.3)),
+                              borderRadius:
+                                  BorderRadius.circular(AppTheme.radiusLg),
+                              border: Border.all(
+                                  color: AppTheme.pink.withOpacity(0.3)),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,18 +190,22 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                                     const SizedBox(height: 4),
                                     const Text(
                                       'Re-testing errors is the fastest way to boost your national exam score.',
-                                      style: TextStyle(fontSize: 12, color: AppTheme.darkTextSoft),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppTheme.darkTextSoft),
                                     ),
                                   ],
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: _startMistakeRetryExam,
-                                  icon: const Icon(Icons.refresh_rounded, size: 18),
+                                  icon: const Icon(Icons.refresh_rounded,
+                                      size: 18),
                                   label: const Text('Drill All Mistakes'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppTheme.brandStrong,
                                     foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 12),
                                   ),
                                 ),
                               ],
@@ -203,7 +217,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: isDesktop ? 520 : 600,
                               mainAxisExtent: 180,
                               mainAxisSpacing: 16,
@@ -218,21 +233,28 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                                 padding: const EdgeInsets.all(18),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).cardTheme.color,
-                                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                                  border: Border.all(color: AppTheme.darkBorder),
+                                  borderRadius:
+                                      BorderRadius.circular(AppTheme.radiusMd),
+                                  border:
+                                      Border.all(color: AppTheme.darkBorder),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 3),
                                           decoration: BoxDecoration(
-                                            color: AppTheme.danger.withOpacity(0.15),
-                                            borderRadius: BorderRadius.circular(6),
+                                            color: AppTheme.danger
+                                                .withOpacity(0.15),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
                                           ),
                                           child: Text(
                                             'FAILED ${m.mistakeCount}X',
@@ -245,29 +267,39 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                                         ),
                                         Text(
                                           q?.subjectId ?? 'General',
-                                          style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              color: AppTheme.darkMuted),
                                         ),
                                       ],
                                     ),
                                     Text(
-                                      q?.questionTextEn ?? 'Question content...',
-                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                      q?.questionTextEn ??
+                                          'Question content...',
+                                      style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           'Difficulty: ${q?.difficulty.toUpperCase() ?? "MED"}',
-                                          style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                                          style: const TextStyle(
+                                              fontSize: 11,
+                                              color: AppTheme.darkMuted),
                                         ),
                                         Text(
                                           'Mastery: ${m.isMastered ? "100%" : "0%"}',
                                           style: TextStyle(
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
-                                            color: m.isMastered ? AppTheme.green : AppTheme.danger,
+                                            color: m.isMastered
+                                                ? AppTheme.green
+                                                : AppTheme.danger,
                                           ),
                                         ),
                                       ],

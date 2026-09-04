@@ -66,7 +66,8 @@ void main() {
       expect(failedState.errorMessage, contains('Invalid 6-digit pairing PIN'));
     });
 
-    test('completes end-to-end chunked P2P transfer with verified checksum', () async {
+    test('completes end-to-end chunked P2P transfer with verified checksum',
+        () async {
       final packages = await repository.getShareablePackages();
       final targetPkg = packages.first;
       final beacon = await repository.startSharing(
@@ -81,8 +82,13 @@ void main() {
           )
           .toList();
 
-      expect(progressEvents.any((p) => p.status == P2PTransferStatus.transferring), isTrue);
-      expect(progressEvents.any((p) => p.status == P2PTransferStatus.verifyingChecksum), isTrue);
+      expect(
+          progressEvents.any((p) => p.status == P2PTransferStatus.transferring),
+          isTrue);
+      expect(
+          progressEvents
+              .any((p) => p.status == P2PTransferStatus.verifyingChecksum),
+          isTrue);
       expect(progressEvents.last.status, P2PTransferStatus.completed);
       expect(progressEvents.last.progressRatio, 1.0);
     });

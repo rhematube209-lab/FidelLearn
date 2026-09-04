@@ -67,14 +67,14 @@ class ChallengeParticipant extends Equatable {
 
   @override
   List<Object?> get props => [
-    userId,
-    displayName,
-    score,
-    durationSeconds,
-    percentage,
-    hasCompleted,
-    completedAt,
-  ];
+        userId,
+        displayName,
+        score,
+        durationSeconds,
+        percentage,
+        hasCompleted,
+        completedAt,
+      ];
 }
 
 class Challenge extends Equatable {
@@ -145,7 +145,8 @@ class Challenge extends Equatable {
       sponsorLogoAsset: json['sponsor_logo_asset'] as String?,
       inviteCode: json['invite_code'] as String?,
       participants: (json['participants'] as List<dynamic>?)
-              ?.map((p) => ChallengeParticipant.fromJson(p as Map<String, dynamic>))
+              ?.map((p) =>
+                  ChallengeParticipant.fromJson(p as Map<String, dynamic>))
               .toList() ??
           [],
       startTime: DateTime.parse(json['start_time'] as String),
@@ -182,24 +183,24 @@ class Challenge extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    titleEn,
-    titleAm,
-    descriptionEn,
-    descriptionAm,
-    challengeType,
-    status,
-    subjectId,
-    subjectName,
-    grade,
-    totalQuestions,
-    timeLimitMinutes,
-    prizeCoinPool,
-    sponsorName,
-    sponsorLogoAsset,
-    inviteCode,
-    participants,
-    startTime,
-    endTime,
-  ];
+        id,
+        titleEn,
+        titleAm,
+        descriptionEn,
+        descriptionAm,
+        challengeType,
+        status,
+        subjectId,
+        subjectName,
+        grade,
+        totalQuestions,
+        timeLimitMinutes,
+        prizeCoinPool,
+        sponsorName,
+        sponsorLogoAsset,
+        inviteCode,
+        participants,
+        startTime,
+        endTime,
+      ];
 }

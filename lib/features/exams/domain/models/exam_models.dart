@@ -70,17 +70,17 @@ class Exam extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    title,
-    examType,
-    grade,
-    stream,
-    subjectId,
-    timeLimitMinutes,
-    totalQuestions,
-    questions,
-    createdAt,
-  ];
+        id,
+        title,
+        examType,
+        grade,
+        stream,
+        subjectId,
+        timeLimitMinutes,
+        totalQuestions,
+        questions,
+        createdAt,
+      ];
 }
 
 class UserResponse extends Equatable {
@@ -135,12 +135,12 @@ class UserResponse extends Equatable {
 
   @override
   List<Object?> get props => [
-    questionId,
-    selectedChoiceId,
-    isCorrect,
-    timeSpentSeconds,
-    isFlagged,
-  ];
+        questionId,
+        selectedChoiceId,
+        isCorrect,
+        timeSpentSeconds,
+        isFlagged,
+      ];
 }
 
 class ExamAttempt extends Equatable {
@@ -269,22 +269,22 @@ class ExamAttempt extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    userId,
-    examId,
-    examTitle,
-    subjectId,
-    startTime,
-    endTime,
-    durationSeconds,
-    totalQuestions,
-    score,
-    percentage,
-    correctCount,
-    incorrectCount,
-    skippedCount,
-    isCompleted,
-    responses,
-    syncStatus,
-  ];
+        id,
+        userId,
+        examId,
+        examTitle,
+        subjectId,
+        startTime,
+        endTime,
+        durationSeconds,
+        totalQuestions,
+        score,
+        percentage,
+        correctCount,
+        incorrectCount,
+        skippedCount,
+        isCompleted,
+        responses,
+        syncStatus,
+      ];
 }

@@ -9,7 +9,8 @@ void main() {
       id: 'diag_test_1',
       titleEn: 'Right-Angled Triangle ABC',
       titleAm: 'ቀጤ-ነክ ባለሶስት ጎን ABC',
-      rawSvgContent: '<svg viewBox="0 0 400 300"><polygon points="80,240 320,240 200,60"/></svg>',
+      rawSvgContent:
+          '<svg viewBox="0 0 400 300"><polygon points="80,240 320,240 200,60"/></svg>',
       viewBoxWidth: 400.0,
       viewBoxHeight: 300.0,
       caption: 'Geometry: Pythagorean right triangle',
@@ -33,7 +34,9 @@ void main() {
       ],
     );
 
-    test('serializes and deserializes VectorDiagram and DiagramHotspots to/from JSON', () {
+    test(
+        'serializes and deserializes VectorDiagram and DiagramHotspots to/from JSON',
+        () {
       final json = testDiagram.toJson();
       expect(json['id'], 'diag_test_1');
       expect(json['title_en'], 'Right-Angled Triangle ABC');
@@ -46,7 +49,9 @@ void main() {
       expect(reconstructed.hotspots.first.xRatio, 0.2);
     });
 
-    testWidgets('renders SvgDiagramViewer with interactive title, hotspots, and zoom controls', (
+    testWidgets(
+        'renders SvgDiagramViewer with interactive title, hotspots, and zoom controls',
+        (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
@@ -79,7 +84,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Point of Interest: A'), findsOneWidget);
-      expect(find.text('Vertex A: Base adjacent leg (AB = 6 cm)'), findsOneWidget);
+      expect(
+          find.text('Vertex A: Base adjacent leg (AB = 6 cm)'), findsOneWidget);
     });
   });
 }

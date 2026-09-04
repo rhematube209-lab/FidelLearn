@@ -94,7 +94,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
     if (_pinController.text.trim().length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter the 6-digit PIN shown on the sender device.'),
+          content:
+              Text('Please enter the 6-digit PIN shown on the sender device.'),
         ),
       );
       return;
@@ -107,7 +108,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
 
     setState(() {
       _isReceiving = true;
-      _transferProgress = const P2PTransferProgress(status: P2PTransferStatus.connecting);
+      _transferProgress =
+          const P2PTransferProgress(status: P2PTransferStatus.connecting);
     });
 
     // Build a minimal beacon from manually entered connection details
@@ -141,7 +143,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               backgroundColor: AppTheme.green,
-              content: Text('Offline packages transferred and verified successfully!'),
+              content: Text(
+                  'Offline packages transferred and verified successfully!'),
             ),
           );
         }
@@ -166,7 +169,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Offline P2P Hotspot Sharing', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Offline P2P Hotspot Sharing',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -177,7 +181,9 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
           labelColor: AppTheme.brand,
           unselectedLabelColor: AppTheme.darkMuted,
           tabs: const [
-            Tab(icon: Icon(Icons.wifi_tethering_rounded), text: 'Send Packages'),
+            Tab(
+                icon: Icon(Icons.wifi_tethering_rounded),
+                text: 'Send Packages'),
             Tab(icon: Icon(Icons.download_rounded), text: 'Receive Packages'),
           ],
         ),
@@ -199,11 +205,13 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
 
   Widget _buildSendTab(bool isDesktop) {
     if (_isLoadingPackages) {
-      return const Center(child: CircularProgressIndicator(color: AppTheme.brand));
+      return const Center(
+          child: CircularProgressIndicator(color: AppTheme.brand));
     }
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -220,7 +228,9 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
               ),
               borderRadius: BorderRadius.circular(AppTheme.radiusLg),
               border: Border.all(
-                color: _activeBeacon != null ? AppTheme.green : AppTheme.brand.withOpacity(0.4),
+                color: _activeBeacon != null
+                    ? AppTheme.green
+                    : AppTheme.brand.withOpacity(0.4),
               ),
             ),
             child: Column(
@@ -232,28 +242,42 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _activeBeacon != null ? 'P2P BEACON ACTIVE 🟢' : 'P2P BEACON READY',
+                          _activeBeacon != null
+                              ? 'P2P BEACON ACTIVE 🟢'
+                              : 'P2P BEACON READY',
                           style: TextStyle(
-                            color: _activeBeacon != null ? AppTheme.green : AppTheme.brand,
+                            color: _activeBeacon != null
+                                ? AppTheme.green
+                                : AppTheme.brand,
                             fontWeight: FontWeight.bold,
                             fontSize: 11,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          _activeBeacon != null ? 'Broadcasting Exam Seed Packages' : 'Select Packages to Share',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                          _activeBeacon != null
+                              ? 'Broadcasting Exam Seed Packages'
+                              : 'Select Packages to Share',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ],
                     ),
                     ElevatedButton(
                       onPressed: _toggleSharing,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _activeBeacon != null ? AppTheme.danger : AppTheme.green,
+                        backgroundColor: _activeBeacon != null
+                            ? AppTheme.danger
+                            : AppTheme.green,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
                       ),
-                      child: Text(_activeBeacon != null ? 'Stop Sharing' : 'Start P2P Hotspot'),
+                      child: Text(_activeBeacon != null
+                          ? 'Stop Sharing'
+                          : 'Start P2P Hotspot'),
                     ),
                   ],
                 ),
@@ -271,21 +295,32 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                       children: [
                         Column(
                           children: [
-                            const Text('6-Digit Secret PIN', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                            const Text('6-Digit Secret PIN',
+                                style: TextStyle(
+                                    fontSize: 11, color: AppTheme.darkMuted)),
                             const SizedBox(height: 4),
                             Text(
                               _activeBeacon!.pairingPin,
-                              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, letterSpacing: 4, color: AppTheme.green),
+                              style: const TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 4,
+                                  color: AppTheme.green),
                             ),
                           ],
                         ),
                         Column(
                           children: [
-                            const Text('Local IP Address', style: TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                            const Text('Local IP Address',
+                                style: TextStyle(
+                                    fontSize: 11, color: AppTheme.darkMuted)),
                             const SizedBox(height: 4),
                             Text(
                               '${_activeBeacon!.hostAddress}:${_activeBeacon!.port}',
-                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -298,7 +333,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
           ),
           const SizedBox(height: 24),
 
-          const Text('Select Packages to Broadcast:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Select Packages to Broadcast:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           ListView.separated(
             shrinkWrap: true,
@@ -310,14 +346,17 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
               final isSelected = _selectedPackageIds.contains(pkg.packageId);
 
               return CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                   side: const BorderSide(color: AppTheme.darkBorder),
                 ),
                 tileColor: Theme.of(context).cardTheme.color,
-                title: Text(pkg.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('Grade ${pkg.grade} • ${(pkg.fileSizeBytes / 1024).toStringAsFixed(0)} KB • SHA-256 Verified'),
+                title: Text(pkg.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(
+                    'Grade ${pkg.grade} • ${(pkg.fileSizeBytes / 1024).toStringAsFixed(0)} KB • SHA-256 Verified'),
                 value: isSelected,
                 activeColor: AppTheme.brandStrong,
                 onChanged: (val) {
@@ -339,7 +378,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
 
   Widget _buildReceiveTab(bool isDesktop) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
+      padding: EdgeInsets.symmetric(
+          horizontal: isDesktop ? 48.0 : 20.0, vertical: 28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -353,18 +393,23 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Connect to Sender Device', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text('Connect to Sender Device',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 6),
-                const Text('Connect your device to the sender\'s Wi-Fi hotspot, then enter the 6-digit PIN.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+                const Text(
+                    'Connect your device to the sender\'s Wi-Fi hotspot, then enter the 6-digit PIN.',
+                    style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
                 const SizedBox(height: 18),
-
                 Row(
                   children: [
                     Expanded(
                       flex: 65,
                       child: TextField(
                         controller: _hostController,
-                        decoration: const InputDecoration(labelText: 'Sender IP Address', prefixIcon: Icon(Icons.router_outlined)),
+                        decoration: const InputDecoration(
+                            labelText: 'Sender IP Address',
+                            prefixIcon: Icon(Icons.router_outlined)),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -372,13 +417,14 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                       flex: 35,
                       child: TextField(
                         controller: _portController,
-                        decoration: const InputDecoration(labelText: 'Port', prefixIcon: Icon(Icons.settings_ethernet_outlined)),
+                        decoration: const InputDecoration(
+                            labelText: 'Port',
+                            prefixIcon: Icon(Icons.settings_ethernet_outlined)),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-
                 TextField(
                   controller: _pinController,
                   maxLength: 6,
@@ -390,7 +436,6 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                   ),
                 ),
                 const SizedBox(height: 24),
-
                 ElevatedButton.icon(
                   onPressed: _isReceiving ? null : _startReceiving,
                   icon: const Icon(Icons.download_rounded),
@@ -404,7 +449,6 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
             ),
           ),
           const SizedBox(height: 24),
-
           if (_transferProgress.status != P2PTransferStatus.idle) ...[
             Container(
               padding: const EdgeInsets.all(20),
@@ -421,11 +465,13 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                     children: [
                       Text(
                         'Transfer Status: ${_transferProgress.status.name.toUpperCase()}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.brand),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: AppTheme.brand),
                       ),
                       Text(
                         '${(_transferProgress.progressRatio * 100).toInt()}%',
-                        style: const TextStyle(fontWeight: FontWeight.w900, color: AppTheme.brand),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w900, color: AppTheme.brand),
                       ),
                     ],
                   ),
@@ -435,7 +481,8 @@ class _P2PSharingScreenState extends ConsumerState<P2PSharingScreen>
                     child: LinearProgressIndicator(
                       value: _transferProgress.progressRatio,
                       backgroundColor: const Color(0x1AFFFFFF),
-                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.brand),
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(AppTheme.brand),
                       minHeight: 8,
                     ),
                   ),

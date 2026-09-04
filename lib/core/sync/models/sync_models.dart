@@ -149,13 +149,13 @@ class SyncOperation extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    operationType,
-    payload,
-    idempotencyKey,
-    retryCount,
-    nextRetryAt,
-    lastError,
-    createdAt,
-  ];
+        id,
+        operationType,
+        payload,
+        idempotencyKey,
+        retryCount,
+        nextRetryAt,
+        lastError,
+        createdAt,
+      ];
 }

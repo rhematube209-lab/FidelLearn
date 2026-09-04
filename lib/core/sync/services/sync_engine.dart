@@ -5,8 +5,7 @@ import '../../networking/connectivity_service.dart';
 import '../models/sync_models.dart';
 import '../repositories/sync_queue_repository.dart';
 
-typedef SyncOperationHandler =
-    Future<bool> Function(SyncOperation operation);
+typedef SyncOperationHandler = Future<bool> Function(SyncOperation operation);
 
 class SyncEngine {
   final ConnectivityService _connectivityService;

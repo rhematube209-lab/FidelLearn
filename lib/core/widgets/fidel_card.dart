@@ -30,8 +30,8 @@ class FidelCard extends StatelessWidget {
     final radius = borderRadius ?? AppTheme.radiusMd;
     final bg = backgroundColor ??
         (isDark ? AppTheme.darkSurface : AppTheme.lightSurface);
-    final border = borderColor ??
-        (isDark ? AppTheme.darkBorder : AppTheme.lightBorder);
+    final border =
+        borderColor ?? (isDark ? AppTheme.darkBorder : AppTheme.lightBorder);
     final shadows = boxShadow ??
         (isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight);
 

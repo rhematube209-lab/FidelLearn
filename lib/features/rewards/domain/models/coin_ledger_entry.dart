@@ -36,9 +36,9 @@ class CoinLedgerEntry extends Equatable {
     required this.createdAt,
     this.serverVerified = true,
   }) : assert(
-         amount > 0,
-         'Ledger transaction amount must be strictly positive',
-       );
+          amount > 0,
+          'Ledger transaction amount must be strictly positive',
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -72,14 +72,14 @@ class CoinLedgerEntry extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    userId,
-    transactionType,
-    amount,
-    reason,
-    relatedEntityId,
-    idempotencyKey,
-    createdAt,
-    serverVerified,
-  ];
+        id,
+        userId,
+        transactionType,
+        amount,
+        reason,
+        relatedEntityId,
+        idempotencyKey,
+        createdAt,
+        serverVerified,
+      ];
 }

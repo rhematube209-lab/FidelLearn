@@ -28,18 +28,25 @@ class _SchoolAdminDashboardScreenState
   }
 
   Future<void> _loadSchoolData() async {
-    final schoolRepo = ref.read(schoolRepositoryProvider);
-    final prof = await schoolRepo.getSchoolProfile('sch_bole_1');
-    final ros = await schoolRepo.getTeacherRoster('sch_bole_1');
-    final an = await schoolRepo.getSchoolAnalytics('sch_bole_1');
+    try {
+      final schoolRepo = ref.read(schoolRepositoryProvider);
+      final prof = await schoolRepo.getSchoolProfile('sch_bole_1');
+      final ros = await schoolRepo.getTeacherRoster('sch_bole_1');
+      final an = await schoolRepo.getSchoolAnalytics('sch_bole_1');
 
-    if (mounted) {
-      setState(() {
-        _profile = prof;
-        _roster = ros;
-        _analytics = an;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _profile = prof;
+          _roster = ros;
+          _analytics = an;
+        });
+      }
+    } catch (e) {
+      debugPrint('SchoolAdminDashboardScreen: error loading school data: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -48,9 +55,36 @@ class _SchoolAdminDashboardScreenState
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
-    if (_isLoading || _profile == null || _analytics == null) {
+    if (_isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator(color: AppTheme.brand)),
+      );
+    }
+
+    if (_profile == null || _analytics == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('School Admin Portal')),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.school_outlined,
+                  size: 64, color: AppTheme.darkMuted),
+              const SizedBox(height: 16),
+              const Text('Unable to load school profile.',
+                  style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+                onPressed: () {
+                  setState(() => _isLoading = true);
+                  _loadSchoolData();
+                },
+              ),
+            ],
+          ),
+        ),
       );
     }
 
@@ -59,7 +93,8 @@ class _SchoolAdminDashboardScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('School Administrator Portal', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('School Administrator Portal',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -97,7 +132,8 @@ class _SchoolAdminDashboardScreenState
                           color: AppTheme.accent.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(Icons.account_balance_rounded, color: AppTheme.accent, size: 36),
+                        child: const Icon(Icons.account_balance_rounded,
+                            color: AppTheme.accent, size: 36),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
@@ -106,24 +142,35 @@ class _SchoolAdminDashboardScreenState
                           children: [
                             Text(
                               p.name,
-                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               'Region: ${p.region} • ${p.naturalStreamStudents} Natural / ${p.socialStreamStudents} Social',
-                              style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                              style: const TextStyle(
+                                  fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: AppTheme.green.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-                          border: Border.all(color: AppTheme.green.withOpacity(0.5)),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusPill),
+                          border: Border.all(
+                              color: AppTheme.green.withOpacity(0.5)),
                         ),
-                        child: const Text('OFFLINE LAB ACTIVE 🟢', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 11)),
+                        child: const Text('OFFLINE LAB ACTIVE 🟢',
+                            style: TextStyle(
+                                color: AppTheme.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11)),
                       ),
                     ],
                   ),
@@ -134,19 +181,35 @@ class _SchoolAdminDashboardScreenState
                 Row(
                   children: [
                     Expanded(
-                      child: _buildSchoolStat('Total Students', '${p.totalStudents}', Icons.people_outline_rounded, AppTheme.brand),
+                      child: _buildSchoolStat(
+                          'Total Students',
+                          '${p.totalStudents}',
+                          Icons.people_outline_rounded,
+                          AppTheme.brand),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildSchoolStat('Teaching Staff', '${p.totalTeachers}', Icons.badge_outlined, AppTheme.accent),
+                      child: _buildSchoolStat(
+                          'Teaching Staff',
+                          '${p.totalTeachers}',
+                          Icons.badge_outlined,
+                          AppTheme.accent),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildSchoolStat('Exams Completed', '${a.totalMockExamsCompleted}', Icons.assignment_turned_in_outlined, AppTheme.green),
+                      child: _buildSchoolStat(
+                          'Exams Completed',
+                          '${a.totalMockExamsCompleted}',
+                          Icons.assignment_turned_in_outlined,
+                          AppTheme.green),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: _buildSchoolStat('School Readiness', '${(a.overallReadinessScore * 100).toStringAsFixed(0)}%', Icons.insights_rounded, AppTheme.pink),
+                      child: _buildSchoolStat(
+                          'School Readiness',
+                          '${(a.overallReadinessScore * 100).toStringAsFixed(0)}%',
+                          Icons.insights_rounded,
+                          AppTheme.pink),
                     ),
                   ],
                 ),
@@ -183,7 +246,8 @@ class _SchoolAdminDashboardScreenState
     );
   }
 
-  Widget _buildSchoolStat(String title, String value, IconData icon, Color color) {
+  Widget _buildSchoolStat(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -197,12 +261,18 @@ class _SchoolAdminDashboardScreenState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted, fontWeight: FontWeight.w600)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 11,
+                      color: AppTheme.darkMuted,
+                      fontWeight: FontWeight.w600)),
               Icon(icon, color: color, size: 18),
             ],
           ),
           const SizedBox(height: 8),
-          Text(value, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: color)),
+          Text(value,
+              style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.w900, color: color)),
         ],
       ),
     );
@@ -219,13 +289,15 @@ class _SchoolAdminDashboardScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Staff Roster & Classrooms', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Staff Roster & Classrooms',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _roster.length,
-            separatorBuilder: (_, __) => const Divider(color: AppTheme.darkBorder, height: 16),
+            separatorBuilder: (_, __) =>
+                const Divider(color: AppTheme.darkBorder, height: 16),
             itemBuilder: (context, index) {
               final t = _roster[index];
               return Row(
@@ -234,17 +306,26 @@ class _SchoolAdminDashboardScreenState
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(t.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      Text('${t.subject} • ${t.classroomCount} Class(es)', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                      Text(t.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text('${t.subject} • ${t.classroomCount} Class(es)',
+                          style: const TextStyle(
+                              fontSize: 11, color: AppTheme.darkMuted)),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: AppTheme.brand.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: Text('${t.studentCount} Students', style: const TextStyle(color: AppTheme.brand, fontSize: 10, fontWeight: FontWeight.bold)),
+                    child: Text('${t.studentCount} Students',
+                        style: const TextStyle(
+                            color: AppTheme.brand,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold)),
                   ),
                 ],
               );
@@ -266,20 +347,25 @@ class _SchoolAdminDashboardScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('School National Readiness Metrics', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('School National Readiness Metrics',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          _buildSchoolProgressRow('Biology ESSLCE Exam Readiness', 0.86, AppTheme.green),
+          _buildSchoolProgressRow(
+              'Biology ESSLCE Exam Readiness', 0.86, AppTheme.green),
           const SizedBox(height: 12),
-          _buildSchoolProgressRow('Mathematics Natural Science Readiness', 0.72, AppTheme.brand),
+          _buildSchoolProgressRow(
+              'Mathematics Natural Science Readiness', 0.72, AppTheme.brand),
           const SizedBox(height: 12),
-          _buildSchoolProgressRow('Aptitude & General Reasoning', 0.79, AppTheme.accent),
+          _buildSchoolProgressRow(
+              'Aptitude & General Reasoning', 0.79, AppTheme.accent),
           const SizedBox(height: 20),
           ElevatedButton.icon(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   backgroundColor: AppTheme.green,
-                  content: Text('Exporting Ministry of Education Readiness Report PDF...'),
+                  content: Text(
+                      'Exporting Ministry of Education Readiness Report PDF...'),
                 ),
               );
             },
@@ -302,8 +388,12 @@ class _SchoolAdminDashboardScreenState
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-            Text('${(value * 100).toInt()}%', style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 12)),
+            Text(title,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+            Text('${(value * 100).toInt()}%',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: color, fontSize: 12)),
           ],
         ),
         const SizedBox(height: 6),

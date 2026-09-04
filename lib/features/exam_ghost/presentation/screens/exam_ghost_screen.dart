@@ -90,7 +90,8 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
     await examRepo.saveActiveAttempt(attempt);
 
     if (mounted) {
-      await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
       if (mounted) await _loadGhostData();
     }
   }
@@ -102,14 +103,16 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal-Best Exam Ghost Cockpit', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Personal-Best Exam Ghost Cockpit',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : _bestAttempt == null
               ? Center(
                   child: Column(
@@ -121,17 +124,20 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                           color: AppTheme.brand.withOpacity(0.12),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.flash_on_rounded, size: 64, color: AppTheme.brand),
+                        child: const Icon(Icons.flash_on_rounded,
+                            size: 64, color: AppTheme.brand),
                       ),
                       const SizedBox(height: 20),
                       const Text(
                         'No Ghost Telemetry Recorded',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 6),
                       const Text(
                         'Complete this exam at least once to create your personal best "Ghost" pacing benchmark.',
-                        style: TextStyle(color: AppTheme.darkMuted, fontSize: 13),
+                        style:
+                            TextStyle(color: AppTheme.darkMuted, fontSize: 13),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -153,40 +159,57 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                             padding: const EdgeInsets.all(28),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFF3B0764), AppTheme.darkSurfaceStrong],
+                                colors: [
+                                  Color(0xFF3B0764),
+                                  AppTheme.darkSurfaceStrong
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                              border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
+                              borderRadius:
+                                  BorderRadius.circular(AppTheme.radiusLg),
+                              border: Border.all(
+                                  color: AppTheme.brand.withOpacity(0.4)),
                               boxShadow: AppTheme.cardShadowDark,
                             ),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
                                         decoration: BoxDecoration(
-                                          color: AppTheme.brand.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(6),
+                                          color:
+                                              AppTheme.brand.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
                                         ),
                                         child: const Text(
                                           'OFFLINE PACING TELEMETRY',
-                                          style: TextStyle(color: AppTheme.brand, fontWeight: FontWeight.bold, fontSize: 10),
+                                          style: TextStyle(
+                                              color: AppTheme.brand,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
                                         ),
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
                                         'Target: ${_bestAttempt!.examTitle}',
-                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       ),
                                       const SizedBox(height: 4),
                                       const Text(
                                         'Race against your historical peak speed and choice answers with zero cloud sync required.',
-                                        style: TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: AppTheme.darkTextSoft),
                                       ),
                                     ],
                                   ),
@@ -195,12 +218,14 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                                   const SizedBox(width: 24),
                                   ElevatedButton.icon(
                                     onPressed: _launchGhostRetake,
-                                    icon: const Icon(Icons.play_arrow_rounded, size: 22),
+                                    icon: const Icon(Icons.play_arrow_rounded,
+                                        size: 22),
                                     label: const Text('Race Your Ghost Now'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppTheme.brandStrong,
                                       foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 22, vertical: 14),
                                     ),
                                   ),
                                 ],
@@ -238,11 +263,13 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                             const SizedBox(height: 24),
                             ElevatedButton.icon(
                               onPressed: _launchGhostRetake,
-                              icon: const Icon(Icons.play_arrow_rounded, size: 22),
+                              icon: const Icon(Icons.play_arrow_rounded,
+                                  size: 22),
                               label: const Text('Race Your Ghost Now'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppTheme.brandStrong,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
                               ),
                             ),
                           ],
@@ -254,7 +281,8 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
     );
   }
 
-  Widget _buildGhostStat(String title, String value, String subtitle, Color color, IconData icon) {
+  Widget _buildGhostStat(
+      String title, String value, String subtitle, Color color, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -268,14 +296,21 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted, fontWeight: FontWeight.w600)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.darkMuted,
+                      fontWeight: FontWeight.w600)),
               Icon(icon, color: color, size: 20),
             ],
           ),
           const SizedBox(height: 10),
-          Text(value, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: color)),
+          Text(value,
+              style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.w900, color: color)),
           const SizedBox(height: 4),
-          Text(subtitle, style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+          Text(subtitle,
+              style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
         ],
       ),
     );

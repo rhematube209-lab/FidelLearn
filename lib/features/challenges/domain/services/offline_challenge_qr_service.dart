@@ -113,7 +113,8 @@ class OfflineChallengeQrService {
       });
 
       return OfflineGhostPayload(
-        attemptId: map['aid'] as String? ?? 'ghost_${DateTime.now().millisecondsSinceEpoch}',
+        attemptId: map['aid'] as String? ??
+            'ghost_${DateTime.now().millisecondsSinceEpoch}',
         studentDisplayName: map['name'] as String? ?? 'Peer Student',
         examId: map['eid'] as String? ?? '',
         examTitle: map['et'] as String? ?? 'National Exam Practice',

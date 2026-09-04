@@ -32,7 +32,8 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Profile & Preferences', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Student Profile & Preferences',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -68,8 +69,13 @@ class ProfileScreen extends ConsumerWidget {
                         radius: 36,
                         backgroundColor: AppTheme.brandStrong,
                         child: Text(
-                          user.displayName.isNotEmpty ? user.displayName[0] : 'S',
-                          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                          user.displayName.isNotEmpty
+                              ? user.displayName[0]
+                              : 'S',
+                          style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -79,24 +85,36 @@ class ProfileScreen extends ConsumerWidget {
                           children: [
                             Text(
                               user.displayName,
-                              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user.phoneNumber.isEmpty ? 'Offline Student Mode' : user.phoneNumber,
-                              style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                              user.phoneNumber.isEmpty
+                                  ? 'Offline Student Mode'
+                                  : user.phoneNumber,
+                              style: const TextStyle(
+                                  fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
                             const SizedBox(height: 8),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: AppTheme.brand.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-                                border: Border.all(color: AppTheme.brand.withOpacity(0.5)),
+                                borderRadius:
+                                    BorderRadius.circular(AppTheme.radiusPill),
+                                border: Border.all(
+                                    color: AppTheme.brand.withOpacity(0.5)),
                               ),
                               child: Text(
                                 'Grade ${user.grade} • ${user.stream.toUpperCase()} STREAM • ${user.role.name.toUpperCase()}',
-                                style: const TextStyle(color: AppTheme.brand, fontWeight: FontWeight.bold, fontSize: 11),
+                                style: const TextStyle(
+                                    color: AppTheme.brand,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11),
                               ),
                             ),
                           ],
@@ -154,7 +172,8 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCurriculumSettings(BuildContext context, WidgetRef ref, UserProfile user) {
+  Widget _buildCurriculumSettings(
+      BuildContext context, WidgetRef ref, UserProfile user) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -165,12 +184,14 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('National Examination Stream', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('National Examination Stream',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.school_rounded, color: AppTheme.brand),
-            title: const Text('Grade Level', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            title: const Text('Grade Level',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             subtitle: Text('Grade ${user.grade} (National Curriculum)'),
             trailing: DropdownButton<int>(
               value: user.grade,
@@ -181,7 +202,9 @@ class ProfileScreen extends ConsumerWidget {
               ],
               onChanged: (val) {
                 if (val != null) {
-                  ref.read(authRepositoryProvider).updateProfile(user.copyWith(grade: val));
+                  ref
+                      .read(authRepositoryProvider)
+                      .updateProfile(user.copyWith(grade: val));
                 }
               },
             ),
@@ -190,17 +213,24 @@ class ProfileScreen extends ConsumerWidget {
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.science_rounded, color: AppTheme.accent),
-            title: const Text('Academic Stream', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-            subtitle: Text(user.stream == 'natural' ? 'Natural Science' : 'Social Science'),
+            title: const Text('Academic Stream',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            subtitle: Text(user.stream == 'natural'
+                ? 'Natural Science'
+                : 'Social Science'),
             trailing: DropdownButton<String>(
               value: user.stream,
               items: const [
-                DropdownMenuItem(value: 'natural', child: Text('Natural Science')),
-                DropdownMenuItem(value: 'social', child: Text('Social Science')),
+                DropdownMenuItem(
+                    value: 'natural', child: Text('Natural Science')),
+                DropdownMenuItem(
+                    value: 'social', child: Text('Social Science')),
               ],
               onChanged: (val) {
                 if (val != null) {
-                  ref.read(authRepositoryProvider).updateProfile(user.copyWith(stream: val));
+                  ref
+                      .read(authRepositoryProvider)
+                      .updateProfile(user.copyWith(stream: val));
                 }
               },
             ),
@@ -221,7 +251,8 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Theme & Language', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Theme & Language',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -230,13 +261,16 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   Icon(Icons.palette_rounded, color: AppTheme.pink),
                   SizedBox(width: 12),
-                  Text('Color Palette', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text('Color Palette',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                 ],
               ),
               SegmentedButton<ThemeMode>(
                 segments: const [
                   ButtonSegment(value: ThemeMode.dark, label: Text('Cosmic')),
-                  ButtonSegment(value: ThemeMode.light, label: Text('Lavender')),
+                  ButtonSegment(
+                      value: ThemeMode.light, label: Text('Lavender')),
                 ],
                 selected: {currentTheme},
                 onSelectionChanged: (set) {
@@ -264,14 +298,16 @@ class ProfileScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Cloud Sync Diagnostics', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text('Cloud Sync Diagnostics',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               SyncIndicatorWidget(isCompact: false),
             ],
           ),
           SizedBox(height: 12),
           Text(
             'All exam attempts, mistake notes, and coin ledgers are preserved offline and automatically synced to Supabase PostgreSQL when internet connectivity is detected.',
-            style: TextStyle(fontSize: 12, color: AppTheme.darkMuted, height: 1.4),
+            style:
+                TextStyle(fontSize: 12, color: AppTheme.darkMuted, height: 1.4),
           ),
         ],
       ),
@@ -289,7 +325,8 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Account Actions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Account Actions',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           OutlinedButton.icon(
             onPressed: () async {
@@ -297,7 +334,8 @@ class ProfileScreen extends ConsumerWidget {
               if (context.mounted) context.go('/login');
             },
             icon: const Icon(Icons.logout_rounded, color: AppTheme.danger),
-            label: const Text('Sign Out', style: TextStyle(color: AppTheme.danger)),
+            label: const Text('Sign Out',
+                style: TextStyle(color: AppTheme.danger)),
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppTheme.danger),
               minimumSize: const Size.fromHeight(44),

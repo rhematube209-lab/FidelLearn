@@ -70,7 +70,10 @@ void main() {
 
     test('returns null when parsing invalid or corrupted QR text', () {
       expect(qrService.decodeQrPayloadToGhost('INVALID_PAYLOAD'), isNull);
-      expect(qrService.decodeQrPayloadToGhost('FIDEL_GHOST:v1:corrupted_base64_!@#'), isNull);
+      expect(
+          qrService
+              .decodeQrPayloadToGhost('FIDEL_GHOST:v1:corrupted_base64_!@#'),
+          isNull);
     });
   });
 }

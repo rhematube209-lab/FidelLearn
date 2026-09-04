@@ -186,10 +186,9 @@ class _CreateAssignmentScreenState
                             if (val != null) {
                               setState(() {
                                 _selectedSubjectId = val;
-                                _selectedSubjectName =
-                                    val == 'math_g12'
-                                        ? 'Mathematics'
-                                        : 'Aptitude';
+                                _selectedSubjectName = val == 'math_g12'
+                                    ? 'Mathematics'
+                                    : 'Aptitude';
                                 _isLoading = true;
                               });
                               _loadAvailableQuestions();
@@ -222,10 +221,9 @@ class _CreateAssignmentScreenState
                               child: Text('45 Mins'),
                             ),
                           ],
-                          onChanged:
-                              (val) => setState(
-                                () => _timeLimitMinutes = val ?? 20,
-                              ),
+                          onChanged: (val) => setState(
+                            () => _timeLimitMinutes = val ?? 20,
+                          ),
                         ),
                       ),
                     ],
@@ -302,10 +300,9 @@ class _CreateAssignmentScreenState
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                           side: BorderSide(
-                            color:
-                                isChecked
-                                    ? AppTheme.primaryGreen
-                                    : Colors.grey.withValues(alpha: 0.2),
+                            color: isChecked
+                                ? AppTheme.primaryGreen
+                                : Colors.grey.withValues(alpha: 0.2),
                           ),
                         ),
                       );

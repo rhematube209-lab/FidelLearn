@@ -49,11 +49,15 @@ void main() {
     test('retrieves available telecom reward packages from catalog', () {
       final catalog = service.getCatalog();
       expect(catalog.isNotEmpty, isTrue);
-      expect(catalog.any((p) => p.provider == TelecomProvider.ethioTelecom), isTrue);
-      expect(catalog.any((p) => p.provider == TelecomProvider.safaricom), isTrue);
+      expect(catalog.any((p) => p.provider == TelecomProvider.ethioTelecom),
+          isTrue);
+      expect(
+          catalog.any((p) => p.provider == TelecomProvider.safaricom), isTrue);
     });
 
-    test('throws InsufficientCoinsFailure if user coin balance is less than package cost', () {
+    test(
+        'throws InsufficientCoinsFailure if user coin balance is less than package cost',
+        () {
       expect(
         () => service.redeemPackage(
           userId: 'usr_student_1',
@@ -66,7 +70,9 @@ void main() {
       );
     });
 
-    test('throws DuplicateRewardClaimFailure if idempotency key already exists in ledger', () {
+    test(
+        'throws DuplicateRewardClaimFailure if idempotency key already exists in ledger',
+        () {
       final ledgerWithDuplicate = [
         ...sufficientLedger,
         CoinLedgerEntry(
@@ -92,7 +98,9 @@ void main() {
       );
     });
 
-    test('successfully processes redemption and generates 14-digit voucher with USSD dial string', () {
+    test(
+        'successfully processes redemption and generates 14-digit voucher with USSD dial string',
+        () {
       final receipt = service.redeemPackage(
         userId: 'usr_student_1',
         phoneNumber: '0911223344',

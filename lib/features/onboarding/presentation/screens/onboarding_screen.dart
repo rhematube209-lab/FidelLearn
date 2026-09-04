@@ -43,7 +43,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         height: 44,
                         decoration: BoxDecoration(
                           color: AppTheme.brandStrong,
-                          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusSm),
                         ),
                         child: const Center(
                           child: Text(
@@ -65,7 +66,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
-                              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                              color: isDark
+                                  ? AppTheme.darkText
+                                  : AppTheme.lightText,
                               letterSpacing: -0.4,
                             ),
                           ),
@@ -75,7 +78,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 : 'Ethiopian National Exam Preparation Platform',
                             style: TextStyle(
                               fontSize: 12.5,
-                              color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
                             ),
                           ),
                         ],
@@ -102,7 +107,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         : 'Offline national mock exams, step-by-step verified explanations, weak-topic diagnostics, and Exam Ghost.',
                     style: TextStyle(
                       fontSize: 13.5,
-                      color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                      color: isDark
+                          ? AppTheme.darkTextSoft
+                          : AppTheme.lightTextSoft,
                       height: 1.45,
                     ),
                   ),
@@ -124,7 +131,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           isDark: isDark,
                           onTap: () {
                             setState(() => _selectedLang = 'en');
-                            ref.read(localeProvider.notifier).state = const Locale('en');
+                            ref.read(localeProvider.notifier).state =
+                                const Locale('en');
                           },
                         ),
                       ),
@@ -137,7 +145,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           isDark: isDark,
                           onTap: () {
                             setState(() => _selectedLang = 'am');
-                            ref.read(localeProvider.notifier).state = const Locale('am');
+                            ref.read(localeProvider.notifier).state =
+                                const Locale('am');
                           },
                         ),
                       ),
@@ -212,7 +221,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             subtitle: 'Math, Physics, Chem, Bio, Apt.',
                             isSelected: _selectedStream == 'natural',
                             isDark: isDark,
-                            onTap: () => setState(() => _selectedStream = 'natural'),
+                            onTap: () =>
+                                setState(() => _selectedStream = 'natural'),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -224,7 +234,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             subtitle: 'Math, Hist, Geo, Econ, Apt.',
                             isSelected: _selectedStream == 'social',
                             isDark: isDark,
-                            onTap: () => setState(() => _selectedStream = 'social'),
+                            onTap: () =>
+                                setState(() => _selectedStream = 'social'),
                           ),
                         ),
                       ],
@@ -254,13 +265,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     variant: FidelButtonVariant.outline,
                     onPressed: () async {
                       await ref.read(currentUserProvider.notifier).register(
-                        phone: '+251911000000',
-                        pass: 'demo123',
-                        name: 'Guest Student',
-                        grade: _selectedGrade,
-                        stream: _selectedStream,
-                        lang: _selectedLang,
-                      );
+                            phone: '+251911000000',
+                            pass: 'demo123',
+                            name: 'Guest Student',
+                            grade: _selectedGrade,
+                            stream: _selectedStream,
+                            lang: _selectedLang,
+                          );
                       if (context.mounted) {
                         context.go('/home');
                       }
@@ -330,7 +341,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       title,
                       style: TextStyle(
                         fontSize: 14.5,
-                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                        fontWeight:
+                            isSelected ? FontWeight.w700 : FontWeight.w600,
                         color: isSelected
                             ? (isDark ? Colors.white : AppTheme.brandStrong)
                             : (isDark ? AppTheme.darkText : AppTheme.lightText),

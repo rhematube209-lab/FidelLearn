@@ -268,28 +268,32 @@ class _SvgDiagramViewerState extends State<SvgDiagramViewer> {
                       icon: const Icon(Icons.zoom_in, size: 18),
                       tooltip: 'Zoom In',
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints:
+                          const BoxConstraints(minWidth: 32, minHeight: 32),
                       onPressed: _zoomIn,
                     ),
                     IconButton(
                       icon: const Icon(Icons.zoom_out, size: 18),
                       tooltip: 'Zoom Out',
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints:
+                          const BoxConstraints(minWidth: 32, minHeight: 32),
                       onPressed: _zoomOut,
                     ),
                     IconButton(
                       icon: const Icon(Icons.center_focus_strong, size: 18),
                       tooltip: 'Reset View',
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints:
+                          const BoxConstraints(minWidth: 32, minHeight: 32),
                       onPressed: _resetZoom,
                     ),
                     IconButton(
                       icon: const Icon(Icons.fullscreen, size: 18),
                       tooltip: 'Fullscreen',
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints:
+                          const BoxConstraints(minWidth: 32, minHeight: 32),
                       onPressed: _openFullscreen,
                     ),
                   ],
@@ -342,7 +346,8 @@ class _VectorDiagramPainter extends CustomPainter {
       path.close();
       canvas.drawPath(path, fillPaint);
       canvas.drawPath(path, shapePaint);
-    } else if (svgContent.contains('circle') || svgContent.contains('circuit')) {
+    } else if (svgContent.contains('circle') ||
+        svgContent.contains('circuit')) {
       final center = Offset(size.width / 2, size.height / 2);
       final radius = size.height * 0.35;
       canvas.drawCircle(center, radius, fillPaint);

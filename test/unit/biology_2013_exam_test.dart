@@ -13,13 +13,17 @@ void main() {
       );
     });
 
-    test('loads Grade 12 Biology package, subject, 7 units, and 18 topics', () async {
+    test('loads Grade 12 Biology package, subject, 7 units, and 18 topics',
+        () async {
       await repository.initializeSeedData();
 
-      final packages = await repository.getPackages(grade: 12, stream: 'natural');
-      expect(packages.any((p) => p.packageId == 'pkg_g12_biology_2013'), isTrue);
+      final packages =
+          await repository.getPackages(grade: 12, stream: 'natural');
+      expect(
+          packages.any((p) => p.packageId == 'pkg_g12_biology_2013'), isTrue);
 
-      final subjects = await repository.getSubjects(grade: 12, stream: 'natural');
+      final subjects =
+          await repository.getSubjects(grade: 12, stream: 'natural');
       final bio = subjects.firstWhere((s) => s.id == 'biology_g12');
       expect(bio.nameEn, 'Biology');
 
@@ -31,7 +35,9 @@ void main() {
       expect(topics.isNotEmpty, isTrue);
     });
 
-    test('verifies all 100 Biology questions are loaded with 4 choices and 1 correct answer', () async {
+    test(
+        'verifies all 100 Biology questions are loaded with 4 choices and 1 correct answer',
+        () async {
       await repository.initializeSeedData();
 
       final questions = await repository.getQuestions(
@@ -43,15 +49,19 @@ void main() {
       for (int i = 0; i < 100; i++) {
         final q = questions[i];
         expect(q.examYear, 2013);
-        expect(q.choices.length, 4, reason: 'Question ${i + 1} must have 4 choices');
+        expect(q.choices.length, 4,
+            reason: 'Question ${i + 1} must have 4 choices');
         final correctCount = q.choices.where((c) => c.isCorrect).length;
-        expect(correctCount, 1, reason: 'Question ${i + 1} must have exactly 1 correct answer');
+        expect(correctCount, 1,
+            reason: 'Question ${i + 1} must have exactly 1 correct answer');
         expect(q.explanation.solutionTextEn.isNotEmpty, isTrue);
         expect(q.explanation.keyConcept?.isNotEmpty, isTrue);
       }
     });
 
-    test('verifies specific milestone questions and answer key accuracy from 2013 E.C. booklet', () async {
+    test(
+        'verifies specific milestone questions and answer key accuracy from 2013 E.C. booklet',
+        () async {
       await repository.initializeSeedData();
 
       final questions = await repository.getQuestions(
@@ -81,7 +91,8 @@ void main() {
       // Q45: Hybrid vigor bar chart (Choice B: X inbreeding, Z cross-breeding)
       final q45 = questions[44];
       expect(q45.correctChoice.label, 'B');
-      expect(q45.correctChoice.textEn, 'X involves inbreeding and Z involves cross-breeding');
+      expect(q45.correctChoice.textEn,
+          'X involves inbreeding and Z involves cross-breeding');
 
       // Q78: Chloroplast photolysis & Calvin site (Choice D: F and E)
       final q78 = questions[77];

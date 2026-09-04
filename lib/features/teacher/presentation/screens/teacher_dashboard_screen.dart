@@ -29,32 +29,39 @@ class _TeacherDashboardScreenState
   }
 
   Future<void> _loadTeacherData() async {
-    final user = ref.read(currentUserProvider).valueOrNull;
-    final teacherRepo = ref.read(teacherRepositoryProvider);
+    try {
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final teacherRepo = ref.read(teacherRepositoryProvider);
 
-    if (user != null) {
-      final classes = await teacherRepo.getTeacherClassrooms(user.id);
-      if (classes.isNotEmpty) {
-        _classrooms = classes;
-        _selectedClassroom = classes.first;
-        await _loadClassroomDetails(_selectedClassroom!.id);
+      if (user != null) {
+        final classes = await teacherRepo.getTeacherClassrooms(user.id);
+        if (classes.isNotEmpty) {
+          _classrooms = classes;
+          _selectedClassroom = classes.first;
+          await _loadClassroomDetails(_selectedClassroom!.id);
+        }
       }
-      if (mounted) setState(() => _isLoading = false);
-    } else {
+    } catch (e) {
+      debugPrint('TeacherDashboardScreen: error loading teacher data: $e');
+    } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _loadClassroomDetails(String classroomId) async {
-    final teacherRepo = ref.read(teacherRepositoryProvider);
-    final asgs = await teacherRepo.getClassAssignments(classroomId);
-    final stats = await teacherRepo.getClassroomWeakTopics(classroomId);
+    try {
+      final teacherRepo = ref.read(teacherRepositoryProvider);
+      final asgs = await teacherRepo.getClassAssignments(classroomId);
+      final stats = await teacherRepo.getClassroomWeakTopics(classroomId);
 
-    if (mounted) {
-      setState(() {
-        _assignments = asgs;
-        _topicStats = stats;
-      });
+      if (mounted) {
+        setState(() {
+          _assignments = asgs;
+          _topicStats = stats;
+        });
+      }
+    } catch (e) {
+      debugPrint('TeacherDashboardScreen: error loading classroom details: $e');
     }
   }
 
@@ -64,7 +71,16 @@ class _TeacherDashboardScreenState
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
-    if (_isLoading || user == null) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: AppTheme.brand)),
+      );
+    }
+
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) context.go('/login');
+      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator(color: AppTheme.brand)),
       );
@@ -72,7 +88,8 @@ class _TeacherDashboardScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Teacher Command Portal', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Teacher Command Portal',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -107,7 +124,8 @@ class _TeacherDashboardScreenState
                       const CircleAvatar(
                         radius: 30,
                         backgroundColor: AppTheme.brandStrong,
-                        child: Icon(Icons.school_rounded, color: Colors.white, size: 30),
+                        child: Icon(Icons.school_rounded,
+                            color: Colors.white, size: 30),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
@@ -116,12 +134,16 @@ class _TeacherDashboardScreenState
                           children: [
                             Text(
                               'Teacher Dashboard • ${user.displayName}',
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               '${_classrooms.length} Active Classrooms • Section 12-A & 12-B Natural Science',
-                              style: const TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                              style: const TextStyle(
+                                  fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
                           ],
                         ),
@@ -133,7 +155,8 @@ class _TeacherDashboardScreenState
                           label: const Text('Create Exam Assignment'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.brandStrong,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 14),
                           ),
                         ),
                       ],
@@ -202,12 +225,16 @@ class _TeacherDashboardScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Select Classroom', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Select Classroom',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           DropdownButtonFormField<Classroom>(
             value: _selectedClassroom,
             items: _classrooms.map((c) {
-              return DropdownMenuItem(value: c, child: Text('${c.name} (Grade ${c.grade} • ${c.studentCount} Students)'));
+              return DropdownMenuItem(
+                  value: c,
+                  child: Text(
+                      '${c.name} (Grade ${c.grade} • ${c.studentCount} Students)'));
             }).toList(),
             onChanged: (val) {
               if (val != null) {
@@ -232,16 +259,19 @@ class _TeacherDashboardScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Class Assignments', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Class Assignments',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           if (_assignments.isEmpty)
-            const Text('No assignments published for this class yet.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            const Text('No assignments published for this class yet.',
+                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
           else
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _assignments.length,
-              separatorBuilder: (_, __) => const Divider(color: AppTheme.darkBorder, height: 16),
+              separatorBuilder: (_, __) =>
+                  const Divider(color: AppTheme.darkBorder, height: 16),
               itemBuilder: (context, index) {
                 final asg = _assignments[index];
                 return Row(
@@ -250,17 +280,27 @@ class _TeacherDashboardScreenState
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(asg.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text('${asg.questionIds.length} Questions • Due ${asg.dueAt.month}/${asg.dueAt.day}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                        Text(asg.title,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13)),
+                        Text(
+                            '${asg.questionIds.length} Questions • Due ${asg.dueAt.month}/${asg.dueAt.day}',
+                            style: const TextStyle(
+                                fontSize: 11, color: AppTheme.darkMuted)),
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: AppTheme.green.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Text('ACTIVE', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 10)),
+                      child: const Text('ACTIVE',
+                          style: TextStyle(
+                              color: AppTheme.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10)),
                     ),
                   ],
                 );
@@ -282,10 +322,13 @@ class _TeacherDashboardScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Classroom Weak Topics Diagnostic', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('Classroom Weak Topics Diagnostic',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           if (_topicStats.isEmpty)
-            const Text('Student attempt analytics will populate topic heatmaps automatically.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            const Text(
+                'Student attempt analytics will populate topic heatmaps automatically.',
+                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
           else
             ListView.separated(
               shrinkWrap: true,
@@ -300,8 +343,15 @@ class _TeacherDashboardScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(stat.topicName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                        Text('${stat.averageAccuracyPercentage.toStringAsFixed(0)}% Class Avg', style: const TextStyle(fontSize: 12, color: AppTheme.danger, fontWeight: FontWeight.bold)),
+                        Text(stat.topicName,
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text(
+                            '${stat.averageAccuracyPercentage.toStringAsFixed(0)}% Class Avg',
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: AppTheme.danger,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -310,7 +360,8 @@ class _TeacherDashboardScreenState
                       child: LinearProgressIndicator(
                         value: stat.averageAccuracyPercentage / 100,
                         backgroundColor: const Color(0x1AFFFFFF),
-                        valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppTheme.danger),
                         minHeight: 6,
                       ),
                     ),

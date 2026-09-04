@@ -26,15 +26,18 @@ void main() {
       expect(GradeLevel.grade12.supportedStreams, contains('social'));
     });
 
-    test('retrieves Grade 6 and Grade 8 subject packages from repository', () async {
+    test('retrieves Grade 6 and Grade 8 subject packages from repository',
+        () async {
       await repository.initializeSeedData();
 
-      final g6Packages = await repository.getPackages(grade: 6, stream: 'general');
+      final g6Packages =
+          await repository.getPackages(grade: 6, stream: 'general');
       expect(g6Packages.isNotEmpty, isTrue);
       expect(g6Packages.any((p) => p.subjectId == 'math_g6'), isTrue);
       expect(g6Packages.any((p) => p.subjectId == 'science_g6'), isTrue);
 
-      final g8Packages = await repository.getPackages(grade: 8, stream: 'general');
+      final g8Packages =
+          await repository.getPackages(grade: 8, stream: 'general');
       expect(g8Packages.isNotEmpty, isTrue);
       expect(g8Packages.any((p) => p.subjectId == 'math_g8'), isTrue);
       expect(g8Packages.any((p) => p.subjectId == 'science_g8'), isTrue);
@@ -43,7 +46,8 @@ void main() {
     test('retrieves Grade 12 Social Science subjects and questions', () async {
       await repository.initializeSeedData();
 
-      final socialSubjects = await repository.getSubjects(grade: 12, stream: 'social');
+      final socialSubjects =
+          await repository.getSubjects(grade: 12, stream: 'social');
       expect(socialSubjects.isNotEmpty, isTrue);
       expect(socialSubjects.any((s) => s.id == 'history_g12'), isTrue);
       expect(socialSubjects.any((s) => s.id == 'economics_g12'), isTrue);
@@ -53,10 +57,13 @@ void main() {
         subjectId: 'history_g12',
       );
       expect(historyQuestions.isNotEmpty, isTrue);
-      expect(historyQuestions.first.questionTextEn, contains('Treaty of Wuchale'));
+      expect(
+          historyQuestions.first.questionTextEn, contains('Treaty of Wuchale'));
     });
 
-    test('verifies vector diagrams attached to questions across Grade 8 and Grade 12', () async {
+    test(
+        'verifies vector diagrams attached to questions across Grade 8 and Grade 12',
+        () async {
       await repository.initializeSeedData();
 
       final g8Questions = await repository.getQuestions(
@@ -74,8 +81,10 @@ void main() {
         subjectId: 'economics_g12',
       );
       expect(econQuestions.isNotEmpty, isTrue);
-      final econDiagQ = econQuestions.firstWhere((q) => q.vectorDiagram != null);
-      expect(econDiagQ.vectorDiagram!.hotspots.any((h) => h.label == 'E1'), isTrue);
+      final econDiagQ =
+          econQuestions.firstWhere((q) => q.vectorDiagram != null);
+      expect(econDiagQ.vectorDiagram!.hotspots.any((h) => h.label == 'E1'),
+          isTrue);
     });
   });
 }

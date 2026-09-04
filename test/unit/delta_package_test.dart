@@ -111,7 +111,9 @@ void main() {
       );
     });
 
-    test('applies delta patch by adding, updating, and removing deprecated questions', () {
+    test(
+        'applies delta patch by adding, updating, and removing deprecated questions',
+        () {
       final delta = PackageDelta(
         packageId: 'pkg_g12_math',
         fromVersion: '1.0.0',
@@ -133,7 +135,8 @@ void main() {
       expect(patched.any((q) => q.id == 'q4'), isTrue);
 
       final updatedQ2 = patched.firstWhere((q) => q.id == 'q2');
-      expect(updatedQ2.questionTextEn, contains('Updated corrected question 2'));
+      expect(
+          updatedQ2.questionTextEn, contains('Updated corrected question 2'));
       expect(updatedQ2.contentVersion, 2);
     });
   });

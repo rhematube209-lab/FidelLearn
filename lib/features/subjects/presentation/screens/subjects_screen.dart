@@ -95,14 +95,16 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Offline Subject Packages Hub', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Offline Subject Packages Hub',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isDesktop ? 48.0 : 20.0,
@@ -119,12 +121,17 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                         padding: const EdgeInsets.all(28),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF0F766E), AppTheme.darkSurfaceStrong],
+                            colors: [
+                              Color(0xFF0F766E),
+                              AppTheme.darkSurfaceStrong
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                          border: Border.all(color: AppTheme.green.withOpacity(0.4)),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusLg),
+                          border: Border.all(
+                              color: AppTheme.green.withOpacity(0.4)),
                           boxShadow: AppTheme.cardShadowDark,
                         ),
                         child: Row(
@@ -134,22 +141,33 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 3),
                                     decoration: BoxDecoration(
                                       color: AppTheme.green.withOpacity(0.2),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
-                                    child: const Text('OFFLINE-FIRST RESILIENCE', style: TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 10)),
+                                    child: const Text(
+                                        'OFFLINE-FIRST RESILIENCE',
+                                        style: TextStyle(
+                                            color: AppTheme.green,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10)),
                                   ),
                                   const SizedBox(height: 10),
                                   const Text(
                                     'Download Once, Practice Forever Without Internet',
-                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
                                   ),
                                   const SizedBox(height: 6),
                                   const Text(
                                     'Exam questions, vector diagrams, and step-by-step solutions are stored securely inside local Drift SQLite database.',
-                                    style: TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: AppTheme.darkTextSoft),
                                   ),
                                 ],
                               ),
@@ -158,12 +176,14 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                               const SizedBox(width: 24),
                               ElevatedButton.icon(
                                 onPressed: () => context.push('/p2p_share'),
-                                icon: const Icon(Icons.wifi_tethering_rounded, size: 18),
+                                icon: const Icon(Icons.wifi_tethering_rounded,
+                                    size: 18),
                                 label: const Text('Share via Offline P2P'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppTheme.brandStrong,
                                   foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 14),
                                 ),
                               ),
                             ],
@@ -177,11 +197,13 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                         children: [
                           Text(
                             'Available Packages (${_packages.length})',
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           const Text(
                             'Total Storage: ~4.2 MB',
-                            style: TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                            style: TextStyle(
+                                fontSize: 13, color: AppTheme.darkMuted),
                           ),
                         ],
                       ),
@@ -204,9 +226,12 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardTheme.color,
-                              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                              borderRadius:
+                                  BorderRadius.circular(AppTheme.radiusMd),
                               border: Border.all(
-                                color: pkg.isDownloaded ? AppTheme.green.withOpacity(0.35) : AppTheme.darkBorder,
+                                color: pkg.isDownloaded
+                                    ? AppTheme.green.withOpacity(0.35)
+                                    : AppTheme.darkBorder,
                               ),
                             ),
                             child: Column(
@@ -214,46 +239,66 @@ class _SubjectsScreenState extends ConsumerState<SubjectsScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
-                                        color: (pkg.isDownloaded ? AppTheme.green : AppTheme.accent).withOpacity(0.15),
+                                        color: (pkg.isDownloaded
+                                                ? AppTheme.green
+                                                : AppTheme.accent)
+                                            .withOpacity(0.15),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Text(
-                                        pkg.isDownloaded ? 'DOWNLOADED ✅' : 'CLOUD AVAILABLE',
+                                        pkg.isDownloaded
+                                            ? 'DOWNLOADED ✅'
+                                            : 'CLOUD AVAILABLE',
                                         style: TextStyle(
-                                          color: pkg.isDownloaded ? AppTheme.green : AppTheme.accent,
+                                          color: pkg.isDownloaded
+                                              ? AppTheme.green
+                                              : AppTheme.accent,
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                    Text('v${pkg.version}.0', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                                    Text('v${pkg.version}.0',
+                                        style: const TextStyle(
+                                            fontSize: 11,
+                                            color: AppTheme.darkMuted)),
                                   ],
                                 ),
                                 Text(
                                   pkg.nameEn,
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   'Grade ${pkg.grade} • ${pkg.stream.toUpperCase()} Stream • ${(pkg.sizeBytes / 1024).toStringAsFixed(0)} KB',
-                                  style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                                  style: const TextStyle(
+                                      fontSize: 12, color: AppTheme.darkMuted),
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     OutlinedButton(
                                       onPressed: () => _toggleDownload(pkg),
-                                      child: Text(pkg.isDownloaded ? 'Remove' : 'Download'),
+                                      child: Text(pkg.isDownloaded
+                                          ? 'Remove'
+                                          : 'Download'),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () => context.push('/exam_builder?subjectId=${pkg.subjectId}'),
+                                      onPressed: () => context.push(
+                                          '/exam_builder?subjectId=${pkg.subjectId}'),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: AppTheme.brandStrong,
-                                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14, vertical: 8),
                                       ),
                                       child: const Text('Practice'),
                                     ),

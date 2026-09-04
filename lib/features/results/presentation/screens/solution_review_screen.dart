@@ -92,7 +92,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Report Question Issue', style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Text('Report Question Issue',
+            style: TextStyle(fontWeight: FontWeight.w700)),
         content: const Text(
           'Thank you for maintaining exam content quality. Our curriculum team will review this question and verify syllabus accuracy.',
         ),
@@ -133,7 +134,9 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+              isBookmarked
+                  ? Icons.bookmark_rounded
+                  : Icons.bookmark_border_rounded,
               color: isBookmarked ? AppTheme.accent : null,
             ),
             tooltip: 'Bookmark question',
@@ -158,10 +161,14 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         Container(
                           width: 290,
                           decoration: BoxDecoration(
-                            color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+                            color: isDark
+                                ? AppTheme.darkSurface
+                                : AppTheme.lightSurface,
                             border: Border(
                               right: BorderSide(
-                                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                                color: isDark
+                                    ? AppTheme.darkBorder
+                                    : AppTheme.lightBorder,
                               ),
                             ),
                           ),
@@ -171,7 +178,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                             children: [
                               const Text(
                                 'Exam Questions',
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w700),
                               ),
                               const SizedBox(height: 12),
                               Expanded(
@@ -184,42 +192,67 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                                     final isSelected = index == _currentIndex;
 
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 4.0),
+                                      padding:
+                                          const EdgeInsets.only(bottom: 4.0),
                                       child: Material(
                                         color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                        borderRadius: BorderRadius.circular(
+                                            AppTheme.radiusSm),
                                         child: InkWell(
-                                          onTap: () => setState(() => _currentIndex = index),
-                                          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                          onTap: () => setState(
+                                              () => _currentIndex = index),
+                                          borderRadius: BorderRadius.circular(
+                                              AppTheme.radiusSm),
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 8),
                                             decoration: BoxDecoration(
                                               color: isSelected
                                                   ? (isDark
-                                                      ? AppTheme.brand.withValues(alpha: 0.16)
+                                                      ? AppTheme.brand
+                                                          .withValues(
+                                                              alpha: 0.16)
                                                       : AppTheme.brandSubtle)
                                                   : Colors.transparent,
-                                              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppTheme.radiusSm),
                                               border: Border.all(
-                                                color: isSelected ? AppTheme.brand : Colors.transparent,
+                                                color: isSelected
+                                                    ? AppTheme.brand
+                                                    : Colors.transparent,
                                               ),
                                             ),
                                             child: Row(
                                               children: [
                                                 Icon(
-                                                  corr ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                                                  color: corr ? AppTheme.green : AppTheme.danger,
+                                                  corr
+                                                      ? Icons
+                                                          .check_circle_rounded
+                                                      : Icons.cancel_rounded,
+                                                  color: corr
+                                                      ? AppTheme.green
+                                                      : AppTheme.danger,
                                                   size: 18,
                                                 ),
                                                 const SizedBox(width: 10),
                                                 Text(
                                                   'Question ${index + 1}',
                                                   style: TextStyle(
-                                                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                                    fontWeight: isSelected
+                                                        ? FontWeight.w700
+                                                        : FontWeight.w500,
                                                     fontSize: 13,
                                                     color: isSelected
-                                                        ? (isDark ? Colors.white : AppTheme.brandStrong)
-                                                        : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                                                        ? (isDark
+                                                            ? Colors.white
+                                                            : AppTheme
+                                                                .brandStrong)
+                                                        : (isDark
+                                                            ? AppTheme
+                                                                .darkTextSoft
+                                                            : AppTheme
+                                                                .lightTextSoft),
                                                   ),
                                                 ),
                                               ],
@@ -238,11 +271,14 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         // Center Solution Inspector
                         Expanded(
                           child: SingleChildScrollView(
-                            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 28),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 48, vertical: 28),
                             child: Center(
                               child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 820),
-                                child: _buildSolutionContent(currentQ, resp, isCorrect, isDark),
+                                constraints:
+                                    const BoxConstraints(maxWidth: 820),
+                                child: _buildSolutionContent(
+                                    currentQ, resp, isCorrect, isDark),
                               ),
                             ),
                           ),
@@ -251,7 +287,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                     )
                   : SingleChildScrollView(
                       padding: const EdgeInsets.all(18.0),
-                      child: _buildSolutionContent(currentQ, resp, isCorrect, isDark),
+                      child: _buildSolutionContent(
+                          currentQ, resp, isCorrect, isDark),
                     ),
             ),
 
@@ -390,13 +427,15 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                   color: isDark ? AppTheme.darkText : AppTheme.lightText,
                 ),
               ),
-              if (currentQ.questionTextAm != null && currentQ.questionTextAm!.isNotEmpty) ...[
+              if (currentQ.questionTextAm != null &&
+                  currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 Text(
                   currentQ.questionTextAm!,
                   style: TextStyle(
                     fontSize: 14.5,
-                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                    color:
+                        isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                     height: 1.4,
                   ),
                 ),
@@ -457,11 +496,13 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
             children: [
               const Row(
                 children: [
-                  Icon(Icons.lightbulb_rounded, color: AppTheme.accent, size: 22),
+                  Icon(Icons.lightbulb_rounded,
+                      color: AppTheme.accent, size: 22),
                   SizedBox(width: 8),
                   Text(
                     'Step-by-Step Explanation',
-                    style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700),
+                    style:
+                        TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -482,7 +523,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                     color: isDark ? const Color(0x1A000000) : Colors.white,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                     border: Border.all(
-                      color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                      color:
+                          isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
                     ),
                   ),
                   child: Column(
@@ -501,7 +543,9 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         currentQ.explanation.simplerExplanationEn!,
                         style: TextStyle(
                           fontSize: 12.5,
-                          color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                          color: isDark
+                              ? AppTheme.darkTextSoft
+                              : AppTheme.lightTextSoft,
                           height: 1.35,
                         ),
                       ),

@@ -13,7 +13,8 @@ void main() {
       repository = LocalPaymentRepository(service: service);
     });
 
-    test('initiates Telebirr payment transaction with invoice and QR payload', () {
+    test('initiates Telebirr payment transaction with invoice and QR payload',
+        () {
       final tx = service.initiatePayment(
         userId: 'usr_student_123',
         amountEtb: 150.0,
@@ -44,7 +45,8 @@ void main() {
       expect(tx.deepLink, contains('cbebirr://pay'));
     });
 
-    test('successfully verifies payment with valid confirmation code', () async {
+    test('successfully verifies payment with valid confirmation code',
+        () async {
       final tx = service.initiatePayment(
         userId: 'usr_student_123',
         amountEtb: 50.0,
@@ -62,7 +64,9 @@ void main() {
       expect(verified.referenceMessage, contains('verified successfully'));
     });
 
-    test('fails payment verification if confirmation code is too short or invalid', () async {
+    test(
+        'fails payment verification if confirmation code is too short or invalid',
+        () async {
       final tx = service.initiatePayment(
         userId: 'usr_student_123',
         amountEtb: 50.0,
@@ -76,10 +80,13 @@ void main() {
       );
 
       expect(failed.status, PaymentStatus.failed);
-      expect(failed.referenceMessage, contains('Invalid transaction confirmation code'));
+      expect(failed.referenceMessage,
+          contains('Invalid transaction confirmation code'));
     });
 
-    test('manages checkout lifecycle and transaction history in LocalPaymentRepository', () async {
+    test(
+        'manages checkout lifecycle and transaction history in LocalPaymentRepository',
+        () async {
       final tx1 = await repository.initiateCheckout(
         userId: 'usr_student_1',
         amountEtb: 50.0,
@@ -97,7 +104,8 @@ void main() {
       );
       expect(confirmed.status, PaymentStatus.completed);
 
-      final historyAfter = await repository.getTransactionHistory('usr_student_1');
+      final historyAfter =
+          await repository.getTransactionHistory('usr_student_1');
       expect(historyAfter.first.status, PaymentStatus.completed);
     });
   });

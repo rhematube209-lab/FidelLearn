@@ -32,25 +32,42 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   Future<void> _loadDashboardData() async {
-    final user = ref.read(currentUserProvider).valueOrNull;
-    final contentRepo = ref.read(contentRepositoryProvider);
-    final examRepo = ref.read(examRepositoryProvider);
+    try {
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final contentRepo = ref.read(contentRepositoryProvider);
+      final examRepo = ref.read(examRepositoryProvider);
 
-    if (user != null) {
-      final subs = await contentRepo.getSubjects(
-        grade: user.grade,
-        stream: user.stream,
-      );
-      final history = await examRepo.getAttemptHistory(user.id);
-      if (mounted) {
-        setState(() {
-          _subjects = subs;
-          _recentAttempt = history.isNotEmpty ? history.first : null;
-          _isLoading = false;
-        });
+      if (user != null) {
+        List<Subject> subs = [];
+        try {
+          subs = await contentRepo.getSubjects(
+            grade: user.grade,
+            stream: user.stream,
+          );
+        } catch (e) {
+          debugPrint('StudentHomeScreen: error loading subjects: $e');
+        }
+
+        List<ExamAttempt> history = [];
+        try {
+          history = await examRepo.getAttemptHistory(user.id);
+        } catch (e) {
+          debugPrint('StudentHomeScreen: error loading attempt history: $e');
+        }
+
+        if (mounted) {
+          setState(() {
+            _subjects = subs;
+            _recentAttempt = history.isNotEmpty ? history.first : null;
+          });
+        }
       }
-    } else {
-      if (mounted) setState(() => _isLoading = false);
+    } catch (e) {
+      debugPrint('StudentHomeScreen: error loading dashboard data: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -61,7 +78,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     final coinBalance = ref.watch(coinLedgerProvider.notifier).balance;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    if (_isLoading || user == null) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: const Center(
+          child: CircularProgressIndicator(color: AppTheme.brand),
+        ),
+      );
+    }
+
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.go('/login');
+        }
+      });
       return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: const Center(
@@ -126,7 +157,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       body: Row(
         children: [
           // 🖥️ Desktop Navigation Rail
-          if (isDesktop) _buildDesktopNavRail(context, user, coinBalance, isDark),
+          if (isDesktop)
+            _buildDesktopNavRail(context, user, coinBalance, isDark),
 
           // 📱/🖥️ Main Content Canvas
           Expanded(
@@ -147,12 +179,14 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       children: [
                         // Desktop Header
                         if (isDesktop) ...[
-                          _buildDesktopHeader(context, user, coinBalance, isAmharic, isDark),
+                          _buildDesktopHeader(
+                              context, user, coinBalance, isAmharic, isDark),
                           const SizedBox(height: 24),
                         ],
 
                         // Modern Mission Control Hero Banner
-                        _buildMissionControlHero(context, user, isAmharic, isDark),
+                        _buildMissionControlHero(
+                            context, user, isAmharic, isDark),
                         const SizedBox(height: 24),
 
                         // 4-Stat Metric Row
@@ -168,9 +202,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                               Expanded(
                                 flex: 60,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
-                                    _buildSubjectSection(context, isAmharic, isDark),
+                                    _buildSubjectSection(
+                                        context, isAmharic, isDark),
                                     const SizedBox(height: 32),
                                     _buildQuickActions(context, isDark),
                                   ],
@@ -182,14 +218,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                               Expanded(
                                 flex: 40,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     _buildFeaturedExamCard(context, isDark),
                                     const SizedBox(height: 24),
                                     _buildWeakTopicRadarCard(context, isDark),
                                     if (_recentAttempt != null) ...[
                                       const SizedBox(height: 24),
-                                      _buildRecentPerformanceCard(context, isDark),
+                                      _buildRecentPerformanceCard(
+                                          context, isDark),
                                     ],
                                   ],
                                 ),
@@ -223,7 +261,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           ? null
           : NavigationBar(
               selectedIndex: 0,
-              backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+              backgroundColor:
+                  isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
               indicatorColor: isDark
                   ? AppTheme.brand.withValues(alpha: 0.25)
                   : AppTheme.brandSubtle,
@@ -231,27 +270,32 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               destinations: const [
                 NavigationDestination(
                   icon: Icon(Icons.dashboard_outlined),
-                  selectedIcon: Icon(Icons.dashboard_rounded, color: AppTheme.brand),
+                  selectedIcon:
+                      Icon(Icons.dashboard_rounded, color: AppTheme.brand),
                   label: 'Home',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.menu_book_outlined),
-                  selectedIcon: Icon(Icons.menu_book_rounded, color: AppTheme.brand),
+                  selectedIcon:
+                      Icon(Icons.menu_book_rounded, color: AppTheme.brand),
                   label: 'Practice',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.insights_outlined),
-                  selectedIcon: Icon(Icons.insights_rounded, color: AppTheme.brand),
+                  selectedIcon:
+                      Icon(Icons.insights_rounded, color: AppTheme.brand),
                   label: 'Analytics',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.military_tech_outlined),
-                  selectedIcon: Icon(Icons.military_tech_rounded, color: AppTheme.brand),
+                  selectedIcon:
+                      Icon(Icons.military_tech_rounded, color: AppTheme.brand),
                   label: 'Rewards',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.person_outline_rounded),
-                  selectedIcon: Icon(Icons.person_rounded, color: AppTheme.brand),
+                  selectedIcon:
+                      Icon(Icons.person_rounded, color: AppTheme.brand),
                   label: 'Profile',
                 ),
               ],
@@ -338,7 +382,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       'National Exam Prep',
                       style: TextStyle(
                         fontSize: 11,
-                        color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                        color:
+                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                       ),
                     ),
                   ],
@@ -347,7 +392,6 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ],
           ),
           const SizedBox(height: 28),
-
           _buildNavRailItem(
             icon: Icons.dashboard_rounded,
             label: 'Dashboard',
@@ -397,9 +441,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             isDark: isDark,
             onTap: () => context.push('/progress'),
           ),
-
           const Spacer(),
-
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -433,7 +475,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
-                          color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                          color:
+                              isDark ? AppTheme.darkText : AppTheme.lightText,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -442,7 +485,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         'Grade ${user.grade} • ${user.stream.toUpperCase()}',
                         style: TextStyle(
                           fontSize: 11,
-                          color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                          color:
+                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                         ),
                       ),
                     ],
@@ -506,7 +550,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
                       color: isActive
                           ? (isDark ? Colors.white : AppTheme.brandStrong)
-                          : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
+                          : (isDark
+                              ? AppTheme.darkTextSoft
+                              : AppTheme.lightTextSoft),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -538,7 +584,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isAmharic ? 'ሰላም, ${user.displayName} 👋' : 'Welcome back, ${user.displayName} 👋',
+                isAmharic
+                    ? 'ሰላም, ${user.displayName} 👋'
+                    : 'Welcome back, ${user.displayName} 👋',
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.w800,
@@ -571,9 +619,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               onTap: () => context.push('/rewards'),
               borderRadius: BorderRadius.circular(AppTheme.radiusPill),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0x26F59E0B) : const Color(0xFFFEF3C7),
+                  color: isDark
+                      ? const Color(0x26F59E0B)
+                      : const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(AppTheme.radiusPill),
                   border: Border.all(
                     color: AppTheme.accent.withValues(alpha: 0.4),
@@ -582,7 +633,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 18),
+                    const Icon(Icons.monetization_on_rounded,
+                        color: AppTheme.accent, size: 18),
                     const SizedBox(width: 6),
                     Text(
                       '$coinBalance Coins',
@@ -613,7 +665,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   ) {
     return FidelCard(
       padding: const EdgeInsets.all(22),
-      backgroundColor: isDark ? const Color(0xFF131B2E) : const Color(0xFFF1F5F9),
+      backgroundColor:
+          isDark ? const Color(0xFF131B2E) : const Color(0xFFF1F5F9),
       borderColor: isDark ? const Color(0xFF26334D) : const Color(0xFFCBD5E1),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -658,7 +711,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.4,
-                    color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                    color:
+                        isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                   ),
                 ),
                 const SizedBox(height: 18),
@@ -677,7 +731,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                     ),
                     OutlinedButton.icon(
                       onPressed: () => context.push('/challenges'),
-                      icon: const Icon(Icons.flash_on_rounded, size: 18, color: AppTheme.accent),
+                      icon: const Icon(Icons.flash_on_rounded,
+                          size: 18, color: AppTheme.accent),
                       label: const Text('Exam Ghost Duels'),
                     ),
                   ],
@@ -739,7 +794,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 📊 4-STAT METRIC ROW
   // ==========================================
-  Widget _buildMetricCards(BuildContext context, int coinBalance, bool isDesktop) {
+  Widget _buildMetricCards(
+      BuildContext context, int coinBalance, bool isDesktop) {
     final cards = [
       FidelStatCard(
         title: 'Study Coins',
@@ -806,7 +862,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // ==========================================
   // 📚 SUBJECT PACKAGE SECTION
   // ==========================================
-  Widget _buildSubjectSection(BuildContext context, bool isAmharic, bool isDark) {
+  Widget _buildSubjectSection(
+      BuildContext context, bool isAmharic, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -846,7 +903,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         height: 30,
                         decoration: BoxDecoration(
                           color: AppTheme.brand.withValues(alpha: 0.14),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusSm),
                         ),
                         child: Center(
                           child: Text(
@@ -866,7 +924,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 13.5,
-                            color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                            color:
+                                isDark ? AppTheme.darkText : AppTheme.lightText,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1046,7 +1105,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   Widget _buildFeaturedExamCard(BuildContext context, bool isDark) {
     return FidelCard(
       padding: const EdgeInsets.all(18),
-      backgroundColor: isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4),
+      backgroundColor:
+          isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4),
       borderColor: AppTheme.green.withValues(alpha: 0.35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1089,7 +1149,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           ),
           const SizedBox(height: 14),
           ElevatedButton.icon(
-            onPressed: () => context.push('/exam_builder?subjectId=biology_g12'),
+            onPressed: () =>
+                context.push('/exam_builder?subjectId=biology_g12'),
             icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
             label: const Text('Start 100-Question Exam'),
             style: ElevatedButton.styleFrom(
@@ -1131,11 +1192,14 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ],
           ),
           const SizedBox(height: 14),
-          _buildWeakTopicRow('Cellular Respiration & Krebs Cycle', 'Biology (Grade 12)', 0.45, isDark),
+          _buildWeakTopicRow('Cellular Respiration & Krebs Cycle',
+              'Biology (Grade 12)', 0.45, isDark),
           const SizedBox(height: 12),
-          _buildWeakTopicRow('Arithmetic & Geometric Sequences', 'Math (Grade 12)', 0.58, isDark),
+          _buildWeakTopicRow('Arithmetic & Geometric Sequences',
+              'Math (Grade 12)', 0.58, isDark),
           const SizedBox(height: 12),
-          _buildWeakTopicRow('Battle of Adwa Treaties', 'History (Grade 12)', 0.62, isDark),
+          _buildWeakTopicRow(
+              'Battle of Adwa Treaties', 'History (Grade 12)', 0.62, isDark),
           const SizedBox(height: 14),
           OutlinedButton(
             onPressed: () => context.push('/progress'),
@@ -1149,7 +1213,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     );
   }
 
-  Widget _buildWeakTopicRow(String title, String subject, double accuracy, bool isDark) {
+  Widget _buildWeakTopicRow(
+      String title, String subject, double accuracy, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1184,7 +1249,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           borderRadius: BorderRadius.circular(AppTheme.radiusPill),
           child: LinearProgressIndicator(
             value: accuracy,
-            backgroundColor: isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
+            backgroundColor:
+                isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
             valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
             minHeight: 6,
           ),
@@ -1222,7 +1288,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               ),
               FidelBadge(
                 text: '${attempt.percentage.toStringAsFixed(0)}%',
-                variant: isGoodScore ? FidelBadgeVariant.success : FidelBadgeVariant.warning,
+                variant: isGoodScore
+                    ? FidelBadgeVariant.success
+                    : FidelBadgeVariant.warning,
                 isSmall: true,
               ),
             ],
@@ -1256,7 +1324,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => context.push('/exam_ghost/${attempt.examId}'),
+                  onPressed: () =>
+                      context.push('/exam_ghost/${attempt.examId}'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.brandStrong,
                   ),

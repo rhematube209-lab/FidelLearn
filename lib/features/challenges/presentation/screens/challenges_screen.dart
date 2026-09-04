@@ -102,7 +102,8 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
     if (questions.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No questions found for this challenge.')),
+          const SnackBar(
+              content: Text('No questions found for this challenge.')),
         );
       }
       return;
@@ -131,7 +132,8 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
     await examRepo.saveActiveAttempt(attempt);
 
     if (mounted) {
-      await context.push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
       if (mounted) await _loadChallenges();
     }
   }
@@ -143,14 +145,16 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Championship Duels & Tournaments', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Championship Duels & Tournaments',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isDesktop ? 48.0 : 20.0,
@@ -167,12 +171,17 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                         padding: const EdgeInsets.all(28),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF4C1D95), AppTheme.darkSurfaceStrong],
+                            colors: [
+                              Color(0xFF4C1D95),
+                              AppTheme.darkSurfaceStrong
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                          border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusLg),
+                          border: Border.all(
+                              color: AppTheme.brand.withOpacity(0.4)),
                           boxShadow: AppTheme.cardShadowDark,
                         ),
                         child: Row(
@@ -182,7 +191,8 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 3),
                                     decoration: BoxDecoration(
                                       color: AppTheme.accent.withOpacity(0.2),
                                       borderRadius: BorderRadius.circular(6),
@@ -208,7 +218,9 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                                   const SizedBox(height: 6),
                                   const Text(
                                     'Compete against top-ranked secondary students in 15-minute high-intensity national exam duels.',
-                                    style: TextStyle(fontSize: 13, color: AppTheme.darkTextSoft),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: AppTheme.darkTextSoft),
                                   ),
                                 ],
                               ),
@@ -224,7 +236,8 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                                   border: Border.all(color: AppTheme.accent),
                                 ),
                                 child: const Center(
-                                  child: Icon(Icons.emoji_events_rounded, color: AppTheme.accent, size: 48),
+                                  child: Icon(Icons.emoji_events_rounded,
+                                      color: AppTheme.accent, size: 48),
                                 ),
                               ),
                             ],
@@ -283,9 +296,12 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Enter Friend Battle Code', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          const Text('Enter Friend Battle Code',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
           const SizedBox(height: 6),
-          const Text('Type a 6-digit match code to enter private 1v1 student challenges.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+          const Text(
+              'Type a 6-digit match code to enter private 1v1 student challenges.',
+              style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
           const SizedBox(height: 14),
           Row(
             children: [
@@ -303,7 +319,8 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                 onPressed: _joinByCode,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.brandStrong,
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
                 ),
                 child: const Text('Join Duel'),
               ),
@@ -325,10 +342,12 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Live National Match Lobby', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          const Text('Live National Match Lobby',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
           const SizedBox(height: 14),
           if (_challenges.isEmpty)
-            const Text('No public duels currently waiting in queue.', style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            const Text('No public duels currently waiting in queue.',
+                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
           else
             ListView.separated(
               shrinkWrap: true,
@@ -350,8 +369,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(c.titleEn, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                          Text('${c.participants.length} Students Joined • Code: ${c.inviteCode}', style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                          Text(c.titleEn,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 13)),
+                          Text(
+                              '${c.participants.length} Students Joined • Code: ${c.inviteCode}',
+                              style: const TextStyle(
+                                  fontSize: 11, color: AppTheme.darkMuted)),
                         ],
                       ),
                       ElevatedButton(
@@ -359,8 +383,10 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.green,
                           foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          textStyle: const TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.bold),
                         ),
                         child: const Text('Enter Match'),
                       ),
@@ -388,24 +414,31 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('National Student Leaderboard', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-              Icon(Icons.military_tech_rounded, color: AppTheme.accent, size: 22),
+              Text('National Student Leaderboard',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              Icon(Icons.military_tech_rounded,
+                  color: AppTheme.accent, size: 22),
             ],
           ),
           const SizedBox(height: 14),
-          _buildRankTile(1, 'Robel M. (Addis Ababa)', '98.5% Accuracy', '1,420 🪙', AppTheme.accent),
+          _buildRankTile(1, 'Robel M. (Addis Ababa)', '98.5% Accuracy',
+              '1,420 🪙', AppTheme.accent),
           const SizedBox(height: 8),
-          _buildRankTile(2, 'Selamawit T. (Hawassa)', '96.0% Accuracy', '1,280 🪙', Colors.grey.shade400),
+          _buildRankTile(2, 'Selamawit T. (Hawassa)', '96.0% Accuracy',
+              '1,280 🪙', Colors.grey.shade400),
           const SizedBox(height: 8),
-          _buildRankTile(3, 'Natnael K. (Bahir Dar)', '94.2% Accuracy', '1,150 🪙', const Color(0xFFCD7F32)),
+          _buildRankTile(3, 'Natnael K. (Bahir Dar)', '94.2% Accuracy',
+              '1,150 🪙', const Color(0xFFCD7F32)),
           const SizedBox(height: 8),
-          _buildRankTile(4, 'Meklit B. (Adama)', '92.8% Accuracy', '980 🪙', AppTheme.darkMuted),
+          _buildRankTile(4, 'Meklit B. (Adama)', '92.8% Accuracy', '980 🪙',
+              AppTheme.darkMuted),
         ],
       ),
     );
   }
 
-  Widget _buildRankTile(int rank, String name, String accuracy, String coins, Color rankColor) {
+  Widget _buildRankTile(
+      int rank, String name, String accuracy, String coins, Color rankColor) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -426,7 +459,10 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
             child: Center(
               child: Text(
                 '#$rank',
-                style: TextStyle(fontWeight: FontWeight.bold, color: rankColor, fontSize: 11),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: rankColor,
+                    fontSize: 11),
               ),
             ),
           ),
@@ -435,12 +471,20 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                Text(accuracy, style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted)),
+                Text(name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 13)),
+                Text(accuracy,
+                    style: const TextStyle(
+                        fontSize: 11, color: AppTheme.darkMuted)),
               ],
             ),
           ),
-          Text(coins, style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accent, fontSize: 13)),
+          Text(coins,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.accent,
+                  fontSize: 13)),
         ],
       ),
     );

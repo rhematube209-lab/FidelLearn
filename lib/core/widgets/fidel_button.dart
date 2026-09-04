@@ -104,7 +104,9 @@ class FidelButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: onPressed == null ? bg.withValues(alpha: 0.5) : bg,
         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-        border: borderSide == BorderSide.none ? null : Border.fromBorderSide(borderSide),
+        border: borderSide == BorderSide.none
+            ? null
+            : Border.fromBorderSide(borderSide),
       ),
       child: Material(
         color: Colors.transparent,

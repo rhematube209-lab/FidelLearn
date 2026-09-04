@@ -23,15 +23,15 @@ class ContentAuditLog extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    actorUserId,
-    actorRole,
-    actionType,
-    targetEntityType,
-    targetEntityId,
-    detail,
-    timestamp,
-  ];
+        id,
+        actorUserId,
+        actorRole,
+        actionType,
+        targetEntityType,
+        targetEntityId,
+        detail,
+        timestamp,
+      ];
 }
 
 class AdminContentOverview extends Equatable {
@@ -51,10 +51,10 @@ class AdminContentOverview extends Equatable {
 
   @override
   List<Object?> get props => [
-    totalQuestions,
-    publishedQuestions,
-    pendingVerificationQuestions,
-    draftQuestions,
-    totalPackages,
-  ];
+        totalQuestions,
+        publishedQuestions,
+        pendingVerificationQuestions,
+        draftQuestions,
+        totalPackages,
+      ];
 }

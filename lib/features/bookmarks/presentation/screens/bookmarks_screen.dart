@@ -68,14 +68,16 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Questions & Bookmarks', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Saved Questions & Bookmarks',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppTheme.brand))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppTheme.brand))
           : _bookmarks.isEmpty
               ? Center(
                   child: Column(
@@ -96,12 +98,14 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                       const SizedBox(height: 20),
                       const Text(
                         'No Bookmarked Questions',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 6),
                       const Text(
                         'Bookmark tricky or essential questions during exam review to practice them later.',
-                        style: TextStyle(color: AppTheme.darkMuted, fontSize: 13),
+                        style:
+                            TextStyle(color: AppTheme.darkMuted, fontSize: 13),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -123,17 +127,23 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                             children: [
                               Text(
                                 '${_bookmarks.length} Bookmarked Items',
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: AppTheme.accent.withOpacity(0.15),
-                                  borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+                                  borderRadius: BorderRadius.circular(
+                                      AppTheme.radiusPill),
                                 ),
                                 child: const Text(
                                   'OFFLINE ACCESS READY',
-                                  style: TextStyle(color: AppTheme.accent, fontWeight: FontWeight.bold, fontSize: 11),
+                                  style: TextStyle(
+                                      color: AppTheme.accent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11),
                                 ),
                               ),
                             ],
@@ -142,7 +152,8 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: isDesktop ? 520 : 600,
                               mainAxisExtent: 200,
                               mainAxisSpacing: 16,
@@ -157,21 +168,28 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                 padding: const EdgeInsets.all(18),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).cardTheme.color,
-                                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                                  border: Border.all(color: AppTheme.darkBorder),
+                                  borderRadius:
+                                      BorderRadius.circular(AppTheme.radiusMd),
+                                  border:
+                                      Border.all(color: AppTheme.darkBorder),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 3),
                                           decoration: BoxDecoration(
-                                            color: AppTheme.brand.withOpacity(0.15),
-                                            borderRadius: BorderRadius.circular(6),
+                                            color: AppTheme.brand
+                                                .withOpacity(0.15),
+                                            borderRadius:
+                                                BorderRadius.circular(6),
                                           ),
                                           child: Text(
                                             q?.subjectId ?? 'General',
@@ -183,21 +201,29 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                           ),
                                         ),
                                         IconButton(
-                                          icon: const Icon(Icons.bookmark_remove_rounded, color: AppTheme.danger, size: 20),
+                                          icon: const Icon(
+                                              Icons.bookmark_remove_rounded,
+                                              color: AppTheme.danger,
+                                              size: 20),
                                           tooltip: 'Remove bookmark',
                                           onPressed: () => _removeBookmark(b),
                                         ),
                                       ],
                                     ),
                                     Text(
-                                      q?.questionTextEn ?? 'Question content...',
-                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      q?.questionTextEn ??
+                                          'Question content...',
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
                                       'Topic: ${b.topicId.isNotEmpty ? b.topicId : "Comprehensive"} • ${q?.examYear != null ? "${q!.examYear} E.C." : "National Seed"}',
-                                      style: const TextStyle(fontSize: 11, color: AppTheme.darkMuted),
+                                      style: const TextStyle(
+                                          fontSize: 11,
+                                          color: AppTheme.darkMuted),
                                     ),
                                   ],
                                 ),

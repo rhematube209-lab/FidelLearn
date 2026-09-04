@@ -27,17 +27,17 @@ class ExamGhostComparison extends Equatable {
 
   @override
   List<Object?> get props => [
-    currentScore,
-    previousBestScore,
-    scoreDelta,
-    currentDurationSeconds,
-    previousBestDurationSeconds,
-    speedDeltaSeconds,
-    improvedScore,
-    improvedSpeed,
-    isNewPersonalBest,
-    headline,
-  ];
+        currentScore,
+        previousBestScore,
+        scoreDelta,
+        currentDurationSeconds,
+        previousBestDurationSeconds,
+        speedDeltaSeconds,
+        improvedScore,
+        improvedSpeed,
+        isNewPersonalBest,
+        headline,
+      ];
 }
 
 class ExamGhostRecord extends Equatable {
@@ -63,13 +63,13 @@ class ExamGhostRecord extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    userId,
-    examId,
-    bestScore,
-    bestDurationSeconds,
-    bestAttemptId,
-    totalAttempts,
-    updatedAt,
-  ];
+        id,
+        userId,
+        examId,
+        bestScore,
+        bestDurationSeconds,
+        bestAttemptId,
+        totalAttempts,
+        updatedAt,
+      ];
 }

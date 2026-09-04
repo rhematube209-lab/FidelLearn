@@ -49,7 +49,8 @@ class LocalAdminRepository implements AdminRepository {
         difficulty: 'medium',
         questionTextEn:
             r'Evaluate the definite integral: \int_{0}^{2} (3x^2 - 2x + 1) \, dx',
-        questionTextAm: r'የሚከተለውን ኢንቴግራሊ አስላ: \int_{0}^{2} (3x^2 - 2x + 1) \, dx',
+        questionTextAm:
+            r'የሚከተለውን ኢንቴግራሊ አስላ: \int_{0}^{2} (3x^2 - 2x + 1) \, dx',
         verificationStatus: VerificationStatus.reviewRequired,
         sourceName: 'FidelLearn Model Exam Prep 2026',
         contentVersion: 1,
@@ -90,8 +91,7 @@ class LocalAdminRepository implements AdminRepository {
               r'Step 2: F(2) = 2^3 - 2^2 + 2 = 8 - 4 + 2 = 6.'
               '\n'
               r'Step 3: F(0) = 0. Result = 6 - 0 = 6.',
-          solutionTextAm:
-              r'ደረጃ 1: አንቲዴሪቬቲቩን ፈልግ: F(x) = x^3 - x^2 + x.'
+          solutionTextAm: r'ደረጃ 1: አንቲዴሪቬቲቩን ፈልግ: F(x) = x^3 - x^2 + x.'
               '\n'
               r'ደረጃ 2: F(2) = 8 - 4 + 2 = 6.'
               '\n'
@@ -145,10 +145,9 @@ class LocalAdminRepository implements AdminRepository {
         actionType: 'STATUS_CHANGE_$status'.toUpperCase(),
         targetEntityType: 'question',
         targetEntityId: questionId,
-        detail:
-            rejectionReason != null
-                ? 'Status changed to $status. Reason: $rejectionReason'
-                : 'Status successfully updated to $status.',
+        detail: rejectionReason != null
+            ? 'Status changed to $status. Reason: $rejectionReason'
+            : 'Status successfully updated to $status.',
         timestamp: DateTime.now(),
       ),
     );

@@ -58,6 +58,7 @@ class LocalMistakeRepository implements MistakeRepository {
       if (onlyUnmastered && m.isMastered) return false;
       if (subjectId != null && m.subjectId != subjectId) return false;
       return true;
-    }).toList()..sort((a, b) => b.lastFailedAt.compareTo(a.lastFailedAt));
+    }).toList()
+      ..sort((a, b) => b.lastFailedAt.compareTo(a.lastFailedAt));
   }
 }

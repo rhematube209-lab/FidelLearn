@@ -11,8 +11,7 @@ class ExamGhostComparator {
     required int previousBestDurationSeconds,
   }) {
     final scoreDelta = currentScore - previousBestScore;
-    final speedDelta =
-        previousBestDurationSeconds -
+    final speedDelta = previousBestDurationSeconds -
         currentDurationSeconds; // positive = faster
 
     final improvedScore = scoreDelta > 0;

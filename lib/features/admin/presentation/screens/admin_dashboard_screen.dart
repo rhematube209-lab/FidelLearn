@@ -37,18 +37,25 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   }
 
   Future<void> _loadAdminData() async {
-    final adminRepo = ref.read(adminRepositoryProvider);
-    final ov = await adminRepo.getContentOverview();
-    final pend = await adminRepo.getPendingReviewQuestions();
-    final logs = await adminRepo.getAuditLogs();
+    try {
+      final adminRepo = ref.read(adminRepositoryProvider);
+      final ov = await adminRepo.getContentOverview();
+      final pend = await adminRepo.getPendingReviewQuestions();
+      final logs = await adminRepo.getAuditLogs();
 
-    if (mounted) {
-      setState(() {
-        _overview = ov;
-        _pendingQuestions = pend;
-        _auditLogs = logs;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _overview = ov;
+          _pendingQuestions = pend;
+          _auditLogs = logs;
+        });
+      }
+    } catch (e) {
+      debugPrint('AdminDashboardScreen: error loading admin data: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -97,8 +104,35 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading || _overview == null) {
+    if (_isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (_overview == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Platform Content CMS')),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.admin_panel_settings_outlined,
+                  size: 64, color: AppTheme.darkMuted),
+              const SizedBox(height: 16),
+              const Text('Unable to load content overview.',
+                  style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+                onPressed: () {
+                  setState(() => _isLoading = true);
+                  _loadAdminData();
+                },
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     final ov = _overview!;
@@ -132,10 +166,9 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           // Content Overview Statistics
           Container(
             padding: const EdgeInsets.all(16.0),
-            color:
-                Theme.of(context).brightness == Brightness.dark
-                    ? const Color(0xFF1E293B)
-                    : const Color(0xFFF8FAFC),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF1E293B)
+                : const Color(0xFFF8FAFC),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -308,10 +341,9 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                               ? Icons.check_circle
                               : Icons.radio_button_unchecked,
                           size: 16,
-                          color:
-                              c.isCorrect
-                                  ? AppTheme.successGreen
-                                  : AppTheme.textMuted,
+                          color: c.isCorrect
+                              ? AppTheme.successGreen
+                              : AppTheme.textMuted,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -319,14 +351,12 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                             '(${c.label}) ${c.textEn}',
                             style: TextStyle(
                               fontSize: 12,
-                              color:
-                                  c.isCorrect
-                                      ? AppTheme.successGreen
-                                      : AppTheme.textMuted,
-                              fontWeight:
-                                  c.isCorrect
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
+                              color: c.isCorrect
+                                  ? AppTheme.successGreen
+                                  : AppTheme.textMuted,
+                              fontWeight: c.isCorrect
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                         ),

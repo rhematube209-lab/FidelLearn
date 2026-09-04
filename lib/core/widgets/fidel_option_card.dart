@@ -79,7 +79,8 @@ class FidelOptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusMd),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
             decoration: BoxDecoration(
               color: bg,
               borderRadius: BorderRadius.circular(AppTheme.radiusMd),
@@ -136,7 +137,9 @@ class FidelOptionCard extends StatelessWidget {
                             textAm!,
                             style: TextStyle(
                               fontSize: 13,
-                              color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
                               height: 1.3,
                             ),
                           ),
@@ -150,7 +153,8 @@ class FidelOptionCard extends StatelessWidget {
                 if (state == FidelOptionState.correct)
                   const Padding(
                     padding: EdgeInsets.only(top: 4.0, left: 8.0),
-                    child: Icon(Icons.check_circle, color: AppTheme.green, size: 20),
+                    child: Icon(Icons.check_circle,
+                        color: AppTheme.green, size: 20),
                   )
                 else if (state == FidelOptionState.incorrect)
                   const Padding(

@@ -14,7 +14,8 @@ import 'package:fidel_learn/features/subjects/data/repositories/local_content_re
 import 'package:fidel_learn/features/subjects/domain/models/subject_models.dart';
 
 void main() {
-  testWidgets('Complete Offline Student Journey Test', (WidgetTester tester) async {
+  testWidgets('Complete Offline Student Journey Test',
+      (WidgetTester tester) async {
     // 1. Prepare deterministic seed data
     final contentRepo = LocalContentRepository();
     contentRepo.initializeWithData(

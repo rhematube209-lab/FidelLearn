@@ -65,9 +65,9 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
 
 final syncStateProvider =
     StateNotifierProvider<SyncStateNotifier, SyncStatus>((ref) {
-      final engine = ref.watch(syncEngineProvider);
-      return SyncStateNotifier(engine);
-    });
+  final engine = ref.watch(syncEngineProvider);
+  return SyncStateNotifier(engine);
+});
 
 class SyncStateNotifier extends StateNotifier<SyncStatus> {
   final SyncEngine _engine;
@@ -152,7 +152,8 @@ final localP2pRepositoryProvider = Provider<LocalP2PRepository>((ref) {
   return LocalP2PRepository();
 });
 
-final offlineChallengeQrServiceProvider = Provider<OfflineChallengeQrService>((ref) {
+final offlineChallengeQrServiceProvider =
+    Provider<OfflineChallengeQrService>((ref) {
   return OfflineChallengeQrService();
 });
 
@@ -168,7 +169,8 @@ final smsGatewayServiceProvider = Provider<SmsGatewayService>((ref) {
   return SmsGatewayService();
 });
 
-final airtimeRedemptionServiceProvider = Provider<AirtimeRedemptionService>((ref) {
+final airtimeRedemptionServiceProvider =
+    Provider<AirtimeRedemptionService>((ref) {
   return AirtimeRedemptionService();
 });
 
@@ -179,9 +181,9 @@ final localeProvider = StateProvider<Locale>((ref) => const Locale('en'));
 // --- Current User State ---
 final currentUserProvider =
     StateNotifierProvider<CurrentUserNotifier, AsyncValue<UserProfile?>>((ref) {
-      final authRepo = ref.watch(authRepositoryProvider);
-      return CurrentUserNotifier(authRepo);
-    });
+  final authRepo = ref.watch(authRepositoryProvider);
+  return CurrentUserNotifier(authRepo);
+});
 
 class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
   final AuthRepository _authRepo;
@@ -199,7 +201,7 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
     }
   }
 
-  Future<void> login(String phone, String pass) async {
+  Future<UserProfile> login(String phone, String pass) async {
     state = const AsyncValue.loading();
     try {
       final user = await _authRepo.loginWithPhone(
@@ -207,13 +209,14 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
         password: pass,
       );
       state = AsyncValue.data(user);
+      return user;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
     }
   }
 
-  Future<void> register({
+  Future<UserProfile> register({
     required String phone,
     required String pass,
     required String name,
@@ -232,6 +235,7 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
         preferredLanguage: lang,
       );
       state = AsyncValue.data(user);
+      return user;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       rethrow;
@@ -252,31 +256,31 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
 // --- Coin Ledger State ---
 final coinLedgerProvider =
     StateNotifierProvider<CoinLedgerNotifier, List<CoinLedgerEntry>>((ref) {
-      return CoinLedgerNotifier();
-    });
+  return CoinLedgerNotifier();
+});
 
 class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
   CoinLedgerNotifier()
-    : super([
-        CoinLedgerEntry(
-          id: 'init_signup_bonus',
-          userId: 'demo-student-001',
-          transactionType: CoinTransactionType.credit,
-          amount: 50,
-          reason: 'Welcome Signup Bonus',
-          idempotencyKey: 'welcome_demo-student-001',
-          createdAt: DateTime.now().subtract(const Duration(days: 5)),
-        ),
-        CoinLedgerEntry(
-          id: 'daily_goal_1',
-          userId: 'demo-student-001',
-          transactionType: CoinTransactionType.credit,
-          amount: 15,
-          reason: 'Completed Daily Study Goal',
-          idempotencyKey: 'daily_goal_20260820_demo-student-001',
-          createdAt: DateTime.now().subtract(const Duration(days: 1)),
-        ),
-      ]);
+      : super([
+          CoinLedgerEntry(
+            id: 'init_signup_bonus',
+            userId: 'demo-student-001',
+            transactionType: CoinTransactionType.credit,
+            amount: 50,
+            reason: 'Welcome Signup Bonus',
+            idempotencyKey: 'welcome_demo-student-001',
+            createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          ),
+          CoinLedgerEntry(
+            id: 'daily_goal_1',
+            userId: 'demo-student-001',
+            transactionType: CoinTransactionType.credit,
+            amount: 15,
+            reason: 'Completed Daily Study Goal',
+            idempotencyKey: 'daily_goal_20260820_demo-student-001',
+            createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          ),
+        ]);
 
   int get balance => CoinLedgerService.calculateBalance(state);
 

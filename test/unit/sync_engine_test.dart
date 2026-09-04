@@ -52,7 +52,9 @@ void main() {
       expect(count, 1);
     });
 
-    test('calculateBackoff produces correctly bounded exponential delays with jitter', () {
+    test(
+        'calculateBackoff produces correctly bounded exponential delays with jitter',
+        () {
       final deterministicRandom = Random(42);
 
       // retry 0: 2 * 2^0 = 2s
@@ -126,7 +128,8 @@ void main() {
       expect(syncEngine.currentStatus, SyncStatus.synced);
     });
 
-    test('pauses sync when offline and updates SyncStatus to offline', () async {
+    test('pauses sync when offline and updates SyncStatus to offline',
+        () async {
       connectivity.setOnline(false);
 
       final now = DateTime.now();
@@ -150,7 +153,8 @@ void main() {
       expect(remaining, 1);
     });
 
-    test('schedules retry with exponential backoff when handler fails', () async {
+    test('schedules retry with exponential backoff when handler fails',
+        () async {
       final now = DateTime.now();
 
       syncEngine.registerHandler(SyncOperationType.submitAttempt, (op) async {

@@ -45,9 +45,9 @@ class InsufficientQuestionsFailure extends Failure {
   final int available;
 
   const InsufficientQuestionsFailure(this.requested, this.available)
-    : super(
-        'Requested $requested questions, but only $available matching questions are available.',
-      );
+      : super(
+          'Requested $requested questions, but only $available matching questions are available.',
+        );
 
   @override
   List<Object?> get props => [message, code, requested, available];
@@ -72,9 +72,9 @@ class InsufficientCoinsFailure extends Failure {
   final int availableCoins;
 
   const InsufficientCoinsFailure(this.requiredCoins, this.availableCoins)
-    : super(
-        'Requires $requiredCoins Study Coins, but you have $availableCoins.',
-      );
+      : super(
+          'Requires $requiredCoins Study Coins, but you have $availableCoins.',
+        );
 
   @override
   List<Object?> get props => [message, code, requiredCoins, availableCoins];

@@ -69,13 +69,13 @@ class MistakeRecord extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    userId,
-    questionId,
-    subjectId,
-    mistakeCount,
-    isMastered,
-    lastFailedAt,
-    masteredAt,
-  ];
+        id,
+        userId,
+        questionId,
+        subjectId,
+        mistakeCount,
+        isMastered,
+        lastFailedAt,
+        masteredAt,
+      ];
 }

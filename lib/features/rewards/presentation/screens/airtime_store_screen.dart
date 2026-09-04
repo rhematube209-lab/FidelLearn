@@ -55,13 +55,15 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
       return;
     }
 
-    final key = 'airtime_redeem_${pkg.id}_${DateTime.now().millisecondsSinceEpoch}';
+    final key =
+        'airtime_redeem_${pkg.id}_${DateTime.now().millisecondsSinceEpoch}';
     final service = ref.read(airtimeRedemptionServiceProvider);
 
     try {
       final receipt = service.redeemPackage(
         userId: user.id,
-        phoneNumber: user.phoneNumber.isNotEmpty ? user.phoneNumber : '0911223344',
+        phoneNumber:
+            user.phoneNumber.isNotEmpty ? user.phoneNumber : '0911223344',
         package: pkg,
         currentLedger: ledger,
         idempotencyKey: key,
@@ -140,9 +142,11 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                   IconButton(
                     icon: const Icon(Icons.copy_rounded, size: 18),
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: receipt.voucherPinCode));
+                      Clipboard.setData(
+                          ClipboardData(text: receipt.voucherPinCode));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Voucher PIN copied to clipboard!')),
+                        const SnackBar(
+                            content: Text('Voucher PIN copied to clipboard!')),
                       );
                     },
                   ),
@@ -163,7 +167,8 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
         actions: [
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx),
-            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
             child: const Text('Done'),
           ),
         ],
@@ -186,7 +191,8 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Telecom Airtime & Data Marketplace', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Telecom Airtime & Data Marketplace',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.pop(),
@@ -221,30 +227,42 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Available Study Coins Balance', style: TextStyle(fontSize: 13, color: AppTheme.darkMuted)),
+                          const Text('Available Study Coins Balance',
+                              style: TextStyle(
+                                  fontSize: 13, color: AppTheme.darkMuted)),
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(Icons.monetization_on_rounded, color: AppTheme.accent, size: 28),
+                              const Icon(Icons.monetization_on_rounded,
+                                  color: AppTheme.accent, size: 28),
                               const SizedBox(width: 8),
                               Text(
                                 '$balance Coins',
-                                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: AppTheme.accent),
+                                style: const TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w900,
+                                    color: AppTheme.accent),
                               ),
                             ],
                           ),
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: AppTheme.green.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-                          border: Border.all(color: AppTheme.green.withOpacity(0.4)),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusPill),
+                          border: Border.all(
+                              color: AppTheme.green.withOpacity(0.4)),
                         ),
                         child: Text(
                           '≈ ${(balance / 10).toStringAsFixed(0)} ETB RECHARGE POWER',
-                          style: const TextStyle(color: AppTheme.green, fontWeight: FontWeight.bold, fontSize: 11),
+                          style: const TextStyle(
+                              color: AppTheme.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11),
                         ),
                       ),
                     ],
@@ -257,9 +275,11 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                   children: [
                     _buildProviderFilterChip('All Telecom Providers', null),
                     const SizedBox(width: 10),
-                    _buildProviderFilterChip('Ethio Telecom 🇪🇹', TelecomProvider.ethioTelecom),
+                    _buildProviderFilterChip(
+                        'Ethio Telecom 🇪🇹', TelecomProvider.ethioTelecom),
                     const SizedBox(width: 10),
-                    _buildProviderFilterChip('Safaricom Ethiopia 🟢', TelecomProvider.safaricom),
+                    _buildProviderFilterChip(
+                        'Safaricom Ethiopia 🟢', TelecomProvider.safaricom),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -278,7 +298,8 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                   itemBuilder: (context, index) {
                     final pkg = filteredPackages[index];
                     final canAfford = balance >= pkg.coinCost;
-                    final isEthio = pkg.provider == TelecomProvider.ethioTelecom;
+                    final isEthio =
+                        pkg.provider == TelecomProvider.ethioTelecom;
 
                     return Container(
                       padding: const EdgeInsets.all(20),
@@ -286,7 +307,9 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                         color: Theme.of(context).cardTheme.color,
                         borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                         border: Border.all(
-                          color: isEthio ? AppTheme.brand.withOpacity(0.3) : AppTheme.green.withOpacity(0.3),
+                          color: isEthio
+                              ? AppTheme.brand.withOpacity(0.3)
+                              : AppTheme.green.withOpacity(0.3),
                         ),
                       ),
                       child: Column(
@@ -297,15 +320,21 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: (isEthio ? AppTheme.brand : AppTheme.green).withOpacity(0.15),
+                                  color: (isEthio
+                                          ? AppTheme.brand
+                                          : AppTheme.green)
+                                      .withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
                                   isEthio ? 'ETHIO TELECOM' : 'SAFARICOM',
                                   style: TextStyle(
-                                    color: isEthio ? AppTheme.brand : AppTheme.green,
+                                    color: isEthio
+                                        ? AppTheme.brand
+                                        : AppTheme.green,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -313,33 +342,45 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                               ),
                               Text(
                                 '${pkg.valueEtb.toStringAsFixed(0)} ETB Airtime',
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                             ],
                           ),
                           Text(
                             pkg.title,
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             pkg.bundleType.displayName,
-                            style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
+                            style: const TextStyle(
+                                fontSize: 12, color: AppTheme.darkMuted),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 '${pkg.coinCost} Coins',
-                                style: const TextStyle(fontWeight: FontWeight.w900, color: AppTheme.accent, fontSize: 15),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppTheme.accent,
+                                    fontSize: 15),
                               ),
                               ElevatedButton(
                                 onPressed: () => _redeemPackage(pkg),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: canAfford ? AppTheme.brandStrong : const Color(0x1FFFFFFF),
-                                  foregroundColor: canAfford ? Colors.white : AppTheme.darkMuted,
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                  backgroundColor: canAfford
+                                      ? AppTheme.brandStrong
+                                      : const Color(0x1FFFFFFF),
+                                  foregroundColor: canAfford
+                                      ? Colors.white
+                                      : AppTheme.darkMuted,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 14, vertical: 8),
                                 ),
-                                child: Text(canAfford ? 'Redeem PIN' : 'Need Coins'),
+                                child: Text(
+                                    canAfford ? 'Redeem PIN' : 'Need Coins'),
                               ),
                             ],
                           ),
@@ -364,9 +405,12 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.brandStrong.withOpacity(0.2) : Colors.transparent,
+          color: isSelected
+              ? AppTheme.brandStrong.withOpacity(0.2)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-          border: Border.all(color: isSelected ? AppTheme.brand : AppTheme.darkBorder),
+          border: Border.all(
+              color: isSelected ? AppTheme.brand : AppTheme.darkBorder),
         ),
         child: Text(
           label,

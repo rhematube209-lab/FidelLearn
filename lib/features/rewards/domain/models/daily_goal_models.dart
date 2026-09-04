@@ -55,15 +55,15 @@ class DailyGoal extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    userId,
-    date,
-    targetQuestions,
-    completedQuestions,
-    targetAccuracyPercentage,
-    currentAccuracyPercentage,
-    isCompleted,
-    rewardCoins,
-    isRewardClaimed,
-  ];
+        id,
+        userId,
+        date,
+        targetQuestions,
+        completedQuestions,
+        targetAccuracyPercentage,
+        currentAccuracyPercentage,
+        isCompleted,
+        rewardCoins,
+        isRewardClaimed,
+      ];
 }

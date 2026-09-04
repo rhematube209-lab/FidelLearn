@@ -21,14 +21,14 @@ class SchoolProfile extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    region,
-    totalStudents,
-    totalTeachers,
-    naturalStreamStudents,
-    socialStreamStudents,
-  ];
+        id,
+        name,
+        region,
+        totalStudents,
+        totalTeachers,
+        naturalStreamStudents,
+        socialStreamStudents,
+      ];
 }
 
 class RosterTeacher extends Equatable {
@@ -50,13 +50,13 @@ class RosterTeacher extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    name,
-    subject,
-    classroomCount,
-    studentCount,
-    averageClassAccuracy,
-  ];
+        id,
+        name,
+        subject,
+        classroomCount,
+        studentCount,
+        averageClassAccuracy,
+      ];
 }
 
 class SchoolAnalyticsSummary extends Equatable {
@@ -78,11 +78,11 @@ class SchoolAnalyticsSummary extends Equatable {
 
   @override
   List<Object?> get props => [
-    overallReadinessScore,
-    naturalStreamReadiness,
-    socialStreamReadiness,
-    topPerformingSubject,
-    priorityWeakSubject,
-    totalMockExamsCompleted,
-  ];
+        overallReadinessScore,
+        naturalStreamReadiness,
+        socialStreamReadiness,
+        topPerformingSubject,
+        priorityWeakSubject,
+        totalMockExamsCompleted,
+      ];
 }
