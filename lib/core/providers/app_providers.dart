@@ -7,15 +7,12 @@ import '../../features/auth/data/repositories/mock_auth_repository.dart';
 import '../../features/auth/data/repositories/supabase_auth_repository.dart';
 import '../../features/auth/domain/models/user_profile.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
-import '../../features/bookmarks/data/repositories/local_bookmark_repository.dart';
 import '../../features/bookmarks/data/repositories/supabase_bookmark_repository.dart';
 import '../../features/bookmarks/domain/repositories/bookmark_repository.dart';
 import '../../features/challenges/data/repositories/local_challenge_repository.dart';
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
-import '../../features/exams/data/repositories/local_exam_repository.dart';
 import '../../features/exams/data/repositories/supabase_exam_repository.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
-import '../../features/mistakes/data/repositories/local_mistake_repository.dart';
 import '../../features/mistakes/data/repositories/supabase_mistake_repository.dart';
 import '../../features/mistakes/domain/repositories/mistake_repository.dart';
 import '../../features/rewards/domain/models/coin_ledger_entry.dart';
@@ -36,10 +33,23 @@ import '../../features/payments/data/repositories/local_payment_repository.dart'
 import '../../features/auth/domain/services/sms_gateway_service.dart';
 import '../../features/rewards/domain/services/airtime_redemption_service.dart';
 import '../config/env_config.dart';
+import '../database/app_database.dart';
 import '../networking/connectivity_service.dart';
 import '../sync/models/sync_models.dart';
+import '../sync/repositories/drift_sync_queue_repository.dart';
 import '../sync/repositories/sync_queue_repository.dart';
 import '../sync/services/sync_engine.dart';
+import '../../features/exams/data/repositories/drift_exam_repository.dart';
+import '../../features/bookmarks/data/repositories/drift_bookmark_repository.dart';
+import '../../features/mistakes/data/repositories/drift_mistake_repository.dart';
+import '../../features/rewards/data/repositories/drift_coin_ledger_repository.dart';
+
+// --- Database Infrastructure ---
+final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  final db = AppDatabase();
+  ref.onDispose(db.close);
+  return db;
+});
 
 // --- Connectivity & Offline Sync Infrastructure ---
 final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
@@ -49,7 +59,8 @@ final connectivityServiceProvider = Provider<ConnectivityService>((ref) {
 });
 
 final syncQueueRepositoryProvider = Provider<SyncQueueRepository>((ref) {
-  return LocalSyncQueueRepository();
+  final db = ref.watch(appDatabaseProvider);
+  return DriftSyncQueueRepository(db);
 });
 
 final syncEngineProvider = Provider<SyncEngine>((ref) {
@@ -111,7 +122,9 @@ final examRepositoryProvider = Provider<ExamRepository>((ref) {
       return SupabaseExamRepository();
     } catch (_) {}
   }
-  return LocalExamRepository();
+  final db = ref.watch(appDatabaseProvider);
+  final queue = ref.watch(syncQueueRepositoryProvider);
+  return DriftExamRepository(db: db, syncQueue: queue);
 });
 
 final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
@@ -120,7 +133,9 @@ final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
       return SupabaseBookmarkRepository();
     } catch (_) {}
   }
-  return LocalBookmarkRepository();
+  final db = ref.watch(appDatabaseProvider);
+  final queue = ref.watch(syncQueueRepositoryProvider);
+  return DriftBookmarkRepository(db: db, syncQueue: queue);
 });
 
 final mistakeRepositoryProvider = Provider<MistakeRepository>((ref) {
@@ -129,7 +144,15 @@ final mistakeRepositoryProvider = Provider<MistakeRepository>((ref) {
       return SupabaseMistakeRepository();
     } catch (_) {}
   }
-  return LocalMistakeRepository();
+  final db = ref.watch(appDatabaseProvider);
+  final queue = ref.watch(syncQueueRepositoryProvider);
+  return DriftMistakeRepository(db: db, syncQueue: queue);
+});
+
+final coinLedgerRepositoryProvider = Provider<DriftCoinLedgerRepository>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  final queue = ref.watch(syncQueueRepositoryProvider);
+  return DriftCoinLedgerRepository(db: db, syncQueue: queue);
 });
 
 final challengeRepositoryProvider = Provider<ChallengeRepository>((ref) {
@@ -272,11 +295,14 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
 // --- Coin Ledger State ---
 final coinLedgerProvider =
     StateNotifierProvider<CoinLedgerNotifier, List<CoinLedgerEntry>>((ref) {
-  return CoinLedgerNotifier();
+  final repo = ref.watch(coinLedgerRepositoryProvider);
+  return CoinLedgerNotifier(repo);
 });
 
 class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
-  CoinLedgerNotifier()
+  final DriftCoinLedgerRepository? _repository;
+
+  CoinLedgerNotifier([this._repository])
       : super([
           CoinLedgerEntry(
             id: 'init_signup_bonus',
@@ -296,7 +322,24 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
             idempotencyKey: 'daily_goal_20260820_demo-student-001',
             createdAt: DateTime.now().subtract(const Duration(days: 1)),
           ),
-        ]);
+        ]) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    if (_repository != null) {
+      try {
+        final entries = await _repository.getLedger();
+        if (entries.isNotEmpty) {
+          state = entries;
+        } else {
+          for (final e in state) {
+            await _repository.recordEntry(e);
+          }
+        }
+      } catch (_) {}
+    }
+  }
 
   int get balance => CoinLedgerService.calculateBalance(state);
 
@@ -324,6 +367,9 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
     );
 
     state = [...state, entry];
+    if (_repository != null) {
+      unawaited(_repository.recordEntry(entry).catchError((_) {}));
+    }
   }
 
   void spendCoins({
@@ -354,5 +400,8 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
     );
 
     state = [...state, entry];
+    if (_repository != null) {
+      unawaited(_repository.recordEntry(entry).catchError((_) {}));
+    }
   }
 }
