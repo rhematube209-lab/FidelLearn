@@ -187,18 +187,34 @@ final currentUserProvider =
 
 class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
   final AuthRepository _authRepo;
+  StreamSubscription<UserProfile?>? _authSub;
 
   CurrentUserNotifier(this._authRepo) : super(const AsyncValue.loading()) {
     _init();
+    _authSub = _authRepo.authStateChanges().listen((user) {
+      if (user != null || state.valueOrNull == null) {
+        state = AsyncValue.data(user);
+      }
+    });
   }
 
   Future<void> _init() async {
     try {
       final user = await _authRepo.getCurrentUser();
-      state = AsyncValue.data(user);
+      if (state.isLoading || state.valueOrNull == null) {
+        state = AsyncValue.data(user);
+      }
     } catch (e, st) {
-      state = AsyncValue.error(e, st);
+      if (state.isLoading) {
+        state = AsyncValue.error(e, st);
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
   }
 
   Future<UserProfile> login(String phone, String pass) async {

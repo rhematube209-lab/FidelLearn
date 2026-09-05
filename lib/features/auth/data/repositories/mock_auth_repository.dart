@@ -10,7 +10,13 @@ class MockAuthRepository implements AuthRepository {
       StreamController<UserProfile?>.broadcast();
 
   static String normalizePhone(String phone) {
-    final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+    var digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.startsWith('00251')) {
+      digits = digits.substring(2);
+    }
+    if (digits.startsWith('2510') && digits.length >= 13) {
+      return '+251${digits.substring(4, 13)}';
+    }
     if (digits.startsWith('251') && digits.length >= 12) {
       return '+251${digits.substring(3, 12)}';
     }
@@ -119,17 +125,19 @@ class MockAuthRepository implements AuthRepository {
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 150));
     final normalized = normalizePhone(phoneNumber);
-    final cleanPhone = phoneNumber.trim();
-
-    // Check directly for +251949652355 or recognized accounts
-    if (normalized == '+251949652355' || cleanPhone == '+251949652355') {
-      _currentUser = _profiles['+251949652355']!;
-      _controller.add(_currentUser);
-      return _currentUser!;
-    }
+    final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
 
     final matchedKey = _profiles.keys.firstWhere(
-      (k) => normalizePhone(k) == normalized || k == cleanPhone,
+      (k) {
+        final kNorm = normalizePhone(k);
+        final kClean = k.replaceAll(RegExp(r'[^0-9]'), '');
+        return kNorm == normalized ||
+            kClean == cleanPhone ||
+            (cleanPhone.length >= 9 &&
+                kClean.endsWith(cleanPhone.substring(cleanPhone.length - 9))) ||
+            (kClean.length >= 9 &&
+                cleanPhone.endsWith(kClean.substring(kClean.length - 9)));
+      },
       orElse: () => '',
     );
 
@@ -137,7 +145,8 @@ class MockAuthRepository implements AuthRepository {
       final expectedPass = _passwords[matchedKey];
       if (expectedPass == null ||
           expectedPass == password ||
-          password.length >= 6) {
+          password.length >= 6 ||
+          password.isNotEmpty) {
         _currentUser = _profiles[matchedKey]!;
         _controller.add(_currentUser);
         return _currentUser!;

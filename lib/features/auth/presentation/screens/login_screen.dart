@@ -66,8 +66,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     try {
-      final user =
-          await ref.read(currentUserProvider.notifier).login(phone, pass);
+      final user = await ref
+          .read(currentUserProvider.notifier)
+          .login(phone, pass)
+          .timeout(const Duration(seconds: 8));
 
       if (mounted) {
         switch (user.role) {
@@ -101,6 +103,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         }
         setState(() {
           _errorMessage = msg;
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
           _isLoading = false;
         });
       }

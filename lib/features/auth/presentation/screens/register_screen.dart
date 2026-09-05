@@ -91,14 +91,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
 
     try {
-      final user = await ref.read(currentUserProvider.notifier).register(
+      final user = await ref
+          .read(currentUserProvider.notifier)
+          .register(
             phone: phone,
             pass: pass,
             name: name,
             grade: _grade,
             stream: _stream,
             lang: _lang,
-          );
+          )
+          .timeout(const Duration(seconds: 8));
 
       if (mounted) {
         switch (user.role) {
@@ -132,6 +135,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         }
         setState(() {
           _errorMessage = msg;
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
           _isLoading = false;
         });
       }

@@ -92,6 +92,10 @@ void main() {
           equals('+251949652355'));
       expect(SupabaseAuthRepository.normalizePhone('+251 949 652 355'),
           equals('+251949652355'));
+      expect(SupabaseAuthRepository.normalizePhone('+2510949652355'),
+          equals('+251949652355'));
+      expect(SupabaseAuthRepository.normalizePhone('00251949652355'),
+          equals('+251949652355'));
     });
 
     test('Register creates profile with valid UUID and authenticates',

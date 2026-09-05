@@ -40,17 +40,18 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       if (user != null) {
         List<Subject> subs = [];
         try {
-          subs = await contentRepo.getSubjects(
-            grade: user.grade,
-            stream: user.stream,
-          );
+          subs = await contentRepo
+              .getSubjects(grade: user.grade, stream: user.stream)
+              .timeout(const Duration(seconds: 2));
         } catch (e) {
           debugPrint('StudentHomeScreen: error loading subjects: $e');
         }
 
         List<ExamAttempt> history = [];
         try {
-          history = await examRepo.getAttemptHistory(user.id);
+          history = await examRepo
+              .getAttemptHistory(user.id)
+              .timeout(const Duration(seconds: 2));
         } catch (e) {
           debugPrint('StudentHomeScreen: error loading attempt history: $e');
         }
@@ -88,6 +89,14 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     }
 
     if (user == null) {
+      if (userAsync.isLoading) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: const Center(
+            child: CircularProgressIndicator(color: AppTheme.brand),
+          ),
+        );
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           context.go('/login');

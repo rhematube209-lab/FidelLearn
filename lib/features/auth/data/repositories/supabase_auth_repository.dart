@@ -100,12 +100,16 @@ class SupabaseAuthRepository implements AuthRepository {
         final session = data.session;
         if (session != null) {
           final profile = await _fetchProfile(session.user.id);
-          _cachedProfile = profile;
-          _controller.add(profile);
-        } else {
+          if (profile != null) {
+            _cachedProfile = profile;
+            _controller.add(profile);
+          }
+        } else if (data.event == AuthChangeEvent.signedOut) {
           _cachedProfile = null;
           _controller.add(null);
         }
+        // NOTE: On AuthChangeEvent.initialSession with session == null,
+        // we deliberately preserve any active demo or offline _cachedProfile.
       });
     } catch (_) {}
   }
@@ -157,7 +161,13 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   static String normalizePhone(String phone) {
-    final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+    var digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digits.startsWith('00251')) {
+      digits = digits.substring(2);
+    }
+    if (digits.startsWith('2510') && digits.length >= 13) {
+      return '+251${digits.substring(4, 13)}';
+    }
     if (digits.startsWith('251') && digits.length >= 12) {
       return '+251${digits.substring(3, 12)}';
     }
@@ -223,8 +233,14 @@ class SupabaseAuthRepository implements AuthRepository {
 
       // 1. Instant check for Quick Fill Demo Accounts & recognized accounts
       for (final entry in _demoProfiles.entries) {
-        if (normalizePhone(entry.key) == normalized ||
-            _cleanPhone(entry.key) == clean) {
+        final entryNorm = normalizePhone(entry.key);
+        final entryClean = _cleanPhone(entry.key);
+        if (entryNorm == normalized ||
+            entryClean == clean ||
+            (clean.length >= 9 &&
+                entryClean.endsWith(clean.substring(clean.length - 9))) ||
+            (entryClean.length >= 9 &&
+                clean.endsWith(entryClean.substring(entryClean.length - 9)))) {
           _cachedProfile = entry.value;
           _controller.add(entry.value);
           return entry.value;
