@@ -63,6 +63,7 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
@@ -80,35 +81,41 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
               child: CircularProgressIndicator(color: AppTheme.brand))
           : _bookmarks.isEmpty
               ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: AppTheme.accent.withOpacity(0.12),
-                          shape: BoxShape.circle,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: AppTheme.accent.withOpacity(0.12),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.bookmark_border_rounded,
+                            size: 64,
+                            color: AppTheme.accent,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.bookmark_border_rounded,
-                          size: 64,
-                          color: AppTheme.accent,
+                        const SizedBox(height: 20),
+                        const Text(
+                          'No Bookmarked Questions',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'No Bookmarked Questions',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Bookmark tricky or essential questions during exam review to practice them later.',
-                        style:
-                            TextStyle(color: AppTheme.darkMuted, fontSize: 13),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(
+                          'Bookmark tricky or essential questions during exam review to practice them later.',
+                          style: TextStyle(
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
+                              fontSize: 13),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : SingleChildScrollView(
@@ -125,11 +132,15 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                '${_bookmarks.length} Bookmarked Items',
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              Expanded(
+                                child: Text(
+                                  '${_bookmarks.length} Bookmarked Items',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
+                              const SizedBox(width: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 4),
@@ -170,8 +181,8 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                   color: Theme.of(context).cardTheme.color,
                                   borderRadius:
                                       BorderRadius.circular(AppTheme.radiusMd),
-                                  border:
-                                      Border.all(color: AppTheme.darkBorder),
+                                  border: Border.all(
+                                      color: AppTheme.adaptiveBorder(context)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,9 +232,12 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                     ),
                                     Text(
                                       'Topic: ${b.topicId.isNotEmpty ? b.topicId : "Comprehensive"} • ${q?.examYear != null ? "${q!.examYear} E.C." : "National Seed"}',
-                                      style: const TextStyle(
-                                          fontSize: 11,
-                                          color: AppTheme.darkMuted),
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: isDark
+                                            ? AppTheme.darkMuted
+                                            : AppTheme.lightMuted,
+                                      ),
                                     ),
                                   ],
                                 ),

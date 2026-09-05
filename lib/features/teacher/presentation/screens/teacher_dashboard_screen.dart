@@ -68,6 +68,7 @@ class _TeacherDashboardScreenState
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider).valueOrNull;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
@@ -110,14 +111,21 @@ class _TeacherDashboardScreenState
                 Container(
                   padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF1E1B4B), AppTheme.darkSurfaceStrong],
+                    gradient: LinearGradient(
+                      colors: isDark
+                          ? const [
+                              Color(0xFF1E1B4B),
+                              AppTheme.darkSurfaceStrong
+                            ]
+                          : const [Color(0xFF312E81), Color(0xFF1E1B4B)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLg),
                     border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
-                    boxShadow: AppTheme.cardShadowDark,
+                    boxShadow: isDark
+                        ? AppTheme.cardShadowDark
+                        : AppTheme.cardShadowLight,
                   ),
                   child: Row(
                     children: [
@@ -143,7 +151,7 @@ class _TeacherDashboardScreenState
                             Text(
                               '${_classrooms.length} Active Classrooms • Section 12-A & 12-B Natural Science',
                               style: const TextStyle(
-                                  fontSize: 13, color: AppTheme.darkTextSoft),
+                                  fontSize: 13, color: Color(0xFFDDD6FE)),
                             ),
                           ],
                         ),
@@ -220,7 +228,7 @@ class _TeacherDashboardScreenState
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,12 +257,13 @@ class _TeacherDashboardScreenState
   }
 
   Widget _buildAssignmentsCard(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,32 +272,45 @@ class _TeacherDashboardScreenState
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           if (_assignments.isEmpty)
-            const Text('No assignments published for this class yet.',
-                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            Text('No assignments published for this class yet.',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted))
           else
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _assignments.length,
               separatorBuilder: (_, __) =>
-                  const Divider(color: AppTheme.darkBorder, height: 16),
+                  Divider(color: AppTheme.adaptiveBorder(context), height: 16),
               itemBuilder: (context, index) {
                 final asg = _assignments[index];
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(asg.title,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            asg.title,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text(
+                                fontWeight: FontWeight.bold, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
                             '${asg.questionIds.length} Questions • Due ${asg.dueAt.month}/${asg.dueAt.day}',
-                            style: const TextStyle(
-                                fontSize: 11, color: AppTheme.darkMuted)),
-                      ],
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
@@ -312,12 +334,13 @@ class _TeacherDashboardScreenState
   }
 
   Widget _buildTopicHeatmapCard() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,9 +349,12 @@ class _TeacherDashboardScreenState
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           if (_topicStats.isEmpty)
-            const Text(
-                'Student attempt analytics will populate topic heatmaps automatically.',
-                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            Text(
+              'Student attempt analytics will populate topic heatmaps automatically.',
+              style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+            )
           else
             ListView.separated(
               shrinkWrap: true,
@@ -343,15 +369,22 @@ class _TeacherDashboardScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(stat.topicName,
+                        Expanded(
+                          child: Text(
+                            stat.topicName,
                             style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.bold)),
+                                fontSize: 13, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
                         Text(
-                            '${stat.averageAccuracyPercentage.toStringAsFixed(0)}% Class Avg',
-                            style: const TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.danger,
-                                fontWeight: FontWeight.bold)),
+                          '${stat.averageAccuracyPercentage.toStringAsFixed(0)}% Class Avg',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.danger,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -359,7 +392,9 @@ class _TeacherDashboardScreenState
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: stat.averageAccuracyPercentage / 100,
-                        backgroundColor: const Color(0x1AFFFFFF),
+                        backgroundColor: isDark
+                            ? const Color(0x33334155)
+                            : const Color(0xFFE2E8F0),
                         valueColor: const AlwaysStoppedAnimation<Color>(
                             AppTheme.danger),
                         minHeight: 6,

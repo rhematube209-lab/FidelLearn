@@ -397,8 +397,11 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 6,
                 children: [
                   FidelBadge(
                     text: 'DIFFICULTY: ${currentQ.difficulty.toUpperCase()}',

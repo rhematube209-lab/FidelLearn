@@ -98,24 +98,19 @@ class ProfileScreen extends ConsumerWidget {
                               style: const TextStyle(
                                   fontSize: 13, color: AppTheme.darkTextSoft),
                             ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: AppTheme.brand.withOpacity(0.2),
-                                borderRadius:
-                                    BorderRadius.circular(AppTheme.radiusPill),
-                                border: Border.all(
-                                    color: AppTheme.brand.withOpacity(0.5)),
-                              ),
-                              child: Text(
-                                'Grade ${user.grade} • ${user.stream.toUpperCase()} STREAM • ${user.role.name.toUpperCase()}',
-                                style: const TextStyle(
-                                    color: AppTheme.brand,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11),
-                              ),
+                            const SizedBox(height: 10),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 6,
+                              children: [
+                                _buildHeaderTag(
+                                    'Grade ${user.grade}', AppTheme.brand),
+                                _buildHeaderTag(
+                                    '${user.stream.toUpperCase()} STREAM',
+                                    AppTheme.accent),
+                                _buildHeaderTag(user.role.name.toUpperCase(),
+                                    AppTheme.green),
+                              ],
                             ),
                           ],
                         ),
@@ -136,7 +131,7 @@ class ProfileScreen extends ConsumerWidget {
                           children: [
                             _buildCurriculumSettings(context, ref, user),
                             const SizedBox(height: 24),
-                            _buildAppAppearanceCard(ref, currentTheme),
+                            _buildAppAppearanceCard(context, ref, currentTheme),
                           ],
                         ),
                       ),
@@ -158,7 +153,7 @@ class ProfileScreen extends ConsumerWidget {
                 else ...[
                   _buildCurriculumSettings(context, ref, user),
                   const SizedBox(height: 20),
-                  _buildAppAppearanceCard(ref, currentTheme),
+                  _buildAppAppearanceCard(context, ref, currentTheme),
                   const SizedBox(height: 20),
                   _buildSyncDiagnosticsCard(context),
                   const SizedBox(height: 20),
@@ -179,7 +174,7 @@ class ProfileScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +204,7 @@ class ProfileScreen extends ConsumerWidget {
               },
             ),
           ),
-          const Divider(color: AppTheme.darkBorder),
+          Divider(color: AppTheme.adaptiveBorder(context)),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.science_rounded, color: AppTheme.accent),
@@ -240,13 +235,14 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildAppAppearanceCard(WidgetRef ref, ThemeMode currentTheme) {
+  Widget _buildAppAppearanceCard(
+      BuildContext context, WidgetRef ref, ThemeMode currentTheme) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.darkSurfaceStrong,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,12 +286,12 @@ class ProfileScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Cloud Sync Diagnostics',
@@ -303,11 +299,13 @@ class ProfileScreen extends ConsumerWidget {
               SyncIndicatorWidget(isCompact: false),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text(
             'All exam attempts, mistake notes, and coin ledgers are preserved offline and automatically synced to Supabase PostgreSQL when internet connectivity is detected.',
-            style:
-                TextStyle(fontSize: 12, color: AppTheme.darkMuted, height: 1.4),
+            style: TextStyle(
+                fontSize: 12,
+                color: AppTheme.adaptiveMuted(context),
+                height: 1.4),
           ),
         ],
       ),
@@ -320,7 +318,7 @@ class ProfileScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,6 +340,25 @@ class ProfileScreen extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderTag(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+        border: Border.all(color: color.withOpacity(0.5)),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 11,
+        ),
       ),
     );
   }

@@ -98,6 +98,7 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
@@ -115,32 +116,38 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
               child: CircularProgressIndicator(color: AppTheme.brand))
           : _bestAttempt == null
               ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: AppTheme.brand.withOpacity(0.12),
-                          shape: BoxShape.circle,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(24),
+                          decoration: BoxDecoration(
+                            color: AppTheme.brand.withOpacity(0.12),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.flash_on_rounded,
+                              size: 64, color: AppTheme.brand),
                         ),
-                        child: const Icon(Icons.flash_on_rounded,
-                            size: 64, color: AppTheme.brand),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'No Ghost Telemetry Recorded',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Complete this exam at least once to create your personal best "Ghost" pacing benchmark.',
-                        style:
-                            TextStyle(color: AppTheme.darkMuted, fontSize: 13),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                        const Text(
+                          'No Ghost Telemetry Recorded',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Complete this exam at least once to create your personal best "Ghost" pacing benchmark.',
+                          style: TextStyle(
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
+                              fontSize: 13),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : SingleChildScrollView(
@@ -158,11 +165,16 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                           Container(
                             padding: const EdgeInsets.all(28),
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF3B0764),
-                                  AppTheme.darkSurfaceStrong
-                                ],
+                              gradient: LinearGradient(
+                                colors: isDark
+                                    ? const [
+                                        Color(0xFF3B0764),
+                                        AppTheme.darkSurfaceStrong
+                                      ]
+                                    : const [
+                                        Color(0xFF581C87),
+                                        Color(0xFF3B0764)
+                                      ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
@@ -170,7 +182,9 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                                   BorderRadius.circular(AppTheme.radiusLg),
                               border: Border.all(
                                   color: AppTheme.brand.withOpacity(0.4)),
-                              boxShadow: AppTheme.cardShadowDark,
+                              boxShadow: isDark
+                                  ? AppTheme.cardShadowDark
+                                  : AppTheme.cardShadowLight,
                             ),
                             child: Row(
                               children: [
@@ -183,15 +197,14 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8, vertical: 3),
                                         decoration: BoxDecoration(
-                                          color:
-                                              AppTheme.brand.withOpacity(0.2),
+                                          color: const Color(0x33DDD6FE),
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
                                         child: const Text(
                                           'OFFLINE PACING TELEMETRY',
                                           style: TextStyle(
-                                              color: AppTheme.brand,
+                                              color: Color(0xFFDDD6FE),
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10),
                                         ),
@@ -209,7 +222,7 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
                                         'Race against your historical peak speed and choice answers with zero cloud sync required.',
                                         style: TextStyle(
                                             fontSize: 13,
-                                            color: AppTheme.darkTextSoft),
+                                            color: Color(0xFFDDD6FE)),
                                       ),
                                     ],
                                   ),
@@ -283,6 +296,7 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
 
   Widget _buildGhostStat(
       String title, String value, String subtitle, Color color, IconData icon) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -296,11 +310,17 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title,
-                  style: const TextStyle(
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
                       fontSize: 12,
-                      color: AppTheme.darkMuted,
-                      fontWeight: FontWeight.w600)),
+                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 4),
               Icon(icon, color: color, size: 20),
             ],
           ),
@@ -309,8 +329,13 @@ class _ExamGhostScreenState extends ConsumerState<ExamGhostScreen> {
               style: TextStyle(
                   fontSize: 22, fontWeight: FontWeight.w900, color: color)),
           const SizedBox(height: 4),
-          Text(subtitle,
-              style: const TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+          Text(
+            subtitle,
+            style: TextStyle(
+                fontSize: 12,
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

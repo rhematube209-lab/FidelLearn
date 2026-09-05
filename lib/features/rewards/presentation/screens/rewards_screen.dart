@@ -83,6 +83,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     final isDesktop = screenWidth >= 900;
     final ledger = ref.watch(coinLedgerProvider);
     final coinBalance = ref.watch(coinLedgerProvider.notifier).balance;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -128,7 +129,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                           children: [
                             _buildAirtimeStoreBanner(context),
                             const SizedBox(height: 24),
-                            _buildDailyQuestsCard(),
+                            _buildDailyQuestsCard(isDark),
                             const SizedBox(height: 24),
                             _buildVoluntarySponsorCard(),
                           ],
@@ -141,7 +142,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                   const SizedBox(height: 20),
                   _buildAirtimeStoreBanner(context),
                   const SizedBox(height: 20),
-                  _buildDailyQuestsCard(),
+                  _buildDailyQuestsCard(isDark),
                   const SizedBox(height: 20),
                   _buildVoluntarySponsorCard(),
                   const SizedBox(height: 20),
@@ -173,19 +174,22 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Verified Balance',
-                      style:
-                          TextStyle(fontSize: 13, color: AppTheme.darkMuted)),
-                  Text('Study Coin Vault',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                ],
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Verified Balance',
+                        style: TextStyle(
+                            fontSize: 13, color: AppTheme.darkTextSoft)),
+                    Text('Study Coin Vault',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -326,13 +330,13 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     );
   }
 
-  Widget _buildDailyQuestsCard() {
+  Widget _buildDailyQuestsCard(bool isDark) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,30 +344,37 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
           const Text('Daily Goal & Streak Quests',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          _buildQuestRow(
-              'Complete 20 Exam Questions', '15 / 20 items', 0.75, '+10 Coins'),
+          _buildQuestRow('Complete 20 Exam Questions', '15 / 20 items', 0.75,
+              '+10 Coins', isDark),
           const SizedBox(height: 14),
-          _buildQuestRow(
-              'Score ≥ 80% on a Mock Exam', 'Completed ✅', 1.0, '+25 Coins'),
+          _buildQuestRow('Score ≥ 80% on a Mock Exam', 'Completed ✅', 1.0,
+              '+25 Coins', isDark),
           const SizedBox(height: 14),
-          _buildQuestRow(
-              'Maintain 5-Day Study Streak', '5 / 5 Days 🔥', 1.0, '+50 Coins'),
+          _buildQuestRow('Maintain 5-Day Study Streak', '5 / 5 Days 🔥', 1.0,
+              '+50 Coins', isDark),
         ],
       ),
     );
   }
 
-  Widget _buildQuestRow(
-      String title, String progressText, double progress, String reward) {
+  Widget _buildQuestRow(String title, String progressText, double progress,
+      String reward, bool isDark) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title,
+            Expanded(
+              child: Text(
+                title,
                 style:
-                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
@@ -383,7 +394,8 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: progress,
-            backgroundColor: const Color(0x1AFFFFFF),
+            backgroundColor:
+                isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
             valueColor: AlwaysStoppedAnimation<Color>(
                 progress >= 1.0 ? AppTheme.green : AppTheme.brand),
             minHeight: 6,
@@ -399,21 +411,26 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Voluntary Sponsor Boost',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              SizedBox(height: 4),
-              Text('Watch a 15s educational partner video for +10 Coins.',
-                  style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Voluntary Sponsor Boost',
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text('Watch a 15s educational partner video for +10 Coins.',
+                    style: TextStyle(
+                        fontSize: 12, color: AppTheme.adaptiveMuted(context))),
+              ],
+            ),
           ),
+          const SizedBox(width: 12),
           ElevatedButton.icon(
             onPressed: _isWatchingAd ? null : _simulateRewardedAd,
             icon: const Icon(Icons.play_circle_fill_rounded, size: 18),
@@ -432,7 +449,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,33 +458,42 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
           if (ledger.isEmpty)
-            const Text('No transactions recorded yet.',
-                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            Text('No transactions recorded yet.',
+                style: TextStyle(
+                    fontSize: 12, color: AppTheme.adaptiveMuted(context)))
           else
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: ledger.length > 5 ? 5 : ledger.length,
               separatorBuilder: (_, __) =>
-                  const Divider(color: AppTheme.darkBorder, height: 16),
+                  Divider(color: AppTheme.adaptiveBorder(context), height: 16),
               itemBuilder: (context, index) {
                 final entry = ledger[index];
                 final isCredit = entry.amount > 0;
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(entry.reason,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text(
-                            '${entry.createdAt.hour}:${entry.createdAt.minute.toString().padLeft(2, "0")} • TX ID: ${entry.id.substring(0, 8)}...',
-                            style: const TextStyle(
-                                fontSize: 11, color: AppTheme.darkMuted)),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(entry.reason,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 13),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
+                          Text(
+                              '${entry.createdAt.hour}:${entry.createdAt.minute.toString().padLeft(2, "0")} • TX ID: ${entry.id.substring(0, 8)}...',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppTheme.adaptiveMuted(context)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 10),
                     Text(
                       '${isCredit ? "+" : ""}${entry.amount} 🪙',
                       style: TextStyle(

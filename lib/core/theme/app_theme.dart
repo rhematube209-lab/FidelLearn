@@ -25,10 +25,36 @@ class AppTheme {
   static const Color lightSurfaceStrong = Color(0xFFFFFFFF);
   static const Color lightSurfaceMuted = Color(0xFFF1F5F9);
   static const Color lightText = Color(0xFF0F172A);
-  static const Color lightTextSoft = Color(0xFF475569);
-  static const Color lightMuted = Color(0xFF94A3B8);
+  static const Color lightTextSoft =
+      Color(0xFF334155); // Slate 700 - high contrast
+  static const Color lightMuted =
+      Color(0xFF64748B); // Slate 500 - 4.6:1 WCAG AA
   static const Color lightBorder = Color(0xFFE2E8F0);
   static const Color lightBorderSubtle = Color(0xFFF1F5F9);
+
+  // ==========================================
+  // ADAPTIVE THEME HELPERS
+  // ==========================================
+  static Color adaptiveBorder(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? darkBorder
+          : lightBorder;
+
+  static Color adaptiveSurface(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? darkSurface
+          : lightSurface;
+
+  static Color adaptiveText(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark ? darkText : lightText;
+
+  static Color adaptiveTextSoft(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? darkTextSoft
+          : lightTextSoft;
+
+  static Color adaptiveMuted(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark ? darkMuted : lightMuted;
 
   // ==========================================
   // 03. BRAND & ACCENT TOKENS

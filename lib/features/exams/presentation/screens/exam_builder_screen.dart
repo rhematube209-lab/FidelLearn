@@ -429,11 +429,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String>(
+            isExpanded: true,
             value: _selectedSubjectId,
             items: _subjects.map((s) {
               return DropdownMenuItem(
                 value: s.id,
-                child: Text('${s.nameEn} (${s.code})'),
+                child: Text('${s.nameEn} (${s.code})',
+                    overflow: TextOverflow.ellipsis),
               );
             }).toList(),
             onChanged: (val) {
@@ -458,11 +460,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ),
           const SizedBox(height: 8),
           DropdownButtonFormField<String?>(
+            isExpanded: true,
             value: _selectedUnitId,
             items: [
               const DropdownMenuItem(
                 value: null,
-                child: Text('All Units (Comprehensive Examination)'),
+                child: Text('All Units (Comprehensive Examination)',
+                    overflow: TextOverflow.ellipsis),
               ),
               ..._units.map(
                 (u) => DropdownMenuItem(
@@ -490,11 +494,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String?>(
+              isExpanded: true,
               value: _selectedTopicId,
               items: [
                 const DropdownMenuItem(
                   value: null,
-                  child: Text('All Topics in Selected Unit'),
+                  child: Text('All Topics in Selected Unit',
+                      overflow: TextOverflow.ellipsis),
                 ),
                 ..._topics.map(
                   (t) => DropdownMenuItem(
@@ -698,12 +704,15 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
                   ),
                 ),
-                Text(
-                  '$_timeLimitMinutes min (${(_timeLimitMinutes * 60 ~/ _questionCount)}s / question)',
-                  style: const TextStyle(
-                    color: AppTheme.accentDark,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
+                Flexible(
+                  child: Text(
+                    '$_timeLimitMinutes min (${(_timeLimitMinutes * 60 ~/ _questionCount)}s / q)',
+                    style: const TextStyle(
+                      color: AppTheme.accentDark,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

@@ -219,39 +219,45 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   }
 
   Widget _buildReadinessScoreCard(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF2E1065), Color(0xFF1E1B4B)],
+        gradient: LinearGradient(
+          colors: isDark
+              ? const [Color(0xFF2E1065), Color(0xFF1E1B4B)]
+              : const [Color(0xFF4C1D95), Color(0xFF312E81)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
         border: Border.all(color: AppTheme.brand.withOpacity(0.4)),
-        boxShadow: AppTheme.cardShadowDark,
+        boxShadow: isDark ? AppTheme.cardShadowDark : AppTheme.cardShadowLight,
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'National Exam Readiness',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Text(
-                    'AI-Free Item Response Theory (IRT) Projection',
-                    style: TextStyle(fontSize: 11, color: AppTheme.darkMuted),
-                  ),
-                ],
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'National Exam Readiness',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      'AI-Free Item Response Theory (IRT) Projection',
+                      style: TextStyle(fontSize: 11, color: Color(0xFFDDD6FE)),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -278,7 +284,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             height: 130,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppTheme.darkSurfaceStrong.withOpacity(0.8),
+              color: const Color(0xFF0F172A).withOpacity(0.8),
               border: Border.all(color: AppTheme.brand, width: 4),
               boxShadow: AppTheme.brandGlow,
             ),
@@ -299,7 +305,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                     style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.darkMuted),
+                        color: Color(0xFF94A3B8)),
                   ),
                 ],
               ),
@@ -316,8 +322,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           const SizedBox(height: 4),
           const Text(
             'Based on completed practice sessions, speed accuracy curve, and streak consistency.',
-            style: TextStyle(
-                fontSize: 12, color: AppTheme.darkTextSoft, height: 1.3),
+            style:
+                TextStyle(fontSize: 12, color: Color(0xFFE2E8F0), height: 1.3),
             textAlign: TextAlign.center,
           ),
         ],
@@ -326,12 +332,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   }
 
   Widget _buildWeakTopicsCard(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,12 +368,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           ),
           const SizedBox(height: 16),
           if (_weakTopics.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Center(
                 child: Text(
                   'Great job! No weak topics detected yet. Complete more exams to unlock deeper diagnostics.',
-                  style: TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -382,9 +391,11 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 return Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0x0FFFFFFF),
+                    color: isDark
+                        ? const Color(0xFF1E293B)
+                        : const Color(0xFFF8FAFC),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                    border: Border.all(color: AppTheme.darkBorder),
+                    border: Border.all(color: AppTheme.adaptiveBorder(context)),
                   ),
                   child: Row(
                     children: [
@@ -410,8 +421,11 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                             const SizedBox(height: 2),
                             Text(
                               '${wt.accuracyPercentage.toStringAsFixed(0)}% Accuracy (${wt.mistakeCount} mistakes / ${wt.totalAttempts} attempts)',
-                              style: const TextStyle(
-                                  fontSize: 11, color: AppTheme.darkMuted),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: isDark
+                                      ? AppTheme.darkMuted
+                                      : AppTheme.lightMuted),
                             ),
                           ],
                         ),
@@ -444,7 +458,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -455,31 +469,42 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           ),
           const SizedBox(height: 16),
           _buildMasteryProgressRow(
-              'Grade 12 Biology (2013 ESSLCE)', 0.88, AppTheme.green),
-          const SizedBox(height: 12),
-          _buildMasteryProgressRow('Grade 12 Mathematics (Calculus & Vectors)',
-              0.74, AppTheme.brand),
+              context, 'Grade 12 Biology (2013 ESSLCE)', 0.88, AppTheme.green),
           const SizedBox(height: 12),
           _buildMasteryProgressRow(
-              'Aptitude & Logical Reasoning', 0.81, AppTheme.accent),
+              context,
+              'Grade 12 Mathematics (Calculus & Vectors)',
+              0.74,
+              AppTheme.brand),
           const SizedBox(height: 12),
           _buildMasteryProgressRow(
-              'Grade 12 Physics & Chemistry', 0.65, AppTheme.pink),
+              context, 'Aptitude & Logical Reasoning', 0.81, AppTheme.accent),
+          const SizedBox(height: 12),
+          _buildMasteryProgressRow(
+              context, 'Grade 12 Physics & Chemistry', 0.65, AppTheme.pink),
         ],
       ),
     );
   }
 
-  Widget _buildMasteryProgressRow(String title, double progress, Color color) {
+  Widget _buildMasteryProgressRow(
+      BuildContext context, String title, double progress, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title,
+            Expanded(
+              child: Text(
+                title,
                 style:
-                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
             Text('${(progress * 100).toInt()}%',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: color, fontSize: 13)),
@@ -490,7 +515,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           borderRadius: BorderRadius.circular(6),
           child: LinearProgressIndicator(
             value: progress,
-            backgroundColor: const Color(0x1AFFFFFF),
+            backgroundColor:
+                isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
             valueColor: AlwaysStoppedAnimation<Color>(color),
             minHeight: 7,
           ),
@@ -500,12 +526,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   }
 
   Widget _buildHistoricalAttemptsCard(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -516,11 +543,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           ),
           const SizedBox(height: 14),
           if (_attempts.isEmpty)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
                 'No exam attempts recorded yet.',
-                style: TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+                style: TextStyle(
+                    fontSize: 13,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
               ),
             )
           else
@@ -529,24 +558,35 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _attempts.length > 4 ? 4 : _attempts.length,
               separatorBuilder: (_, __) =>
-                  const Divider(color: AppTheme.darkBorder, height: 16),
+                  Divider(color: AppTheme.adaptiveBorder(context), height: 16),
               itemBuilder: (context, index) {
                 final att = _attempts[index];
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(att.examTitle,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            att.examTitle,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 13)),
-                        Text(
+                                fontWeight: FontWeight.bold, fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
                             '${att.score}/${att.totalQuestions} questions • ${att.durationSeconds}s',
-                            style: const TextStyle(
-                                fontSize: 11, color: AppTheme.darkMuted)),
-                      ],
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : AppTheme.lightMuted,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 12),
                     Text(
                       '${att.percentage.toStringAsFixed(0)}%',
                       style: TextStyle(

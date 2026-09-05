@@ -140,6 +140,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
 
@@ -170,11 +171,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                       Container(
                         padding: const EdgeInsets.all(28),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFF4C1D95),
-                              AppTheme.darkSurfaceStrong
-                            ],
+                          gradient: LinearGradient(
+                            colors: isDark
+                                ? const [
+                                    Color(0xFF4C1D95),
+                                    AppTheme.darkSurfaceStrong
+                                  ]
+                                : const [Color(0xFF581C87), Color(0xFF3B0764)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
@@ -182,7 +185,9 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                               BorderRadius.circular(AppTheme.radiusLg),
                           border: Border.all(
                               color: AppTheme.brand.withOpacity(0.4)),
-                          boxShadow: AppTheme.cardShadowDark,
+                          boxShadow: isDark
+                              ? AppTheme.cardShadowDark
+                              : AppTheme.cardShadowLight,
                         ),
                         child: Row(
                           children: [
@@ -193,9 +198,10 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 3),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.accent.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(6),
+                                    decoration: const BoxDecoration(
+                                      color: Color(0x33F59E0B),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
                                     ),
                                     child: const Text(
                                       'ETHIO TELECOM NATIONAL STEM GRAND PRIX',
@@ -219,8 +225,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                                   const Text(
                                     'Compete against top-ranked secondary students in 15-minute high-intensity national exam duels.',
                                     style: TextStyle(
-                                        fontSize: 13,
-                                        color: AppTheme.darkTextSoft),
+                                        fontSize: 13, color: Color(0xFFDDD6FE)),
                                   ),
                                 ],
                               ),
@@ -286,12 +291,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
   }
 
   Widget _buildJoinWithCodeCard() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,9 +305,12 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
           const Text('Enter Friend Battle Code',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
           const SizedBox(height: 6),
-          const Text(
-              'Type a 6-digit match code to enter private 1v1 student challenges.',
-              style: TextStyle(fontSize: 12, color: AppTheme.darkMuted)),
+          Text(
+            'Type a 6-digit match code to enter private 1v1 student challenges.',
+            style: TextStyle(
+                fontSize: 12,
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+          ),
           const SizedBox(height: 14),
           Row(
             children: [
@@ -332,12 +341,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
   }
 
   Widget _buildActiveChallengesList() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,8 +356,10 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
           const SizedBox(height: 14),
           if (_challenges.isEmpty)
-            const Text('No public duels currently waiting in queue.',
-                style: TextStyle(fontSize: 12, color: AppTheme.darkMuted))
+            Text('No public duels currently waiting in queue.',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted))
           else
             ListView.separated(
               shrinkWrap: true,
@@ -359,25 +371,38 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
                 return Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0x0FFFFFFF),
+                    color: isDark
+                        ? const Color(0xFF1E293B)
+                        : const Color(0xFFF8FAFC),
                     borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                    border: Border.all(color: AppTheme.darkBorder),
+                    border: Border.all(color: AppTheme.adaptiveBorder(context)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(c.titleEn,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              c.titleEn,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 13)),
-                          Text(
+                                  fontWeight: FontWeight.bold, fontSize: 13),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
                               '${c.participants.length} Students Joined • Code: ${c.inviteCode}',
-                              style: const TextStyle(
-                                  fontSize: 11, color: AppTheme.darkMuted)),
-                        ],
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : AppTheme.lightMuted,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      const SizedBox(width: 8),
                       ElevatedButton(
                         onPressed: () => _startChallenge(c),
                         style: ElevatedButton.styleFrom(
@@ -401,12 +426,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
   }
 
   Widget _buildLeaderboardCard() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,7 +457,7 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
               '1,150 🪙', const Color(0xFFCD7F32)),
           const SizedBox(height: 8),
           _buildRankTile(4, 'Meklit B. (Adama)', '92.8% Accuracy', '980 🪙',
-              AppTheme.darkMuted),
+              isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
         ],
       ),
     );
@@ -439,12 +465,13 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
 
   Widget _buildRankTile(
       int rank, String name, String accuracy, String coins, Color rankColor) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0x0FFFFFFF),
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC),
         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Row(
         children: [
@@ -471,15 +498,23 @@ class _ChallengesScreenState extends ConsumerState<ChallengesScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13)),
-                Text(accuracy,
-                    style: const TextStyle(
-                        fontSize: 11, color: AppTheme.darkMuted)),
+                Text(
+                  name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 13),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  accuracy,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                  ),
+                ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
           Text(coins,
               style: const TextStyle(
                   fontWeight: FontWeight.bold,

@@ -248,6 +248,7 @@ class _SchoolAdminDashboardScreenState
 
   Widget _buildSchoolStat(
       String title, String value, IconData icon, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -261,11 +262,17 @@ class _SchoolAdminDashboardScreenState
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title,
-                  style: const TextStyle(
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
                       fontSize: 11,
-                      color: AppTheme.darkMuted,
-                      fontWeight: FontWeight.w600)),
+                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 4),
               Icon(icon, color: color, size: 18),
             ],
           ),
@@ -279,12 +286,13 @@ class _SchoolAdminDashboardScreenState
   }
 
   Widget _buildTeacherRosterCard() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,23 +305,35 @@ class _SchoolAdminDashboardScreenState
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _roster.length,
             separatorBuilder: (_, __) =>
-                const Divider(color: AppTheme.darkBorder, height: 16),
+                Divider(color: AppTheme.adaptiveBorder(context), height: 16),
             itemBuilder: (context, index) {
               final t = _roster[index];
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(t.name,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          t.name,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13)),
-                      Text('${t.subject} • ${t.classroomCount} Class(es)',
-                          style: const TextStyle(
-                              fontSize: 11, color: AppTheme.darkMuted)),
-                    ],
+                              fontWeight: FontWeight.bold, fontSize: 13),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          '${t.subject} • ${t.classroomCount} Class(es)',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -342,7 +362,7 @@ class _SchoolAdminDashboardScreenState
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.darkBorder),
+        border: Border.all(color: AppTheme.adaptiveBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,15 +402,22 @@ class _SchoolAdminDashboardScreenState
   }
 
   Widget _buildSchoolProgressRow(String title, double value, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title,
+            Expanded(
+              child: Text(
+                title,
                 style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
             Text('${(value * 100).toInt()}%',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: color, fontSize: 12)),
@@ -401,7 +428,8 @@ class _SchoolAdminDashboardScreenState
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: value,
-            backgroundColor: const Color(0x1AFFFFFF),
+            backgroundColor:
+                isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
             valueColor: AlwaysStoppedAnimation<Color>(color),
             minHeight: 6,
           ),

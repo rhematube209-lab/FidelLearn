@@ -782,7 +782,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
                   children: [
                     const FidelBadge(
                       text: 'ESSLCE / PSLCE 2026',
@@ -790,7 +792,6 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       variant: FidelBadgeVariant.primary,
                       isSmall: true,
                     ),
-                    const SizedBox(width: 8),
                     FidelBadge(
                       text: 'GRADE ${user.grade} ${user.stream.toUpperCase()}',
                       variant: FidelBadgeVariant.neutral,
@@ -959,7 +960,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 1.45,
+          childAspectRatio: constraints.maxWidth > 520 ? 1.45 : 1.22,
           children: cards,
         );
       },
@@ -1218,10 +1219,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FidelBadge(
+              const FidelBadge(
                 text: 'OFFICIAL EXAM',
                 variant: FidelBadgeVariant.success,
                 isSmall: true,
@@ -1229,7 +1230,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               Flexible(
                 child: Text(
                   '2013 E.C. (2021 G.C.)',
-                  style: TextStyle(color: AppTheme.darkMuted, fontSize: 11.5),
+                  style: TextStyle(
+                    color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                    fontSize: 11.5,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

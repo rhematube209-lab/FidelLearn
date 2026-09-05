@@ -89,6 +89,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
   }
 
   void _showReceiptDialog(RedemptionReceipt receipt) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -111,7 +112,10 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
             const SizedBox(height: 6),
             Text(
               'Coins Deducted: ${receipt.coinsSpent} Study Coins',
-              style: const TextStyle(fontSize: 13, color: AppTheme.darkMuted),
+              style: TextStyle(
+                fontSize: 13,
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -122,7 +126,8 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0x1AFFFFFF),
+                color:
+                    isDark ? const Color(0x1AFFFFFF) : const Color(0xFFF1F5F9),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AppTheme.brand),
               ),
@@ -178,6 +183,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
     final ledger = ref.watch(coinLedgerProvider);
@@ -213,40 +219,60 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF78350F), AppTheme.darkSurfaceStrong],
+                    gradient: LinearGradient(
+                      colors: isDark
+                          ? const [
+                              Color(0xFF78350F),
+                              AppTheme.darkSurfaceStrong
+                            ]
+                          : const [Color(0xFFFFFBEB), Color(0xFFFEF3C7)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                    border: Border.all(color: AppTheme.accent.withOpacity(0.4)),
+                    border: Border.all(
+                      color: isDark
+                          ? AppTheme.accent.withOpacity(0.4)
+                          : AppTheme.accent.withOpacity(0.6),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Available Study Coins Balance',
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Available Study Coins Balance',
                               style: TextStyle(
-                                  fontSize: 13, color: AppTheme.darkMuted)),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              const Icon(Icons.monetization_on_rounded,
-                                  color: AppTheme.accent, size: 28),
-                              const SizedBox(width: 8),
-                              Text(
-                                '$balance Coins',
-                                style: const TextStyle(
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.w900,
-                                    color: AppTheme.accent),
+                                fontSize: 13,
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : AppTheme.lightMuted,
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(Icons.monetization_on_rounded,
+                                    color: AppTheme.accent, size: 28),
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: Text(
+                                    '$balance Coins',
+                                    style: const TextStyle(
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w900,
+                                        color: AppTheme.accent),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
+                      const SizedBox(width: 12),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
@@ -271,16 +297,19 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                 const SizedBox(height: 24),
 
                 // Provider Filters
-                Row(
-                  children: [
-                    _buildProviderFilterChip('All Telecom Providers', null),
-                    const SizedBox(width: 10),
-                    _buildProviderFilterChip(
-                        'Ethio Telecom 🇪🇹', TelecomProvider.ethioTelecom),
-                    const SizedBox(width: 10),
-                    _buildProviderFilterChip(
-                        'Safaricom Ethiopia 🟢', TelecomProvider.safaricom),
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildProviderFilterChip('All Telecom Providers', null),
+                      const SizedBox(width: 10),
+                      _buildProviderFilterChip(
+                          'Ethio Telecom 🇪🇹', TelecomProvider.ethioTelecom),
+                      const SizedBox(width: 10),
+                      _buildProviderFilterChip(
+                          'Safaricom Ethiopia 🟢', TelecomProvider.safaricom),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
 
@@ -354,8 +383,11 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                           ),
                           Text(
                             pkg.bundleType.displayName,
-                            style: const TextStyle(
-                                fontSize: 12, color: AppTheme.darkMuted),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : AppTheme.lightMuted),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -372,10 +404,14 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: canAfford
                                       ? AppTheme.brandStrong
-                                      : const Color(0x1FFFFFFF),
+                                      : (isDark
+                                          ? const Color(0xFF1E293B)
+                                          : const Color(0xFFE2E8F0)),
                                   foregroundColor: canAfford
                                       ? Colors.white
-                                      : AppTheme.darkMuted,
+                                      : (isDark
+                                          ? AppTheme.darkMuted
+                                          : AppTheme.lightTextSoft),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 14, vertical: 8),
                                 ),
@@ -399,6 +435,7 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
 
   Widget _buildProviderFilterChip(String label, TelecomProvider? provider) {
     final isSelected = _selectedProvider == provider;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: () => setState(() => _selectedProvider = provider),
       borderRadius: BorderRadius.circular(AppTheme.radiusSm),
@@ -410,14 +447,18 @@ class _AirtimeStoreScreenState extends ConsumerState<AirtimeStoreScreen> {
               : Colors.transparent,
           borderRadius: BorderRadius.circular(AppTheme.radiusSm),
           border: Border.all(
-              color: isSelected ? AppTheme.brand : AppTheme.darkBorder),
+              color: isSelected
+                  ? AppTheme.brand
+                  : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder)),
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? AppTheme.brand : AppTheme.darkTextSoft,
+            color: isSelected
+                ? AppTheme.brand
+                : (isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft),
           ),
         ),
       ),
