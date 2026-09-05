@@ -35,6 +35,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   late int _remainingSeconds;
   int _elapsedSeconds = 0;
   bool _isSubmitting = false;
+  bool _isAutoSaving = false;
+  String _paletteFilter = 'all';
 
   @override
   void initState() {
@@ -59,7 +61,23 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           }
         }
       });
+      // 💾 Periodic 15-second Auto-Save Crash Resilience
+      if (_elapsedSeconds % 15 == 0) {
+        _performAutoSave();
+      }
     });
+  }
+
+  Future<void> _performAutoSave() async {
+    if (_isAutoSaving || _isSubmitting) return;
+    setState(() => _isAutoSaving = true);
+    try {
+      final examRepo = ref.read(examRepositoryProvider);
+      await examRepo.saveActiveAttempt(_attempt);
+    } catch (_) {
+    } finally {
+      if (mounted) setState(() => _isAutoSaving = false);
+    }
   }
 
   @override
@@ -107,24 +125,75 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   }
 
   Future<void> _confirmAndSubmit() async {
-    final unansweredCount =
-        widget.exam.totalQuestions - _attempt.responses.length;
+    final answeredCount = _attempt.responses.values
+        .where((r) => r.selectedChoiceId != null)
+        .length;
+    final flaggedCount =
+        _attempt.responses.values.where((r) => r.isFlagged).length;
+    final unansweredCount = widget.exam.totalQuestions - answeredCount;
+
+    int firstUnansweredIndex = -1;
+    for (int i = 0; i < widget.exam.questions.length; i++) {
+      final qId = widget.exam.questions[i].id;
+      final resp = _attempt.responses[qId];
+      if (resp == null || resp.selectedChoiceId == null) {
+        firstUnansweredIndex = i;
+        break;
+      }
+    }
 
     final shouldSubmit = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Submit Examination?',
-            style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Row(
+          children: [
+            Icon(Icons.assignment_turned_in_rounded, color: AppTheme.brand),
+            SizedBox(width: 8),
+            Text('Submit Examination?',
+                style: TextStyle(fontWeight: FontWeight.w700)),
+          ],
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'You have answered ${_attempt.responses.length} of ${widget.exam.totalQuestions} questions.',
-              style: const TextStyle(fontSize: 14),
+              'Please review your answer summary for ${widget.exam.title}:',
+              style: const TextStyle(fontSize: 13.5),
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildDialogStatCard(
+                    'Answered',
+                    '$answeredCount',
+                    AppTheme.green,
+                    Icons.check_circle_outline_rounded,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _buildDialogStatCard(
+                    'Flagged',
+                    '$flaggedCount',
+                    AppTheme.accent,
+                    Icons.flag_outlined,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _buildDialogStatCard(
+                    'Unanswered',
+                    '$unansweredCount',
+                    unansweredCount > 0 ? AppTheme.danger : AppTheme.darkMuted,
+                    Icons.help_outline_rounded,
+                  ),
+                ),
+              ],
             ),
             if (unansweredCount > 0) ...[
-              const SizedBox(height: 10),
+              const SizedBox(height: 14),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -141,11 +210,11 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '$unansweredCount questions are unanswered!',
+                        '$unansweredCount questions are unanswered and will be scored as 0.',
                         style: const TextStyle(
                           color: AppTheme.danger,
                           fontWeight: FontWeight.w700,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -156,20 +225,31 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             const SizedBox(height: 14),
             const Text(
               'Once submitted, your final score, readiness analytics, and step-by-step solutions will be generated.',
-              style: TextStyle(fontSize: 12.5, color: AppTheme.darkMuted),
+              style: TextStyle(fontSize: 12, color: AppTheme.darkMuted),
             ),
           ],
         ),
         actions: [
+          if (unansweredCount > 0 && firstUnansweredIndex != -1)
+            TextButton.icon(
+              onPressed: () {
+                Navigator.pop(ctx, false);
+                setState(() => _currentIndex = firstUnansweredIndex);
+              },
+              icon: const Icon(Icons.arrow_forward_rounded, size: 15),
+              label: const Text('Review Unanswered'),
+            ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Continue Test'),
+            child: const Text('Keep Working'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            style:
-                ElevatedButton.styleFrom(backgroundColor: AppTheme.brandStrong),
-            child: const Text('Submit Now'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.brandStrong,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Submit Final'),
           ),
         ],
       ),
@@ -178,6 +258,44 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     if (shouldSubmit == true) {
       await _performSubmission();
     }
+  }
+
+  Widget _buildDialogStatCard(
+    String label,
+    String count,
+    Color color,
+    IconData icon,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 18),
+          const SizedBox(height: 4),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10.5,
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _performSubmission() async {
@@ -224,48 +342,33 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     }
   }
 
-  void _showMobileQuestionPalette() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-      shape: const RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(AppTheme.radiusLg)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Question Palette',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  '${_attempt.responses.length}/${widget.exam.totalQuestions} Answered',
-                  style:
-                      const TextStyle(fontSize: 12, color: AppTheme.darkMuted),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildPaletteGrid(isDark),
-            const SizedBox(height: 20),
-            _buildPaletteLegend(isDark),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildPaletteGrid(bool isDark) {
+    // Filter questions based on selected tab
+    final eligibleIndices = <int>[];
+    for (int i = 0; i < widget.exam.questions.length; i++) {
+      final q = widget.exam.questions[i];
+      final resp = _attempt.responses[q.id];
+      final isAnswered = resp != null && resp.selectedChoiceId != null;
+      final isFlagged = resp?.isFlagged == true;
+
+      if (_paletteFilter == 'answered' && !isAnswered) continue;
+      if (_paletteFilter == 'flagged' && !isFlagged) continue;
+      if (_paletteFilter == 'unanswered' && isAnswered) continue;
+      eligibleIndices.add(i);
+    }
+
+    if (eligibleIndices.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24.0),
+        child: Center(
+          child: Text(
+            'No $_paletteFilter questions',
+            style: const TextStyle(color: AppTheme.darkMuted, fontSize: 13),
+          ),
+        ),
+      );
+    }
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -275,8 +378,9 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         crossAxisSpacing: 8,
         childAspectRatio: 1.15,
       ),
-      itemCount: widget.exam.questions.length,
-      itemBuilder: (context, index) {
+      itemCount: eligibleIndices.length,
+      itemBuilder: (context, gridIdx) {
+        final index = eligibleIndices[gridIdx];
         final q = widget.exam.questions[index];
         final resp = _attempt.responses[q.id];
         final isCurrent = index == _currentIndex;
@@ -339,6 +443,132 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     );
   }
 
+  Widget _buildPaletteFilterTabs() {
+    final answeredCount = _attempt.responses.values
+        .where((r) => r.selectedChoiceId != null)
+        .length;
+    final flaggedCount =
+        _attempt.responses.values.where((r) => r.isFlagged).length;
+    final unansweredCount = widget.exam.totalQuestions - answeredCount;
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildPaletteTab('all', 'All (${widget.exam.totalQuestions})'),
+          const SizedBox(width: 6),
+          _buildPaletteTab('answered', 'Answered ($answeredCount)'),
+          const SizedBox(width: 6),
+          _buildPaletteTab('flagged', 'Flagged ($flaggedCount)'),
+          const SizedBox(width: 6),
+          _buildPaletteTab('unanswered', 'Unanswered ($unansweredCount)'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaletteTab(String key, String label) {
+    final isSelected = _paletteFilter == key;
+    return ChoiceChip(
+      label: Text(label, style: const TextStyle(fontSize: 11)),
+      selected: isSelected,
+      onSelected: (val) {
+        if (val) setState(() => _paletteFilter = key);
+      },
+      selectedColor: AppTheme.brand.withValues(alpha: 0.2),
+    );
+  }
+
+  Widget _buildQuestionPaletteDrawer(bool isDark) {
+    final answeredCount = _attempt.responses.values
+        .where((r) => r.selectedChoiceId != null)
+        .length;
+
+    return Drawer(
+      backgroundColor: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+      child: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+                  ),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Question Palette',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '$answeredCount of ${widget.exam.totalQuestions} Answered',
+                        style: const TextStyle(
+                          fontSize: 11.5,
+                          color: AppTheme.darkMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: _buildPaletteFilterTabs(),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPaletteGrid(isDark),
+                    const SizedBox(height: 16),
+                    _buildPaletteLegend(isDark),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _confirmAndSubmit();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.brandStrong,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: const Text('Finish Exam'),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildPaletteLegend(bool isDark) {
     return const Wrap(
       spacing: 16,
@@ -362,17 +592,50 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      endDrawer: _buildQuestionPaletteDrawer(isDark),
       appBar: AppBar(
         title: Text(
           '${widget.exam.title} • Q ${_currentIndex + 1}/${widget.exam.totalQuestions}',
           style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
         actions: [
+          // 💾 Auto-save Status HUD
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: const EdgeInsets.only(right: 6),
+            decoration: BoxDecoration(
+              color: (_isAutoSaving ? AppTheme.accent : AppTheme.green)
+                  .withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _isAutoSaving
+                      ? Icons.cloud_upload_outlined
+                      : Icons.cloud_done_rounded,
+                  size: 13,
+                  color: _isAutoSaving ? AppTheme.accent : AppTheme.green,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  _isAutoSaving ? 'Saving...' : 'Auto-saved',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w600,
+                    color: _isAutoSaving ? AppTheme.accent : AppTheme.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           // Urgency Color-Shifting Timer HUD
           if (widget.exam.isTimed)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              margin: const EdgeInsets.only(right: 8),
+              margin: const EdgeInsets.only(right: 6),
               decoration: BoxDecoration(
                 color: _remainingSeconds < 120
                     ? AppTheme.danger.withValues(alpha: 0.15)
@@ -427,12 +690,13 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             onPressed: _handleToggleFlag,
           ),
 
-          if (!isDesktop)
-            IconButton(
+          Builder(
+            builder: (ctx) => IconButton(
               icon: const Icon(Icons.grid_view_rounded),
-              tooltip: 'Question palette',
-              onPressed: _showMobileQuestionPalette,
+              tooltip: 'Question palette drawer',
+              onPressed: () => Scaffold.of(ctx).openEndDrawer(),
             ),
+          ),
 
           Padding(
             padding: const EdgeInsets.only(right: 12.0, left: 4.0),

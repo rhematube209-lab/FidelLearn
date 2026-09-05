@@ -151,6 +151,9 @@ class ContentPackage extends Equatable {
   final String license;
   final String attribution;
   final bool isDownloaded;
+  final bool hasUpdate;
+  final int? availableVersion;
+  final int? updateSizeBytes;
 
   const ContentPackage({
     required this.packageId,
@@ -165,6 +168,9 @@ class ContentPackage extends Equatable {
     required this.license,
     required this.attribution,
     required this.isDownloaded,
+    this.hasUpdate = false,
+    this.availableVersion,
+    this.updateSizeBytes,
   });
 
   factory ContentPackage.fromJson(Map<String, dynamic> json) {
@@ -183,10 +189,39 @@ class ContentPackage extends Equatable {
       attribution: json['attribution'] as String? ??
           'FidelLearn original demonstration content',
       isDownloaded: json['is_downloaded'] as bool? ?? false,
+      hasUpdate: json['has_update'] as bool? ?? false,
+      availableVersion: json['available_version'] as int?,
+      updateSizeBytes: json['update_size_bytes'] as int?,
     );
   }
 
-  ContentPackage copyWith({bool? isDownloaded, int? version}) {
+  Map<String, dynamic> toJson() {
+    return {
+      'package_id': packageId,
+      'subject_id': subjectId,
+      'name_en': nameEn,
+      'name_am': nameAm,
+      'grade': grade,
+      'stream': stream,
+      'version': version,
+      'size_bytes': sizeBytes,
+      'publisher': publisher,
+      'license': license,
+      'attribution': attribution,
+      'is_downloaded': isDownloaded,
+      'has_update': hasUpdate,
+      'available_version': availableVersion,
+      'update_size_bytes': updateSizeBytes,
+    };
+  }
+
+  ContentPackage copyWith({
+    bool? isDownloaded,
+    int? version,
+    bool? hasUpdate,
+    int? availableVersion,
+    int? updateSizeBytes,
+  }) {
     return ContentPackage(
       packageId: packageId,
       subjectId: subjectId,
@@ -200,6 +235,9 @@ class ContentPackage extends Equatable {
       license: license,
       attribution: attribution,
       isDownloaded: isDownloaded ?? this.isDownloaded,
+      hasUpdate: hasUpdate ?? this.hasUpdate,
+      availableVersion: availableVersion ?? this.availableVersion,
+      updateSizeBytes: updateSizeBytes ?? this.updateSizeBytes,
     );
   }
 
@@ -217,5 +255,8 @@ class ContentPackage extends Equatable {
         license,
         attribution,
         isDownloaded,
+        hasUpdate,
+        availableVersion,
+        updateSizeBytes,
       ];
 }

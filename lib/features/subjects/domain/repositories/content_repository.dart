@@ -1,4 +1,5 @@
 import '../models/subject_models.dart';
+import '../services/delta_package_service.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 
 abstract class ContentRepository {
@@ -15,6 +16,8 @@ abstract class ContentRepository {
   });
   Future<void> downloadPackage(String packageId);
   Future<void> removePackage(String packageId);
+  Future<PackageDelta?> checkPackageUpdate(String packageId);
+  Future<void> applyDeltaUpdate(String packageId, PackageDelta delta);
   Future<List<Question>> getQuestions({
     required int grade,
     required String subjectId,

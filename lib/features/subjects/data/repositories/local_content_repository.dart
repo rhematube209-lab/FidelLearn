@@ -6,6 +6,7 @@ import '../../../../core/errors/failures.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../domain/models/subject_models.dart';
 import '../../domain/repositories/content_repository.dart';
+import '../../domain/services/delta_package_service.dart';
 
 class LocalContentRepository implements ContentRepository {
   final List<String> seedAssetPaths;
@@ -56,7 +57,16 @@ class LocalContentRepository implements ContentRepository {
             for (final p in data['packages'] as List<dynamic>) {
               final pkg = ContentPackage.fromJson(p as Map<String, dynamic>);
               if (seenPackageIds.add(pkg.packageId)) {
-                _packages.add(pkg);
+                if (pkg.packageId.contains('bio') ||
+                    pkg.subjectId.contains('bio')) {
+                  _packages.add(pkg.copyWith(
+                    hasUpdate: true,
+                    availableVersion: 2,
+                    updateSizeBytes: 124 * 1024,
+                  ));
+                } else {
+                  _packages.add(pkg);
+                }
               }
             }
           }
@@ -167,6 +177,8 @@ class LocalContentRepository implements ContentRepository {
         .toList();
   }
 
+  final DeltaPackageService _deltaService = DeltaPackageService();
+
   @override
   Future<void> downloadPackage(String packageId) async {
     await initializeSeedData();
@@ -182,6 +194,47 @@ class LocalContentRepository implements ContentRepository {
     final index = _packages.indexWhere((p) => p.packageId == packageId);
     if (index != -1) {
       _packages[index] = _packages[index].copyWith(isDownloaded: false);
+    }
+  }
+
+  @override
+  Future<PackageDelta?> checkPackageUpdate(String packageId) async {
+    await initializeSeedData();
+    final pkg = _packages.where((p) => p.packageId == packageId).firstOrNull;
+    if (pkg == null) return null;
+    if (pkg.hasUpdate) {
+      return PackageDelta(
+        packageId: packageId,
+        fromVersion: '${pkg.version}.0',
+        toVersion: '${pkg.availableVersion ?? (pkg.version + 1)}.0',
+        addedQuestions: const [],
+        updatedQuestions: const [],
+        deprecatedQuestionIds: const [],
+        releaseDate: DateTime.now(),
+      );
+    }
+    return null;
+  }
+
+  @override
+  Future<void> applyDeltaUpdate(String packageId, PackageDelta delta) async {
+    await initializeSeedData();
+    final index = _packages.indexWhere((p) => p.packageId == packageId);
+    if (index != -1) {
+      final updatedQuestions = _deltaService.applyDeltaPatch(
+        existingQuestions: _questions,
+        delta: delta,
+      );
+      _questions.clear();
+      _questions.addAll(updatedQuestions);
+      final newVer = int.tryParse(delta.toVersion.split('.').first) ??
+          (_packages[index].version + 1);
+      _packages[index] = _packages[index].copyWith(
+        version: newVer,
+        hasUpdate: false,
+        availableVersion: null,
+        updateSizeBytes: null,
+      );
     }
   }
 

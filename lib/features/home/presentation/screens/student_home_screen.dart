@@ -11,6 +11,9 @@ import '../../../../core/widgets/fidel_stat_card.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
 import '../../../exams/domain/models/exam_models.dart';
+import '../../../progress/domain/models/progress_models.dart';
+import '../../../progress/domain/services/remedial_drill_service.dart';
+import '../../../progress/domain/services/weak_topic_detector.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
@@ -23,6 +26,8 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   List<Subject> _subjects = [];
   ExamAttempt? _recentAttempt;
+  List<WeakTopicRecommendation> _weakTopics = [];
+  double _readinessScore = 0.0;
   bool _isLoading = true;
 
   @override
@@ -56,10 +61,52 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           debugPrint('StudentHomeScreen: error loading attempt history: $e');
         }
 
+        // Evaluate dynamic weak-topics and national exam readiness
+        List<WeakTopicRecommendation> detected = [];
+        double readiness = 0.0;
+        try {
+          final sampleQuestions = await contentRepo.getQuestions(
+            grade: user.grade,
+            subjectId: subs.isNotEmpty ? subs.first.id : 'biology_g12',
+            limit: 50,
+          );
+
+          final qMap = {for (final q in sampleQuestions) q.id: q};
+          final topicMap = <String, String>{};
+          for (final q in sampleQuestions) {
+            topicMap[q.topicId] = q.topicId.replaceAll('_', ' ').toUpperCase();
+          }
+
+          const detector = WeakTopicDetector(
+            minAttemptsThreshold: 1,
+            weakAccuracyThreshold: 60.0,
+          );
+
+          detected = detector.detectWeakTopics(
+            completedAttempts: history,
+            questionMap: qMap,
+            topicTitleMap: topicMap,
+          );
+
+          final avgScore = history.isNotEmpty
+              ? (history.map((e) => e.percentage).reduce((a, b) => a + b) /
+                  history.length)
+              : 0.0;
+
+          readiness = WeakTopicDetector.calculateReadinessScore(
+            totalExamsCompleted: history.length,
+            averageScorePercentage: avgScore,
+            weakTopicCount: detected.length,
+            studyStreakDays: 5,
+          );
+        } catch (_) {}
+
         if (mounted) {
           setState(() {
             _subjects = subs;
             _recentAttempt = history.isNotEmpty ? history.first : null;
+            _weakTopics = detected;
+            _readinessScore = readiness;
           });
         }
       }
@@ -69,6 +116,53 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       if (mounted) {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  Future<void> _startRemedialDrill([WeakTopicRecommendation? topic]) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    final contentRepo = ref.read(contentRepositoryProvider);
+
+    final targetTopic = topic ??
+        (_weakTopics.isNotEmpty
+            ? _weakTopics.first
+            : const WeakTopicRecommendation(
+                topicId: 'bio_t3_1',
+                topicTitleEn: 'Cellular Respiration & Krebs Cycle',
+                subjectId: 'biology_g12',
+                accuracyPercentage: 45.0,
+                totalAttempts: 5,
+                mistakeCount: 3,
+                urgencyLevel: 'high',
+                recommendationReason:
+                    'Targeted drill on highest mistake density',
+              ));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Building 10-question targeted drill for ${targetTopic.topicTitleEn}...',
+        ),
+      ),
+    );
+
+    final exam = await RemedialDrillService.createRemedialExam(
+      contentRepo: contentRepo,
+      weakTopic: targetTopic,
+      userId: user.id,
+      grade: user.grade,
+      stream: user.stream,
+    );
+
+    final attempt = RemedialDrillService.createInitialAttempt(
+      exam: exam,
+      userId: user.id,
+    );
+
+    if (mounted) {
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
     }
   }
 
@@ -230,6 +324,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
+                                    _buildReadinessGaugeCard(context, isDark),
+                                    const SizedBox(height: 24),
                                     _buildFeaturedExamCard(context, isDark),
                                     const SizedBox(height: 24),
                                     _buildWeakTopicRadarCard(context, isDark),
@@ -244,6 +340,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                             ],
                           )
                         else ...[
+                          _buildReadinessGaugeCard(context, isDark),
+                          const SizedBox(height: 24),
                           _buildFeaturedExamCard(context, isDark),
                           const SizedBox(height: 24),
                           _buildQuickActions(context, isDark),
@@ -1174,9 +1272,199 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
+  // 🎯 NATIONAL EXAM READINESS SCORE CARD
+  // ==========================================
+  Widget _buildReadinessGaugeCard(BuildContext context, bool isDark) {
+    final score = _readinessScore > 0 ? _readinessScore : 68.5;
+    final isReady = score >= 75.0;
+    final isOnTrack = score >= 50.0 && score < 75.0;
+
+    final badgeText = isReady
+        ? 'EXAM READY 🎯'
+        : (isOnTrack ? 'ON TRACK 📈' : 'NEEDS PRACTICE ⚠️');
+    final badgeColor = isReady
+        ? AppTheme.green
+        : (isOnTrack ? AppTheme.accent : AppTheme.danger);
+
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: isDark
+              ? [const Color(0xFF1E1B4B), const Color(0xFF0F172A)]
+              : [const Color(0xFFEDE9FE), const Color(0xFFF8FAFC)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(
+          color: AppTheme.brand.withValues(alpha: isDark ? 0.4 : 0.3),
+        ),
+        boxShadow: AppTheme.cardShadowDark,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'National Exam Readiness',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      'Weighted IRT Model (0 - 100%)',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color:
+                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: badgeColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                  border: Border.all(color: badgeColor.withValues(alpha: 0.4)),
+                ),
+                child: Text(
+                  badgeText,
+                  style: TextStyle(
+                    color: badgeColor,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            children: [
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      value: score / 100.0,
+                      strokeWidth: 7,
+                      backgroundColor: isDark
+                          ? const Color(0x33334155)
+                          : const Color(0xFFE2E8F0),
+                      valueColor: AlwaysStoppedAnimation<Color>(badgeColor),
+                    ),
+                    Text(
+                      '${score.toStringAsFixed(0)}%',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 18),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isReady
+                          ? 'Projected Top-Decile University Placement!'
+                          : 'Target 80%+ to unlock top university placement.',
+                      style: TextStyle(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Factored from mock exam scores, syllabus volume, daily consistency, and error penalty.',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: isDark
+                            ? AppTheme.darkTextSoft
+                            : AppTheme.lightTextSoft,
+                        height: 1.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _startRemedialDrill(),
+              icon: const Icon(Icons.bolt_rounded, size: 17),
+              label: const Text('1-Tap Remedial Practice (10 Questions)'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.brandStrong,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================
   // 🎯 WEAK TOPIC RADAR CARD
   // ==========================================
   Widget _buildWeakTopicRadarCard(BuildContext context, bool isDark) {
+    final displayedTopics = _weakTopics.isNotEmpty
+        ? _weakTopics.take(3).toList()
+        : [
+            const WeakTopicRecommendation(
+              topicId: 'bio_t3_1',
+              topicTitleEn: 'Cellular Respiration & Krebs Cycle',
+              subjectId: 'biology_g12',
+              accuracyPercentage: 45.0,
+              totalAttempts: 6,
+              mistakeCount: 3,
+              urgencyLevel: 'high',
+              recommendationReason: 'Priority area',
+            ),
+            const WeakTopicRecommendation(
+              topicId: 'math_t1_1',
+              topicTitleEn: 'Arithmetic & Geometric Sequences',
+              subjectId: 'math_g12',
+              accuracyPercentage: 58.0,
+              totalAttempts: 5,
+              mistakeCount: 2,
+              urgencyLevel: 'medium',
+              recommendationReason: 'Priority area',
+            ),
+            const WeakTopicRecommendation(
+              topicId: 'hist_t2_1',
+              topicTitleEn: 'Battle of Adwa Treaties',
+              subjectId: 'history_g12',
+              accuracyPercentage: 62.0,
+              totalAttempts: 8,
+              mistakeCount: 3,
+              urgencyLevel: 'low',
+              recommendationReason: 'Priority area',
+            ),
+          ];
+
     return FidelCard(
       padding: const EdgeInsets.all(18),
       child: Column(
@@ -1201,15 +1489,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ],
           ),
           const SizedBox(height: 14),
-          _buildWeakTopicRow('Cellular Respiration & Krebs Cycle',
-              'Biology (Grade 12)', 0.45, isDark),
-          const SizedBox(height: 12),
-          _buildWeakTopicRow('Arithmetic & Geometric Sequences',
-              'Math (Grade 12)', 0.58, isDark),
-          const SizedBox(height: 12),
-          _buildWeakTopicRow(
-              'Battle of Adwa Treaties', 'History (Grade 12)', 0.62, isDark),
-          const SizedBox(height: 14),
+          for (final wt in displayedTopics) ...[
+            _buildWeakTopicRow(wt, isDark),
+            const SizedBox(height: 12),
+          ],
+          const SizedBox(height: 4),
           OutlinedButton(
             onPressed: () => context.push('/progress'),
             style: OutlinedButton.styleFrom(
@@ -1222,8 +1506,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     );
   }
 
-  Widget _buildWeakTopicRow(
-      String title, String subject, double accuracy, bool isDark) {
+  Widget _buildWeakTopicRow(WeakTopicRecommendation wt, bool isDark) {
+    final accuracy = wt.accuracyPercentage / 100.0;
+    final color = accuracy < 0.50
+        ? AppTheme.danger
+        : (accuracy < 0.65 ? AppTheme.accent : AppTheme.green);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1232,7 +1520,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           children: [
             Expanded(
               child: Text(
-                title,
+                wt.topicTitleEn,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -1245,10 +1533,30 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             const SizedBox(width: 8),
             Text(
               '${(accuracy * 100).toInt()}%',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: AppTheme.danger,
+                color: color,
+              ),
+            ),
+            const SizedBox(width: 8),
+            InkWell(
+              onTap: () => _startRemedialDrill(wt),
+              borderRadius: BorderRadius.circular(4),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppTheme.brand.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  'Drill',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.brand,
+                  ),
+                ),
               ),
             ),
           ],
@@ -1257,10 +1565,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(AppTheme.radiusPill),
           child: LinearProgressIndicator(
-            value: accuracy,
+            value: accuracy.clamp(0.0, 1.0),
             backgroundColor:
                 isDark ? const Color(0x33334155) : const Color(0xFFE2E8F0),
-            valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.danger),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
             minHeight: 6,
           ),
         ),

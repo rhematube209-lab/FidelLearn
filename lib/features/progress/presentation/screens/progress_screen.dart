@@ -7,6 +7,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../domain/models/progress_models.dart';
+import '../../domain/services/remedial_drill_service.dart';
 import '../../domain/services/weak_topic_detector.dart';
 
 class ProgressScreen extends ConsumerStatefulWidget {
@@ -21,6 +22,36 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   List<WeakTopicRecommendation> _weakTopics = [];
   double _readinessScore = 0.0;
   bool _isLoading = true;
+
+  Future<void> _startRemedialDrill(WeakTopicRecommendation topic) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    final contentRepo = ref.read(contentRepositoryProvider);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            'Building 10-question remedial drill for ${topic.topicTitleEn}...'),
+      ),
+    );
+
+    final exam = await RemedialDrillService.createRemedialExam(
+      contentRepo: contentRepo,
+      weakTopic: topic,
+      userId: user.id,
+      grade: user.grade,
+      stream: user.stream,
+    );
+    final attempt = RemedialDrillService.createInitialAttempt(
+      exam: exam,
+      userId: user.id,
+    );
+
+    if (mounted) {
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+    }
+  }
 
   @override
   void initState() {
@@ -385,16 +416,17 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                           ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () => context.push('/exam_builder'),
+                      ElevatedButton.icon(
+                        onPressed: () => _startRemedialDrill(wt),
+                        icon: const Icon(Icons.bolt_rounded, size: 14),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.brandStrong,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
+                              horizontal: 12, vertical: 8),
                           textStyle: const TextStyle(
-                              fontSize: 11, fontWeight: FontWeight.bold),
+                              fontSize: 11.5, fontWeight: FontWeight.bold),
                         ),
-                        child: const Text('Drill Topic'),
+                        label: const Text('1-Tap Drill'),
                       ),
                     ],
                   ),

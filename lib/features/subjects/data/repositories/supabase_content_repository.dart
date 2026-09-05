@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../domain/models/subject_models.dart';
 import '../../domain/repositories/content_repository.dart';
+import '../../domain/services/delta_package_service.dart';
 import 'local_content_repository.dart';
 
 class SupabaseContentRepository implements ContentRepository {
@@ -154,6 +155,16 @@ class SupabaseContentRepository implements ContentRepository {
   @override
   Future<void> removePackage(String packageId) async {
     await _localFallback.removePackage(packageId);
+  }
+
+  @override
+  Future<PackageDelta?> checkPackageUpdate(String packageId) async {
+    return _localFallback.checkPackageUpdate(packageId);
+  }
+
+  @override
+  Future<void> applyDeltaUpdate(String packageId, PackageDelta delta) async {
+    await _localFallback.applyDeltaUpdate(packageId, delta);
   }
 
   @override
