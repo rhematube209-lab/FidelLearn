@@ -46,7 +46,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             break;
         }
       } else {
-        context.go('/onboarding');
+        context.go('/login');
       }
     }
   }

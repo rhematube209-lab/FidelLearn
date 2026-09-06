@@ -6,6 +6,7 @@ abstract class AuthRepository {
   Future<UserProfile> loginWithPhone({
     required String phoneNumber,
     required String password,
+    bool rememberMe = true,
   });
   Future<UserProfile> registerWithPhone({
     required String phoneNumber,

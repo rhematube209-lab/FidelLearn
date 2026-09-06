@@ -35,6 +35,7 @@ import '../../features/rewards/domain/services/airtime_redemption_service.dart';
 import '../config/env_config.dart';
 import '../database/app_database.dart';
 import '../networking/connectivity_service.dart';
+import '../security/auth_session_storage.dart';
 import '../sync/models/sync_models.dart';
 import '../sync/repositories/drift_sync_queue_repository.dart';
 import '../sync/repositories/sync_queue_repository.dart';
@@ -98,13 +99,18 @@ class SyncStateNotifier extends StateNotifier<SyncStatus> {
 }
 
 // --- Global Repositories ---
+final authSessionStorageProvider = Provider<AuthSessionStorage>((ref) {
+  return AuthSessionStorage();
+});
+
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final storage = ref.watch(authSessionStorageProvider);
   if (EnvConfig.isSupabaseConfigured) {
     try {
-      return SupabaseAuthRepository();
+      return SupabaseAuthRepository(sessionStorage: storage);
     } catch (_) {}
   }
-  return MockAuthRepository();
+  return MockAuthRepository(sessionStorage: storage);
 });
 
 final contentRepositoryProvider = Provider<ContentRepository>((ref) {
@@ -240,12 +246,14 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserProfile?>> {
     super.dispose();
   }
 
-  Future<UserProfile> login(String phone, String pass) async {
+  Future<UserProfile> login(String phone, String pass,
+      {bool rememberMe = true}) async {
     state = const AsyncValue.loading();
     try {
       final user = await _authRepo.loginWithPhone(
         phoneNumber: phone,
         password: pass,
+        rememberMe: rememberMe,
       );
       state = AsyncValue.data(user);
       return user;

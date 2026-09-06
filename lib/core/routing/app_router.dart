@@ -30,159 +30,161 @@ import '../../features/subjects/presentation/screens/subjects_screen.dart';
 import '../../features/p2p_transfer/presentation/screens/p2p_sharing_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  return appRouter;
+  return createAppRouter();
 });
 
-final appRouter = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
-    GoRoute(
-      path: '/onboarding',
-      builder: (context, state) => const OnboardingScreen(),
-    ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) {
-        final gradeStr = state.uri.queryParameters['grade'];
-        final stream = state.uri.queryParameters['stream'];
-        final lang = state.uri.queryParameters['lang'];
-        return LoginScreen(
-          initialGrade: gradeStr != null ? int.tryParse(gradeStr) : null,
-          initialStream: stream,
-          initialLang: lang,
-        );
-      },
-    ),
-    GoRoute(
-      path: '/register',
-      builder: (context, state) {
-        final gradeStr = state.uri.queryParameters['grade'];
-        final stream = state.uri.queryParameters['stream'];
-        final lang = state.uri.queryParameters['lang'];
-        return RegisterScreen(
-          initialGrade: gradeStr != null ? int.tryParse(gradeStr) : null,
-          initialStream: stream,
-          initialLang: lang,
-        );
-      },
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const StudentHomeScreen(),
-    ),
-    GoRoute(
-      path: '/subjects',
-      builder: (context, state) => const SubjectsScreen(),
-    ),
-    GoRoute(
-      path: '/exam_builder',
-      builder: (context, state) {
-        final subjectId = state.uri.queryParameters['subjectId'];
-        final mode = state.uri.queryParameters['mode'];
-        return ExamBuilderScreen(initialSubjectId: subjectId, mode: mode);
-      },
-    ),
-    GoRoute(
-      path: '/exam_runner',
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        final exam = extra?['exam'] as Exam;
-        final attempt = extra?['attempt'] as ExamAttempt;
-        return ExamRunnerScreen(exam: exam, initialAttempt: attempt);
-      },
-    ),
-    GoRoute(
-      path: '/results/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id'] ?? '';
-        final extra = state.extra as Map<String, dynamic>?;
-        return ExamResultScreen(
-          attemptId: id,
-          passedExam: extra?['exam'] as Exam?,
-          passedAttempt: extra?['attempt'] as ExamAttempt?,
-        );
-      },
-    ),
-    GoRoute(
-      path: '/solutions',
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        final questions = extra?['questions'] as List<Question>? ?? [];
-        final attempt = extra?['attempt'] as ExamAttempt;
-        return SolutionReviewScreen(questions: questions, attempt: attempt);
-      },
-    ),
-    GoRoute(
-      path: '/solution_review',
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        final questions = extra?['questions'] as List<Question>? ?? [];
-        final attempt = extra?['attempt'] as ExamAttempt;
-        return SolutionReviewScreen(questions: questions, attempt: attempt);
-      },
-    ),
-    GoRoute(
-      path: '/bookmarks',
-      builder: (context, state) => const BookmarksScreen(),
-    ),
-    GoRoute(
-      path: '/mistakes',
-      builder: (context, state) => const MistakesScreen(),
-    ),
-    GoRoute(
-      path: '/progress',
-      builder: (context, state) => const ProgressScreen(),
-    ),
-    GoRoute(
-      path: '/exam_ghost/:examId',
-      builder: (context, state) {
-        final examId = state.pathParameters['examId'] ?? '';
-        return ExamGhostScreen(examId: examId);
-      },
-    ),
-    GoRoute(
-      path: '/challenges',
-      builder: (context, state) => const ChallengesScreen(),
-    ),
-    GoRoute(
-      path: '/teacher',
-      builder: (context, state) => const TeacherDashboardScreen(),
-    ),
-    GoRoute(
-      path: '/teacher/create_assignment',
-      builder: (context, state) {
-        final classroom = state.extra as Classroom?;
-        return CreateAssignmentScreen(classroom: classroom);
-      },
-    ),
-    GoRoute(
-      path: '/school',
-      builder: (context, state) => const SchoolAdminDashboardScreen(),
-    ),
-    GoRoute(
-      path: '/admin',
-      builder: (context, state) => const AdminDashboardScreen(),
-    ),
-    GoRoute(
-      path: '/admin/question_editor',
-      builder: (context, state) => const QuestionEditorScreen(),
-    ),
-    GoRoute(
-      path: '/rewards',
-      builder: (context, state) => const RewardsScreen(),
-    ),
-    GoRoute(
-      path: '/airtime_store',
-      builder: (context, state) => const AirtimeStoreScreen(),
-    ),
-    GoRoute(
-      path: '/p2p_share',
-      builder: (context, state) => const P2PSharingScreen(),
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
-  ],
-);
+final appRouter = createAppRouter();
+
+GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
+      initialLocation: initialLocation,
+      routes: [
+        GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
+        GoRoute(
+          path: '/onboarding',
+          builder: (context, state) => const OnboardingScreen(),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) {
+            final gradeStr = state.uri.queryParameters['grade'];
+            final stream = state.uri.queryParameters['stream'];
+            final lang = state.uri.queryParameters['lang'];
+            return LoginScreen(
+              initialGrade: gradeStr != null ? int.tryParse(gradeStr) : null,
+              initialStream: stream,
+              initialLang: lang,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/register',
+          builder: (context, state) {
+            final gradeStr = state.uri.queryParameters['grade'];
+            final stream = state.uri.queryParameters['stream'];
+            final lang = state.uri.queryParameters['lang'];
+            return RegisterScreen(
+              initialGrade: gradeStr != null ? int.tryParse(gradeStr) : null,
+              initialStream: stream,
+              initialLang: lang,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/home',
+          builder: (context, state) => const StudentHomeScreen(),
+        ),
+        GoRoute(
+          path: '/subjects',
+          builder: (context, state) => const SubjectsScreen(),
+        ),
+        GoRoute(
+          path: '/exam_builder',
+          builder: (context, state) {
+            final subjectId = state.uri.queryParameters['subjectId'];
+            final mode = state.uri.queryParameters['mode'];
+            return ExamBuilderScreen(initialSubjectId: subjectId, mode: mode);
+          },
+        ),
+        GoRoute(
+          path: '/exam_runner',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            final exam = extra?['exam'] as Exam;
+            final attempt = extra?['attempt'] as ExamAttempt;
+            return ExamRunnerScreen(exam: exam, initialAttempt: attempt);
+          },
+        ),
+        GoRoute(
+          path: '/results/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id'] ?? '';
+            final extra = state.extra as Map<String, dynamic>?;
+            return ExamResultScreen(
+              attemptId: id,
+              passedExam: extra?['exam'] as Exam?,
+              passedAttempt: extra?['attempt'] as ExamAttempt?,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/solutions',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            final questions = extra?['questions'] as List<Question>? ?? [];
+            final attempt = extra?['attempt'] as ExamAttempt;
+            return SolutionReviewScreen(questions: questions, attempt: attempt);
+          },
+        ),
+        GoRoute(
+          path: '/solution_review',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            final questions = extra?['questions'] as List<Question>? ?? [];
+            final attempt = extra?['attempt'] as ExamAttempt;
+            return SolutionReviewScreen(questions: questions, attempt: attempt);
+          },
+        ),
+        GoRoute(
+          path: '/bookmarks',
+          builder: (context, state) => const BookmarksScreen(),
+        ),
+        GoRoute(
+          path: '/mistakes',
+          builder: (context, state) => const MistakesScreen(),
+        ),
+        GoRoute(
+          path: '/progress',
+          builder: (context, state) => const ProgressScreen(),
+        ),
+        GoRoute(
+          path: '/exam_ghost/:examId',
+          builder: (context, state) {
+            final examId = state.pathParameters['examId'] ?? '';
+            return ExamGhostScreen(examId: examId);
+          },
+        ),
+        GoRoute(
+          path: '/challenges',
+          builder: (context, state) => const ChallengesScreen(),
+        ),
+        GoRoute(
+          path: '/teacher',
+          builder: (context, state) => const TeacherDashboardScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/create_assignment',
+          builder: (context, state) {
+            final classroom = state.extra as Classroom?;
+            return CreateAssignmentScreen(classroom: classroom);
+          },
+        ),
+        GoRoute(
+          path: '/school',
+          builder: (context, state) => const SchoolAdminDashboardScreen(),
+        ),
+        GoRoute(
+          path: '/admin',
+          builder: (context, state) => const AdminDashboardScreen(),
+        ),
+        GoRoute(
+          path: '/admin/question_editor',
+          builder: (context, state) => const QuestionEditorScreen(),
+        ),
+        GoRoute(
+          path: '/rewards',
+          builder: (context, state) => const RewardsScreen(),
+        ),
+        GoRoute(
+          path: '/airtime_store',
+          builder: (context, state) => const AirtimeStoreScreen(),
+        ),
+        GoRoute(
+          path: '/p2p_share',
+          builder: (context, state) => const P2PSharingScreen(),
+        ),
+        GoRoute(
+          path: '/profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
+      ],
+    );

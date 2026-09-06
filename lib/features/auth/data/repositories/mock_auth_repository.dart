@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/security/auth_session_storage.dart';
 import '../../domain/models/user_profile.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class MockAuthRepository implements AuthRepository {
   UserProfile? _currentUser;
+  final AuthSessionStorage _sessionStorage;
   final StreamController<UserProfile?> _controller =
       StreamController<UserProfile?>.broadcast();
 
@@ -103,13 +105,32 @@ class MockAuthRepository implements AuthRepository {
     ),
   };
 
-  MockAuthRepository({UserProfile? initialUser}) {
-    _currentUser = initialUser ?? _profiles['+251911223344'];
+  MockAuthRepository({
+    UserProfile? initialUser,
+    AuthSessionStorage? sessionStorage,
+  })  : _sessionStorage = sessionStorage ?? AuthSessionStorage(),
+        _currentUser = initialUser;
+
+  Future<UserProfile> _commitUser(
+    UserProfile user, {
+    required bool rememberMe,
+  }) async {
+    _currentUser = user;
+    _controller.add(user);
+    await _sessionStorage.saveSession(user: user, rememberMe: rememberMe);
+    return user;
   }
 
   @override
   Future<UserProfile?> getCurrentUser() async {
-    return _currentUser;
+    if (_currentUser != null) return _currentUser;
+    final remembered = await _sessionStorage.getRememberedUser();
+    if (remembered != null) {
+      _currentUser = remembered;
+      _controller.add(remembered);
+      return _currentUser;
+    }
+    return null;
   }
 
   @override
@@ -122,6 +143,7 @@ class MockAuthRepository implements AuthRepository {
   Future<UserProfile> loginWithPhone({
     required String phoneNumber,
     required String password,
+    bool rememberMe = true,
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 150));
     final normalized = normalizePhone(phoneNumber);
@@ -147,9 +169,7 @@ class MockAuthRepository implements AuthRepository {
           expectedPass == password ||
           password.length >= 6 ||
           password.isNotEmpty) {
-        _currentUser = _profiles[matchedKey]!;
-        _controller.add(_currentUser);
-        return _currentUser!;
+        return _commitUser(_profiles[matchedKey]!, rememberMe: rememberMe);
       }
     }
 
@@ -203,9 +223,7 @@ class MockAuthRepository implements AuthRepository {
 
     _passwords[cleanPhone] = password;
     _profiles[cleanPhone] = newProfile;
-    _currentUser = newProfile;
-    _controller.add(_currentUser);
-    return newProfile;
+    return _commitUser(newProfile, rememberMe: true);
   }
 
   @override
@@ -215,10 +233,15 @@ class MockAuthRepository implements AuthRepository {
       _profiles[profile.phoneNumber] = profile;
     }
     _controller.add(_currentUser);
+    final isRemembered = await _sessionStorage.isRememberMeEnabled();
+    if (isRemembered) {
+      await _sessionStorage.saveSession(user: profile, rememberMe: true);
+    }
   }
 
   @override
   Future<void> logout() async {
+    await _sessionStorage.clearSession();
     _currentUser = null;
     _controller.add(null);
   }

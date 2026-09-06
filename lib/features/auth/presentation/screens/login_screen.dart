@@ -30,12 +30,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   late String _lang;
   bool _isLoading = false;
   bool _obscurePass = true;
+  bool _rememberMe = true;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     _lang = widget.initialLang ?? 'en';
+    _loadRememberedPhone();
+  }
+
+  Future<void> _loadRememberedPhone() async {
+    try {
+      final storage = ref.read(authSessionStorageProvider);
+      final remembered = await storage.getRememberedPhone();
+      final isRemembered = await storage.isRememberMeEnabled();
+      if (mounted) {
+        setState(() {
+          _rememberMe = isRemembered;
+          if (remembered != null && remembered.isNotEmpty) {
+            _phoneController.text = remembered;
+          }
+        });
+      }
+    } catch (_) {}
   }
 
   @override
@@ -68,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       final user = await ref
           .read(currentUserProvider.notifier)
-          .login(phone, pass)
+          .login(phone, pass, rememberMe: _rememberMe)
           .timeout(const Duration(seconds: 8));
 
       if (mounted) {
@@ -181,14 +199,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isAmharic = _lang == 'am';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(isAmharic ? 'ግባ (Log In)' : 'Log In'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
+        leading: context.canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.pop(),
+              )
+            : null,
         actions: [
           TextButton(
             onPressed: () {
@@ -324,18 +345,65 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
-              // Forgot Password link
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => _showForgotPasswordDialog(context),
-                  child: Text(
-                    isAmharic ? 'የይለፍ ቃል ረሱ?' : 'Forgot Password?',
-                    style: const TextStyle(fontSize: 13, color: AppTheme.brand),
+              // Remember Me & Forgot Password row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(6),
+                    onTap: () {
+                      setState(() {
+                        _rememberMe = !_rememberMe;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: Checkbox(
+                              value: _rememberMe,
+                              activeColor: AppTheme.brand,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              onChanged: (val) {
+                                setState(() {
+                                  _rememberMe = val ?? true;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            isAmharic ? 'አስታውሰኝ (Remember Me)' : 'Remember Me',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: isDark
+                                  ? AppTheme.darkText
+                                  : AppTheme.lightText,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  TextButton(
+                    onPressed: () => _showForgotPasswordDialog(context),
+                    child: Text(
+                      isAmharic ? 'የይለፍ ቃል ረሱ?' : 'Forgot Password?',
+                      style:
+                          const TextStyle(fontSize: 13, color: AppTheme.brand),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
 
@@ -432,7 +500,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.push('/register?lang=$_lang');
+                      context.push(
+                        '/register?grade=${widget.initialGrade ?? 12}&stream=${widget.initialStream ?? 'natural'}&lang=$_lang',
+                      );
                     },
                     child: Text(
                       isAmharic ? 'አዲስ መለያ ይክፈቱ' : 'Create Account',
@@ -440,6 +510,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 10),
+
+              // Quick link to study profile customization
+              Center(
+                child: TextButton.icon(
+                  onPressed: () {
+                    context.push('/onboarding');
+                  },
+                  icon: const Icon(Icons.tune_rounded,
+                      size: 16, color: AppTheme.darkMuted),
+                  label: Text(
+                    isAmharic
+                        ? 'የጥናት መገለጫዎን ያዋቅሩ (Personalize Profile)'
+                        : 'Personalize Study Profile & Grade Setup',
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: AppTheme.darkMuted,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

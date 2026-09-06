@@ -3,11 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/security/auth_session_storage.dart';
 import '../../domain/models/user_profile.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class SupabaseAuthRepository implements AuthRepository {
   final SupabaseClient? _client;
+  final AuthSessionStorage _sessionStorage;
   final StreamController<UserProfile?> _controller =
       StreamController<UserProfile?>.broadcast();
   UserProfile? _cachedProfile;
@@ -86,9 +88,22 @@ class SupabaseAuthRepository implements AuthRepository {
     }
   }
 
-  SupabaseAuthRepository({SupabaseClient? client})
-      : _client = client ?? _getSafeClient() {
+  SupabaseAuthRepository({
+    SupabaseClient? client,
+    AuthSessionStorage? sessionStorage,
+  })  : _client = client ?? _getSafeClient(),
+        _sessionStorage = sessionStorage ?? AuthSessionStorage() {
     _init();
+  }
+
+  Future<UserProfile> _commitUser(
+    UserProfile user, {
+    required bool rememberMe,
+  }) async {
+    _cachedProfile = user;
+    _controller.add(user);
+    await _sessionStorage.saveSession(user: user, rememberMe: rememberMe);
+    return user;
   }
 
   void _init() {
@@ -103,6 +118,11 @@ class SupabaseAuthRepository implements AuthRepository {
           if (profile != null) {
             _cachedProfile = profile;
             _controller.add(profile);
+            final rememberMe = await _sessionStorage.isRememberMeEnabled();
+            if (rememberMe) {
+              await _sessionStorage.saveSession(
+                  user: profile, rememberMe: true);
+            }
           }
         } else if (data.event == AuthChangeEvent.signedOut) {
           _cachedProfile = null;
@@ -151,12 +171,28 @@ class SupabaseAuthRepository implements AuthRepository {
   @override
   Future<UserProfile?> getCurrentUser() async {
     if (_cachedProfile != null) return _cachedProfile;
+
+    // 1. Check remembered session from local storage first
+    final remembered = await _sessionStorage.getRememberedUser();
+    if (remembered != null) {
+      _cachedProfile = remembered;
+      _controller.add(remembered);
+      return _cachedProfile;
+    }
+
     final client = _client;
     if (client == null) return null;
 
     final user = client.auth.currentUser;
     if (user == null) return null;
     _cachedProfile = await _fetchProfile(user.id);
+    if (_cachedProfile != null) {
+      final rememberMe = await _sessionStorage.isRememberMeEnabled();
+      if (rememberMe) {
+        await _sessionStorage.saveSession(
+            user: _cachedProfile!, rememberMe: true);
+      }
+    }
     return _cachedProfile;
   }
 
@@ -222,6 +258,7 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<UserProfile> loginWithPhone({
     required String phoneNumber,
     required String password,
+    bool rememberMe = true,
   }) async {
     try {
       final normalized = normalizePhone(phoneNumber);
@@ -241,18 +278,14 @@ class SupabaseAuthRepository implements AuthRepository {
                 entryClean.endsWith(clean.substring(clean.length - 9))) ||
             (entryClean.length >= 9 &&
                 clean.endsWith(entryClean.substring(entryClean.length - 9)))) {
-          _cachedProfile = entry.value;
-          _controller.add(entry.value);
-          return entry.value;
+          return await _commitUser(entry.value, rememberMe: rememberMe);
         }
       }
 
       // 1b. Check locally registered profiles
       if (_localProfiles.containsKey(normalized)) {
         final local = _localProfiles[normalized]!;
-        _cachedProfile = local;
-        _controller.add(local);
-        return local;
+        return await _commitUser(local, rememberMe: rememberMe);
       }
 
       final client = _client;
@@ -268,9 +301,7 @@ class SupabaseAuthRepository implements AuthRepository {
           createdAt: DateTime.now(),
         );
         _localProfiles[normalized] = offlineProfile;
-        _cachedProfile = offlineProfile;
-        _controller.add(offlineProfile);
-        return offlineProfile;
+        return await _commitUser(offlineProfile, rememberMe: rememberMe);
       }
 
       AuthResponse res;
@@ -285,9 +316,7 @@ class SupabaseAuthRepository implements AuthRepository {
       } on TimeoutException {
         if (_localProfiles.containsKey(normalized)) {
           final local = _localProfiles[normalized]!;
-          _cachedProfile = local;
-          _controller.add(local);
-          return local;
+          return await _commitUser(local, rememberMe: rememberMe);
         }
         throw const AuthFailure(
             'Connection timed out. Please check your internet connection.');
@@ -303,9 +332,7 @@ class SupabaseAuthRepository implements AuthRepository {
         } catch (_) {
           if (_localProfiles.containsKey(normalized)) {
             final local = _localProfiles[normalized]!;
-            _cachedProfile = local;
-            _controller.add(local);
-            return local;
+            return await _commitUser(local, rememberMe: rememberMe);
           }
           throw emailErr;
         }
@@ -332,9 +359,7 @@ class SupabaseAuthRepository implements AuthRepository {
       }
 
       _localProfiles[normalized] = profile;
-      _cachedProfile = profile;
-      _controller.add(profile);
-      return profile;
+      return await _commitUser(profile, rememberMe: rememberMe);
     } on AuthException catch (e) {
       throw AuthFailure(_formatErrorMessage(e.message));
     } catch (e) {
@@ -363,7 +388,7 @@ class SupabaseAuthRepository implements AuthRepository {
         throw const AuthFailure('Password must be at least 6 characters.');
       }
 
-      UserProfile createOfflineFallback() {
+      Future<UserProfile> createOfflineFallback() async {
         final offlineId =
             '00000000-0000-4000-a000-${DateTime.now().millisecondsSinceEpoch.toRadixString(16).padLeft(12, '0')}';
         final offlineProfile = UserProfile(
@@ -377,14 +402,12 @@ class SupabaseAuthRepository implements AuthRepository {
           createdAt: DateTime.now(),
         );
         _localProfiles[normalized] = offlineProfile;
-        _cachedProfile = offlineProfile;
-        _controller.add(offlineProfile);
-        return offlineProfile;
+        return await _commitUser(offlineProfile, rememberMe: true);
       }
 
       final client = _client;
       if (client == null) {
-        return createOfflineFallback();
+        return await createOfflineFallback();
       }
 
       final userMetadata = {
@@ -406,7 +429,7 @@ class SupabaseAuthRepository implements AuthRepository {
             )
             .timeout(const Duration(seconds: 5));
       } on TimeoutException {
-        return createOfflineFallback();
+        return await createOfflineFallback();
       } on AuthException catch (emailErr) {
         if (emailErr.message.contains('already registered') ||
             emailErr.message.contains('already exists')) {
@@ -421,15 +444,15 @@ class SupabaseAuthRepository implements AuthRepository {
               )
               .timeout(const Duration(seconds: 5));
         } catch (_) {
-          return createOfflineFallback();
+          return await createOfflineFallback();
         }
       } catch (_) {
-        return createOfflineFallback();
+        return await createOfflineFallback();
       }
 
       var registeredUser = res.user;
       if (registeredUser == null) {
-        return createOfflineFallback();
+        return await createOfflineFallback();
       }
 
       if (res.session == null) {
@@ -446,7 +469,7 @@ class SupabaseAuthRepository implements AuthRepository {
 
       final userId = registeredUser?.id ?? res.user?.id;
       if (userId == null) {
-        return createOfflineFallback();
+        return await createOfflineFallback();
       }
       final now = DateTime.now();
 
@@ -475,9 +498,7 @@ class SupabaseAuthRepository implements AuthRepository {
       );
 
       _localProfiles[normalized] = profile;
-      _cachedProfile = profile;
-      _controller.add(profile);
-      return profile;
+      return await _commitUser(profile, rememberMe: true);
     } on AuthException catch (e) {
       throw AuthFailure(_formatErrorMessage(e.message));
     } catch (e) {
@@ -489,6 +510,10 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<void> updateProfile(UserProfile profile) async {
     _cachedProfile = profile;
     _controller.add(profile);
+    final isRemembered = await _sessionStorage.isRememberMeEnabled();
+    if (isRemembered) {
+      await _sessionStorage.saveSession(user: profile, rememberMe: true);
+    }
 
     final client = _client;
     if (client != null) {
@@ -517,6 +542,7 @@ class SupabaseAuthRepository implements AuthRepository {
         await client.auth.signOut().timeout(const Duration(seconds: 3));
       } catch (_) {}
     }
+    await _sessionStorage.clearSession();
     _cachedProfile = null;
     _controller.add(null);
   }
