@@ -24,28 +24,37 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     await Future<void>.delayed(const Duration(milliseconds: 300));
     if (!mounted) return;
 
-    final authRepo = ref.read(authRepositoryProvider);
-    final user = await authRepo.getCurrentUser();
+    try {
+      final authRepo = ref.read(authRepositoryProvider);
+      final user = await authRepo.getCurrentUser();
 
-    if (mounted) {
-      if (user != null) {
-        await ref.read(currentUserProvider.notifier).updateProfile(user);
-        if (!mounted) return;
-        switch (user.role) {
-          case UserRole.teacher:
-            context.go('/teacher');
-            break;
-          case UserRole.schoolAdmin:
-            context.go('/school_admin');
-            break;
-          case UserRole.platformAdmin:
-            context.go('/admin');
-            break;
-          case UserRole.student:
-            context.go('/home');
-            break;
+      if (mounted) {
+        if (user != null) {
+          try {
+            await ref.read(currentUserProvider.notifier).updateProfile(user);
+          } catch (_) {}
+          if (!mounted) return;
+          switch (user.role) {
+            case UserRole.teacher:
+              context.go('/teacher');
+              break;
+            case UserRole.schoolAdmin:
+              context.go('/school_admin');
+              break;
+            case UserRole.platformAdmin:
+              context.go('/admin');
+              break;
+            case UserRole.student:
+              context.go('/home');
+              break;
+          }
+        } else {
+          context.go('/login');
         }
-      } else {
+      }
+    } catch (e) {
+      debugPrint('SplashScreen: error checking initial route: $e');
+      if (mounted) {
         context.go('/login');
       }
     }

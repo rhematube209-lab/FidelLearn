@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/auth/domain/models/user_profile.dart';
@@ -13,8 +13,13 @@ class AuthSessionStorage {
   static final Map<String, String> _memoryStore = {};
 
   Future<SharedPreferences?> _getPrefs() async {
-    if (Platform.environment.containsKey('FLUTTER_TEST')) {
-      return null;
+    // In Flutter test environment (native Dart VM), skip SharedPreferences to avoid platform channel hanging
+    if (!kIsWeb) {
+      try {
+        if (io.Platform.environment.containsKey('FLUTTER_TEST')) {
+          return null;
+        }
+      } catch (_) {}
     }
     try {
       return await SharedPreferences.getInstance();
