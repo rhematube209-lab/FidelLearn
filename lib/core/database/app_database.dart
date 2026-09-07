@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
+import 'connection/connection.dart' as impl;
 import 'tables.dart';
 
 part 'app_database.g.dart';
@@ -18,10 +14,10 @@ part 'app_database.g.dart';
   DbSyncQueue,
 ])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
+  AppDatabase([QueryExecutor? e]) : super(e ?? impl.constructDb());
 
   factory AppDatabase.inMemory() {
-    return AppDatabase(NativeDatabase.memory());
+    return AppDatabase(impl.constructInMemoryDb());
   }
 
   @override
@@ -36,12 +32,4 @@ class AppDatabase extends _$AppDatabase {
           // Schema upgrades will be specified here
         },
       );
-}
-
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'fidel_learn.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
 }
