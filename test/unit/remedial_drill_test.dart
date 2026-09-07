@@ -17,7 +17,7 @@ class MockContentRepository implements ContentRepository {
 
   @override
   Future<List<Subject>> getSubjects(
-          {required int grade, required String stream}) async =>
+          {int? grade, required String stream}) async =>
       [];
 
   @override
@@ -45,16 +45,19 @@ class MockContentRepository implements ContentRepository {
 
   @override
   Future<List<Question>> getQuestions({
-    required int grade,
+    int? grade,
     required String subjectId,
     String? unitId,
     String? topicId,
     String? difficulty,
     int? examYear,
+    int? startYear,
+    int? endYear,
+    List<int>? examYears,
     int? limit,
   }) async {
     var filtered = availableQuestions.where((q) {
-      if (q.grade != grade) return false;
+      if (grade != null && q.grade != grade) return false;
       if (q.subjectId != subjectId) return false;
       if (unitId != null && q.unitId != unitId) return false;
       if (topicId != null && q.topicId != topicId) return false;

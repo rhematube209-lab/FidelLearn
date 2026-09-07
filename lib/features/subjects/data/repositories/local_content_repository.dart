@@ -28,6 +28,7 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/content_seed_g12.json',
                     'assets/seed/biology_2013_seed.json',
                     'assets/seed/math_2014_seed.json',
+                    'assets/seed/secondary_curriculum_seed.json',
                   ]);
 
   @override
@@ -136,14 +137,15 @@ class LocalContentRepository implements ContentRepository {
 
   @override
   Future<List<Subject>> getSubjects({
-    required int grade,
+    int? grade,
     required String stream,
   }) async {
     await initializeSeedData();
     return _subjects
         .where(
           (s) =>
-              s.grade == grade && (s.stream == stream || s.stream == 'common'),
+              (grade == null || s.grade == grade) &&
+              (s.stream == stream || s.stream == 'common' || s.stream == 'general'),
         )
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
@@ -240,24 +242,37 @@ class LocalContentRepository implements ContentRepository {
 
   @override
   Future<List<Question>> getQuestions({
-    required int grade,
+    int? grade,
     required String subjectId,
     String? unitId,
     String? topicId,
     String? difficulty,
     int? examYear,
+    int? startYear,
+    int? endYear,
+    List<int>? examYears,
     int? limit,
   }) async {
     await initializeSeedData();
 
     var filtered = _questions.where((q) {
-      if (q.grade != grade) return false;
+      if (grade != null && q.grade != grade) return false;
       if (q.subjectId != subjectId) return false;
       if (q.verificationStatus != VerificationStatus.published) return false;
       if (unitId != null && q.unitId != unitId) return false;
       if (topicId != null && q.topicId != topicId) return false;
       if (difficulty != null && q.difficulty != difficulty) return false;
       if (examYear != null && q.examYear != examYear) return false;
+      if (startYear != null && (q.examYear == null || q.examYear! < startYear)) {
+        return false;
+      }
+      if (endYear != null && (q.examYear == null || q.examYear! > endYear)) {
+        return false;
+      }
+      if (examYears != null && examYears.isNotEmpty &&
+          (q.examYear == null || !examYears.contains(q.examYear))) {
+        return false;
+      }
       return true;
     }).toList();
 

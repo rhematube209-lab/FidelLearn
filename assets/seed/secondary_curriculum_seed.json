@@ -1,0 +1,392 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g9_math_nat_2026",
+      "subject_id": "math_g9",
+      "name_en": "Grade 9 Mathematics (National Curriculum Archive)",
+      "name_am": "የ9ኛ ክፍል ሂሳብ (ብሔራዊ ፈተና ማህደር)",
+      "grade": 9,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g10_math_nat_2026",
+      "subject_id": "math_g10",
+      "name_en": "Grade 10 Mathematics (National Curriculum Archive)",
+      "name_am": "የ10ኛ ክፍል ሂሳብ (ብሔራዊ ፈተና ማህደር)",
+      "grade": 10,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g11_math_nat_2026",
+      "subject_id": "math_g11",
+      "name_en": "Grade 11 Mathematics (Natural Science)",
+      "name_am": "የ11ኛ ክፍል ሂሳብ (የተፈጥሮ ሳይንስ)",
+      "grade": 11,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "math_g9",
+      "code": "MATH9",
+      "name_en": "Mathematics",
+      "name_am": "ሂሳብ",
+      "grade": 9,
+      "stream": "common",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "math_g10",
+      "code": "MATH10",
+      "name_en": "Mathematics",
+      "name_am": "ሂሳብ",
+      "grade": 10,
+      "stream": "common",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    },
+    {
+      "id": "math_g11",
+      "code": "MATH11",
+      "name_en": "Mathematics",
+      "name_am": "ሂሳብ",
+      "grade": 11,
+      "stream": "natural",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "math_g9_u1",
+      "subject_id": "math_g9",
+      "unit_number": 1,
+      "title_en": "The Number System",
+      "title_am": "የቁጥር ሥርዓት"
+    },
+    {
+      "id": "math_g9_u2",
+      "subject_id": "math_g9",
+      "unit_number": 2,
+      "title_en": "Equations and Inequalities",
+      "title_am": "እኩልታዎችና ያለመተካከል ግንኙነቶች"
+    },
+    {
+      "id": "math_g9_u3",
+      "subject_id": "math_g9",
+      "unit_number": 3,
+      "title_en": "Relations and Functions",
+      "title_am": "ዝምድናዎችና ፈንክሽኖች"
+    },
+    {
+      "id": "math_g9_u4",
+      "subject_id": "math_g9",
+      "unit_number": 4,
+      "title_en": "Geometry and Measurement",
+      "title_am": "ጂኦሜትሪና መለኪያ"
+    },
+    {
+      "id": "math_g9_u5",
+      "subject_id": "math_g9",
+      "unit_number": 5,
+      "title_en": "Statistics and Probability",
+      "title_am": "ስታቲስቲክስና ፕሮባቢሊቲ"
+    },
+    {
+      "id": "math_g10_u1",
+      "subject_id": "math_g10",
+      "unit_number": 1,
+      "title_en": "Polynomial Functions",
+      "title_am": "ፖሊኖሚያል ፈንክሽኖች"
+    },
+    {
+      "id": "math_g10_u2",
+      "subject_id": "math_g10",
+      "unit_number": 2,
+      "title_en": "Exponential and Logarithmic Functions",
+      "title_am": "ኤክስፖኔንሻልና ሎጋሪዝሚክ ፈንክሽኖች"
+    },
+    {
+      "id": "math_g11_u1",
+      "subject_id": "math_g11",
+      "unit_number": 1,
+      "title_en": "Further on Relations and Functions",
+      "title_am": "ተጨማሪ ዝምድናዎችና ፈንክሽኖች"
+    },
+    {
+      "id": "math_g11_u2",
+      "subject_id": "math_g11",
+      "unit_number": 2,
+      "title_en": "Rational Expressions and Equations",
+      "title_am": "ረሽናል አገላለጾችና እኩልታዎች"
+    }
+  ],
+  "topics": [
+    {
+      "id": "math_g9_t3_1",
+      "unit_id": "math_g9_u3",
+      "topic_number": 1,
+      "title_en": "Domain, Range and Relations",
+      "title_am": "የዝምድና ዳራና ክልል"
+    },
+    {
+      "id": "math_g9_t3_2",
+      "unit_id": "math_g9_u3",
+      "topic_number": 2,
+      "title_en": "Linear Functions and Graphs",
+      "title_am": "ቀጥተኛ ፈንክሽኖችና ግራፎች"
+    },
+    {
+      "id": "math_g9_t3_3",
+      "unit_id": "math_g9_u3",
+      "topic_number": 3,
+      "title_en": "Inverse of Relations & Evaluation",
+      "title_am": "የተገላቢጦሽ ዝምድናዎች"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_g9_math_u3_2013_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u3",
+      "topic_id": "math_g9_t3_1",
+      "exam_year": 2013,
+      "question_text_en": "If a relation R is given by R = {(x, y): y = 2x - 3 and x in {-1, 0, 2, 3}}, which of the following is the Range of R?",
+      "question_text_am": "ዝምድና R በ R = {(x, y): y = 2x - 3 እና x በ {-1, 0, 2, 3} ውስጥ} ቢሰጥ፣ ከሚከተሉት የ R ክልል (Range) የትኛው ነው?",
+      "difficulty": "easy",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2013 E.C. National Examination",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_13_1a", "label": "A", "text_en": "{-5, -3, 1, 3}", "text_am": "{-5, -3, 1, 3}", "is_correct": true },
+        { "id": "c_g9_13_1b", "label": "B", "text_en": "{-1, 0, 2, 3}", "text_am": "{-1, 0, 2, 3}", "is_correct": false },
+        { "id": "c_g9_13_1c", "label": "C", "text_en": "{-5, -3, 0, 3}", "text_am": "{-5, -3, 0, 3}", "is_correct": false },
+        { "id": "c_g9_13_1d", "label": "D", "text_en": "{-3, -1, 1, 5}", "text_am": "{-3, -1, 1, 5}", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Evaluate y = 2x - 3 for each element in the domain: For x = -1, y = 2(-1) - 3 = -5. For x = 0, y = 2(0) - 3 = -3. For x = 2, y = 2(2) - 3 = 1. For x = 3, y = 2(3) - 3 = 3. Thus, Range = {-5, -3, 1, 3}.",
+        "solution_text_am": "ለእያንዳንዱ የዳራ አባል y = 2x - 3 አስላ፡ x = -1 ሲሆን y = -5፤ x = 0 ሲሆን y = -3፤ x = 2 ሲሆን y = 1፤ x = 3 ሲሆን y = 3። ስለዚህ ክልል = {-5, -3, 1, 3}።",
+        "key_concept": "The range of a relation is the set of all second coordinates (output values y) corresponding to domain values x.",
+        "common_pitfall": "Confusing domain (x-values) with range (y-values) or arithmetic error when multiplying by negative numbers."
+      }
+    },
+    {
+      "id": "q_g9_math_u3_2014_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u3",
+      "topic_id": "math_g9_t3_2",
+      "exam_year": 2014,
+      "question_text_en": "What is the slope and y-intercept of the linear equation 3x - 4y + 12 = 0?",
+      "question_text_am": "የቀጥተኛ መስመር እኩልታ 3x - 4y + 12 = 0 ዝንባሌ (slope) እና የ y-ዘንግ መቁረጫ (y-intercept) ምንድን ነው?",
+      "difficulty": "medium",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2014 E.C. National Examination",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_14_1a", "label": "A", "text_en": "Slope = 3/4, y-intercept = 3", "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = 3", "is_correct": true },
+        { "id": "c_g9_14_1b", "label": "B", "text_en": "Slope = -3/4, y-intercept = -3", "text_am": "ዝንባሌ = -3/4, y-መቁረጫ = -3", "is_correct": false },
+        { "id": "c_g9_14_1c", "label": "C", "text_en": "Slope = 4/3, y-intercept = 4", "text_am": "ዝንባሌ = 4/3, y-መቁረጫ = 4", "is_correct": false },
+        { "id": "c_g9_14_1d", "label": "D", "text_en": "Slope = 3/4, y-intercept = -3", "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = -3", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Rewrite 3x - 4y + 12 = 0 in slope-intercept form y = mx + b: -4y = -3x - 12 => y = (3/4)x + 3. Here slope m = 3/4 and y-intercept b = 3.",
+        "solution_text_am": "እኩልታውን ወደ y = mx + b ቅርጽ እንቀይር፡ -4y = -3x - 12 => y = (3/4)x + 3። ስለዚህ ዝንባሌ m = 3/4 እና y-መቁረጫ b = 3።",
+        "key_concept": "In slope-intercept form y = mx + b, m represents slope and b represents the y-intercept.",
+        "common_pitfall": "Forgetting to divide the constant term by -4 when solving for y."
+      }
+    },
+    {
+      "id": "q_g9_math_u3_2015_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u3",
+      "topic_id": "math_g9_t3_2",
+      "exam_year": 2015,
+      "question_text_en": "Which of the following relations represents a function from set A = {1, 2, 3} to set B = {4, 5, 6}?",
+      "question_text_am": "ከሚከተሉት ዝምድናዎች ውስጥ ከስብስብ A = {1, 2, 3} ወደ B = {4, 5, 6} ፈንክሽን የሚሆነው የትኛው ነው?",
+      "difficulty": "easy",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2015 E.C. National Examination",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_15_1a", "label": "A", "text_en": "{(1, 4), (2, 5), (3, 6)}", "text_am": "{(1, 4), (2, 5), (3, 6)}", "is_correct": true },
+        { "id": "c_g9_15_1b", "label": "B", "text_en": "{(1, 4), (1, 5), (2, 6)}", "text_am": "{(1, 4), (1, 5), (2, 6)}", "is_correct": false },
+        { "id": "c_g9_15_1c", "label": "C", "text_en": "{(1, 5), (2, 5)}", "text_am": "{(1, 5), (2, 5)}", "is_correct": false },
+        { "id": "c_g9_15_1d", "label": "D", "text_en": "{(1, 4), (2, 5), (3, 7)}", "text_am": "{(1, 4), (2, 5), (3, 7)}", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "A relation from A to B is a function if every element in A has exactly one image in B. In option A, each element of {1, 2, 3} appears as the first coordinate exactly once, and all outputs {4, 5, 6} belong to B.",
+        "solution_text_am": "ፈንክሽን ለመሆን እያንዳንዱ የስብስብ A አባል ትክክል አንድ ምስል በ B ውስጥ ሊኖረው ይገባል። በአማራጭ A ላይ 1፣ 2 እና 3 አንድ ጊዜ ብቻ በመጀመሪያ መጋጠሚያነት ገብተዋል።",
+        "key_concept": "A function maps each element of the domain to exactly one unique element in the codomain.",
+        "common_pitfall": "Option B has the element 1 paired with two different outputs (4 and 5), violating the definition."
+      }
+    },
+    {
+      "id": "q_g9_math_u3_2016_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u3",
+      "topic_id": "math_g9_t3_3",
+      "exam_year": 2016,
+      "question_text_en": "Given the function f(x) = (3x + 5) / 2, what is the value of f^(-1)(7)?",
+      "question_text_am": "ፈንክሽን f(x) = (3x + 5) / 2 ቢሰጥ፣ የ f^(-1)(7) ዋጋ ስንት ነው?",
+      "difficulty": "medium",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2016 E.C. National Examination",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_16_1a", "label": "A", "text_en": "3", "text_am": "3", "is_correct": true },
+        { "id": "c_g9_16_1b", "label": "B", "text_en": "13", "text_am": "13", "is_correct": false },
+        { "id": "c_g9_16_1c", "label": "C", "text_en": "4", "text_am": "4", "is_correct": false },
+        { "id": "c_g9_16_1d", "label": "D", "text_en": "1", "text_am": "1", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Let f^(-1)(7) = x. Then f(x) = 7. Thus (3x + 5) / 2 = 7 => 3x + 5 = 14 => 3x = 9 => x = 3.",
+        "solution_text_am": "f^(-1)(7) = x እንበል። ስለዚህ f(x) = 7 ይሆናል። (3x + 5) / 2 = 7 => 3x + 5 = 14 => 3x = 9 => x = 3።",
+        "key_concept": "To find f^(-1)(y), set f(x) = y and solve for x directly without inverting the whole function first.",
+        "common_pitfall": "Calculating f(7) instead of f^(-1)(7)."
+      }
+    },
+    {
+      "id": "q_g9_math_u3_2017_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u3",
+      "topic_id": "math_g9_t3_2",
+      "exam_year": 2017,
+      "question_text_en": "Which of the following points lies on the line passing through (2, 3) and perpendicular to the line y = -2x + 1?",
+      "question_text_am": "በነጥብ (2, 3) አቋርጦ የሚያልፍ እና ለ y = -2x + 1 መስመር ቀጤ-ነክ (perpendicular) በሆነው መስመር ላይ የሚገኘው ነጥብ የትኛው ነው?",
+      "difficulty": "hard",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2017 E.C. National Examination",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_17_1a", "label": "A", "text_en": "(4, 4)", "text_am": "(4, 4)", "is_correct": true },
+        { "id": "c_g9_17_1b", "label": "B", "text_en": "(0, 1)", "text_am": "(0, 1)", "is_correct": false },
+        { "id": "c_g9_17_1c", "label": "C", "text_en": "(6, 6)", "text_am": "(6, 6)", "is_correct": false },
+        { "id": "c_g9_17_1d", "label": "D", "text_en": "(2, -3)", "text_am": "(2, -3)", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "The slope of y = -2x + 1 is m_1 = -2. The slope of a perpendicular line is m_2 = -1 / m_1 = 1/2. Using point-slope form with (2, 3): y - 3 = (1/2)(x - 2) => y = (1/2)x + 2. Testing (4, 4): (1/2)(4) + 2 = 2 + 2 = 4. Thus (4, 4) lies on the line.",
+        "solution_text_am": "የ y = -2x + 1 ዝንባሌ m_1 = -2 ነው። የቀጤ-ነክ መስመር ዝንባሌ m_2 = -1/(-2) = 1/2 ይሆናል። በነጥብ (2, 3) ቀመር፡ y - 3 = (1/2)(x - 2) => y = (1/2)x + 2። ነጥብ (4, 4) ን ስንተካ፡ (1/2)(4) + 2 = 4 እውነት ነው።",
+        "key_concept": "Perpendicular lines have slopes that are negative reciprocals: m_1 * m_2 = -1.",
+        "common_pitfall": "Using m = -2 instead of taking the negative reciprocal 1/2."
+      }
+    },
+    {
+      "id": "q_g9_math_u1_2014_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u1",
+      "topic_id": "math_g9_u1",
+      "exam_year": 2014,
+      "question_text_en": "Which of the following numbers is an irrational number?",
+      "question_text_am": "ከሚከተሉት ቁጥሮች ውስጥ ኢ-አመክንዮአዊ (irrational) ቁጥር የሆነው የትኛው ነው?",
+      "difficulty": "easy",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2014 E.C. National Examination",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_u1_1a", "label": "A", "text_en": "sqrt(7)", "text_am": "sqrt(7)", "is_correct": true },
+        { "id": "c_g9_u1_1b", "label": "B", "text_en": "0.333...", "text_am": "0.333...", "is_correct": false },
+        { "id": "c_g9_u1_1c", "label": "C", "text_en": "sqrt(25)", "text_am": "sqrt(25)", "is_correct": false },
+        { "id": "c_g9_u1_1d", "label": "D", "text_en": "-14/5", "text_am": "-14/5", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "sqrt(7) cannot be expressed as a ratio of two integers a/b because 7 is not a perfect square. Hence sqrt(7) is irrational.",
+        "solution_text_am": "7 ሙሉ ካሬ ስላልሆነ sqrt(7) በሁለት ሙሉ ቁጥሮች ክፍልፋይ ሊገለጽ አይችልም። ስለዚህ ኢ-አመክንዮአዊ ነው።",
+        "key_concept": "An irrational number cannot be expressed as a simple fraction a/b where a and b are integers and b != 0.",
+        "common_pitfall": "Confusing repeating decimals (like 0.333... = 1/3) with non-terminating non-repeating irrational numbers."
+      }
+    },
+    {
+      "id": "q_g9_math_u2_2015_01",
+      "grade": 9,
+      "stream": "common",
+      "subject_id": "math_g9",
+      "unit_id": "math_g9_u2",
+      "topic_id": "math_g9_u2",
+      "exam_year": 2015,
+      "question_text_en": "What is the solution set of the linear inequality 3(x - 2) <= 5x + 4?",
+      "question_text_am": "የያለመተካከል ግንኙነት 3(x - 2) <= 5x + 4 የመፍትሄ ስብስብ የትኛው ነው?",
+      "difficulty": "medium",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2015 E.C. National Examination",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g9_u2_1a", "label": "A", "text_en": "[-5, infinity)", "text_am": "[-5, infinity)", "is_correct": true },
+        { "id": "c_g9_u2_1b", "label": "B", "text_en": "(-infinity, -5]", "text_am": "(-infinity, -5]", "is_correct": false },
+        { "id": "c_g9_u2_1c", "label": "C", "text_en": "[5, infinity)", "text_am": "[5, infinity)", "is_correct": false },
+        { "id": "c_g9_u2_1d", "label": "D", "text_en": "(-infinity, -1]", "text_am": "(-infinity, -1]", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "Expand: 3x - 6 <= 5x + 4 => 3x - 5x <= 4 + 6 => -2x <= 10. Dividing by -2 reverses the inequality: x >= -5. In interval notation, this is [-5, infinity).",
+        "solution_text_am": "3x - 6 <= 5x + 4 => -2x <= 10። በ -2 ስናካፍል ምልክቱ ይገለበጣል፡ x >= -5። በክፍተት አገላለጽ [-5, infinity) ይሆናል።",
+        "key_concept": "Multiplying or dividing both sides of an inequality by a negative number reverses the direction of the inequality sign.",
+        "common_pitfall": "Forgetting to flip the inequality sign when dividing by -2."
+      }
+    },
+    {
+      "id": "q_g10_math_u1_2016_01",
+      "grade": 10,
+      "stream": "common",
+      "subject_id": "math_g10",
+      "unit_id": "math_g10_u1",
+      "topic_id": "math_g10_u1",
+      "exam_year": 2016,
+      "question_text_en": "If polynomial P(x) = 2x^3 - 3x^2 + kx - 5 is divided by (x - 2) and the remainder is 7, what is the value of k?",
+      "question_text_am": "ፖሊኖሚያል P(x) = 2x^3 - 3x^2 + kx - 5 ለ (x - 2) ተካፍሎ ቀሪው 7 ከሆነ፣ የ k ዋጋ ስንት ነው?",
+      "difficulty": "medium",
+      "verificationStatus": "published",
+      "source_name": "ESSLCE 2016 E.C. National Examination",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        { "id": "c_g10_u1_1a", "label": "A", "text_en": "4", "text_am": "4", "is_correct": true },
+        { "id": "c_g10_u1_1b", "label": "B", "text_en": "-4", "text_am": "-4", "is_correct": false },
+        { "id": "c_g10_u1_1c", "label": "C", "text_en": "6", "text_am": "6", "is_correct": false },
+        { "id": "c_g10_u1_1d", "label": "D", "text_en": "2", "text_am": "2", "is_correct": false }
+      ],
+      "explanation": {
+        "solution_text_en": "By the Remainder Theorem, P(2) = 7. P(2) = 2(2^3) - 3(2^2) + k(2) - 5 = 2(8) - 3(4) + 2k - 5 = 16 - 12 + 2k - 5 = 2k - 1. Set 2k - 1 = 7 => 2k = 8 => k = 4.",
+        "solution_text_am": "በቀሪ ቴዎረም መሰረት P(2) = 7 ነው። P(2) = 16 - 12 + 2k - 5 = 2k - 1 = 7 => 2k = 8 => k = 4።",
+        "key_concept": "The Remainder Theorem states that when P(x) is divided by (x - c), the remainder is P(c).",
+        "common_pitfall": "Evaluating P(-2) instead of P(2)."
+      }
+    }
+  ]
+}

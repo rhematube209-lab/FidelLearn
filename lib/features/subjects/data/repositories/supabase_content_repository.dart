@@ -37,17 +37,18 @@ class SupabaseContentRepository implements ContentRepository {
 
   @override
   Future<List<Subject>> getSubjects({
-    required int grade,
+    int? grade,
     required String stream,
   }) async {
     final client = _client;
     if (client != null) {
       try {
-        final response = await client
-            .from('subjects')
-            .select()
-            .eq('grade', grade)
-            .or('stream.eq.$stream,stream.eq.common')
+        dynamic query = client.from('subjects').select();
+        if (grade != null) {
+          query = query.eq('grade', grade);
+        }
+        final response = await query
+            .or('stream.eq.$stream,stream.eq.common,stream.eq.general')
             .order('sort_order', ascending: true)
             .timeout(const Duration(seconds: 5));
 
@@ -169,12 +170,15 @@ class SupabaseContentRepository implements ContentRepository {
 
   @override
   Future<List<Question>> getQuestions({
-    required int grade,
+    int? grade,
     required String subjectId,
     String? unitId,
     String? topicId,
     String? difficulty,
     int? examYear,
+    int? startYear,
+    int? endYear,
+    List<int>? examYears,
     int? limit,
   }) async {
     final client = _client;
@@ -183,10 +187,12 @@ class SupabaseContentRepository implements ContentRepository {
         dynamic query = client
             .from('questions')
             .select('*, choices:answer_choices(*), explanations(*)')
-            .eq('grade', grade)
             .eq('subject_id', subjectId)
             .eq('verification_status', 'published');
 
+        if (grade != null) {
+          query = query.eq('grade', grade);
+        }
         if (unitId != null) {
           query = query.eq('unit_id', unitId);
         }
@@ -198,6 +204,15 @@ class SupabaseContentRepository implements ContentRepository {
         }
         if (examYear != null) {
           query = query.eq('exam_year', examYear);
+        }
+        if (startYear != null) {
+          query = query.gte('exam_year', startYear);
+        }
+        if (endYear != null) {
+          query = query.lte('exam_year', endYear);
+        }
+        if (examYears != null && examYears.isNotEmpty) {
+          query = query.inFilter('exam_year', examYears);
         }
         if (limit != null && limit > 0) {
           query = query.limit(limit);
@@ -222,6 +237,9 @@ class SupabaseContentRepository implements ContentRepository {
       topicId: topicId,
       difficulty: difficulty,
       examYear: examYear,
+      startYear: startYear,
+      endYear: endYear,
+      examYears: examYears,
       limit: limit,
     );
   }

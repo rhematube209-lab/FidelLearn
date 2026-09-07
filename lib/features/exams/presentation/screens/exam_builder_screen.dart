@@ -12,6 +12,12 @@ import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/services/exam_engine.dart';
 
+enum ExamYearFilterMode {
+  range,
+  single,
+  all,
+}
+
 class ExamBuilderScreen extends ConsumerStatefulWidget {
   final String? initialSubjectId;
   final String? mode; // 'mock' or 'custom'
@@ -23,6 +29,8 @@ class ExamBuilderScreen extends ConsumerStatefulWidget {
 }
 
 class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
+  // Curriculum Scope State
+  int? _selectedGrade; // 9, 10, 11, 12, or null for all (9-12)
   List<Subject> _subjects = [];
   List<Unit> _units = [];
   List<Topic> _topics = [];
@@ -31,7 +39,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   String? _selectedUnitId;
   String? _selectedTopicId;
   String? _selectedDifficulty; // null = all
-  int? _selectedYear; // null = all
+
+  // National Exam Year Selection
+  ExamYearFilterMode _yearMode = ExamYearFilterMode.range;
+  int _selectedSingleYear = 2014;
+  int _rangeStartYear = 2013;
+  int _rangeEndYear = 2017;
+  final List<int> _availableYears = const [
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+  ];
+
+  // Live Matching Questions Counter
+  int _matchingQuestionCount = 0;
+  bool _isCountingQuestions = false;
+
+  // Exam Simulation Parameters
   int _questionCount = 10;
   bool _isTimed = false;
   int _timeLimitMinutes = 20;
@@ -50,34 +83,83 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final user = ref.read(currentUserProvider).valueOrNull;
     final contentRepo = ref.read(contentRepositoryProvider);
 
+    _selectedGrade = user?.grade ?? 12;
+
     if (user != null) {
       final subs = await contentRepo.getSubjects(
-        grade: user.grade,
+        grade: _selectedGrade,
         stream: user.stream,
       );
-      setState(() {
-        _subjects = subs;
-        if (subs.isNotEmpty) {
-          _selectedSubjectId = widget.initialSubjectId ?? subs.first.id;
-        }
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _subjects = subs;
+          if (subs.isNotEmpty) {
+            _selectedSubjectId = widget.initialSubjectId ?? subs.first.id;
+          }
+          _isLoading = false;
+        });
+      }
 
       if (_selectedSubjectId != null) {
         await _loadUnitsAndTopics(_selectedSubjectId!);
+      } else {
+        await _updateMatchingQuestionCount();
       }
+    }
+  }
+
+  Future<void> _onGradeChanged(int? grade) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    final contentRepo = ref.read(contentRepositoryProvider);
+
+    setState(() {
+      _selectedGrade = grade;
+      _selectedSubjectId = null;
+      _selectedUnitId = null;
+      _selectedTopicId = null;
+      _units = [];
+      _topics = [];
+    });
+
+    final subs = await contentRepo.getSubjects(
+      grade: grade,
+      stream: user?.stream ?? 'natural',
+    );
+
+    if (mounted) {
+      setState(() {
+        _subjects = subs;
+        if (subs.isNotEmpty) {
+          _selectedSubjectId = subs.first.id;
+        }
+      });
+    }
+
+    if (_selectedSubjectId != null) {
+      await _loadUnitsAndTopics(_selectedSubjectId!);
+    } else {
+      await _updateMatchingQuestionCount();
     }
   }
 
   Future<void> _loadUnitsAndTopics(String subjectId) async {
     final contentRepo = ref.read(contentRepositoryProvider);
     final units = await contentRepo.getUnits(subjectId);
-    setState(() {
-      _units = units;
-      _selectedUnitId = null;
-      _selectedTopicId = null;
-      _topics = [];
-    });
+    if (mounted) {
+      setState(() {
+        _units = units;
+        _selectedUnitId = null;
+        _selectedTopicId = null;
+        _topics = [];
+      });
+    }
+    await _updateMatchingQuestionCount();
+  }
+
+  Future<void> _onSubjectChanged(String? subjectId) async {
+    if (subjectId == null) return;
+    setState(() => _selectedSubjectId = subjectId);
+    await _loadUnitsAndTopics(subjectId);
   }
 
   Future<void> _onUnitChanged(String? unitId) async {
@@ -89,9 +171,45 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     if (unitId != null) {
       final contentRepo = ref.read(contentRepositoryProvider);
       final topics = await contentRepo.getTopics(unitId);
-      setState(() => _topics = topics);
+      if (mounted) {
+        setState(() => _topics = topics);
+      }
     } else {
-      setState(() => _topics = []);
+      if (mounted) {
+        setState(() => _topics = []);
+      }
+    }
+    await _updateMatchingQuestionCount();
+  }
+
+  Future<void> _updateMatchingQuestionCount() async {
+    if (_selectedSubjectId == null) {
+      if (mounted) setState(() => _matchingQuestionCount = 0);
+      return;
+    }
+    if (mounted) setState(() => _isCountingQuestions = true);
+    final contentRepo = ref.read(contentRepositoryProvider);
+    try {
+      final qs = await contentRepo.getQuestions(
+        grade: _selectedGrade,
+        subjectId: _selectedSubjectId!,
+        unitId: _selectedUnitId,
+        topicId: _selectedTopicId,
+        difficulty: _selectedDifficulty,
+        examYear: _yearMode == ExamYearFilterMode.single ? _selectedSingleYear : null,
+        startYear: _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
+        endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
+      );
+      if (mounted) {
+        setState(() {
+          _matchingQuestionCount = qs.length;
+          _isCountingQuestions = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _isCountingQuestions = false);
+      }
     }
   }
 
@@ -109,18 +227,23 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
     try {
       final questions = await contentRepo.getQuestions(
-        grade: user.grade,
+        grade: _selectedGrade,
         subjectId: _selectedSubjectId!,
         unitId: _selectedUnitId,
         topicId: _selectedTopicId,
         difficulty: _selectedDifficulty,
-        examYear: _selectedYear,
+        examYear:
+            _yearMode == ExamYearFilterMode.single ? _selectedSingleYear : null,
+        startYear:
+            _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
+        endYear:
+            _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
       );
 
       if (questions.isEmpty) {
         setState(() {
           _errorMessage =
-              'No questions match the selected filter criteria. Try selecting all units or clearing difficulty.';
+              'No questions match the selected criteria. Try selecting all units, broadening the year range (e.g. 2013-2017), or clearing difficulty.';
           _isLoading = false;
         });
         return;
@@ -132,14 +255,42 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       final shuffled = List<Question>.from(questions)..shuffle();
       final selectedQuestions = shuffled.sublist(0, count);
 
-      final subject = _subjects.firstWhere((s) => s.id == _selectedSubjectId);
+      final subject = _subjects.firstWhere(
+        (s) => s.id == _selectedSubjectId,
+        orElse: () => Subject(
+          id: _selectedSubjectId!,
+          code: 'SUBJ',
+          nameEn: 'Practice Subject',
+          nameAm: 'የትምህርት ዓይነት',
+          grade: _selectedGrade ?? 12,
+          stream: user.stream,
+          sortOrder: 1,
+        ),
+      );
+
+      // Build descriptive exam title
+      final gradeLabel = _selectedGrade != null
+          ? 'Grade $_selectedGrade '
+          : 'Grades 9-12 ';
+      final unitObj =
+          _units.where((u) => u.id == _selectedUnitId).firstOrNull;
+      final unitLabel = unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
+      final yearLabel = _yearMode == ExamYearFilterMode.range
+          ? ' [$_rangeStartYear-$_rangeEndYear E.C.]'
+          : (_yearMode == ExamYearFilterMode.single
+              ? ' [$_selectedSingleYear E.C.]'
+              : '');
+      final modeLabel =
+          _isTimed ? ' Timed Mock' : ' Practice';
+
+      final title =
+          '$gradeLabel${subject.nameEn}$unitLabel$yearLabel$modeLabel';
+
       final exam = Exam(
         id: 'exam_${DateTime.now().millisecondsSinceEpoch}',
-        title: _isTimed
-            ? '${subject.nameEn} Timed Mock'
-            : '${subject.nameEn} Practice Session',
+        title: title,
         examType: _isTimed ? ExamType.mockFull : ExamType.customBuilder,
-        grade: user.grade,
+        grade: _selectedGrade ?? user.grade,
         stream: user.stream,
         subjectId: _selectedSubjectId,
         timeLimitMinutes: _isTimed ? _timeLimitMinutes : 0,
@@ -182,7 +333,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          _isTimed ? 'Timed National Mock Exam' : 'Custom Exam Builder',
+          _isTimed ? 'Timed National Mock Exam' : 'Custom National Exam Practice',
           style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         leading: IconButton(
@@ -204,7 +355,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Mode Selector Pill
+                      // Mode Selector Pill (Practice vs Mock)
                       _buildModeSelector(isDark),
                       const SizedBox(height: 20),
 
@@ -395,32 +546,68 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppTheme.brand.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                ),
-                child: const Icon(Icons.menu_book_rounded,
-                    color: AppTheme.brand, size: 20),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: AppTheme.brand.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    ),
+                    child: const Icon(Icons.menu_book_rounded,
+                        color: AppTheme.brand, size: 20),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'Curriculum & Exam Scope',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              Text(
-                'Curriculum Scope',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                ),
+              const FidelBadge(
+                text: 'Secondary 9-12',
+                variant: FidelBadgeVariant.primary,
+                isSmall: true,
               ),
             ],
           ),
           const SizedBox(height: 18),
 
-          // 1. Subject Selector
+          // 1. Grade Selector (9-12)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Curriculum Grade (ክፍል)',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                  color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                ),
+              ),
+              Text(
+                'National Exam Scope',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          _buildGradeSelector(isDark),
+          const SizedBox(height: 18),
+
+          // 2. Subject Selector
           Text(
-            'Target Subject',
+            'Target Subject (የትምህርት ዓይነት)',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,
@@ -434,24 +621,19 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             items: _subjects.map((s) {
               return DropdownMenuItem(
                 value: s.id,
-                child: Text('${s.nameEn} (${s.code})',
+                child: Text('${s.nameEn} (${s.nameAm}) - ${s.code}',
                     overflow: TextOverflow.ellipsis),
               );
             }).toList(),
-            onChanged: (val) {
-              if (val != null) {
-                setState(() => _selectedSubjectId = val);
-                _loadUnitsAndTopics(val);
-              }
-            },
+            onChanged: _onSubjectChanged,
             decoration:
                 const InputDecoration(prefixIcon: Icon(Icons.school_outlined)),
           ),
           const SizedBox(height: 18),
 
-          // 2. Unit Filter
+          // 3. Unit Filter
           Text(
-            'Curriculum Unit',
+            'Curriculum Unit (ምዕራፍ)',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,
@@ -471,7 +653,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               ..._units.map(
                 (u) => DropdownMenuItem(
                   value: u.id,
-                  child: Text('Unit ${u.unitNumber}: ${u.titleEn}',
+                  child: Text('Unit ${u.unitNumber}: ${u.titleEn} (${u.titleAm})',
                       overflow: TextOverflow.ellipsis),
                 ),
               ),
@@ -482,10 +664,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ),
           const SizedBox(height: 18),
 
-          // 3. Topic Filter
+          // 4. Specific Topic (if unit selected & topics exist)
           if (_topics.isNotEmpty) ...[
             Text(
-              'Specific Topic',
+              'Specific Topic (ንዑስ ርዕስ)',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
@@ -509,14 +691,43 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   ),
                 ),
               ],
-              onChanged: (val) => setState(() => _selectedTopicId = val),
+              onChanged: (val) {
+                setState(() => _selectedTopicId = val);
+                _updateMatchingQuestionCount();
+              },
               decoration:
                   const InputDecoration(prefixIcon: Icon(Icons.topic_outlined)),
             ),
             const SizedBox(height: 18),
           ],
 
-          // 4. Difficulty Selector
+          // 5. National Examination Year Selector
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'National Exam Year (የፈተና ዓመት)',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13,
+                  color:
+                      isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+                ),
+              ),
+              const FidelBadge(
+                text: 'Archive Filter',
+                variant: FidelBadgeVariant.neutral,
+                isSmall: true,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          _buildYearModePills(isDark),
+          const SizedBox(height: 12),
+          _buildYearSelectorContent(isDark),
+          const SizedBox(height: 18),
+
+          // 6. Difficulty Selector
           Text(
             'Difficulty Level',
             style: TextStyle(
@@ -537,6 +748,427 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               _buildDifficultyChip('Hard', 'hard', isDark),
             ],
           ),
+          const SizedBox(height: 18),
+
+          // 7. Live Matching Questions Counter Badge
+          _buildLiveQuestionsIndicator(isDark),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGradeSelector(bool isDark) {
+    final gradeOptions = [
+      {'label': 'Grade 9', 'value': 9},
+      {'label': 'Grade 10', 'value': 10},
+      {'label': 'Grade 11', 'value': 11},
+      {'label': 'Grade 12', 'value': 12},
+      {'label': 'All (9-12)', 'value': null},
+    ];
+
+    return Row(
+      children: gradeOptions.map((opt) {
+        final val = opt['value'] as int?;
+        final label = opt['label'] as String;
+        final isSelected = _selectedGrade == val;
+
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: InkWell(
+              onTap: () => _onGradeChanged(val),
+              borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180),
+                padding: const EdgeInsets.symmetric(vertical: 9),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? (isDark
+                          ? AppTheme.brand.withValues(alpha: 0.25)
+                          : AppTheme.brandSubtle)
+                      : (isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC)),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                  border: Border.all(
+                    color: isSelected
+                        ? AppTheme.brand
+                        : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
+                    width: isSelected ? 1.5 : 1.0,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight:
+                          isSelected ? FontWeight.w700 : FontWeight.w500,
+                      color: isSelected
+                          ? (isDark ? Colors.white : AppTheme.brandStrong)
+                          : (isDark
+                              ? AppTheme.darkTextSoft
+                              : AppTheme.lightTextSoft),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildYearModePills(bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          _buildYearModeOption(
+            label: 'Year Range (ክልል)',
+            mode: ExamYearFilterMode.range,
+            isDark: isDark,
+          ),
+          _buildYearModeOption(
+            label: 'Single Year (አንድ ዓመት)',
+            mode: ExamYearFilterMode.single,
+            isDark: isDark,
+          ),
+          _buildYearModeOption(
+            label: 'All Years (ሁሉም)',
+            mode: ExamYearFilterMode.all,
+            isDark: isDark,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYearModeOption({
+    required String label,
+    required ExamYearFilterMode mode,
+    required bool isDark,
+  }) {
+    final isSelected = _yearMode == mode;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          setState(() => _yearMode = mode);
+          _updateMatchingQuestionCount();
+        },
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm - 2),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 7),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? (isDark ? AppTheme.brandStrong : Colors.white)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppTheme.radiusSm - 2),
+            boxShadow: isSelected
+                ? (isDark
+                    ? AppTheme.cardShadowDark
+                    : AppTheme.cardShadowLight)
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11.5,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected
+                    ? (isDark ? Colors.white : AppTheme.brandStrong)
+                    : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYearSelectorContent(bool isDark) {
+    if (_yearMode == ExamYearFilterMode.range) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'From Year (ከዓመተ ምሕረት)',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppTheme.darkTextSoft
+                            : AppTheme.lightTextSoft,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: _rangeStartYear,
+                      items: _availableYears.map((yr) {
+                        return DropdownMenuItem(
+                          value: yr,
+                          child: Text('$yr E.C.'),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          setState(() {
+                            _rangeStartYear = val;
+                            if (_rangeEndYear < val) _rangeEndYear = val;
+                          });
+                          _updateMatchingQuestionCount();
+                        }
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 14.0),
+                child: Text('→',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'To Year (እስከ ዓመተ ምሕረት)',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppTheme.darkTextSoft
+                            : AppTheme.lightTextSoft,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    DropdownButtonFormField<int>(
+                      isExpanded: true,
+                      value: _rangeEndYear,
+                      items: _availableYears.map((yr) {
+                        return DropdownMenuItem(
+                          value: yr,
+                          child: Text('$yr E.C.'),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          setState(() {
+                            _rangeEndYear = val;
+                            if (_rangeStartYear > val) _rangeStartYear = val;
+                          });
+                          _updateMatchingQuestionCount();
+                        }
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          // Quick presets
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              _buildYearPresetChip('2013 - 2017 (5-Year Retrospective)', 2013, 2017, isDark),
+              _buildYearPresetChip('2018 - 2021', 2018, 2021, isDark),
+              _buildYearPresetChip('2022 - 2024 (Latest)', 2022, 2024, isDark),
+            ],
+          ),
+        ],
+      );
+    } else if (_yearMode == ExamYearFilterMode.single) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Select Examination Year',
+            style: TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
+            ),
+          ),
+          const SizedBox(height: 6),
+          DropdownButtonFormField<int>(
+            isExpanded: true,
+            value: _selectedSingleYear,
+            items: _availableYears.map((yr) {
+              return DropdownMenuItem(
+                value: yr,
+                child: Text('ESSLCE $yr E.C. National Examination'),
+              );
+            }).toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() => _selectedSingleYear = val);
+                _updateMatchingQuestionCount();
+              }
+            },
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.event_note_rounded),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+          color: isDark
+              ? AppTheme.brand.withValues(alpha: 0.12)
+              : AppTheme.brandSubtle,
+          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+          border: Border.all(
+            color: isDark
+                ? AppTheme.brand.withValues(alpha: 0.3)
+                : AppTheme.brandSubtle,
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.history_edu_rounded,
+                size: 18, color: AppTheme.brand),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Includes questions across all archived Ethiopian national examination series (2013–2024 E.C.).',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? AppTheme.darkTextSoft : AppTheme.brandStrong,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget _buildYearPresetChip(
+      String label, int start, int end, bool isDark) {
+    final isActive = _rangeStartYear == start && _rangeEndYear == end;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _rangeStartYear = start;
+          _rangeEndYear = end;
+        });
+        _updateMatchingQuestionCount();
+      },
+      borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: isActive
+              ? (isDark
+                  ? AppTheme.brand.withValues(alpha: 0.25)
+                  : AppTheme.brandSubtle)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppTheme.radiusPill),
+          border: Border.all(
+            color: isActive
+                ? AppTheme.brand
+                : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive
+                ? (isDark ? Colors.white : AppTheme.brandStrong)
+                : (isDark ? AppTheme.darkMuted : AppTheme.lightMuted),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiveQuestionsIndicator(bool isDark) {
+    final hasQuestions = _matchingQuestionCount > 0;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      decoration: BoxDecoration(
+        color: hasQuestions
+            ? (isDark
+                ? AppTheme.green.withValues(alpha: 0.12)
+                : const Color(0xFFECFDF5))
+            : (isDark
+                ? AppTheme.accent.withValues(alpha: 0.12)
+                : const Color(0xFFFFFBEB)),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+        border: Border.all(
+          color: hasQuestions
+              ? AppTheme.green.withValues(alpha: 0.35)
+              : AppTheme.accent.withValues(alpha: 0.4),
+        ),
+      ),
+      child: Row(
+        children: [
+          if (_isCountingQuestions)
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppTheme.brand,
+              ),
+            )
+          else
+            Icon(
+              hasQuestions
+                  ? Icons.check_circle_outline_rounded
+                  : Icons.info_outline_rounded,
+              size: 18,
+              color: hasQuestions ? AppTheme.green : AppTheme.accent,
+            ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              _isCountingQuestions
+                  ? 'Calculating matching questions in national archive...'
+                  : (hasQuestions
+                      ? '✓ $_matchingQuestionCount Verified Questions match your custom criteria'
+                      : 'No questions match this combination. Try selecting all units or expanding the year range.'),
+              style: TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w600,
+                color: hasQuestions
+                    ? (isDark ? const Color(0xFF6EE7B7) : const Color(0xFF047857))
+                    : (isDark ? const Color(0xFFFCD34D) : const Color(0xFFB45309)),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -546,7 +1178,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final isSelected = _selectedDifficulty == value;
     return Expanded(
       child: InkWell(
-        onTap: () => setState(() => _selectedDifficulty = value),
+        onTap: () {
+          setState(() => _selectedDifficulty = value);
+          _updateMatchingQuestionCount();
+        },
         borderRadius: BorderRadius.circular(AppTheme.radiusSm),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -630,7 +1265,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ),
           const SizedBox(height: 10),
           Row(
-            children: [10, 20, 30, 50].map((preset) {
+            children: [5, 10, 20, 30].map((preset) {
               final isSelected = _questionCount == preset;
               return Expanded(
                 child: Padding(
@@ -680,7 +1315,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
           // Slider for fine tuning
           Slider(
-            value: _questionCount.toDouble(),
+            value: _questionCount.toDouble().clamp(5.0, 50.0),
             min: 5,
             max: 50,
             divisions: 9,
