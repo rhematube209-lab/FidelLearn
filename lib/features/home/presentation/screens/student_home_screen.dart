@@ -210,52 +210,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: isDesktop
-          ? null
-          : AppBar(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: AppTheme.brandStrong,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusXs),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'ፊ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'FidelLearn',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.4,
-                      fontSize: 19,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: SyncIndicatorWidget(isCompact: true),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.person_outline_rounded),
-                  onPressed: () => context.push('/profile'),
-                ),
-              ],
-            ),
+      // No top header AppBar - Hero card starts edge-to-edge from the very top
       body: Row(
         children: [
           // 🖥️ Desktop Navigation Rail
@@ -269,90 +224,101 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               color: AppTheme.brand,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 40.0 : (isTablet ? 24.0 : 16.0),
-                  vertical: isDesktop ? 32.0 : 16.0,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1240),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Desktop Header
-                        if (isDesktop) ...[
-                          _buildDesktopHeader(
-                              context, user, coinBalance, isAmharic, isDark),
-                          const SizedBox(height: 24),
-                        ],
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // 🚀 Section 1: Full-Width Hero Card (Zero Side Paddings)
+                    _buildMissionControlHero(
+                        context, user, isAmharic, isDark),
 
-                        // 🚀 Section 1: Modern Mission Control Hero Banner
-                        _buildMissionControlHero(
-                            context, user, isAmharic, isDark),
-                        const SizedBox(height: 32),
-
-                        // 📚 Section 2: National Exam Subjects
-                        _buildSubjectSection(context, isAmharic, isDark),
-                        const SizedBox(height: 32),
-
-                        // Multi-Column Desktop Layout vs Single-Column Mobile for Remaining Tools & Intelligence
-                        if (isDesktop)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    // Content Container with Responsive Margins Below Hero Card
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal:
+                            isDesktop ? 40.0 : (isTablet ? 24.0 : 16.0),
+                        vertical: 28.0,
+                      ),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints:
+                              const BoxConstraints(maxWidth: 1240),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Left: Quick Actions & Featured Mock Exam (55%)
-                              Expanded(
-                                flex: 55,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    _buildQuickActions(context, isDark),
-                                    const SizedBox(height: 24),
-                                    _buildFeaturedExamCard(context, isDark),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 28),
+                              // 📚 Section 2: National Exam Subjects
+                              _buildSubjectSection(
+                                  context, isAmharic, isDark),
+                              const SizedBox(height: 32),
 
-                              // Right: Readiness Gauge, Weak Topics & Recent Attempts (45%)
-                              Expanded(
-                                flex: 45,
-                                child: Column(
+                              // Multi-Column Desktop Layout vs Single-Column Mobile for Remaining Tools & Intelligence
+                              if (isDesktop)
+                                Row(
                                   crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                      CrossAxisAlignment.start,
                                   children: [
-                                    _buildReadinessGaugeCard(context, isDark),
-                                    const SizedBox(height: 24),
-                                    _buildWeakTopicRadarCard(context, isDark),
-                                    if (_recentAttempt != null) ...[
-                                      const SizedBox(height: 24),
-                                      _buildRecentPerformanceCard(
-                                          context, isDark),
-                                    ],
+                                    // Left: Quick Actions & Featured Mock Exam (55%)
+                                    Expanded(
+                                      flex: 55,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          _buildQuickActions(
+                                              context, isDark),
+                                          const SizedBox(height: 24),
+                                          _buildFeaturedExamCard(
+                                              context, isDark),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 28),
+
+                                    // Right: Readiness Gauge, Weak Topics & Recent Attempts (45%)
+                                    Expanded(
+                                      flex: 45,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          _buildReadinessGaugeCard(
+                                              context, isDark),
+                                          const SizedBox(height: 24),
+                                          _buildWeakTopicRadarCard(
+                                              context, isDark),
+                                          if (_recentAttempt != null) ...[
+                                            const SizedBox(height: 24),
+                                            _buildRecentPerformanceCard(
+                                                context, isDark),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
+                                )
+                              else ...[
+                                // Mobile: Quick Actions & Intelligence Cards
+                                _buildQuickActions(context, isDark),
+                                const SizedBox(height: 24),
+                                _buildFeaturedExamCard(context, isDark),
+                                const SizedBox(height: 24),
+                                _buildReadinessGaugeCard(
+                                    context, isDark),
+                                const SizedBox(height: 28),
+                                _buildWeakTopicRadarCard(context, isDark),
+                                if (_recentAttempt != null) ...[
+                                  const SizedBox(height: 24),
+                                  _buildRecentPerformanceCard(
+                                      context, isDark),
+                                ],
+                              ],
+                              const SizedBox(height: 32),
                             ],
-                          )
-                        else ...[
-                          // Mobile: Quick Actions & Intelligence Cards
-                          _buildQuickActions(context, isDark),
-                          const SizedBox(height: 24),
-                          _buildFeaturedExamCard(context, isDark),
-                          const SizedBox(height: 24),
-                          _buildReadinessGaugeCard(context, isDark),
-                          const SizedBox(height: 28),
-                          _buildWeakTopicRadarCard(context, isDark),
-                          if (_recentAttempt != null) ...[
-                            const SizedBox(height: 24),
-                            _buildRecentPerformanceCard(context, isDark),
-                          ],
-                        ],
-                        const SizedBox(height: 40),
-                      ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -668,93 +634,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     );
   }
 
-  // ==========================================
-  // 🖥️ TOP DESKTOP HEADER
-  // ==========================================
-  Widget _buildDesktopHeader(
-    BuildContext context,
-    UserProfile user,
-    int coinBalance,
-    bool isAmharic,
-    bool isDark,
-  ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                isAmharic
-                    ? 'ሰላም, ${user.displayName} 👋'
-                    : 'Welcome back, ${user.displayName} 👋',
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.4,
-                  color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 3),
-              Text(
-                'Grade ${user.grade} National Exam Curriculum • ${user.stream.toUpperCase()} Stream',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 16),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SyncIndicatorWidget(isCompact: true),
-            const SizedBox(width: 12),
-            InkWell(
-              onTap: () => context.push('/rewards'),
-              borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0x26F59E0B)
-                      : const Color(0xFFFEF3C7),
-                  borderRadius: BorderRadius.circular(AppTheme.radiusPill),
-                  border: Border.all(
-                    color: AppTheme.accent.withValues(alpha: 0.4),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.monetization_on_rounded,
-                        color: AppTheme.accent, size: 18),
-                    const SizedBox(width: 6),
-                    Text(
-                      '$coinBalance Coins',
-                      style: const TextStyle(
-                        color: AppTheme.accentDark,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+
 
   // ==========================================
   // ==========================================
@@ -769,11 +649,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     final readinessPercent = _readinessScore > 0
         ? (_readinessScore * 100).clamp(0, 100).toInt()
         : 84;
+    final topPadding = MediaQuery.of(context).padding.top;
 
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -784,8 +666,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           ],
           stops: [0.0, 0.45, 0.80, 1.0],
         ),
-        border: Border.all(color: const Color(0x3310B981)), // emerald-500/20
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: Color(0x4D042F2E),
             blurRadius: 20,
@@ -794,7 +675,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
         child: Stack(
           children: [
             // Top-left ambient glow
@@ -826,11 +707,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
 
             // Main Content Layer
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.only(
+                top: topPadding > 0 ? topPadding + 14 : 22,
+                left: 20,
+                right: 20,
+                bottom: 22,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 1. Top Badges Row
+                  // 1. Top Badges Row: Grade, Alignment, Sync, Streak
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -882,10 +768,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         ],
                       ),
 
-                      // Right: Streak Counter
+                      // Right: Sync Indicator + Streak Counter
                       const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SyncIndicatorWidget(isCompact: true),
+                          SizedBox(width: 10),
                           Text(
                             '5',
                             style: TextStyle(
