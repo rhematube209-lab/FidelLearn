@@ -757,7 +757,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // 🎯 MISSION CONTROL HERO BANNER
+  // ==========================================
+  // 🎯 SECTION 1: MASTER YOUR NATIONAL EXAM SCORE HERO
   // ==========================================
   Widget _buildMissionControlHero(
     BuildContext context,
@@ -765,131 +766,375 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     bool isAmharic,
     bool isDark,
   ) {
-    return FidelCard(
-      padding: const EdgeInsets.all(22),
-      backgroundColor:
-          isDark ? const Color(0xFF131B2E) : const Color(0xFFF1F5F9),
-      borderColor: isDark ? const Color(0xFF26334D) : const Color(0xFFCBD5E1),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: [
-                    const FidelBadge(
-                      text: 'ESSLCE / PSLCE 2026',
-                      icon: Icons.school_rounded,
-                      variant: FidelBadgeVariant.primary,
-                      isSmall: true,
-                    ),
-                    FidelBadge(
-                      text: 'GRADE ${user.grade} ${user.stream.toUpperCase()}',
-                      variant: FidelBadgeVariant.neutral,
-                      isSmall: true,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  isAmharic
-                      ? 'የፈተና ዝግጁነትዎን ያረጋግጡ'
-                      : 'Master Your National Exam Score',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.4,
-                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  isAmharic
-                      ? 'የተረጋገጡ የፈተና ጥያቄዎች ከደረጃ-በ-ደረጃ ማብራሪያዎች ጋር፣ ያለ ኢንተርኔት ይለማመዱ።'
-                      : 'Verified syllabus questions with step-by-step solutions, offline diagnostics, and Exam Ghost.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    height: 1.4,
-                    color:
-                        isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 8,
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () => context.push('/exam_builder'),
-                      icon: const Icon(Icons.play_arrow_rounded, size: 20),
-                      label: const Text('Start Adaptive Practice'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.brandStrong,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                    OutlinedButton.icon(
-                      onPressed: () => context.push('/challenges'),
-                      icon: const Icon(Icons.flash_on_rounded,
-                          size: 18, color: AppTheme.accent),
-                      label: const Text('Exam Ghost Duels'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 20),
+    final readinessPercent = _readinessScore > 0
+        ? (_readinessScore * 100).clamp(0, 100).toInt()
+        : 84;
 
-          // Clean Circular Readiness Gauge
-          Container(
-            width: 96,
-            height: 96,
-            decoration: BoxDecoration(
-              color: isDark ? AppTheme.darkSurface : Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppTheme.green.withValues(alpha: 0.4),
-                width: 3,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.green.withValues(alpha: 0.12),
-                  blurRadius: 16,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF0D3B43),
+            Color(0xFF064E3B),
+            Color(0xFF0D5C4B),
+            Color(0xFF0A3D34),
+          ],
+          stops: [0.0, 0.45, 0.80, 1.0],
+        ),
+        border: Border.all(color: const Color(0x3310B981)), // emerald-500/20
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x4D042F2E),
+            blurRadius: 20,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          children: [
+            // Top-left ambient glow
+            Positioned(
+              left: -35,
+              top: -35,
+              child: Container(
+                width: 140,
+                height: 140,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF5EEAD4).withValues(alpha: 0.10),
                 ),
-              ],
+              ),
             ),
-            child: const Center(
+            // Bottom-right ambient glow
+            Positioned(
+              right: -35,
+              bottom: -35,
+              child: Container(
+                width: 170,
+                height: 170,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF34D399).withValues(alpha: 0.15),
+                ),
+              ),
+            ),
+
+            // Main Content Layer
+            Padding(
+              padding: const EdgeInsets.all(20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '84%',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      color: AppTheme.green,
-                      letterSpacing: -0.5,
-                    ),
+                  // 1. Top Badges Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Left Tags: Grade/Stream + MoE Aligned
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xB3052E25),
+                              borderRadius:
+                                  BorderRadius.circular(AppTheme.radiusPill),
+                              border: Border.all(
+                                color: const Color(0x6610B981),
+                              ),
+                            ),
+                            child: Text(
+                              'GRADE ${user.grade} ${user.stream.toUpperCase()}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.8,
+                                color: Color(0xFF6EE7B7),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.verified_rounded,
+                                size: 15,
+                                color: Color(0xFF34D399),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                isAmharic ? 'ሚኒስቴር-ተስማሚ' : 'MoE Aligned',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xE66EE7B7),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      // Right: Streak Counter
+                      const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '5',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              height: 1.0,
+                            ),
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            '🔥',
+                            style: TextStyle(fontSize: 17, height: 1.0),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  Text(
-                    'READINESS',
-                    style: TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w800,
-                      color: AppTheme.darkMuted,
-                      letterSpacing: 0.4,
-                    ),
+
+                  const SizedBox(height: 14),
+
+                  // 2. Headline & Circular Readiness Meter
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isAmharic
+                                  ? 'የብሔራዊ ፈተና ውጤትዎን\nያሳድጉ'
+                                  : 'Master Your National\nExam Score',
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                                height: 1.18,
+                                letterSpacing: -0.4,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                isAmharic
+                                    ? 'የተረጋገጡ የስርዓተ ትምህርት ጥያቄዎች ከደረጃ-በ-ደረጃ መፍትሄዎች፣ የከመስመር ውጭ መመርመሪያ እና Exam Ghost ጋር።'
+                                    : 'Verified syllabus questions with step-by-step solutions, offline diagnostics, and Exam Ghost.',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  height: 1.42,
+                                  color: Color(0xBFD1FAE5),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+
+                      // Circular Progress Meter
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0x80022C22),
+                          border: Border.all(
+                            color: const Color(0xFF34D399),
+                            width: 3.5,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x33000000),
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '$readinessPercent%',
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  height: 1.0,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              const Text(
+                                'READY',
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.1,
+                                  color: Color(0xE66EE7B7),
+                                  height: 1.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Divider
+                  Container(
+                    margin: const EdgeInsets.only(top: 18, bottom: 14),
+                    height: 1,
+                    color: Colors.white.withValues(alpha: 0.10),
+                  ),
+
+                  // 3. Bottom Action Buttons
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isNarrow = constraints.maxWidth < 400;
+
+                      final primaryBtn = Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => _startRemedialDrill(),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF063328),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: const Color(0x4D059669),
+                              ),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x26000000),
+                                  blurRadius: 6,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  '⚡',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    isAmharic
+                                        ? 'ተስማሚ ልምምድ ጀምር'
+                                        : 'Start Adaptive Practice',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                const Icon(
+                                  Icons.arrow_forward_rounded,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+
+                      final secondaryBtn = Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => context.push('/challenges'),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0x59065F46),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: const Color(0x4D10B981),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  '⚔️',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  isAmharic
+                                      ? 'የፈተና ውድድሮች'
+                                      : 'Exam Ghost Duels',
+                                  style: const TextStyle(
+                                    color: Color(0xFFD1FAE5),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+
+                      if (isNarrow) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            primaryBtn,
+                            const SizedBox(height: 10),
+                            secondaryBtn,
+                          ],
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Expanded(flex: 55, child: primaryBtn),
+                          const SizedBox(width: 10),
+                          Expanded(flex: 45, child: secondaryBtn),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

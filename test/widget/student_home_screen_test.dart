@@ -78,8 +78,11 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Section 1: Hero Banner exists
-      expect(find.text('EUEE Exam Countdown'), findsOneWidget);
+      // Section 1: Hero Banner exists with new design elements
+      expect(find.textContaining('Master Your National'), findsOneWidget);
+      expect(find.text('MoE Aligned'), findsOneWidget);
+      expect(find.text('Start Adaptive Practice'), findsOneWidget);
+      expect(find.text('Exam Ghost Duels'), findsOneWidget);
 
       // Section 2: National Exam Subjects header and items exist
       expect(find.text('National Exam Subjects'), findsOneWidget);
