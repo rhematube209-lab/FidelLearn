@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/widgets/fidel_stat_card.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
 
@@ -15,8 +16,10 @@ class ProfileScreen extends ConsumerWidget {
     final userAsync = ref.watch(currentUserProvider);
     final user = userAsync.valueOrNull;
     final currentTheme = ref.watch(themeModeProvider);
+    final coinBalance = ref.watch(coinLedgerProvider.notifier).balance;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (user == null) {
       return Scaffold(
@@ -118,6 +121,11 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
+                const SizedBox(height: 24),
+
+                // Performance Dashboard Section
+                _buildPerformanceDashboard(
+                    context, coinBalance, isDesktop, isDark),
                 const SizedBox(height: 28),
 
                 if (isDesktop)
@@ -360,6 +368,101 @@ class ProfileScreen extends ConsumerWidget {
           fontSize: 11,
         ),
       ),
+    );
+  }
+
+  // ==========================================
+  // 📊 PERFORMANCE DASHBOARD
+  // ==========================================
+  Widget _buildPerformanceDashboard(
+      BuildContext context, int coinBalance, bool isDesktop, bool isDark) {
+    final cards = [
+      FidelStatCard(
+        title: 'Study Coins',
+        value: '$coinBalance 🪙',
+        subtitle: '10 Coins = 1 ETB (Telebirr)',
+        icon: Icons.monetization_on_rounded,
+        accentColor: AppTheme.accent,
+        onTap: () => context.push('/rewards'),
+      ),
+      FidelStatCard(
+        title: 'Daily Streak',
+        value: '5 Days 🔥',
+        subtitle: 'Freeze Shield Active',
+        icon: Icons.local_fire_department_rounded,
+        accentColor: AppTheme.pink,
+        onTap: () => context.push('/rewards'),
+      ),
+      FidelStatCard(
+        title: 'Exam Accuracy',
+        value: '88.4%',
+        subtitle: '100+ Questions Solved',
+        icon: Icons.check_circle_outline_rounded,
+        accentColor: AppTheme.green,
+        onTap: () => context.push('/progress'),
+      ),
+      FidelStatCard(
+        title: 'Avg Pace',
+        value: '42s / Q',
+        subtitle: 'Top 5% National Speed',
+        icon: Icons.speed_rounded,
+        accentColor: AppTheme.brand,
+        onTap: () => context.push('/progress'),
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppTheme.brand.withValues(alpha: 0.14),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+              ),
+              child: const Icon(Icons.analytics_rounded,
+                  color: AppTheme.brand, size: 18),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'Performance Dashboard',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : AppTheme.lightText,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        if (isDesktop)
+          Row(
+            children: cards
+                .map((c) => Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: c,
+                      ),
+                    ))
+                .toList(),
+          )
+        else
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return GridView.count(
+                crossAxisCount: constraints.maxWidth > 520 ? 4 : 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: constraints.maxWidth > 520 ? 1.45 : 1.22,
+                children: cards,
+              );
+            },
+          ),
+      ],
     );
   }
 }

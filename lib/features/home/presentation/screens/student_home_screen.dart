@@ -7,7 +7,6 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/fidel_badge.dart';
 import '../../../../core/widgets/fidel_card.dart';
 import '../../../../core/widgets/fidel_section_header.dart';
-import '../../../../core/widgets/fidel_stat_card.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
 import '../../../exams/domain/models/exam_models.dart';
@@ -290,11 +289,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         // Modern Mission Control Hero Banner
                         _buildMissionControlHero(
                             context, user, isAmharic, isDark),
-                        const SizedBox(height: 24),
-
-                        // 4-Stat Metric Row
-                        _buildMetricCards(context, coinBalance, isDesktop),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 28),
 
                         // Multi-Column Desktop Layout vs Single-Column Mobile
                         if (isDesktop)
@@ -896,74 +891,6 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  // ==========================================
-  // 📊 4-STAT METRIC ROW
-  // ==========================================
-  Widget _buildMetricCards(
-      BuildContext context, int coinBalance, bool isDesktop) {
-    final cards = [
-      FidelStatCard(
-        title: 'Study Coins',
-        value: '$coinBalance 🪙',
-        subtitle: '10 Coins = 1 ETB (Telebirr)',
-        icon: Icons.monetization_on_rounded,
-        accentColor: AppTheme.accent,
-        onTap: () => context.push('/rewards'),
-      ),
-      FidelStatCard(
-        title: 'Daily Streak',
-        value: '5 Days 🔥',
-        subtitle: 'Freeze Shield Active',
-        icon: Icons.local_fire_department_rounded,
-        accentColor: AppTheme.pink,
-        onTap: () => context.push('/rewards'),
-      ),
-      FidelStatCard(
-        title: 'Exam Accuracy',
-        value: '88.4%',
-        subtitle: '100+ Questions Solved',
-        icon: Icons.check_circle_outline_rounded,
-        accentColor: AppTheme.green,
-        onTap: () => context.push('/progress'),
-      ),
-      FidelStatCard(
-        title: 'Avg Pace',
-        value: '42s / Q',
-        subtitle: 'Top 5% National Speed',
-        icon: Icons.speed_rounded,
-        accentColor: AppTheme.brand,
-        onTap: () => context.push('/progress'),
-      ),
-    ];
-
-    if (isDesktop) {
-      return Row(
-        children: cards
-            .map((c) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: c,
-                  ),
-                ))
-            .toList(),
-      );
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return GridView.count(
-          crossAxisCount: constraints.maxWidth > 520 ? 4 : 2,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: constraints.maxWidth > 520 ? 1.45 : 1.22,
-          children: cards,
-        );
-      },
     );
   }
 
