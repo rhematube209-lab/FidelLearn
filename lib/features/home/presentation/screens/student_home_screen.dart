@@ -286,42 +286,43 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                           const SizedBox(height: 24),
                         ],
 
-                        // Modern Mission Control Hero Banner
+                        // 🚀 Section 1: Modern Mission Control Hero Banner
                         _buildMissionControlHero(
                             context, user, isAmharic, isDark),
-                        const SizedBox(height: 28),
+                        const SizedBox(height: 32),
 
-                        // Multi-Column Desktop Layout vs Single-Column Mobile
+                        // 📚 Section 2: National Exam Subjects
+                        _buildSubjectSection(context, isAmharic, isDark),
+                        const SizedBox(height: 32),
+
+                        // Multi-Column Desktop Layout vs Single-Column Mobile for Remaining Tools & Intelligence
                         if (isDesktop)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Left: Subject Packages & Quick Actions (60%)
+                              // Left: Quick Actions & Featured Mock Exam (55%)
                               Expanded(
-                                flex: 60,
+                                flex: 55,
                                 child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    _buildSubjectSection(
-                                        context, isAmharic, isDark),
-                                    const SizedBox(height: 32),
                                     _buildQuickActions(context, isDark),
+                                    const SizedBox(height: 24),
+                                    _buildFeaturedExamCard(context, isDark),
                                   ],
                                 ),
                               ),
                               const SizedBox(width: 28),
 
-                              // Right: Focus Areas & Recent Attempts (40%)
+                              // Right: Readiness Gauge, Weak Topics & Recent Attempts (45%)
                               Expanded(
-                                flex: 40,
+                                flex: 45,
                                 child: Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     _buildReadinessGaugeCard(context, isDark),
-                                    const SizedBox(height: 24),
-                                    _buildFeaturedExamCard(context, isDark),
                                     const SizedBox(height: 24),
                                     _buildWeakTopicRadarCard(context, isDark),
                                     if (_recentAttempt != null) ...[
@@ -335,13 +336,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                             ],
                           )
                         else ...[
-                          _buildReadinessGaugeCard(context, isDark),
+                          // Mobile: Quick Actions & Intelligence Cards
+                          _buildQuickActions(context, isDark),
                           const SizedBox(height: 24),
                           _buildFeaturedExamCard(context, isDark),
                           const SizedBox(height: 24),
-                          _buildQuickActions(context, isDark),
-                          const SizedBox(height: 28),
-                          _buildSubjectSection(context, isAmharic, isDark),
+                          _buildReadinessGaugeCard(context, isDark),
                           const SizedBox(height: 28),
                           _buildWeakTopicRadarCard(context, isDark),
                           if (_recentAttempt != null) ...[
@@ -903,16 +903,69 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FidelSectionHeader(
-          title: 'National Exam Subjects',
-          subtitle: 'Choose a subject to practice syllabus units & mock exams',
+          title: isAmharic ? 'የብሔራዊ ፈተና የትምህርት አይነቶች' : 'National Exam Subjects',
+          subtitle: isAmharic
+              ? 'የስርዓተ ትምህርት ክፍሎችንና የሞዴል ፈተናዎችን ለመለማመድ ትምህርት ይምረጡ'
+              : 'Choose a subject to practice syllabus units & mock exams',
           trailing: TextButton.icon(
             onPressed: () => context.push('/subjects'),
             icon: const Icon(Icons.folder_zip_outlined, size: 16),
-            label: const Text('Manage Packages'),
+            label: Text(isAmharic ? 'ጥቅሎች' : 'Manage Packages'),
           ),
         ),
         const SizedBox(height: 14),
-        GridView.builder(
+        if (_subjects.isEmpty)
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0x26334155) : const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              border: Border.all(
+                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.school_outlined,
+                    color: AppTheme.brand, size: 28),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isAmharic
+                            ? 'የትምህርት ጥቅሎች እየተጫኑ ነው...'
+                            : 'Loading National Exam Subjects...',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color:
+                              isDark ? AppTheme.darkText : AppTheme.lightText,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        isAmharic
+                            ? 'የከመስመር ውጭ ጥቅሎችን ለማውረድ Manage Packages ን ይጫኑ'
+                            : 'Manage packages to download or refresh offline exam content',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color:
+                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => context.push('/subjects'),
+                  child: Text(isAmharic ? 'ክፈት' : 'Open'),
+                ),
+              ],
+            ),
+          )
+        else
+          GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
