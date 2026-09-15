@@ -481,7 +481,581 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
 
-  Future<void> _startYearExam(_OfficialExamYearInfo rawYearInfo) async {
+  String _getOfficialSubjectCode(Subject subject) {
+    final s = '${subject.id} ${subject.code} ${subject.nameEn}'.toLowerCase();
+    if (s.contains('bio')) return '06';
+    if (s.contains('phys')) return '04';
+    if (s.contains('chem')) return '05';
+    if (s.contains('math')) {
+      return subject.stream.toLowerCase().contains('social') ? '07' : '02';
+    }
+    if (s.contains('eng')) return '01';
+    if (s.contains('apt')) return '03';
+    if (s.contains('geo')) return '08';
+    if (s.contains('hist')) return '09';
+    if (s.contains('econ')) return '10';
+    if (s.contains('civ')) return '11';
+    return '06';
+  }
+
+  String _getStreamDisplayName(Subject subject, bool isAmharic) {
+    final stream = subject.stream.toLowerCase();
+    if (stream.contains('social')) {
+      return isAmharic ? 'ማህበራዊ ሳይንስ' : 'Social Science';
+    } else if (stream.contains('common')) {
+      return isAmharic ? 'የተፈጥሮና ማህበራዊ ሳይንስ' : 'Natural & Social Science';
+    } else {
+      return isAmharic ? 'የተፈጥሮ ሳይንስ' : 'Natural Science';
+    }
+  }
+
+  Future<void> _showExamBriefingDialog(_OfficialExamYearInfo rawYearInfo) async {
+    final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
+    final user = ref.read(currentUserProvider).valueOrNull;
+    final isAmharic = user?.preferredLanguage == 'am';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final subject = _subject;
+    final hubTheme = _getHubTheme(subject);
+
+    bool showInstant = false;
+    bool isTimed = _timedMode;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogCtx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            final bookletCode = yearInfo.bookletCode.replaceAll('Booklet', '').trim();
+            final subjectCode = _getOfficialSubjectCode(subject);
+            final streamName = _getStreamDisplayName(subject, isAmharic);
+            final subjectName = isAmharic && subject.nameAm.isNotEmpty
+                ? subject.nameAm
+                : subject.nameEn;
+            final timeAllowed = isTimed
+                ? (isAmharic
+                    ? '${yearInfo.standardTimeMinutes ~/ 60} ሰዓታት'
+                    : '${yearInfo.standardTimeMinutes ~/ 60} Hours')
+                : (isAmharic ? 'ያልተገደበ' : 'Untimed');
+
+            return Dialog(
+              backgroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+              surfaceTintColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  width: 1.2,
+                ),
+              ),
+              insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 620),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Top Bar: Official Badge + Close Button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1E3A8A).withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFF1E3A8A).withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.verified_rounded,
+                                  size: 13,
+                                  color: Color(0xFF1E3A8A),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isAmharic
+                                      ? 'ብሔራዊ ፈተና ማጠቃለያ'
+                                      : 'OFFICIAL EXAMINATION BRIEFING',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0.6,
+                                    color: Color(0xFF1E3A8A),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close_rounded, size: 20),
+                            onPressed: () => Navigator.pop(dialogCtx),
+                            tooltip: isAmharic ? 'ዝጋ' : 'Close',
+                            visualDensity: VisualDensity.compact,
+                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // =======================================================
+                      // 🏛️ OFFICIAL ESSLCE HEADER (Matching user's attached picture)
+                      // =======================================================
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              isAmharic
+                                  ? 'የኢትዮጵያ የሁለተኛ ደረጃ ትምህርት\nማጠናቀቂያ ሰርተፊኬት ፈተና'
+                                  : 'ETHIOPIAN SECONDARY SCHOOL\nLEAVING CERTIFICATE EXAMINATION',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.8,
+                                height: 1.3,
+                                color: isDark
+                                    ? const Color(0xFF93C5FD)
+                                    : const Color(0xFF1E3A8A),
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              isAmharic
+                                  ? '$subjectName ለ$streamName ዘርፍ'
+                                  : '$subjectName for $streamName Stream',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFFD97706),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${yearInfo.ethiopianYear} E.C. / ${yearInfo.gregorianYear - 1}–${yearInfo.gregorianYear} G.C. — ${yearInfo.standardQuestionCount} Questions with Correct Answers',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w600,
+                                color: isDark ? AppTheme.darkMuted : const Color(0xFF475569),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // =======================================================
+                      // 📊 SPECIFICATION TABLE (Matching user's attached picture)
+                      // =======================================================
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                            width: 1.0,
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Table(
+                            border: TableBorder(
+                              horizontalInside: BorderSide(
+                                color: isDark
+                                    ? const Color(0xFF334155)
+                                    : const Color(0xFFCBD5E1),
+                                width: 1.0,
+                              ),
+                              verticalInside: BorderSide(
+                                color: isDark
+                                    ? const Color(0xFF334155)
+                                    : const Color(0xFFCBD5E1),
+                                width: 1.0,
+                              ),
+                            ),
+                            columnWidths: const {
+                              0: FlexColumnWidth(1.05),
+                              1: FlexColumnWidth(1.0),
+                              2: FlexColumnWidth(1.05),
+                            },
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? const Color(0xFF1E293B).withValues(alpha: 0.6)
+                                      : const Color(0xFFF8FAFC),
+                                ),
+                                children: [
+                                  _buildBriefingCell(
+                                    isAmharic
+                                        ? 'የጥያቄ ብዛት: ${yearInfo.standardQuestionCount}'
+                                        : 'Number of Items: ${yearInfo.standardQuestionCount}',
+                                    isDark,
+                                  ),
+                                  _buildBriefingCell(
+                                    isAmharic
+                                        ? 'የጥራዝ ቁጥር: $bookletCode'
+                                        : 'Booklet Code: $bookletCode',
+                                    isDark,
+                                  ),
+                                  _buildBriefingCell(
+                                    isAmharic
+                                        ? 'የትምህርት ኮድ: $subjectCode'
+                                        : 'Subject Code: $subjectCode',
+                                    isDark,
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? const Color(0xFF0F172A).withValues(alpha: 0.4)
+                                      : Colors.white,
+                                ),
+                                children: [
+                                  _buildBriefingCell(
+                                    isAmharic
+                                        ? 'የተፈቀደው ጊዜ: $timeAllowed'
+                                        : 'Time Allowed: $timeAllowed',
+                                    isDark,
+                                  ),
+                                  _buildBriefingCell(
+                                    isAmharic ? 'የምዘና ምንጭ: NEAEA' : 'Source: NEAEA Archive',
+                                    isDark,
+                                  ),
+                                  _buildBriefingCell(
+                                    isAmharic
+                                        ? 'ቅርጸት: ጥያቄ፣ አማራጭ፣ መልስ'
+                                        : 'Format: Questions, options, answers',
+                                    isDark,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // =======================================================
+                      // 🎯 ANSWER FEEDBACK MODE SELECTION (The 2 Options Requested)
+                      // =======================================================
+                      Text(
+                        isAmharic
+                            ? 'የመልስ አሳይ ሁኔታን ይምረጡ:'
+                            : 'Select Answer Display Mode:',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w800,
+                          color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Option 1: Show answer immediately after choice is selected
+                      _buildFeedbackOptionCard(
+                        title: isAmharic
+                            ? 'ምርጫው እንደተመረጠ ወዲያውኑ መልሱን አሳይ'
+                            : 'Show answer immediately after choice is selected',
+                        subtitle: isAmharic
+                            ? 'ለጥናትና ለመለማመድ ተመራጭ። እያንዳንዱን ጥያቄ እንደመለሱ ትክክለኛውን መልስና ዝርዝር ማብራሪያውን ወዲያው ያሳያል።'
+                            : 'Instant feedback study mode. Step-by-step verified explanations and correct/incorrect indicators appear right after you pick.',
+                        badge: isAmharic ? 'የጥናት ዘዴ' : 'STUDY MODE',
+                        icon: Icons.bolt_rounded,
+                        accentColor: const Color(0xFFD97706),
+                        isSelected: showInstant,
+                        isDark: isDark,
+                        onTap: () => setDialogState(() => showInstant = true),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Option 2: Show answer after finishing all questions
+                      _buildFeedbackOptionCard(
+                        title: isAmharic
+                            ? 'ሁሉንም ጥያቄዎች ከጨረሱ በኋላ መልሱን አሳይ'
+                            : 'Show answer after finishing all questions',
+                        subtitle: isAmharic
+                            ? 'ትክክለኛውን የፈተና አዳራሽ ድባብ ይለማመዱ። ውጤትዎ፣ ዝርዝር ትንታኔውና ማብራሪያው የሚቀርበው መጨረሻ ላይ ፈተናውን አስረክበው ሲጨርሱ ነው።'
+                            : 'Simulate official exam hall conditions. All answers, full explanations, and your score breakdown are revealed after final submission.',
+                        badge: isAmharic ? 'የፈተና አዳራሽ' : 'EXAM SIMULATION',
+                        icon: Icons.assignment_turned_in_rounded,
+                        accentColor: const Color(0xFF1E3A8A),
+                        isSelected: !showInstant,
+                        isDark: isDark,
+                        onTap: () => setDialogState(() => showInstant = false),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Timer Condition Switcher inside Dialog
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                isTimed ? Icons.timer_outlined : Icons.all_inclusive_rounded,
+                                size: 16,
+                                color: hubTheme.accentColor,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                isAmharic ? 'የሰዓት ቆጣሪ:' : 'Time Limit:',
+                                style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              _buildDialogTimerPill(
+                                label: isAmharic ? '120 ደቂቃ' : '120m',
+                                isActive: isTimed,
+                                onTap: () => setDialogState(() => isTimed = true),
+                                hubTheme: hubTheme,
+                                isDark: isDark,
+                              ),
+                              const SizedBox(width: 6),
+                              _buildDialogTimerPill(
+                                label: isAmharic ? 'ያልተገደበ' : 'Untimed',
+                                isActive: !isTimed,
+                                onTap: () => setDialogState(() => isTimed = false),
+                                hubTheme: hubTheme,
+                                isDark: isDark,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Start Exam Action CTA
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(dialogCtx);
+                          _startYearExam(
+                            rawYearInfo,
+                            showInstantFeedback: showInstant,
+                            isTimed: isTimed,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: hubTheme.accentColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.play_arrow_rounded, size: 20),
+                            const SizedBox(width: 8),
+                            Text(
+                              isAmharic ? 'ፈተናውን አሁን ጀምር' : 'Start Exam Now',
+                              style: const TextStyle(
+                                fontSize: 14.5,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildBriefingCell(String text, bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+      child: Center(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: isDark ? const Color(0xFFE2E8F0) : const Color(0xFF1E3A8A),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeedbackOptionCard({
+    required String title,
+    required String subtitle,
+    required String badge,
+    required IconData icon,
+    required Color accentColor,
+    required bool isSelected,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? accentColor.withValues(alpha: isDark ? 0.16 : 0.08)
+              : (isDark
+                  ? const Color(0xFF1E293B).withValues(alpha: 0.5)
+                  : const Color(0xFFF8FAFC)),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? accentColor
+                : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+            width: isSelected ? 1.8 : 1.0,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected
+                        ? accentColor
+                        : (isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8)),
+                    width: 2,
+                  ),
+                ),
+                child: isSelected
+                    ? Center(
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: accentColor,
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: isDark ? Colors.white : const Color(0xFF0F172A),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: accentColor.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          badge,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w800,
+                            color: accentColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                      height: 1.3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDialogTimerPill({
+    required String label,
+    required bool isActive,
+    required VoidCallback onTap,
+    required _SubjectHubTheme hubTheme,
+    required bool isDark,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: isActive
+              ? (isDark ? hubTheme.accentColor : hubTheme.surfaceTint)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isActive
+                ? hubTheme.accentColor
+                : (isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1)),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isActive
+                ? (isDark ? Colors.white : hubTheme.accentColor)
+                : (isDark ? AppTheme.darkMuted : const Color(0xFF64748B)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _startYearExam(
+    _OfficialExamYearInfo rawYearInfo, {
+    bool showInstantFeedback = false,
+    bool isTimed = true,
+  }) async {
     final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
     if (_isLaunching) return;
 
@@ -554,7 +1128,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         grade: subject.grade,
         stream: user.stream,
         subjectId: subject.id,
-        timeLimitMinutes: _timedMode ? yearInfo.standardTimeMinutes : 0,
+        timeLimitMinutes: isTimed ? yearInfo.standardTimeMinutes : 0,
         totalQuestions: examQuestions.length,
         questions: examQuestions,
         createdAt: DateTime.now(),
@@ -572,6 +1146,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         await context.push('/exam_runner', extra: {
           'exam': exam,
           'attempt': attempt,
+          'showInstantFeedback': showInstantFeedback,
         });
       }
     } catch (e) {
@@ -1262,7 +1837,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         child: InkWell(
           onTap: () {
             if (isDownloaded) {
-              _startYearExam(yearInfo);
+              _showExamBriefingDialog(yearInfo);
             } else {
               _downloadYear(yearInfo);
             }
@@ -1533,7 +2108,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                       )
                     else if (isDownloaded)
                       ElevatedButton.icon(
-                        onPressed: () => _startYearExam(yearInfo),
+                        onPressed: () => _showExamBriefingDialog(yearInfo),
                         icon: const Icon(Icons.play_arrow_rounded, size: 15),
                         label: Text(
                           isAmharic ? 'ፈተና ጀምር' : 'Start Exam',

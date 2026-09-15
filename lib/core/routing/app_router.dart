@@ -99,7 +99,13 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
             final extra = state.extra as Map<String, dynamic>?;
             final exam = extra?['exam'] as Exam;
             final attempt = extra?['attempt'] as ExamAttempt;
-            return ExamRunnerScreen(exam: exam, initialAttempt: attempt);
+            final showInstantFeedback =
+                extra?['showInstantFeedback'] as bool? ?? false;
+            return ExamRunnerScreen(
+              exam: exam,
+              initialAttempt: attempt,
+              showInstantFeedback: showInstantFeedback,
+            );
           },
         ),
         GoRoute(

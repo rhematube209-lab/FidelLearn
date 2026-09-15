@@ -234,4 +234,130 @@ void main() {
     expect(find.text('Booklet 12 • 100 Qs'), findsOneWidget);
     expect(find.text('2013 E.C.'), findsOneWidget);
   });
+
+  testWidgets(
+      'Tapping Start Exam opens Official Briefing Dialog with General Information table and 2 feedback options',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    final storage = AuthSessionStorage();
+    final mockUser = UserProfile(
+      id: 'test_student_dialog',
+      phoneNumber: '+251911000000',
+      displayName: 'Kenisa Bekele',
+      role: UserRole.student,
+      grade: 12,
+      stream: 'natural',
+      preferredLanguage: 'en',
+      createdAt: DateTime(2026, 1, 1),
+    );
+
+    final authRepo = MockAuthRepository(
+      sessionStorage: storage,
+      initialUser: mockUser,
+    );
+
+    final mockRepo = LocalContentRepository();
+    mockRepo.initializeWithData(
+      packages: const [],
+      units: const [],
+      topics: const [],
+      questions: const [],
+      subjects: [
+        const Subject(
+          id: 'biology_g12',
+          code: 'BIO12',
+          nameEn: 'Biology',
+          nameAm: 'ባዮሎጂ',
+          grade: 12,
+          stream: 'natural',
+          sortOrder: 2,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authSessionStorageProvider.overrideWithValue(storage),
+          authRepositoryProvider.overrideWithValue(authRepo),
+          contentRepositoryProvider.overrideWithValue(mockRepo),
+        ],
+        child: const MaterialApp(
+          home: SubjectExamsHubScreen(subjectId: 'bio_g12'),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // 1. Download the 2013 E.C. exam card (find the download button corresponding to 2013)
+    final downloadButtons = find.widgetWithText(ElevatedButton, 'Download');
+    expect(downloadButtons, findsWidgets);
+
+    // Tap the 4th download button (2013 E.C. is index 3)
+    await tester.tap(downloadButtons.at(3));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pumpAndSettle();
+
+    // 2. The button transitions to 'Start Exam'
+    final startExamBtn = find.widgetWithText(ElevatedButton, 'Start Exam');
+    expect(startExamBtn, findsOneWidget);
+
+    // Clear floating snackbar so it doesn't obscure the button
+    ScaffoldMessenger.of(tester.element(startExamBtn)).clearSnackBars();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(startExamBtn);
+    await tester.pumpAndSettle();
+
+    // 3. Tap 'Start Exam' to open the Official Briefing Dialog
+    await tester.tap(startExamBtn);
+    await tester.pumpAndSettle();
+
+    // 4. Verify Official ESSLCE Header
+    expect(
+      find.textContaining('ETHIOPIAN SECONDARY SCHOOL'),
+      findsOneWidget,
+    );
+    expect(
+      find.textContaining('LEAVING CERTIFICATE EXAMINATION'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Biology for Natural Science Stream'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('2013 E.C. / 2020–2021 G.C. — 100 Questions with Correct Answers'),
+      findsOneWidget,
+    );
+
+    // 5. Verify Official Specification Table (Matching user's attached picture)
+    expect(find.text('Number of Items: 100'), findsOneWidget);
+    expect(find.text('Booklet Code: 12'), findsOneWidget);
+    expect(find.text('Subject Code: 06'), findsOneWidget);
+    expect(find.text('Time Allowed: 2 Hours'), findsOneWidget);
+    expect(find.text('Format: Questions, options, answers'), findsOneWidget);
+
+    // 6. Verify the Two Answer Display Options
+    expect(
+      find.text('Show answer immediately after choice is selected'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Show answer after finishing all questions'),
+      findsOneWidget,
+    );
+
+    // 7. Verify switching feedback modes works
+    await tester.tap(find.text('Show answer immediately after choice is selected'));
+    await tester.pumpAndSettle();
+
+    // 8. Verify Start Exam CTA is present inside dialog
+    expect(find.text('Start Exam Now'), findsOneWidget);
+  });
 }
+

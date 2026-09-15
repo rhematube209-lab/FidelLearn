@@ -17,11 +17,13 @@ import '../../domain/services/exam_engine.dart';
 class ExamRunnerScreen extends ConsumerStatefulWidget {
   final Exam exam;
   final ExamAttempt initialAttempt;
+  final bool showInstantFeedback;
 
   const ExamRunnerScreen({
     super.key,
     required this.exam,
     required this.initialAttempt,
+    this.showInstantFeedback = false,
   });
 
   @override
@@ -952,17 +954,164 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
         ...currentQ.choices.map((choice) {
           final isSelected = currentResp?.selectedChoiceId == choice.id;
+          FidelOptionState state = FidelOptionState.unselected;
+
+          if (widget.showInstantFeedback &&
+              currentResp?.selectedChoiceId != null) {
+            if (choice.isCorrect) {
+              state = FidelOptionState.correct;
+            } else if (isSelected) {
+              state = FidelOptionState.incorrect;
+            }
+          } else if (isSelected) {
+            state = FidelOptionState.selected;
+          }
+
           return FidelOptionCard(
             label: choice.label,
             textEn: choice.textEn,
             textAm: choice.textAm,
-            state: isSelected
-                ? FidelOptionState.selected
-                : FidelOptionState.unselected,
+            state: state,
             onTap: () => _handleSelectChoice(choice.id),
           );
         }),
+
+        // ⚡ Immediate Feedback Solution Card
+        if (widget.showInstantFeedback &&
+            currentResp?.selectedChoiceId != null) ...[
+          const SizedBox(height: 18),
+          _buildInstantExplanationCard(currentQ, currentResp!, isDark),
+        ],
       ],
+    );
+  }
+
+  Widget _buildInstantExplanationCard(
+    Question question,
+    UserResponse response,
+    bool isDark,
+  ) {
+    final isCorrect = response.isCorrect;
+    final correctChoice = question.correctChoice;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isCorrect
+            ? (isDark ? const Color(0x1F10B981) : const Color(0xFFF0FDF4))
+            : (isDark ? const Color(0x1FEF4444) : const Color(0xFFFEF2F2)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isCorrect
+              ? const Color(0xFF10B981).withValues(alpha: 0.5)
+              : const Color(0xFFEF4444).withValues(alpha: 0.5),
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                color: isCorrect
+                    ? const Color(0xFF059669)
+                    : const Color(0xFFDC2626),
+                size: 22,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                isCorrect ? 'Correct! Well done.' : 'Incorrect Choice',
+                style: TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w800,
+                  color: isCorrect
+                      ? const Color(0xFF059669)
+                      : const Color(0xFFDC2626),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
+                decoration: BoxDecoration(
+                  color: (isCorrect
+                          ? const Color(0xFF059669)
+                          : const Color(0xFFDC2626))
+                      .withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  'Correct: Choice ${correctChoice.label}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: isCorrect
+                        ? const Color(0xFF059669)
+                        : const Color(0xFFDC2626),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            question.explanation.solutionTextEn,
+            style: TextStyle(
+              fontSize: 13.5,
+              height: 1.45,
+              color: isDark ? AppTheme.darkText : AppTheme.lightText,
+            ),
+          ),
+          if (question.explanation.keyConcept != null &&
+              question.explanation.keyConcept!.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.lightbulb_outline_rounded,
+                    size: 16, color: AppTheme.accentGold),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Key Concept: ${question.explanation.keyConcept}',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w600,
+                      color:
+                          isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (question.explanation.commonPitfall != null &&
+              question.explanation.commonPitfall!.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_amber_rounded,
+                    size: 16, color: Color(0xFFF59E0B)),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Common Pitfall: ${question.explanation.commonPitfall}',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w500,
+                      color:
+                          isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
