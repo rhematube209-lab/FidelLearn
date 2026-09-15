@@ -38,7 +38,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   static final Map<String, Set<int>> _memoryDownloadedYears = {};
   Set<int> _downloadedYears = {};
   final Set<int> _downloadingYears = {};
-  bool _isBatchDownloading = false;
 
   // Official Ethiopian National Examination (ESSLCE) years
   static const List<_OfficialExamYearInfo> _availableYears = [
@@ -452,62 +451,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     }
   }
 
-  Future<void> _downloadAllYears() async {
-    if (_isBatchDownloading) return;
-
-    final unDownloaded = _availableYears
-        .where((y) => !_downloadedYears.contains(y.ethiopianYear))
-        .toList();
-
-    if (unDownloaded.isEmpty) return;
-
-    setState(() => _isBatchDownloading = true);
-
-    final user = ref.read(currentUserProvider).valueOrNull;
-    final isAmharic = user?.preferredLanguage == 'am';
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        content: Text(
-          isAmharic
-              ? '${unDownloaded.length} ያለፉት የፈተና ዓመታት እየወረዱ ነው...'
-              : 'Downloading ${unDownloaded.length} past exam packages...',
-        ),
-      ),
-    );
-
-    for (final yearInfo in unDownloaded) {
-      if (!mounted) break;
-      await _downloadYear(yearInfo);
-    }
-
-    if (mounted) {
-      setState(() => _isBatchDownloading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xFF059669),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          content: Row(
-            children: [
-              const Icon(Icons.offline_pin_rounded, color: Colors.white, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  isAmharic
-                      ? 'ሁሉም የብሔራዊ ፈተና ዓመታት ከመስመር ውጭ ዝግጁ ሆነዋል!'
-                      : 'All past national exam years are downloaded & offline ready!',
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
 
   Future<void> _startYearExam(_OfficialExamYearInfo yearInfo) async {
     if (_isLaunching) return;
@@ -1092,162 +1035,69 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     bool isAmharic,
     bool isDark,
   ) {
-    final unDownloadedCount = _availableYears
-        .where((y) => !_downloadedYears.contains(y.ethiopianYear))
-        .length;
-    final allDownloaded = unDownloadedCount == 0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    isAmharic
-                        ? 'ያለፉት ዓመታት የብሔራዊ ፈተናዎች'
-                        : 'Previous Years National Exams',
-                    style: TextStyle(
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w800,
-                      color: isDark ? Colors.white : const Color(0xFF0F172A),
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    isAmharic
-                        ? 'የተሟላውን ፈተና በዓመት መርጠው ልክ እንደ ፈተናው አዳራሽ ይፈትኑ'
-                        : 'Practice complete official exam booklets by selecting a year',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-
-            // Timer condition toggle (Standard 120min vs Untimed Study Mode)
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                isAmharic
+                    ? 'ያለፉት ዓመታት የብሔራዊ ፈተናዎች'
+                    : 'Previous Years National Exams',
+                style: TextStyle(
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w800,
+                  color: isDark ? Colors.white : const Color(0xFF0F172A),
+                  letterSpacing: -0.2,
                 ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildModePill(
-                    label: isAmharic ? 'የተገደበ (120ደ)' : 'Timed (120m)',
-                    icon: Icons.timer_outlined,
-                    isActive: _timedMode,
-                    onTap: () => setState(() => _timedMode = true),
-                    isDark: isDark,
-                    hubTheme: hubTheme,
-                  ),
-                  _buildModePill(
-                    label: isAmharic ? 'ያልተገደበ' : 'Untimed',
-                    icon: Icons.all_inclusive_rounded,
-                    isActive: !_timedMode,
-                    onTap: () => setState(() => _timedMode = false),
-                    isDark: isDark,
-                    hubTheme: hubTheme,
-                  ),
-                ],
+              const SizedBox(height: 3),
+              Text(
+                isAmharic
+                    ? 'የተሟላውን ፈተና በዓመት መርጠው ልክ እንደ ፈተናው አዳራሽ ይፈትኑ'
+                    : 'Practice complete official exam booklets by selecting a year',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(width: 12),
 
-        // Storage & Offline Sync Bar
+        // Timer condition toggle (Standard 120min vs Untimed Study Mode)
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
-            color: isDark
-                ? const Color(0xFF0F172A).withValues(alpha: 0.6)
-                : const Color(0xFFF8FAFC),
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0),
             ),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    allDownloaded
-                        ? Icons.offline_pin_rounded
-                        : Icons.cloud_done_outlined,
-                    size: 16,
-                    color: allDownloaded
-                        ? const Color(0xFF10B981)
-                        : (isDark ? AppTheme.darkMuted : const Color(0xFF64748B)),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    allDownloaded
-                        ? (isAmharic
-                            ? 'ሁሉም የፈተና ዓመታት ከመስመር ውጭ ተቀምጠዋል (10.8 MB)'
-                            : 'All ${_availableYears.length} exam years cached offline (10.8 MB)')
-                        : (isAmharic
-                            ? '${_downloadedYears.length}/${_availableYears.length} ዓመታት ከመስመር ውጭ ዝግጁ ናቸው'
-                            : '${_downloadedYears.length} of ${_availableYears.length} years ready offline'),
-                    style: TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w600,
-                      color: allDownloaded
-                          ? const Color(0xFF059669)
-                          : (isDark ? AppTheme.darkMuted : const Color(0xFF475569)),
-                    ),
-                  ),
-                ],
+              _buildModePill(
+                label: isAmharic ? 'የተገደበ (120ደ)' : 'Timed (120m)',
+                icon: Icons.timer_outlined,
+                isActive: _timedMode,
+                onTap: () => setState(() => _timedMode = true),
+                isDark: isDark,
+                hubTheme: hubTheme,
               ),
-
-              if (!allDownloaded)
-                ElevatedButton.icon(
-                  onPressed: _isBatchDownloading ? null : _downloadAllYears,
-                  icon: _isBatchDownloading
-                      ? const SizedBox(
-                          width: 12,
-                          height: 12,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Icon(Icons.download_rounded, size: 14),
-                  label: Text(
-                    _isBatchDownloading
-                        ? (isAmharic ? 'በማውረድ ላይ...' : 'Downloading...')
-                        : (isAmharic
-                            ? 'ሁሉንም አውርድ ($unDownloadedCount)'
-                            : 'Download All ($unDownloadedCount)'),
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: hubTheme.accentColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    visualDensity: VisualDensity.compact,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
+              _buildModePill(
+                label: isAmharic ? 'ያልተገደበ' : 'Untimed',
+                icon: Icons.all_inclusive_rounded,
+                isActive: !_timedMode,
+                onTap: () => setState(() => _timedMode = false),
+                isDark: isDark,
+                hubTheme: hubTheme,
+              ),
             ],
           ),
         ),

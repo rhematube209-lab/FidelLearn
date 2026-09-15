@@ -86,11 +86,7 @@ void main() {
     expect(find.text('Download'), findsNWidgets(6));
     expect(find.text('Start Exam'), findsNothing);
 
-    // 4. Check Offline Sync Bar & Batch Download button (0 of 6 ready offline)
-    expect(find.text('0 of 6 years ready offline'), findsOneWidget);
-    expect(find.text('Download All (6)'), findsOneWidget);
-
-    // 5. Check Timer Toggle
+    // 4. Check Timer Toggle
     expect(find.text('Timed (120m)'), findsOneWidget);
     expect(find.text('Untimed'), findsOneWidget);
 
@@ -172,10 +168,6 @@ void main() {
     // Verify button has now transitioned to 'Start Exam' on that downloaded card!
     expect(find.text('Start Exam'), findsOneWidget);
     expect(find.text('Download'), findsNWidgets(5));
-
-    // Verify top sync bar has updated to '1 of 6 years ready offline'
-    expect(find.text('1 of 6 years ready offline'), findsOneWidget);
-    expect(find.text('Download All (5)'), findsOneWidget);
 
     // Verify success snackbar notification
     expect(find.textContaining('downloaded & verified for offline practice'), findsOneWidget);
