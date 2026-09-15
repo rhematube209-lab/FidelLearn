@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('SubjectExamsHubScreen renders previous years exams and custom builder option',
+  testWidgets('SubjectExamsHubScreen renders separate Download buttons initially',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -81,12 +81,14 @@ void main() {
     expect(find.text('2015 E.C.'), findsOneWidget);
     expect(find.text('2014 E.C.'), findsOneWidget);
     expect(find.text('LATEST'), findsOneWidget);
-    expect(find.text('Start Exam'), findsWidgets);
-    expect(find.text('Download (1.8MB)'), findsWidgets);
 
-    // 4. Check Offline Sync Bar & Batch Download button
-    expect(find.textContaining('ready offline'), findsOneWidget);
-    expect(find.textContaining('Download All'), findsOneWidget);
+    // Each exam starts with separate Download button
+    expect(find.text('Download'), findsNWidgets(6));
+    expect(find.text('Start Exam'), findsNothing);
+
+    // 4. Check Offline Sync Bar & Batch Download button (0 of 6 ready offline)
+    expect(find.text('0 of 6 years ready offline'), findsOneWidget);
+    expect(find.text('Download All (6)'), findsOneWidget);
 
     // 5. Check Timer Toggle
     expect(find.text('Timed (120m)'), findsOneWidget);
@@ -98,7 +100,7 @@ void main() {
     expect(find.text('Untimed'), findsWidgets);
   });
 
-  testWidgets('SubjectExamsHubScreen downloading past exam transitions card to Offline Ready',
+  testWidgets('Tapping Download on an exam year downloads it and transitions button to Start Exam',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -155,17 +157,25 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Verify initial state: at least one Download (1.8MB) button exists
-    final downloadButtons = find.text('Download (1.8MB)');
-    expect(downloadButtons, findsWidgets);
+    // Verify initial state: all 6 buttons are 'Download', zero 'Start Exam'
+    expect(find.text('Download'), findsNWidgets(6));
+    expect(find.text('Start Exam'), findsNothing);
 
-    // Tap the first download button (for 2015 E.C.)
-    await tester.tap(downloadButtons.first);
+    // Tap the first download button (for 2016 E.C.)
+    await tester.tap(find.text('Download').first);
     await tester.pump(); // Enter downloading state
 
     // Advance time for simulated download completion
     await tester.pump(const Duration(milliseconds: 700));
     await tester.pumpAndSettle();
+
+    // Verify button has now transitioned to 'Start Exam' on that downloaded card!
+    expect(find.text('Start Exam'), findsOneWidget);
+    expect(find.text('Download'), findsNWidgets(5));
+
+    // Verify top sync bar has updated to '1 of 6 years ready offline'
+    expect(find.text('1 of 6 years ready offline'), findsOneWidget);
+    expect(find.text('Download All (5)'), findsOneWidget);
 
     // Verify success snackbar notification
     expect(find.textContaining('downloaded & verified for offline practice'), findsOneWidget);

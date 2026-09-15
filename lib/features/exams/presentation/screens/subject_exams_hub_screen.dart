@@ -36,7 +36,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
 
   // Persistent offline download cache tracker
   static final Map<String, Set<int>> _memoryDownloadedYears = {};
-  Set<int> _downloadedYears = {2016};
+  Set<int> _downloadedYears = {};
   final Set<int> _downloadingYears = {};
   bool _isBatchDownloading = false;
 
@@ -112,8 +112,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   Future<void> _loadDownloadedYears() async {
-    if (_memoryDownloadedYears.containsKey(widget.subjectId) &&
-        _memoryDownloadedYears[widget.subjectId]!.isNotEmpty) {
+    if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
       if (mounted) {
         setState(() {
           _downloadedYears = Set.from(_memoryDownloadedYears[widget.subjectId]!);
@@ -141,21 +140,19 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       if (prefs != null) {
         final key = 'downloaded_exams_${widget.subjectId}';
         final saved = prefs.getStringList(key);
-        if (saved != null && saved.isNotEmpty) {
+        if (saved != null) {
           final parsed = saved.map((e) => int.tryParse(e)).whereType<int>().toSet();
-          if (parsed.isNotEmpty) {
-            _downloadedYears = parsed;
-            _memoryDownloadedYears[widget.subjectId] = Set.from(parsed);
-            if (mounted) setState(() {});
-            return;
-          }
+          _downloadedYears = parsed;
+          _memoryDownloadedYears[widget.subjectId] = Set.from(parsed);
+          if (mounted) setState(() {});
+          return;
         }
       }
     } catch (_) {}
 
-    // Default: 2016 E.C. (latest) is pre-cached offline
-    _downloadedYears = {2016};
-    _memoryDownloadedYears[widget.subjectId] = {2016};
+    // Default: None downloaded initially until the student downloads each year separately
+    _downloadedYears = {};
+    _memoryDownloadedYears[widget.subjectId] = {};
     if (mounted) setState(() {});
   }
 
@@ -1658,7 +1655,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         onPressed: () => _startYearExam(yearInfo),
                         icon: const Icon(Icons.play_arrow_rounded, size: 15),
                         label: Text(
-                          isAmharic ? 'ጀምር' : 'Start Exam',
+                          isAmharic ? 'ፈተና ጀምር' : 'Start Exam',
                           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
                         ),
                         style: ElevatedButton.styleFrom(
@@ -1673,17 +1670,21 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         ),
                       )
                     else
-                      OutlinedButton.icon(
+                      ElevatedButton.icon(
                         onPressed: () => _downloadYear(yearInfo),
-                        icon: const Icon(Icons.cloud_download_outlined, size: 14),
+                        icon: const Icon(Icons.download_rounded, size: 14),
                         label: Text(
-                          isAmharic ? 'አውርድ (1.8MB)' : 'Download (1.8MB)',
-                          style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700),
+                          isAmharic ? 'አውርድ' : 'Download',
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
                         ),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: hubTheme.accentColor,
-                          side: BorderSide(color: hubTheme.accentColor.withValues(alpha: 0.5)),
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+                          foregroundColor: isDark ? Colors.white : const Color(0xFF0F172A),
+                          side: BorderSide(
+                            color: isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          elevation: 0,
                           visualDensity: VisualDensity.compact,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
