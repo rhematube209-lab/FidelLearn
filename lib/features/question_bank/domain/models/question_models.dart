@@ -63,10 +63,14 @@ class AnswerChoice extends Equatable {
 
   factory AnswerChoice.fromJson(Map<String, dynamic> json) {
     return AnswerChoice(
-      id: json['id'] as String,
-      label: json['label'] as String,
-      textEn: json['text_en'] as String,
-      textAm: json['text_am'] as String?,
+      id: json['id']?.toString() ?? '',
+      label: json['label']?.toString() ??
+          (json['choice_label']?.toString() ?? ''),
+      textEn: json['text_en']?.toString() ??
+          (json['choice_text_en']?.toString() ??
+              (json['text']?.toString() ?? '')),
+      textAm: json['text_am']?.toString() ??
+          json['choice_text_am']?.toString(),
       isCorrect: json['is_correct'] as bool? ?? false,
     );
   }
@@ -102,11 +106,13 @@ class Explanation extends Equatable {
 
   factory Explanation.fromJson(Map<String, dynamic> json) {
     return Explanation(
-      solutionTextEn: json['solution_text_en'] as String,
-      solutionTextAm: json['solution_text_am'] as String?,
-      simplerExplanationEn: json['simpler_explanation_en'] as String?,
-      keyConcept: json['key_concept'] as String?,
-      commonPitfall: json['common_pitfall'] as String?,
+      solutionTextEn: json['solution_text_en']?.toString() ??
+          (json['text_en']?.toString() ?? 'No explanation available.'),
+      solutionTextAm: json['solution_text_am']?.toString(),
+      simplerExplanationEn: json['simpler_explanation_en']?.toString(),
+      keyConcept: json['key_concept']?.toString() ??
+          json['key_concept_or_formula']?.toString(),
+      commonPitfall: json['common_pitfall']?.toString(),
     );
   }
 
@@ -216,37 +222,58 @@ class Question extends Equatable {
       choices.firstWhere((c) => c.isCorrect, orElse: () => choices.first);
 
   factory Question.fromJson(Map<String, dynamic> json) {
+    Explanation explanationObj;
+    if (json['explanation'] is Map<String, dynamic>) {
+      explanationObj =
+          Explanation.fromJson(json['explanation'] as Map<String, dynamic>);
+    } else if (json['explanations'] is List &&
+        (json['explanations'] as List).isNotEmpty &&
+        (json['explanations'] as List).first is Map<String, dynamic>) {
+      explanationObj = Explanation.fromJson(
+          (json['explanations'] as List).first as Map<String, dynamic>);
+    } else if (json['explanation'] is String &&
+        (json['explanation'] as String).isNotEmpty) {
+      explanationObj =
+          Explanation(solutionTextEn: json['explanation'] as String);
+    } else {
+      explanationObj =
+          const Explanation(solutionTextEn: 'No explanation available.');
+    }
+
     return Question(
-      id: json['id'] as String,
-      grade: json['grade'] as int? ?? 12,
-      stream: json['stream'] as String? ?? 'common',
-      subjectId: json['subject_id'] as String,
-      unitId: json['unit_id'] as String,
-      topicId: json['topic_id'] as String,
-      examYear: json['exam_year'] as int?,
-      questionTextEn: json['question_text_en'] as String,
-      questionTextAm: json['question_text_am'] as String?,
-      diagramAsset: json['diagram_asset'] as String?,
-      vectorDiagram: json['vector_diagram'] != null
+      id: json['id']?.toString() ?? '',
+      grade: (json['grade'] as num?)?.toInt() ?? 12,
+      stream: json['stream']?.toString() ?? 'common',
+      subjectId: json['subject_id']?.toString() ?? '',
+      unitId: json['unit_id']?.toString() ?? '',
+      topicId: json['topic_id']?.toString() ?? '',
+      examYear: (json['exam_year'] as num?)?.toInt(),
+      questionTextEn: json['question_text_en']?.toString() ?? '',
+      questionTextAm: json['question_text_am']?.toString(),
+      diagramAsset: json['diagram_asset']?.toString() ??
+          json['diagram_url']?.toString(),
+      vectorDiagram: json['vector_diagram'] != null &&
+              json['vector_diagram'] is Map<String, dynamic>
           ? VectorDiagram.fromJson(
               json['vector_diagram'] as Map<String, dynamic>,
             )
           : null,
-      difficulty: json['difficulty'] as String? ?? 'medium',
+      difficulty: json['difficulty']?.toString() ?? 'medium',
       verificationStatus: VerificationStatus.fromString(
-        json['verification_status'] as String? ?? 'published',
+        json['verification_status']?.toString() ?? 'published',
       ),
-      sourceName: json['source_name'] as String? ??
+      sourceName: json['source_name']?.toString() ??
           'FidelLearn original demonstration content',
-      sourcePage: json['source_page'] as int?,
-      contentVersion: json['content_version'] as int? ?? 1,
+      sourcePage: (json['source_page'] as num?)?.toInt(),
+      contentVersion: (json['content_version'] as num?)?.toInt() ?? 1,
       choices: (json['choices'] as List<dynamic>?)
               ?.map((c) => AnswerChoice.fromJson(c as Map<String, dynamic>))
               .toList() ??
-          [],
-      explanation: json['explanation'] != null
-          ? Explanation.fromJson(json['explanation'] as Map<String, dynamic>)
-          : const Explanation(solutionTextEn: 'No explanation available.'),
+          ((json['answer_choices'] as List<dynamic>?)
+                  ?.map((c) => AnswerChoice.fromJson(c as Map<String, dynamic>))
+                  .toList() ??
+              []),
+      explanation: explanationObj,
     );
   }
 

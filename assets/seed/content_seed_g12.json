@@ -15,6 +15,62 @@
       "is_downloaded": true
     },
     {
+      "package_id": "pkg_g12_bio_2026",
+      "subject_id": "biology_g12",
+      "name_en": "Grade 12 Biology (Natural Science)",
+      "name_am": "የ12ኛ ክፍል ባዮሎጂ (የተፈጥሮ ሳይንስ)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_physics_2026",
+      "subject_id": "physics_g12",
+      "name_en": "Grade 12 Physics (Natural Science)",
+      "name_am": "የ12ኛ ክፍል ፊዚክስ (የተፈጥሮ ሳይንስ)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_chem_2026",
+      "subject_id": "chemistry_g12",
+      "name_en": "Grade 12 Chemistry (Natural Science)",
+      "name_am": "የ12ኛ ክፍል ኬሚስትሪ (የተፈጥሮ ሳይንስ)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_english_2026",
+      "subject_id": "english_g12",
+      "name_en": "Grade 12 English",
+      "name_am": "የ12ኛ ክፍል እንግሊዝኛ",
+      "grade": 12,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
+    },
+    {
       "package_id": "pkg_g12_aptitude_2026",
       "subject_id": "aptitude_g12",
       "name_en": "Grade 12 Scholastic Aptitude",
@@ -139,6 +195,46 @@
       "sort_order": 1
     },
     {
+      "id": "biology_g12",
+      "code": "BIO12",
+      "name_en": "Biology",
+      "name_am": "ባዮሎጂ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/biology_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "physics_g12",
+      "code": "PHYS12",
+      "name_en": "Physics",
+      "name_am": "ፊዚክስ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/physics_icon.png",
+      "sort_order": 3
+    },
+    {
+      "id": "chemistry_g12",
+      "code": "CHEM12",
+      "name_en": "Chemistry",
+      "name_am": "ኬሚስትሪ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/chemistry_icon.png",
+      "sort_order": 4
+    },
+    {
+      "id": "english_g12",
+      "code": "ENG12",
+      "name_en": "English",
+      "name_am": "እንግሊዝኛ",
+      "grade": 12,
+      "stream": "common",
+      "icon_asset": "assets/images/english_icon.png",
+      "sort_order": 5
+    },
+    {
       "id": "aptitude_g12",
       "code": "APT12",
       "name_en": "Scholastic Aptitude",
@@ -146,7 +242,7 @@
       "grade": 12,
       "stream": "common",
       "icon_asset": "assets/images/aptitude_icon.png",
-      "sort_order": 2
+      "sort_order": 6
     },
     {
       "id": "math_g6",
@@ -299,21 +395,111 @@
     }
   ],
   "topics": [
-    { "id": "math_t1_1", "unit_id": "math_u1", "topic_number": 1, "title_en": "Arithmetic Progressions", "title_am": "አርቲሜቲክ ተከታታይ" },
-    { "id": "math_t1_2", "unit_id": "math_u1", "topic_number": 2, "title_en": "Geometric Series & Convergence", "title_am": "ጂኦሜትሪክ ተከታታይ" },
-    { "id": "math_t2_1", "unit_id": "math_u2", "topic_number": 1, "title_en": "Limits at Infinity", "title_am": "የወሰን ገደቦች" },
-    { "id": "math_t2_2", "unit_id": "math_u2", "topic_number": 2, "title_en": "Derivatives & Rates of Change", "title_am": "ለውጦችና ዲሪቬቲቭ" },
-    { "id": "apt_t1_1", "unit_id": "apt_u1", "topic_number": 1, "title_en": "Number Patterns & Series", "title_am": "የቁጥር ቅደም ተከተሎች" },
-    { "id": "apt_t1_2", "unit_id": "apt_u1", "topic_number": 2, "title_en": "Quantitative Proportions & Ratios", "title_am": "ተመጣጣኝነትና ንፅፅር" },
-    { "id": "apt_t2_1", "unit_id": "apt_u2", "topic_number": 1, "title_en": "Semantic Analogies", "title_am": "የቃላት ዝምድና" },
-    { "id": "apt_t2_2", "unit_id": "apt_u2", "topic_number": 2, "title_en": "Logical Deductions", "title_am": "አመክንዮአዊ ድምዳሜ" },
-    { "id": "g6_math_t1", "unit_id": "g6_math_u1", "topic_number": 1, "title_en": "Operations on Fractions", "title_am": "የክፍልፋዮች ስሌት" },
-    { "id": "g6_sci_t1", "unit_id": "g6_sci_u1", "topic_number": 1, "title_en": "Plant Ecosystems & Photosynthesis", "title_am": "የእፅዋት ስነ-ህይወት" },
-    { "id": "g8_math_t1", "unit_id": "g8_math_u1", "topic_number": 1, "title_en": "Pythagorean Theorem & Right Triangles", "title_am": "ፓይታጎረስ ቴዎረም" },
-    { "id": "g8_sci_t1", "unit_id": "g8_sci_u1", "topic_number": 1, "title_en": "Simple Direct Current Circuits", "title_am": "ቀላል የኤሌክትሪክ ዑደት" },
-    { "id": "g12_hist_t1", "unit_id": "g12_hist_u1", "topic_number": 1, "title_en": "The Battle of Adwa (1896)", "title_am": "የዓድዋ ድል (1896)" },
-    { "id": "g12_geo_t1", "unit_id": "g12_geo_u1", "topic_number": 1, "title_en": "The Great East African Rift System", "title_am": "የታላቁ ምስራቅ አፍሪካ ስምጥ ሸለቆ" },
-    { "id": "g12_econ_t1", "unit_id": "g12_econ_u1", "topic_number": 1, "title_en": "Supply, Demand & Price Elasticity", "title_am": "ፍላጎት፣ አቅርቦትና ዋጋ" }
+    {
+      "id": "math_t1_1",
+      "unit_id": "math_u1",
+      "topic_number": 1,
+      "title_en": "Arithmetic Progressions",
+      "title_am": "አርቲሜቲክ ተከታታይ"
+    },
+    {
+      "id": "math_t1_2",
+      "unit_id": "math_u1",
+      "topic_number": 2,
+      "title_en": "Geometric Series & Convergence",
+      "title_am": "ጂኦሜትሪክ ተከታታይ"
+    },
+    {
+      "id": "math_t2_1",
+      "unit_id": "math_u2",
+      "topic_number": 1,
+      "title_en": "Limits at Infinity",
+      "title_am": "የወሰን ገደቦች"
+    },
+    {
+      "id": "math_t2_2",
+      "unit_id": "math_u2",
+      "topic_number": 2,
+      "title_en": "Derivatives & Rates of Change",
+      "title_am": "ለውጦችና ዲሪቬቲቭ"
+    },
+    {
+      "id": "apt_t1_1",
+      "unit_id": "apt_u1",
+      "topic_number": 1,
+      "title_en": "Number Patterns & Series",
+      "title_am": "የቁጥር ቅደም ተከተሎች"
+    },
+    {
+      "id": "apt_t1_2",
+      "unit_id": "apt_u1",
+      "topic_number": 2,
+      "title_en": "Quantitative Proportions & Ratios",
+      "title_am": "ተመጣጣኝነትና ንፅፅር"
+    },
+    {
+      "id": "apt_t2_1",
+      "unit_id": "apt_u2",
+      "topic_number": 1,
+      "title_en": "Semantic Analogies",
+      "title_am": "የቃላት ዝምድና"
+    },
+    {
+      "id": "apt_t2_2",
+      "unit_id": "apt_u2",
+      "topic_number": 2,
+      "title_en": "Logical Deductions",
+      "title_am": "አመክንዮአዊ ድምዳሜ"
+    },
+    {
+      "id": "g6_math_t1",
+      "unit_id": "g6_math_u1",
+      "topic_number": 1,
+      "title_en": "Operations on Fractions",
+      "title_am": "የክፍልፋዮች ስሌት"
+    },
+    {
+      "id": "g6_sci_t1",
+      "unit_id": "g6_sci_u1",
+      "topic_number": 1,
+      "title_en": "Plant Ecosystems & Photosynthesis",
+      "title_am": "የእፅዋት ስነ-ህይወት"
+    },
+    {
+      "id": "g8_math_t1",
+      "unit_id": "g8_math_u1",
+      "topic_number": 1,
+      "title_en": "Pythagorean Theorem & Right Triangles",
+      "title_am": "ፓይታጎረስ ቴዎረም"
+    },
+    {
+      "id": "g8_sci_t1",
+      "unit_id": "g8_sci_u1",
+      "topic_number": 1,
+      "title_en": "Simple Direct Current Circuits",
+      "title_am": "ቀላል የኤሌክትሪክ ዑደት"
+    },
+    {
+      "id": "g12_hist_t1",
+      "unit_id": "g12_hist_u1",
+      "topic_number": 1,
+      "title_en": "The Battle of Adwa (1896)",
+      "title_am": "የዓድዋ ድል (1896)"
+    },
+    {
+      "id": "g12_geo_t1",
+      "unit_id": "g12_geo_u1",
+      "topic_number": 1,
+      "title_en": "The Great East African Rift System",
+      "title_am": "የታላቁ ምስራቅ አፍሪካ ስምጥ ሸለቆ"
+    },
+    {
+      "id": "g12_econ_t1",
+      "unit_id": "g12_econ_u1",
+      "topic_number": 1,
+      "title_en": "Supply, Demand & Price Elasticity",
+      "title_am": "ፍላጎት፣ አቅርቦትና ዋጋ"
+    }
   ],
   "questions": [
     {
@@ -332,10 +518,34 @@
       "source_page": 10,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_001_a", "label": "A", "text_en": "76", "text_am": "76", "is_correct": false },
-        { "id": "c_math_001_b", "label": "B", "text_en": "79", "text_am": "79", "is_correct": true },
-        { "id": "c_math_001_c", "label": "C", "text_en": "83", "text_am": "83", "is_correct": false },
-        { "id": "c_math_001_d", "label": "D", "text_en": "80", "text_am": "80", "is_correct": false }
+        {
+          "id": "c_math_001_a",
+          "label": "A",
+          "text_en": "76",
+          "text_am": "76",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_001_b",
+          "label": "B",
+          "text_en": "79",
+          "text_am": "79",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_001_c",
+          "label": "C",
+          "text_en": "83",
+          "text_am": "83",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_001_d",
+          "label": "D",
+          "text_en": "80",
+          "text_am": "80",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "The formula for the n-th term of an AP is a_n = a_1 + (n - 1)d. Here a_1 = 3 and common difference d = 7 - 3 = 4. Therefore, a_20 = 3 + (20 - 1) * 4 = 3 + 19 * 4 = 3 + 76 = 79.",
@@ -359,10 +569,30 @@
       "source_page": 12,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_002_a", "label": "A", "text_en": "2.5", "is_correct": false },
-        { "id": "c_math_002_b", "label": "B", "text_en": "3", "is_correct": true },
-        { "id": "c_math_002_c", "label": "C", "text_en": "3.5", "is_correct": false },
-        { "id": "c_math_002_d", "label": "D", "text_en": "4", "is_correct": false }
+        {
+          "id": "c_math_002_a",
+          "label": "A",
+          "text_en": "2.5",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_002_b",
+          "label": "B",
+          "text_en": "3",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_002_c",
+          "label": "C",
+          "text_en": "3.5",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_002_d",
+          "label": "D",
+          "text_en": "4",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Sum formula: S_n = (n/2) * [2a_1 + (n-1)d]. 155 = (10/2) * [2(2) + (10-1)d] => 155 = 5 * (4 + 9d) => 31 = 4 + 9d => 27 = 9d => d = 3.",
@@ -386,10 +616,30 @@
       "source_page": 24,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_003_a", "label": "A", "text_en": "0 < x < 1", "is_correct": true },
-        { "id": "c_math_003_b", "label": "B", "text_en": "-1 < x < 1", "is_correct": false },
-        { "id": "c_math_003_c", "label": "C", "text_en": "-0.5 < x < 0.5", "is_correct": false },
-        { "id": "c_math_003_d", "label": "D", "text_en": "0 <= x <= 1", "is_correct": false }
+        {
+          "id": "c_math_003_a",
+          "label": "A",
+          "text_en": "0 < x < 1",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_003_b",
+          "label": "B",
+          "text_en": "-1 < x < 1",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_003_c",
+          "label": "C",
+          "text_en": "-0.5 < x < 0.5",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_003_d",
+          "label": "D",
+          "text_en": "0 <= x <= 1",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "An infinite geometric series converges if and only if |r| < 1. Here r = 2x - 1. So -1 < 2x - 1 < 1. Adding 1 gives 0 < 2x < 2, dividing by 2 gives 0 < x < 1.",
@@ -413,10 +663,30 @@
       "source_page": 27,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_004_a", "label": "A", "text_en": "16", "is_correct": false },
-        { "id": "c_math_004_b", "label": "B", "text_en": "18", "is_correct": true },
-        { "id": "c_math_004_c", "label": "C", "text_en": "20", "is_correct": false },
-        { "id": "c_math_004_d", "label": "D", "text_en": "24", "is_correct": false }
+        {
+          "id": "c_math_004_a",
+          "label": "A",
+          "text_en": "16",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_004_b",
+          "label": "B",
+          "text_en": "18",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_004_c",
+          "label": "C",
+          "text_en": "20",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_004_d",
+          "label": "D",
+          "text_en": "24",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Here a = 12 and r = 4/12 = 1/3. S_infty = a / (1 - r) = 12 / (1 - 1/3) = 12 / (2/3) = 12 * 3 / 2 = 18.",
@@ -440,10 +710,30 @@
       "source_page": 40,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_005_a", "label": "A", "text_en": "5/2", "is_correct": true },
-        { "id": "c_math_005_b", "label": "B", "text_en": "0", "is_correct": false },
-        { "id": "c_math_005_c", "label": "C", "text_en": "-2", "is_correct": false },
-        { "id": "c_math_005_d", "label": "D", "text_en": "Infinity", "is_correct": false }
+        {
+          "id": "c_math_005_a",
+          "label": "A",
+          "text_en": "5/2",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_005_b",
+          "label": "B",
+          "text_en": "0",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_005_c",
+          "label": "C",
+          "text_en": "-2",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_005_d",
+          "label": "D",
+          "text_en": "Infinity",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "When x approaches infinity for a rational function with equal degree in numerator and denominator, the limit equals the ratio of leading coefficients: 5 / 2.",
@@ -467,10 +757,30 @@
       "source_page": 45,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_006_a", "label": "A", "text_en": "1", "is_correct": false },
-        { "id": "c_math_006_b", "label": "B", "text_en": "2", "is_correct": true },
-        { "id": "c_math_006_c", "label": "C", "text_en": "4", "is_correct": false },
-        { "id": "c_math_006_d", "label": "D", "text_en": "1/2", "is_correct": false }
+        {
+          "id": "c_math_006_a",
+          "label": "A",
+          "text_en": "1",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_006_b",
+          "label": "B",
+          "text_en": "2",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_006_c",
+          "label": "C",
+          "text_en": "4",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_006_d",
+          "label": "D",
+          "text_en": "1/2",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Using the fundamental trigonometric limit lim_{u -> 0} sin(u)/u = 1. Here sin(4x)/(2x) = 2 * [sin(4x)/(4x)]. Limit is 2 * 1 = 2.",
@@ -495,10 +805,30 @@
       "source_page": 58,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_007_a", "label": "A", "text_en": "12x(3x^2 + 1)^3", "is_correct": false },
-        { "id": "c_math_007_b", "label": "B", "text_en": "24x(3x^2 + 1)^3", "is_correct": true },
-        { "id": "c_math_007_c", "label": "C", "text_en": "4(3x^2 + 1)^3", "is_correct": false },
-        { "id": "c_math_007_d", "label": "D", "text_en": "6x(3x^2 + 1)^3", "is_correct": false }
+        {
+          "id": "c_math_007_a",
+          "label": "A",
+          "text_en": "12x(3x^2 + 1)^3",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_007_b",
+          "label": "B",
+          "text_en": "24x(3x^2 + 1)^3",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_007_c",
+          "label": "C",
+          "text_en": "4(3x^2 + 1)^3",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_007_d",
+          "label": "D",
+          "text_en": "6x(3x^2 + 1)^3",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "By Chain Rule: d/dx [u^4] = 4u^3 * u'. Here u = 3x^2 + 1 and u' = 6x. Thus f'(x) = 4(3x^2 + 1)^3 * (6x) = 24x(3x^2 + 1)^3.",
@@ -522,10 +852,30 @@
       "source_page": 63,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_008_a", "label": "A", "text_en": "6", "is_correct": false },
-        { "id": "c_math_008_b", "label": "B", "text_en": "9", "is_correct": true },
-        { "id": "c_math_008_c", "label": "C", "text_en": "12", "is_correct": false },
-        { "id": "c_math_008_d", "label": "D", "text_en": "4", "is_correct": false }
+        {
+          "id": "c_math_008_a",
+          "label": "A",
+          "text_en": "6",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_008_b",
+          "label": "B",
+          "text_en": "9",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_008_c",
+          "label": "C",
+          "text_en": "12",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_008_d",
+          "label": "D",
+          "text_en": "4",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Slope of tangent line is given by dy/dx. dy/dx = 3x^2 - 3. At x = 2: 3(2)^2 - 3 = 3(4) - 3 = 12 - 3 = 9.",
@@ -549,10 +899,30 @@
       "source_page": 15,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_009_a", "label": "A", "text_en": "20", "is_correct": false },
-        { "id": "c_math_009_b", "label": "B", "text_en": "21", "is_correct": true },
-        { "id": "c_math_009_c", "label": "C", "text_en": "22", "is_correct": false },
-        { "id": "c_math_009_d", "label": "D", "text_en": "19", "is_correct": false }
+        {
+          "id": "c_math_009_a",
+          "label": "A",
+          "text_en": "20",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_009_b",
+          "label": "B",
+          "text_en": "21",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_009_c",
+          "label": "C",
+          "text_en": "22",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_009_d",
+          "label": "D",
+          "text_en": "19",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "a_n = a_1 + (n - 1)d. 127 = 7 + (n - 1)*6 => 120 = 6(n - 1) => 20 = n - 1 => n = 21.",
@@ -576,10 +946,30 @@
       "source_page": 71,
       "content_version": 1,
       "choices": [
-        { "id": "c_math_010_a", "label": "A", "text_en": "x = 1 and x = 2", "is_correct": true },
-        { "id": "c_math_010_b", "label": "B", "text_en": "x = -1 and x = -2", "is_correct": false },
-        { "id": "c_math_010_c", "label": "C", "text_en": "x = 0 and x = 3", "is_correct": false },
-        { "id": "c_math_010_d", "label": "D", "text_en": "x = 2 and x = 3", "is_correct": false }
+        {
+          "id": "c_math_010_a",
+          "label": "A",
+          "text_en": "x = 1 and x = 2",
+          "is_correct": true
+        },
+        {
+          "id": "c_math_010_b",
+          "label": "B",
+          "text_en": "x = -1 and x = -2",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_010_c",
+          "label": "C",
+          "text_en": "x = 0 and x = 3",
+          "is_correct": false
+        },
+        {
+          "id": "c_math_010_d",
+          "label": "D",
+          "text_en": "x = 2 and x = 3",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "f'(x) = 6x^2 - 18x + 12 = 0. Divide by 6: x^2 - 3x + 2 = 0 => (x - 1)(x - 2) = 0 => x = 1, x = 2.",
@@ -604,10 +994,30 @@
       "source_page": 5,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_001_a", "label": "A", "text_en": "40", "is_correct": false },
-        { "id": "c_apt_001_b", "label": "B", "text_en": "42", "is_correct": true },
-        { "id": "c_apt_001_c", "label": "C", "text_en": "44", "is_correct": false },
-        { "id": "c_apt_001_d", "label": "D", "text_en": "48", "is_correct": false }
+        {
+          "id": "c_apt_001_a",
+          "label": "A",
+          "text_en": "40",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_001_b",
+          "label": "B",
+          "text_en": "42",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_001_c",
+          "label": "C",
+          "text_en": "44",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_001_d",
+          "label": "D",
+          "text_en": "48",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Differences between consecutive terms: +4, +6, +8, +10. The next difference must be +12. 30 + 12 = 42. (Alternatively n*(n+1): 1*2=2, 2*3=6, 3*4=12, 4*5=20, 5*6=30, 6*7=42).",
@@ -631,10 +1041,30 @@
       "source_page": 8,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_002_a", "label": "A", "text_en": "162", "is_correct": false },
-        { "id": "c_apt_002_b", "label": "B", "text_en": "243", "is_correct": true },
-        { "id": "c_apt_002_c", "label": "C", "text_en": "216", "is_correct": false },
-        { "id": "c_apt_002_d", "label": "D", "text_en": "324", "is_correct": false }
+        {
+          "id": "c_apt_002_a",
+          "label": "A",
+          "text_en": "162",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_002_b",
+          "label": "B",
+          "text_en": "243",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_002_c",
+          "label": "C",
+          "text_en": "216",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_002_d",
+          "label": "D",
+          "text_en": "324",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Each term is multiplied by 3 (powers of 3: 3^1, 3^2, 3^3, 3^4). Next is 3^5 = 243.",
@@ -658,10 +1088,30 @@
       "source_page": 18,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_003_a", "label": "A", "text_en": "10 days", "is_correct": true },
-        { "id": "c_apt_003_b", "label": "B", "text_en": "12 days", "is_correct": false },
-        { "id": "c_apt_003_c", "label": "C", "text_en": "9 days", "is_correct": false },
-        { "id": "c_apt_003_d", "label": "D", "text_en": "11.25 days", "is_correct": false }
+        {
+          "id": "c_apt_003_a",
+          "label": "A",
+          "text_en": "10 days",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_003_b",
+          "label": "B",
+          "text_en": "12 days",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_003_c",
+          "label": "C",
+          "text_en": "9 days",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_003_d",
+          "label": "D",
+          "text_en": "11.25 days",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Work is inversely proportional to the number of workers: Total work = 8 * 15 = 120 worker-days. For 12 workers: Time = 120 / 12 = 10 days.",
@@ -685,10 +1135,30 @@
       "source_page": 22,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_004_a", "label": "A", "text_en": "720", "is_correct": false },
-        { "id": "c_apt_004_b", "label": "B", "text_en": "810", "is_correct": true },
-        { "id": "c_apt_004_c", "label": "C", "text_en": "450", "is_correct": false },
-        { "id": "c_apt_004_d", "label": "D", "text_en": "900", "is_correct": false }
+        {
+          "id": "c_apt_004_a",
+          "label": "A",
+          "text_en": "720",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_004_b",
+          "label": "B",
+          "text_en": "810",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_004_c",
+          "label": "C",
+          "text_en": "450",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_004_d",
+          "label": "D",
+          "text_en": "900",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Let 1 unit = x. 4x = 360 => x = 90. Total students = 4x + 5x = 9x = 9 * 90 = 810 students.",
@@ -712,10 +1182,30 @@
       "source_page": 31,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_005_a", "label": "A", "text_en": "DISTANCE", "is_correct": false },
-        { "id": "c_apt_005_b", "label": "B", "text_en": "OBSERVE DISTANT OBJECTS", "is_correct": true },
-        { "id": "c_apt_005_c", "label": "C", "text_en": "LIGHT", "is_correct": false },
-        { "id": "c_apt_005_d", "label": "D", "text_en": "ASTRONOMER", "is_correct": false }
+        {
+          "id": "c_apt_005_a",
+          "label": "A",
+          "text_en": "DISTANCE",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_005_b",
+          "label": "B",
+          "text_en": "OBSERVE DISTANT OBJECTS",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_005_c",
+          "label": "C",
+          "text_en": "LIGHT",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_005_d",
+          "label": "D",
+          "text_en": "ASTRONOMER",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Function/Purpose analogy: A microscope is an instrument used to magnify small objects, just as a telescope is an instrument used to observe distant objects.",
@@ -739,10 +1229,30 @@
       "source_page": 33,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_006_a", "label": "A", "text_en": "ELECTRICITY", "is_correct": false },
-        { "id": "c_apt_006_b", "label": "B", "text_en": "WARM", "is_correct": true },
-        { "id": "c_apt_006_c", "label": "C", "text_en": "COLD", "is_correct": false },
-        { "id": "c_apt_006_d", "label": "D", "text_en": "WINTER", "is_correct": false }
+        {
+          "id": "c_apt_006_a",
+          "label": "A",
+          "text_en": "ELECTRICITY",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_006_b",
+          "label": "B",
+          "text_en": "WARM",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_006_c",
+          "label": "C",
+          "text_en": "COLD",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_006_d",
+          "label": "D",
+          "text_en": "WINTER",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Function relationship: A candle's primary function is to illuminate; a heater's primary function is to warm.",
@@ -766,10 +1276,30 @@
       "source_page": 44,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_007_a", "label": "A", "text_en": "Abebe is a natural science student.", "is_correct": false },
-        { "id": "c_apt_007_b", "label": "B", "text_en": "Abebe is not a natural science student.", "is_correct": true },
-        { "id": "c_apt_007_c", "label": "C", "text_en": "Abebe failed physics.", "is_correct": false },
-        { "id": "c_apt_007_d", "label": "D", "text_en": "No student studies physics.", "is_correct": false }
+        {
+          "id": "c_apt_007_a",
+          "label": "A",
+          "text_en": "Abebe is a natural science student.",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_007_b",
+          "label": "B",
+          "text_en": "Abebe is not a natural science student.",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_007_c",
+          "label": "C",
+          "text_en": "Abebe failed physics.",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_007_d",
+          "label": "D",
+          "text_en": "No student studies physics.",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Modus Tollens: If P -> Q (Natural science -> Studies physics), then ~Q -> ~P (Does not study physics -> Not a natural science student).",
@@ -793,10 +1323,30 @@
       "source_page": 48,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_008_a", "label": "A", "text_en": "Saturday", "is_correct": false },
-        { "id": "c_apt_008_b", "label": "B", "text_en": "Sunday", "is_correct": true },
-        { "id": "c_apt_008_c", "label": "C", "text_en": "Monday", "is_correct": false },
-        { "id": "c_apt_008_d", "label": "D", "text_en": "Tuesday", "is_correct": false }
+        {
+          "id": "c_apt_008_a",
+          "label": "A",
+          "text_en": "Saturday",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_008_b",
+          "label": "B",
+          "text_en": "Sunday",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_008_c",
+          "label": "C",
+          "text_en": "Monday",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_008_d",
+          "label": "D",
+          "text_en": "Tuesday",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "100 mod 7 = 2 (since 100 = 14 * 7 + 2). Advancing 2 days from Friday: Friday + 1 = Saturday, Friday + 2 = Sunday.",
@@ -820,10 +1370,30 @@
       "source_page": 11,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_009_a", "label": "A", "text_en": "121", "is_correct": true },
-        { "id": "c_apt_009_b", "label": "B", "text_en": "100", "is_correct": false },
-        { "id": "c_apt_009_c", "label": "C", "text_en": "13", "is_correct": false },
-        { "id": "c_apt_009_d", "label": "D", "text_en": "99", "is_correct": false }
+        {
+          "id": "c_apt_009_a",
+          "label": "A",
+          "text_en": "121",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_009_b",
+          "label": "B",
+          "text_en": "100",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_009_c",
+          "label": "C",
+          "text_en": "13",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_009_d",
+          "label": "D",
+          "text_en": "99",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "The series pairs odd numbers with their squares: 5 and 5^2=25; 7 and 7^2=49; 9 and 9^2=81; 11 and 11^2=121.",
@@ -847,10 +1417,30 @@
       "source_page": 35,
       "content_version": 1,
       "choices": [
-        { "id": "c_apt_010_a", "label": "A", "text_en": "HUMIDITY", "is_correct": false },
-        { "id": "c_apt_010_b", "label": "B", "text_en": "ATMOSPHERIC PRESSURE", "is_correct": true },
-        { "id": "c_apt_010_c", "label": "C", "text_en": "WIND SPEED", "is_correct": false },
-        { "id": "c_apt_010_d", "label": "D", "text_en": "ALTITUDE", "is_correct": false }
+        {
+          "id": "c_apt_010_a",
+          "label": "A",
+          "text_en": "HUMIDITY",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_010_b",
+          "label": "B",
+          "text_en": "ATMOSPHERIC PRESSURE",
+          "is_correct": true
+        },
+        {
+          "id": "c_apt_010_c",
+          "label": "C",
+          "text_en": "WIND SPEED",
+          "is_correct": false
+        },
+        {
+          "id": "c_apt_010_d",
+          "label": "D",
+          "text_en": "ALTITUDE",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Measuring device analogy: A thermometer measures temperature, whereas a barometer measures atmospheric pressure.",
@@ -875,10 +1465,30 @@
       "source_page": 5,
       "content_version": 1,
       "choices": [
-        { "id": "c_g6_m1_a", "label": "A", "text_en": "1 3/20", "is_correct": true },
-        { "id": "c_g6_m1_b", "label": "B", "text_en": "5/9", "is_correct": false },
-        { "id": "c_g6_m1_c", "label": "C", "text_en": "1 1/4", "is_correct": false },
-        { "id": "c_g6_m1_d", "label": "D", "text_en": "23/20", "is_correct": false }
+        {
+          "id": "c_g6_m1_a",
+          "label": "A",
+          "text_en": "1 3/20",
+          "is_correct": true
+        },
+        {
+          "id": "c_g6_m1_b",
+          "label": "B",
+          "text_en": "5/9",
+          "is_correct": false
+        },
+        {
+          "id": "c_g6_m1_c",
+          "label": "C",
+          "text_en": "1 1/4",
+          "is_correct": false
+        },
+        {
+          "id": "c_g6_m1_d",
+          "label": "D",
+          "text_en": "23/20",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Find LCD of 4 and 5 which is 20: 3/4 = 15/20 and 2/5 = 8/20. Sum = 23/20 = 1 3/20.",
@@ -938,10 +1548,30 @@
         ]
       },
       "choices": [
-        { "id": "c_g8_m1_a", "label": "A", "text_en": "10 cm", "is_correct": true },
-        { "id": "c_g8_m1_b", "label": "B", "text_en": "14 cm", "is_correct": false },
-        { "id": "c_g8_m1_c", "label": "C", "text_en": "12 cm", "is_correct": false },
-        { "id": "c_g8_m1_d", "label": "D", "text_en": "100 cm", "is_correct": false }
+        {
+          "id": "c_g8_m1_a",
+          "label": "A",
+          "text_en": "10 cm",
+          "is_correct": true
+        },
+        {
+          "id": "c_g8_m1_b",
+          "label": "B",
+          "text_en": "14 cm",
+          "is_correct": false
+        },
+        {
+          "id": "c_g8_m1_c",
+          "label": "C",
+          "text_en": "12 cm",
+          "is_correct": false
+        },
+        {
+          "id": "c_g8_m1_d",
+          "label": "D",
+          "text_en": "100 cm",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "By Pythagorean theorem: AC^2 = AB^2 + BC^2 = 6^2 + 8^2 = 36 + 64 = 100. Thus, AC = sqrt(100) = 10 cm.",
@@ -966,10 +1596,30 @@
       "source_page": 22,
       "content_version": 1,
       "choices": [
-        { "id": "c_g12_h1_a", "label": "A", "text_en": "Article XVII (17)", "is_correct": true },
-        { "id": "c_g12_h1_b", "label": "B", "text_en": "Article III (3)", "is_correct": false },
-        { "id": "c_g12_h1_c", "label": "C", "text_en": "Article V (5)", "is_correct": false },
-        { "id": "c_g12_h1_d", "label": "D", "text_en": "Article XII (12)", "is_correct": false }
+        {
+          "id": "c_g12_h1_a",
+          "label": "A",
+          "text_en": "Article XVII (17)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g12_h1_b",
+          "label": "B",
+          "text_en": "Article III (3)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g12_h1_c",
+          "label": "C",
+          "text_en": "Article V (5)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g12_h1_d",
+          "label": "D",
+          "text_en": "Article XII (12)",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Article 17 had contradictory translations: The Amharic version stated Ethiopia *could* use Italian good offices, while the Italian version made Ethiopia an Italian protectorate.",
@@ -1020,10 +1670,30 @@
         ]
       },
       "choices": [
-        { "id": "c_g12_e1_a", "label": "A", "text_en": "Both equilibrium price and quantity increase", "is_correct": true },
-        { "id": "c_g12_e1_b", "label": "B", "text_en": "Price decreases and quantity increases", "is_correct": false },
-        { "id": "c_g12_e1_c", "label": "C", "text_en": "Price increases and quantity decreases", "is_correct": false },
-        { "id": "c_g12_e1_d", "label": "D", "text_en": "Both price and quantity remain unchanged", "is_correct": false }
+        {
+          "id": "c_g12_e1_a",
+          "label": "A",
+          "text_en": "Both equilibrium price and quantity increase",
+          "is_correct": true
+        },
+        {
+          "id": "c_g12_e1_b",
+          "label": "B",
+          "text_en": "Price decreases and quantity increases",
+          "is_correct": false
+        },
+        {
+          "id": "c_g12_e1_c",
+          "label": "C",
+          "text_en": "Price increases and quantity decreases",
+          "is_correct": false
+        },
+        {
+          "id": "c_g12_e1_d",
+          "label": "D",
+          "text_en": "Both price and quantity remain unchanged",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "An increase in demand (rightward shift) causes excess demand at the initial price, bidding up the price to P2 and expanding the quantity supplied along the upward-sloping supply curve to Q2.",

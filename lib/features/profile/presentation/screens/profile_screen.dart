@@ -304,7 +304,7 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               Text('Cloud Sync Diagnostics',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SyncIndicatorWidget(isCompact: false),
+              SyncIndicatorWidget(isCompact: true),
             ],
           ),
           const SizedBox(height: 12),

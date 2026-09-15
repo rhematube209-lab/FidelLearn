@@ -55,7 +55,7 @@ class SyncIndicatorWidget extends ConsumerWidget {
         break;
     }
 
-    if (isCompact) {
+    Widget buildCompact() {
       return Tooltip(
         message: syncStatus.labelEn,
         child: InkWell(
@@ -108,52 +108,66 @@ class SyncIndicatorWidget extends ConsumerWidget {
       );
     }
 
-    return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: bg,
-          child: syncStatus == SyncStatus.syncing
-              ? SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(fg),
-                  ),
-                )
-              : Icon(icon, color: fg),
-        ),
-        title: Text(
-          syncStatus.labelEn,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          syncStatus.labelAm,
-          style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
-        ),
-        trailing: ElevatedButton.icon(
-          onPressed: () async {
-            final engine = ref.read(syncEngineProvider);
-            final count = await engine.syncAll();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    count > 0
-                        ? 'Successfully synced $count items.'
-                        : 'Sync completed. Up to date.',
-                  ),
-                ),
-              );
-            }
-          },
-          icon: const Icon(Icons.refresh, size: 16),
-          label: const Text('Sync Now'),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    if (isCompact) {
+      return buildCompact();
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // If placed inside an unconstrained horizontal flex (e.g. Row without Expanded),
+        // fallback safely to compact representation so ListTile never throws infinite width assertion.
+        if (constraints.maxWidth.isInfinite) {
+          return buildCompact();
+        }
+
+        return Card(
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: bg,
+              child: syncStatus == SyncStatus.syncing
+                  ? SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(fg),
+                      ),
+                    )
+                  : Icon(icon, color: fg),
+            ),
+            title: Text(
+              syncStatus.labelEn,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              syncStatus.labelAm,
+              style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+            ),
+            trailing: ElevatedButton.icon(
+              onPressed: () async {
+                final engine = ref.read(syncEngineProvider);
+                final count = await engine.syncAll();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        count > 0
+                            ? 'Successfully synced $count items.'
+                            : 'Sync completed. Up to date.',
+                      ),
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.refresh, size: 16),
+              label: const Text('Sync Now'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

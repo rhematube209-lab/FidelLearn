@@ -11,8 +11,7 @@ import 'package:fidel_learn/features/subjects/domain/models/subject_models.dart'
 
 void main() {
   group('StudentHomeScreen Layout Tests', () {
-    testWidgets(
-        'renders National Exam Subjects as section 2 after hero banner',
+    testWidgets('renders National Exam Subjects as section 2 after hero banner',
         (WidgetTester tester) async {
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
@@ -86,15 +85,17 @@ void main() {
 
       // Section 2: National Exam Subjects header and items exist
       expect(find.text('National Exam Subjects'), findsOneWidget);
-      expect(
-          find.text('Choose a subject to practice syllabus units & mock exams'),
-          findsOneWidget);
+      expect(find.text('Grade 12 Natural Science'), findsOneWidget);
+      expect(find.text('Manage'), findsOneWidget);
       expect(find.text('Mathematics'), findsOneWidget);
       expect(find.text('Biology'), findsOneWidget);
+      expect(find.text('Saved'), findsWidgets);
 
       // Verify Section 2 National Exam Subjects appears above Quick Actions
-      final subjectsOffset = tester.getTopLeft(find.text('National Exam Subjects')).dy;
-      final quickActionsOffset = tester.getTopLeft(find.text('Quick Actions')).dy;
+      final subjectsOffset =
+          tester.getTopLeft(find.text('National Exam Subjects')).dy;
+      final quickActionsOffset =
+          tester.getTopLeft(find.text('Quick Actions')).dy;
       expect(subjectsOffset, lessThan(quickActionsOffset));
     });
   });

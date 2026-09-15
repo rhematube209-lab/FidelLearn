@@ -23,14 +23,14 @@ class Subject extends Equatable {
 
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(
-      id: json['id'] as String,
-      code: json['code'] as String,
-      nameEn: json['name_en'] as String,
-      nameAm: json['name_am'] as String,
-      grade: json['grade'] as int,
-      stream: json['stream'] as String? ?? 'common',
-      iconAsset: json['icon_asset'] as String?,
-      sortOrder: json['sort_order'] as int? ?? 0,
+      id: json['id']?.toString() ?? '',
+      code: json['code']?.toString() ?? '',
+      nameEn: json['name_en']?.toString() ?? '',
+      nameAm: json['name_am']?.toString() ?? '',
+      grade: (json['grade'] as num?)?.toInt() ?? 12,
+      stream: json['stream']?.toString() ?? 'common',
+      iconAsset: json['icon_asset']?.toString(),
+      sortOrder: (json['sort_order'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -77,11 +77,11 @@ class Unit extends Equatable {
 
   factory Unit.fromJson(Map<String, dynamic> json) {
     return Unit(
-      id: json['id'] as String,
-      subjectId: json['subject_id'] as String,
-      unitNumber: json['unit_number'] as int,
-      titleEn: json['title_en'] as String,
-      titleAm: json['title_am'] as String,
+      id: json['id']?.toString() ?? '',
+      subjectId: json['subject_id']?.toString() ?? '',
+      unitNumber: (json['unit_number'] as num?)?.toInt() ?? 1,
+      titleEn: json['title_en']?.toString() ?? '',
+      titleAm: json['title_am']?.toString() ?? '',
     );
   }
 
@@ -116,11 +116,11 @@ class Topic extends Equatable {
 
   factory Topic.fromJson(Map<String, dynamic> json) {
     return Topic(
-      id: json['id'] as String,
-      unitId: json['unit_id'] as String,
-      topicNumber: json['topic_number'] as int,
-      titleEn: json['title_en'] as String,
-      titleAm: json['title_am'] as String,
+      id: json['id']?.toString() ?? '',
+      unitId: json['unit_id']?.toString() ?? '',
+      topicNumber: (json['topic_number'] as num?)?.toInt() ?? 1,
+      titleEn: json['title_en']?.toString() ?? '',
+      titleAm: json['title_am']?.toString() ?? '',
     );
   }
 
@@ -175,23 +175,24 @@ class ContentPackage extends Equatable {
 
   factory ContentPackage.fromJson(Map<String, dynamic> json) {
     return ContentPackage(
-      packageId: json['package_id'] as String,
-      subjectId: json['subject_id'] as String,
-      nameEn: json['name_en'] as String,
-      nameAm: json['name_am'] as String,
-      grade: json['grade'] as int,
-      stream: json['stream'] as String,
-      version: json['version'] as int? ?? 1,
-      sizeBytes: json['size_bytes'] as int? ?? 0,
+      packageId: json['package_id']?.toString() ??
+          (json['id']?.toString() ?? ''),
+      subjectId: json['subject_id']?.toString() ?? '',
+      nameEn: json['name_en']?.toString() ?? '',
+      nameAm: json['name_am']?.toString() ?? '',
+      grade: (json['grade'] as num?)?.toInt() ?? 12,
+      stream: json['stream']?.toString() ?? 'common',
+      version: (json['version'] as num?)?.toInt() ?? 1,
+      sizeBytes: (json['size_bytes'] as num?)?.toInt() ?? 0,
       publisher:
-          json['publisher'] as String? ?? 'FidelLearn Original Demonstration',
-      license: json['license'] as String? ?? 'demo_evaluation',
-      attribution: json['attribution'] as String? ??
+          json['publisher']?.toString() ?? 'FidelLearn Original Demonstration',
+      license: json['license']?.toString() ?? 'demo_evaluation',
+      attribution: json['attribution']?.toString() ??
           'FidelLearn original demonstration content',
       isDownloaded: json['is_downloaded'] as bool? ?? false,
       hasUpdate: json['has_update'] as bool? ?? false,
-      availableVersion: json['available_version'] as int?,
-      updateSizeBytes: json['update_size_bytes'] as int?,
+      availableVersion: (json['available_version'] as num?)?.toInt(),
+      updateSizeBytes: (json['update_size_bytes'] as num?)?.toInt(),
     );
   }
 

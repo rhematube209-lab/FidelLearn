@@ -1,3 +1,5 @@
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,11 +25,112 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
-  List<Subject> _subjects = [];
+  List<Subject> _subjects = _getDefaultNationalSubjects(12, 'natural');
   ExamAttempt? _recentAttempt;
   List<WeakTopicRecommendation> _weakTopics = [];
   double _readinessScore = 0.0;
   bool _isLoading = true;
+
+  static List<Subject> _getDefaultNationalSubjects(int grade, String stream) {
+    final isNatural = stream.toLowerCase() != 'social';
+    if (isNatural) {
+      return [
+        Subject(
+          id: 'math_g$grade',
+          code: 'MATH$grade',
+          nameEn: 'Mathematics',
+          nameAm: 'ሒሳብ',
+          grade: grade,
+          stream: 'natural',
+          sortOrder: 1,
+        ),
+        Subject(
+          id: 'bio_g$grade',
+          code: 'BIO$grade',
+          nameEn: 'Biology',
+          nameAm: 'ባዮሎጂ',
+          grade: grade,
+          stream: 'natural',
+          sortOrder: 2,
+        ),
+        Subject(
+          id: 'phys_g$grade',
+          code: 'PHYS$grade',
+          nameEn: 'Physics',
+          nameAm: 'ፊዚክስ',
+          grade: grade,
+          stream: 'natural',
+          sortOrder: 3,
+        ),
+        Subject(
+          id: 'chem_g$grade',
+          code: 'CHEM$grade',
+          nameEn: 'Chemistry',
+          nameAm: 'ኬሚስትሪ',
+          grade: grade,
+          stream: 'natural',
+          sortOrder: 4,
+        ),
+        Subject(
+          id: 'eng_g$grade',
+          code: 'ENG$grade',
+          nameEn: 'English',
+          nameAm: 'እንግሊዝኛ',
+          grade: grade,
+          stream: 'common',
+          sortOrder: 5,
+        ),
+      ];
+    } else {
+      return [
+        Subject(
+          id: 'math_g$grade',
+          code: 'MATH$grade',
+          nameEn: 'Mathematics',
+          nameAm: 'ሒሳብ',
+          grade: grade,
+          stream: 'social',
+          sortOrder: 1,
+        ),
+        Subject(
+          id: 'hist_g$grade',
+          code: 'HIST$grade',
+          nameEn: 'History',
+          nameAm: 'ታሪክ',
+          grade: grade,
+          stream: 'social',
+          sortOrder: 2,
+        ),
+        Subject(
+          id: 'geo_g$grade',
+          code: 'GEO$grade',
+          nameEn: 'Geography',
+          nameAm: 'ጂኦግራፊ',
+          grade: grade,
+          stream: 'social',
+          sortOrder: 3,
+        ),
+        Subject(
+          id: 'econ_g$grade',
+          code: 'ECON$grade',
+          nameEn: 'Economics',
+          nameAm: 'ኢኮኖሚክስ',
+          grade: grade,
+          stream: 'social',
+          sortOrder: 4,
+        ),
+        Subject(
+          id: 'eng_g$grade',
+          code: 'ENG$grade',
+          nameEn: 'English',
+          nameAm: 'እንግሊዝኛ',
+          grade: grade,
+          stream: 'common',
+          sortOrder: 5,
+        ),
+      ];
+    }
+  }
 
   @override
   void initState() {
@@ -49,6 +152,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               .timeout(const Duration(seconds: 2));
         } catch (e) {
           debugPrint('StudentHomeScreen: error loading subjects: $e');
+        }
+
+        final defaultSubjects =
+            _getDefaultNationalSubjects(user.grade, user.stream);
+        if (subs.isEmpty) {
+          subs = defaultSubjects;
+        } else if (subs.length < 5) {
+          final existingIds = subs.map((s) => s.id.toLowerCase()).toSet();
+          final existingNames = subs.map((s) => s.nameEn.toLowerCase()).toSet();
+          for (final def in defaultSubjects) {
+            if (!existingIds.contains(def.id.toLowerCase()) &&
+                !existingNames.contains(def.nameEn.toLowerCase())) {
+              subs.add(def);
+            }
+          }
         }
 
         List<ExamAttempt> history = [];
@@ -229,33 +347,29 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // 🚀 Section 1: Full-Width Hero Card (Zero Side Paddings)
-                    _buildMissionControlHero(
-                        context, user, isAmharic, isDark),
+                    _buildMissionControlHero(context, user, isAmharic, isDark),
 
                     // Content Container with Responsive Margins Below Hero Card
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal:
-                            isDesktop ? 40.0 : (isTablet ? 24.0 : 16.0),
+                        horizontal: isDesktop ? 40.0 : (isTablet ? 24.0 : 16.0),
                         vertical: 28.0,
                       ),
                       child: Center(
                         child: ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(maxWidth: 1240),
+                          constraints: const BoxConstraints(maxWidth: 1240),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               // 📚 Section 2: National Exam Subjects
                               _buildSubjectSection(
-                                  context, isAmharic, isDark),
+                                  context, user, isAmharic, isDark),
                               const SizedBox(height: 32),
 
                               // Multi-Column Desktop Layout vs Single-Column Mobile for Remaining Tools & Intelligence
                               if (isDesktop)
                                 Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Left: Quick Actions & Featured Mock Exam (55%)
                                     Expanded(
@@ -264,8 +378,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.stretch,
                                         children: [
-                                          _buildQuickActions(
-                                              context, isDark),
+                                          _buildQuickActions(context, isDark),
                                           const SizedBox(height: 24),
                                           _buildFeaturedExamCard(
                                               context, isDark),
@@ -302,14 +415,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 const SizedBox(height: 24),
                                 _buildFeaturedExamCard(context, isDark),
                                 const SizedBox(height: 24),
-                                _buildReadinessGaugeCard(
-                                    context, isDark),
+                                _buildReadinessGaugeCard(context, isDark),
                                 const SizedBox(height: 28),
                                 _buildWeakTopicRadarCard(context, isDark),
                                 if (_recentAttempt != null) ...[
                                   const SizedBox(height: 24),
-                                  _buildRecentPerformanceCard(
-                                      context, isDark),
+                                  _buildRecentPerformanceCard(context, isDark),
                                 ],
                               ],
                               const SizedBox(height: 32),
@@ -633,8 +744,6 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       ),
     );
   }
-
-
 
   // ==========================================
   // ==========================================
@@ -981,9 +1090,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  isAmharic
-                                      ? 'የፈተና ውድድሮች'
-                                      : 'Exam Ghost Duels',
+                                  isAmharic ? 'የፈተና ውድድሮች' : 'Exam Ghost Duels',
                                   style: const TextStyle(
                                     color: Color(0xFFD1FAE5),
                                     fontWeight: FontWeight.w600,
@@ -1028,172 +1135,611 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // 📚 SUBJECT PACKAGE SECTION
+  // 📚 SECTION 2: NATIONAL EXAM SUBJECTS
   // ==========================================
   Widget _buildSubjectSection(
-      BuildContext context, bool isAmharic, bool isDark) {
+    BuildContext context,
+    UserProfile user,
+    bool isAmharic,
+    bool isDark,
+  ) {
+    // Dynamic stream and grade label (e.g. "Grade 12 Natural Science")
+    final streamLabel = user.stream.toLowerCase() == 'natural'
+        ? (isAmharic ? 'የተፈጥሮ ሳይንስ' : 'Natural Science')
+        : (user.stream.toLowerCase() == 'social'
+            ? (isAmharic ? 'የማህበራዊ ሳይንስ' : 'Social Science')
+            : user.stream.toUpperCase());
+
+    final gradeSubtitle = isAmharic
+        ? '${user.grade}ኛ ክፍል $streamLabel'
+        : 'Grade ${user.grade} $streamLabel';
+
+    // Ensure all 5 national exam subjects are always present
+    final defaultSubjects =
+        _getDefaultNationalSubjects(user.grade, user.stream);
+    List<Subject> effectiveSubjects = List<Subject>.from(_subjects);
+    if (effectiveSubjects.isEmpty) {
+      effectiveSubjects = defaultSubjects;
+    } else if (effectiveSubjects.length < 5) {
+      final existingIds =
+          effectiveSubjects.map((s) => s.id.toLowerCase()).toSet();
+      final existingNames =
+          effectiveSubjects.map((s) => s.nameEn.toLowerCase()).toSet();
+      for (final def in defaultSubjects) {
+        if (!existingIds.contains(def.id.toLowerCase()) &&
+            !existingNames.contains(def.nameEn.toLowerCase())) {
+          effectiveSubjects.add(def);
+        }
+      }
+    }
+
+    // Sort subjects by curriculum sequence (Math 1, Biology 2, Physics 3, Chemistry 4, English 5)
+    effectiveSubjects.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+    final topSubjects = effectiveSubjects.take(2).toList();
+    final carouselSubjects = effectiveSubjects.skip(2).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FidelSectionHeader(
-          title: isAmharic ? 'የብሔራዊ ፈተና የትምህርት አይነቶች' : 'National Exam Subjects',
-          subtitle: isAmharic
-              ? 'የስርዓተ ትምህርት ክፍሎችንና የሞዴል ፈተናዎችን ለመለማመድ ትምህርት ይምረጡ'
-              : 'Choose a subject to practice syllabus units & mock exams',
-          trailing: TextButton.icon(
-            onPressed: () => context.push('/subjects'),
-            icon: const Icon(Icons.folder_zip_outlined, size: 16),
-            label: Text(isAmharic ? 'ጥቅሎች' : 'Manage Packages'),
-          ),
-        ),
-        const SizedBox(height: 14),
-        if (_subjects.isEmpty)
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0x26334155) : const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-              border: Border.all(
-                color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.school_outlined,
-                    color: AppTheme.brand, size: 28),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isAmharic
-                            ? 'የትምህርት ጥቅሎች እየተጫኑ ነው...'
-                            : 'Loading National Exam Subjects...',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color:
-                              isDark ? AppTheme.darkText : AppTheme.lightText,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        isAmharic
-                            ? 'የከመስመር ውጭ ጥቅሎችን ለማውረድ Manage Packages ን ይጫኑ'
-                            : 'Manage packages to download or refresh offline exam content',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color:
-                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => context.push('/subjects'),
-                  child: Text(isAmharic ? 'ክፈት' : 'Open'),
-                ),
-              ],
-            ),
-          )
-        else
-          GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 320,
-            mainAxisExtent: 136,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-          ),
-          itemCount: _subjects.length,
-          itemBuilder: (context, index) {
-            final sub = _subjects[index];
-            return FidelCard(
-              padding: const EdgeInsets.all(15),
-              onTap: () => context.push('/exam_builder?subjectId=${sub.id}'),
-              child: Column(
+        // Top Header: Title, Subtitle, and "Manage >" action
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: AppTheme.brand.withValues(alpha: 0.14),
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSm),
-                        ),
-                        child: Center(
-                          child: Text(
-                            sub.nameEn.isNotEmpty ? sub.nameEn[0] : 'S',
-                            style: const TextStyle(
-                              color: AppTheme.brand,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          isAmharic ? sub.nameAm : sub.nameEn,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 13.5,
-                            color:
-                                isDark ? AppTheme.darkText : AppTheme.lightText,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const FidelBadge(
-                        text: 'OFFLINE',
-                        variant: FidelBadgeVariant.success,
-                        isSmall: true,
-                      ),
-                    ],
-                  ),
                   Text(
-                    '${sub.code} • Verified Questions & Diagrams',
+                    isAmharic
+                        ? 'የብሔራዊ ፈተና የትምህርት አይነቶች'
+                        : 'National Exam Subjects',
                     style: TextStyle(
-                      fontSize: 11.5,
-                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white : const Color(0xFF0F172A),
+                      letterSpacing: -0.2,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Practice Subject →',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.brand,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 14,
-                        color: AppTheme.brand.withValues(alpha: 0.8),
-                      ),
-                    ],
+                  const SizedBox(height: 2),
+                  Text(
+                    gradeSubtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color:
+                          isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                    ),
                   ),
                 ],
               ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => context.push('/subjects'),
+                  borderRadius: BorderRadius.circular(6),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0, vertical: 4.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          isAmharic ? 'አስተዳድር' : 'Manage',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF6366F1),
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.chevron_right_rounded,
+                          size: 14,
+                          color: Color(0xFF6366F1),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // Layout: Responsive 5-card row on desktop vs 2-Row Grid + Carousel on mobile
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = constraints.maxWidth;
+            final isDesktopWidth = screenWidth >= 800;
+
+            if (isDesktopWidth) {
+              return Row(
+                children: [
+                  for (int i = 0; i < effectiveSubjects.take(5).length; i++) ...[
+                    if (i > 0) const SizedBox(width: 12),
+                    Expanded(
+                      child: _buildRedesignedSubjectCard(
+                        context: context,
+                        subject: effectiveSubjects[i],
+                        isAmharic: isAmharic,
+                        isDark: isDark,
+                      ),
+                    ),
+                  ],
+                ],
+              );
+            }
+
+            final carouselCardWidth = (screenWidth * 0.46).clamp(152.0, 185.0);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Top 2-Column Grid Row (Mathematics, Biology)
+                Row(
+                  children: [
+                    for (int i = 0; i < topSubjects.length; i++) ...[
+                      if (i > 0) const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildRedesignedSubjectCard(
+                          context: context,
+                          subject: topSubjects[i],
+                          isAmharic: isAmharic,
+                          isDark: isDark,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+
+                // Carousel Row for Remaining Subjects (Physics, Chemistry, English, ...)
+                if (carouselSubjects.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  ScrollConfiguration(
+                    behavior: ScrollConfiguration.of(context).copyWith(
+                      dragDevices: {
+                        PointerDeviceKind.touch,
+                        PointerDeviceKind.mouse,
+                        PointerDeviceKind.trackpad,
+                      },
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      clipBehavior: Clip.none,
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
+                        children: [
+                          for (int i = 0; i < carouselSubjects.length; i++) ...[
+                            if (i > 0) const SizedBox(width: 12),
+                            _buildRedesignedSubjectCard(
+                              context: context,
+                              subject: carouselSubjects[i],
+                              isAmharic: isAmharic,
+                              isDark: isDark,
+                              width: carouselCardWidth,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             );
           },
         ),
       ],
     );
+  }
+
+  Widget _buildRedesignedSubjectCard({
+    required BuildContext context,
+    required Subject subject,
+    required bool isAmharic,
+    required bool isDark,
+    double? width,
+  }) {
+    final theme = _getSubjectDesignTheme(subject);
+    final subjectTitle = isAmharic && subject.nameAm.isNotEmpty
+        ? subject.nameAm
+        : subject.nameEn;
+
+    return Container(
+      width: width,
+      height: 126,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: const Alignment(-0.8, -0.9),
+          end: const Alignment(0.9, 0.9),
+          stops: const [0.3, 1.0],
+          colors: isDark
+              ? [theme.darkBgStart, theme.darkBgEnd]
+              : [theme.lightBgStart, theme.lightBgEnd],
+        ),
+        border: Border.all(
+          color: isDark ? theme.darkBorder : theme.lightBorder,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.primaryColor.withValues(alpha: isDark ? 0.12 : 0.08),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color:
+                const Color(0xFF0F172A).withValues(alpha: isDark ? 0.20 : 0.03),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          onTap: () => context.push('/exam_builder?subjectId=${subject.id}'),
+          borderRadius: BorderRadius.circular(16),
+          splashColor: theme.primaryColor.withValues(alpha: 0.12),
+          highlightColor: theme.primaryColor.withValues(alpha: 0.06),
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Top Row: Icon Container + "Saved" Badge
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // w-9 h-9 (36x36) rounded-xl Icon Container
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: isDark ? theme.iconBgDark : theme.iconBgLight,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isDark
+                              ? theme.darkBorder
+                              : theme.primaryColor.withValues(alpha: 0.20),
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x08000000),
+                            blurRadius: 2,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Center(child: theme.iconWidget),
+                    ),
+
+                    // "Saved" Badge with Pulsing Emerald Dot
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 2.0),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? const Color(0xFF064E3B).withValues(alpha: 0.70)
+                            : Colors.white.withValues(alpha: 0.90),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFF059669).withValues(alpha: 0.60)
+                              : const Color(0xCCA7F3D0),
+                          width: 1,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x08000000),
+                            blurRadius: 2,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF10B981),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF10B981)
+                                      .withValues(alpha: 0.60),
+                                  blurRadius: 3,
+                                  spreadRadius: 0.5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            isAmharic ? 'ተቀምጧል' : 'Saved',
+                            style: TextStyle(
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.w700,
+                              color: isDark
+                                  ? const Color(0xFF6EE7B7)
+                                  : const Color(0xFF065F46),
+                              height: 1.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Bottom Section: Subject Name & (Grade + Circle Arrow Button)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      subjectTitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        letterSpacing: -0.2,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Grade ${subject.grade}',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : const Color(0xFF64748B),
+                            height: 1.0,
+                          ),
+                        ),
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color:
+                                isDark ? const Color(0xFF1E293B) : Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isDark
+                                  ? theme.arrowBorderColor
+                                      .withValues(alpha: 0.4)
+                                  : theme.arrowBorderColor,
+                              width: 1,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x0A000000),
+                                blurRadius: 2,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: 12,
+                              color: theme.arrowTextColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _SubjectDesignTheme _getSubjectDesignTheme(Subject subject) {
+    final key = '${subject.id} ${subject.code} ${subject.nameEn}'.toLowerCase();
+
+    if (key.contains('math')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Text(
+          '∑',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF6366F1),
+            height: 1.0,
+          ),
+        ),
+        primaryColor: Color(0xFF6366F1),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFEFF4FC),
+        lightBorder: Color(0xCCE0E7FF),
+        darkBgStart: Color(0xFF1E1E2E),
+        darkBgEnd: Color(0xFF1E1B4B),
+        darkBorder: Color(0xFF312E81),
+        iconBgLight: Color(0xFFEEF2FF),
+        iconBgDark: Color(0x336366F1),
+        arrowBorderColor: Color(0xFFE0E7FF),
+        arrowTextColor: Color(0xFF6366F1),
+      );
+    } else if (key.contains('bio')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.biotech,
+          size: 18,
+          color: Color(0xFF047857),
+        ),
+        primaryColor: Color(0xFF059669),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFECFDF5),
+        lightBorder: Color(0xB3A7F3D0),
+        darkBgStart: Color(0xFF0F2922),
+        darkBgEnd: Color(0xFF064E3B),
+        darkBorder: Color(0xFF065F46),
+        iconBgLight: Color(0xFFECFDF5),
+        iconBgDark: Color(0x33059669),
+        arrowBorderColor: Color(0xFFA7F3D0),
+        arrowTextColor: Color(0xFF047857),
+      );
+    } else if (key.contains('phys')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.bolt,
+          size: 18,
+          color: Color(0xFF1D4ED8),
+        ),
+        primaryColor: Color(0xFF2563EB),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFEFF6FF),
+        lightBorder: Color(0xFFDBEAFE),
+        darkBgStart: Color(0xFF13203E),
+        darkBgEnd: Color(0xFF1E3A8A),
+        darkBorder: Color(0xFF1E40AF),
+        iconBgLight: Color(0xFFEFF6FF),
+        iconBgDark: Color(0x332563EB),
+        arrowBorderColor: Color(0xFFDBEAFE),
+        arrowTextColor: Color(0xFF1D4ED8),
+      );
+    } else if (key.contains('chem')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.science,
+          size: 18,
+          color: Color(0xFF7E22CE),
+        ),
+        primaryColor: Color(0xFF9333EA),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFFAF5FF),
+        lightBorder: Color(0xFFF3E8FF),
+        darkBgStart: Color(0xFF231438),
+        darkBgEnd: Color(0xFF3B0764),
+        darkBorder: Color(0xFF581C87),
+        iconBgLight: Color(0xFFFAF5FF),
+        iconBgDark: Color(0x339333EA),
+        arrowBorderColor: Color(0xFFF3E8FF),
+        arrowTextColor: Color(0xFF7E22CE),
+      );
+    } else if (key.contains('eng')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.menu_book,
+          size: 18,
+          color: Color(0xFFB45309),
+        ),
+        primaryColor: Color(0xFFD97706),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFFEF3C7),
+        lightBorder: Color(0xFFFEF3C7),
+        darkBgStart: Color(0xFF2D1F0E),
+        darkBgEnd: Color(0xFF78350F),
+        darkBorder: Color(0xFF92400E),
+        iconBgLight: Color(0xFFFEF3C7),
+        iconBgDark: Color(0x33D97706),
+        arrowBorderColor: Color(0xFFFEF3C7),
+        arrowTextColor: Color(0xFFB45309),
+      );
+    } else if (key.contains('hist')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.history_edu,
+          size: 18,
+          color: Color(0xFFC2410C),
+        ),
+        primaryColor: Color(0xFFEA580C),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFFFEDD5),
+        lightBorder: Color(0xFFFED7AA),
+        darkBgStart: Color(0xFF2E190E),
+        darkBgEnd: Color(0xFF7C2D12),
+        darkBorder: Color(0xFF9A3412),
+        iconBgLight: Color(0xFFFFF7ED),
+        iconBgDark: Color(0x33EA580C),
+        arrowBorderColor: Color(0xFFFED7AA),
+        arrowTextColor: Color(0xFFC2410C),
+      );
+    } else if (key.contains('geo')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.public,
+          size: 18,
+          color: Color(0xFF0F766E),
+        ),
+        primaryColor: Color(0xFF0D9488),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFF0FDFA),
+        lightBorder: Color(0xFF99F6E4),
+        darkBgStart: Color(0xFF0D2523),
+        darkBgEnd: Color(0xFF134E4A),
+        darkBorder: Color(0xFF115E59),
+        iconBgLight: Color(0xFFCCFBF1),
+        iconBgDark: Color(0x330D9488),
+        arrowBorderColor: Color(0xFF99F6E4),
+        arrowTextColor: Color(0xFF0F766E),
+      );
+    } else if (key.contains('civ') || key.contains('econ')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.balance,
+          size: 18,
+          color: Color(0xFF334155),
+        ),
+        primaryColor: Color(0xFF475569),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFF1F5F9),
+        lightBorder: Color(0xFFCBD5E1),
+        darkBgStart: Color(0xFF1E293B),
+        darkBgEnd: Color(0xFF334155),
+        darkBorder: Color(0xFF475569),
+        iconBgLight: Color(0xFFF1F5F9),
+        iconBgDark: Color(0x33475569),
+        arrowBorderColor: Color(0xFFCBD5E1),
+        arrowTextColor: Color(0xFF334155),
+      );
+    } else {
+      return _SubjectDesignTheme(
+        iconWidget: Text(
+          subject.nameEn.isNotEmpty ? subject.nameEn[0] : 'S',
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+            color: AppTheme.brand,
+          ),
+        ),
+        primaryColor: AppTheme.brand,
+        lightBgStart: Colors.white,
+        lightBgEnd: const Color(0xFFF8FAFC),
+        lightBorder: const Color(0xFFE2E8F0),
+        darkBgStart: AppTheme.darkSurface,
+        darkBgEnd: const Color(0xFF1E293B),
+        darkBorder: AppTheme.darkBorder,
+        iconBgLight: const Color(0xFFEEF2FF),
+        iconBgDark: const Color(0x336366F1),
+        arrowBorderColor: const Color(0xFFE2E8F0),
+        arrowTextColor: AppTheme.brand,
+      );
+    }
   }
 
   // ==========================================
@@ -1772,4 +2318,34 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       ),
     );
   }
+}
+
+class _SubjectDesignTheme {
+  final Widget iconWidget;
+  final Color primaryColor;
+  final Color lightBgStart;
+  final Color lightBgEnd;
+  final Color lightBorder;
+  final Color darkBgStart;
+  final Color darkBgEnd;
+  final Color darkBorder;
+  final Color iconBgLight;
+  final Color iconBgDark;
+  final Color arrowBorderColor;
+  final Color arrowTextColor;
+
+  const _SubjectDesignTheme({
+    required this.iconWidget,
+    required this.primaryColor,
+    required this.lightBgStart,
+    required this.lightBgEnd,
+    required this.lightBorder,
+    required this.darkBgStart,
+    required this.darkBgEnd,
+    required this.darkBorder,
+    required this.iconBgLight,
+    required this.iconBgDark,
+    required this.arrowBorderColor,
+    required this.arrowTextColor,
+  });
 }
