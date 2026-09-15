@@ -41,6 +41,48 @@
       "license": "official_archive",
       "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
       "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g9_bio_nat_2026",
+      "subject_id": "biology_g9",
+      "name_en": "Grade 9 Biology (New Curriculum)",
+      "name_am": "የ9ኛ ክፍል ባዮሎጂ (አዲሱ ሥርዓተ ትምህርት)",
+      "grade": 9,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g10_bio_nat_2026",
+      "subject_id": "biology_g10",
+      "name_en": "Grade 10 Biology (New Curriculum)",
+      "name_am": "የ10ኛ ክፍል ባዮሎጂ (አዲሱ ሥርዓተ ትምህርት)",
+      "grade": 10,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g11_bio_nat_2026",
+      "subject_id": "biology_g11",
+      "name_en": "Grade 11 Biology (New Curriculum)",
+      "name_am": "የ11ኛ ክፍል ባዮሎጂ (አዲሱ ሥርዓተ ትምህርት)",
+      "grade": 11,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
     }
   ],
   "subjects": [
@@ -73,6 +115,36 @@
       "stream": "natural",
       "icon_asset": "assets/images/math_icon.png",
       "sort_order": 1
+    },
+    {
+      "id": "biology_g9",
+      "code": "BIO9",
+      "name_en": "Biology",
+      "name_am": "ባዮሎጂ",
+      "grade": 9,
+      "stream": "common",
+      "icon_asset": "assets/images/biology_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "biology_g10",
+      "code": "BIO10",
+      "name_en": "Biology",
+      "name_am": "ባዮሎጂ",
+      "grade": 10,
+      "stream": "common",
+      "icon_asset": "assets/images/biology_icon.png",
+      "sort_order": 2
+    },
+    {
+      "id": "biology_g11",
+      "code": "BIO11",
+      "name_en": "Biology",
+      "name_am": "ባዮሎጂ",
+      "grade": 11,
+      "stream": "natural",
+      "icon_asset": "assets/images/biology_icon.png",
+      "sort_order": 2
     }
   ],
   "units": [
@@ -138,6 +210,118 @@
       "unit_number": 2,
       "title_en": "Rational Expressions and Equations",
       "title_am": "ረሽናል አገላለጾችና እኩልታዎች"
+    },
+    {
+      "id": "bio_g9_u1",
+      "subject_id": "biology_g9",
+      "unit_number": 1,
+      "title_en": "Introduction to Biology & Biological Inquiry",
+      "title_am": "የስነ-ህይወት መግቢያ እና ሳይንሳዊ ምርምር"
+    },
+    {
+      "id": "bio_g9_u2",
+      "subject_id": "biology_g9",
+      "unit_number": 2,
+      "title_en": "Characteristics and Classification of Organisms",
+      "title_am": "የህያዋን ፍጥረታት ባህሪያትና ምደባ"
+    },
+    {
+      "id": "bio_g9_u3",
+      "subject_id": "biology_g9",
+      "unit_number": 3,
+      "title_en": "Cell Biology & Structure",
+      "title_am": "የሴል ስነ-ህይወትና መዋቅር"
+    },
+    {
+      "id": "bio_g9_u4",
+      "subject_id": "biology_g9",
+      "unit_number": 4,
+      "title_en": "Reproduction in Plants and Animals",
+      "title_am": "የዕፅዋትና የእንስሳት መራባት"
+    },
+    {
+      "id": "bio_g9_u5",
+      "subject_id": "biology_g9",
+      "unit_number": 5,
+      "title_en": "Human Health, Nutrition & Infectious Diseases",
+      "title_am": "የሰው ጤና፣ አመጋገብ እና ተላላፊ በሽታዎች"
+    },
+    {
+      "id": "bio_g9_u6",
+      "subject_id": "biology_g9",
+      "unit_number": 6,
+      "title_en": "Ecology & Environmental Conservation",
+      "title_am": "ኢኮሎጂ እና የአካባቢ ጥበቃ"
+    },
+    {
+      "id": "bio_g10_u1",
+      "subject_id": "biology_g10",
+      "unit_number": 1,
+      "title_en": "Sub-fields of Biology and Biotechnology",
+      "title_am": "የባዮሎጂ ንዑሳን ዘርፎችና ባዮቴክኖሎጂ"
+    },
+    {
+      "id": "bio_g10_u2",
+      "subject_id": "biology_g10",
+      "unit_number": 2,
+      "title_en": "Heredity and Classical Genetics",
+      "title_am": "የዘር ውርስና ክላሲካል ጄኔቲክስ"
+    },
+    {
+      "id": "bio_g10_u3",
+      "subject_id": "biology_g10",
+      "unit_number": 3,
+      "title_en": "Human Biology: Body Systems",
+      "title_am": "የሰው አካል ስርዓቶች"
+    },
+    {
+      "id": "bio_g10_u4",
+      "subject_id": "biology_g10",
+      "unit_number": 4,
+      "title_en": "Food Production, Agriculture & Breeding",
+      "title_am": "የምግብ ምርት፣ ግብርና እና ዝርያ ማሻሻል"
+    },
+    {
+      "id": "bio_g10_u5",
+      "subject_id": "biology_g10",
+      "unit_number": 5,
+      "title_en": "Conservation of Natural Resources",
+      "title_am": "የተፈጥሮ ሀብት ጥበቃ"
+    },
+    {
+      "id": "bio_g11_u1",
+      "subject_id": "biology_g11",
+      "unit_number": 1,
+      "title_en": "Biological Research, Methodology & Tools",
+      "title_am": "የስነ-ህይወት ምርምር፣ ዘዴዎችና መሳሪያዎች"
+    },
+    {
+      "id": "bio_g11_u2",
+      "subject_id": "biology_g11",
+      "unit_number": 2,
+      "title_en": "Biochemical Molecules & Enzyme Action",
+      "title_am": "ባዮኬሚካላዊ ሞለኪዩሎች እና ኢንዛይሞች"
+    },
+    {
+      "id": "bio_g11_u3",
+      "subject_id": "biology_g11",
+      "unit_number": 3,
+      "title_en": "Cellular Transport & Membrane Dynamics",
+      "title_am": "የሴል ሽፋን ዝውውር"
+    },
+    {
+      "id": "bio_g11_u4",
+      "subject_id": "biology_g11",
+      "unit_number": 4,
+      "title_en": "Energy Transformation: Photosynthesis & Respiration",
+      "title_am": "የሃይል ልውውጥ፡ ፎቶሲንተሲስና ሴሉላር አተነፋፈስ"
+    },
+    {
+      "id": "bio_g11_u5",
+      "subject_id": "biology_g11",
+      "unit_number": 5,
+      "title_en": "Molecular Genetics & Protein Synthesis",
+      "title_am": "ሞለኪዩላር ጄኔቲክስ እና የፕሮቲን ቅንብር"
     }
   ],
   "topics": [
@@ -180,10 +364,34 @@
       "source_page": 4,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_13_1a", "label": "A", "text_en": "{-5, -3, 1, 3}", "text_am": "{-5, -3, 1, 3}", "is_correct": true },
-        { "id": "c_g9_13_1b", "label": "B", "text_en": "{-1, 0, 2, 3}", "text_am": "{-1, 0, 2, 3}", "is_correct": false },
-        { "id": "c_g9_13_1c", "label": "C", "text_en": "{-5, -3, 0, 3}", "text_am": "{-5, -3, 0, 3}", "is_correct": false },
-        { "id": "c_g9_13_1d", "label": "D", "text_en": "{-3, -1, 1, 5}", "text_am": "{-3, -1, 1, 5}", "is_correct": false }
+        {
+          "id": "c_g9_13_1a",
+          "label": "A",
+          "text_en": "{-5, -3, 1, 3}",
+          "text_am": "{-5, -3, 1, 3}",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_13_1b",
+          "label": "B",
+          "text_en": "{-1, 0, 2, 3}",
+          "text_am": "{-1, 0, 2, 3}",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_13_1c",
+          "label": "C",
+          "text_en": "{-5, -3, 0, 3}",
+          "text_am": "{-5, -3, 0, 3}",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_13_1d",
+          "label": "D",
+          "text_en": "{-3, -1, 1, 5}",
+          "text_am": "{-3, -1, 1, 5}",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Evaluate y = 2x - 3 for each element in the domain: For x = -1, y = 2(-1) - 3 = -5. For x = 0, y = 2(0) - 3 = -3. For x = 2, y = 2(2) - 3 = 1. For x = 3, y = 2(3) - 3 = 3. Thus, Range = {-5, -3, 1, 3}.",
@@ -208,10 +416,34 @@
       "source_page": 7,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_14_1a", "label": "A", "text_en": "Slope = 3/4, y-intercept = 3", "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = 3", "is_correct": true },
-        { "id": "c_g9_14_1b", "label": "B", "text_en": "Slope = -3/4, y-intercept = -3", "text_am": "ዝንባሌ = -3/4, y-መቁረጫ = -3", "is_correct": false },
-        { "id": "c_g9_14_1c", "label": "C", "text_en": "Slope = 4/3, y-intercept = 4", "text_am": "ዝንባሌ = 4/3, y-መቁረጫ = 4", "is_correct": false },
-        { "id": "c_g9_14_1d", "label": "D", "text_en": "Slope = 3/4, y-intercept = -3", "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = -3", "is_correct": false }
+        {
+          "id": "c_g9_14_1a",
+          "label": "A",
+          "text_en": "Slope = 3/4, y-intercept = 3",
+          "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = 3",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_14_1b",
+          "label": "B",
+          "text_en": "Slope = -3/4, y-intercept = -3",
+          "text_am": "ዝንባሌ = -3/4, y-መቁረጫ = -3",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_14_1c",
+          "label": "C",
+          "text_en": "Slope = 4/3, y-intercept = 4",
+          "text_am": "ዝንባሌ = 4/3, y-መቁረጫ = 4",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_14_1d",
+          "label": "D",
+          "text_en": "Slope = 3/4, y-intercept = -3",
+          "text_am": "ዝንባሌ = 3/4, y-መቁረጫ = -3",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Rewrite 3x - 4y + 12 = 0 in slope-intercept form y = mx + b: -4y = -3x - 12 => y = (3/4)x + 3. Here slope m = 3/4 and y-intercept b = 3.",
@@ -236,10 +468,34 @@
       "source_page": 5,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_15_1a", "label": "A", "text_en": "{(1, 4), (2, 5), (3, 6)}", "text_am": "{(1, 4), (2, 5), (3, 6)}", "is_correct": true },
-        { "id": "c_g9_15_1b", "label": "B", "text_en": "{(1, 4), (1, 5), (2, 6)}", "text_am": "{(1, 4), (1, 5), (2, 6)}", "is_correct": false },
-        { "id": "c_g9_15_1c", "label": "C", "text_en": "{(1, 5), (2, 5)}", "text_am": "{(1, 5), (2, 5)}", "is_correct": false },
-        { "id": "c_g9_15_1d", "label": "D", "text_en": "{(1, 4), (2, 5), (3, 7)}", "text_am": "{(1, 4), (2, 5), (3, 7)}", "is_correct": false }
+        {
+          "id": "c_g9_15_1a",
+          "label": "A",
+          "text_en": "{(1, 4), (2, 5), (3, 6)}",
+          "text_am": "{(1, 4), (2, 5), (3, 6)}",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_15_1b",
+          "label": "B",
+          "text_en": "{(1, 4), (1, 5), (2, 6)}",
+          "text_am": "{(1, 4), (1, 5), (2, 6)}",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_15_1c",
+          "label": "C",
+          "text_en": "{(1, 5), (2, 5)}",
+          "text_am": "{(1, 5), (2, 5)}",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_15_1d",
+          "label": "D",
+          "text_en": "{(1, 4), (2, 5), (3, 7)}",
+          "text_am": "{(1, 4), (2, 5), (3, 7)}",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "A relation from A to B is a function if every element in A has exactly one image in B. In option A, each element of {1, 2, 3} appears as the first coordinate exactly once, and all outputs {4, 5, 6} belong to B.",
@@ -264,10 +520,34 @@
       "source_page": 8,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_16_1a", "label": "A", "text_en": "3", "text_am": "3", "is_correct": true },
-        { "id": "c_g9_16_1b", "label": "B", "text_en": "13", "text_am": "13", "is_correct": false },
-        { "id": "c_g9_16_1c", "label": "C", "text_en": "4", "text_am": "4", "is_correct": false },
-        { "id": "c_g9_16_1d", "label": "D", "text_en": "1", "text_am": "1", "is_correct": false }
+        {
+          "id": "c_g9_16_1a",
+          "label": "A",
+          "text_en": "3",
+          "text_am": "3",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_16_1b",
+          "label": "B",
+          "text_en": "13",
+          "text_am": "13",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_16_1c",
+          "label": "C",
+          "text_en": "4",
+          "text_am": "4",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_16_1d",
+          "label": "D",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Let f^(-1)(7) = x. Then f(x) = 7. Thus (3x + 5) / 2 = 7 => 3x + 5 = 14 => 3x = 9 => x = 3.",
@@ -292,10 +572,34 @@
       "source_page": 11,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_17_1a", "label": "A", "text_en": "(4, 4)", "text_am": "(4, 4)", "is_correct": true },
-        { "id": "c_g9_17_1b", "label": "B", "text_en": "(0, 1)", "text_am": "(0, 1)", "is_correct": false },
-        { "id": "c_g9_17_1c", "label": "C", "text_en": "(6, 6)", "text_am": "(6, 6)", "is_correct": false },
-        { "id": "c_g9_17_1d", "label": "D", "text_en": "(2, -3)", "text_am": "(2, -3)", "is_correct": false }
+        {
+          "id": "c_g9_17_1a",
+          "label": "A",
+          "text_en": "(4, 4)",
+          "text_am": "(4, 4)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_17_1b",
+          "label": "B",
+          "text_en": "(0, 1)",
+          "text_am": "(0, 1)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_17_1c",
+          "label": "C",
+          "text_en": "(6, 6)",
+          "text_am": "(6, 6)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_17_1d",
+          "label": "D",
+          "text_en": "(2, -3)",
+          "text_am": "(2, -3)",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "The slope of y = -2x + 1 is m_1 = -2. The slope of a perpendicular line is m_2 = -1 / m_1 = 1/2. Using point-slope form with (2, 3): y - 3 = (1/2)(x - 2) => y = (1/2)x + 2. Testing (4, 4): (1/2)(4) + 2 = 2 + 2 = 4. Thus (4, 4) lies on the line.",
@@ -320,10 +624,34 @@
       "source_page": 2,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_u1_1a", "label": "A", "text_en": "sqrt(7)", "text_am": "sqrt(7)", "is_correct": true },
-        { "id": "c_g9_u1_1b", "label": "B", "text_en": "0.333...", "text_am": "0.333...", "is_correct": false },
-        { "id": "c_g9_u1_1c", "label": "C", "text_en": "sqrt(25)", "text_am": "sqrt(25)", "is_correct": false },
-        { "id": "c_g9_u1_1d", "label": "D", "text_en": "-14/5", "text_am": "-14/5", "is_correct": false }
+        {
+          "id": "c_g9_u1_1a",
+          "label": "A",
+          "text_en": "sqrt(7)",
+          "text_am": "sqrt(7)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_u1_1b",
+          "label": "B",
+          "text_en": "0.333...",
+          "text_am": "0.333...",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_u1_1c",
+          "label": "C",
+          "text_en": "sqrt(25)",
+          "text_am": "sqrt(25)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_u1_1d",
+          "label": "D",
+          "text_en": "-14/5",
+          "text_am": "-14/5",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "sqrt(7) cannot be expressed as a ratio of two integers a/b because 7 is not a perfect square. Hence sqrt(7) is irrational.",
@@ -348,10 +676,34 @@
       "source_page": 3,
       "content_version": 1,
       "choices": [
-        { "id": "c_g9_u2_1a", "label": "A", "text_en": "[-5, infinity)", "text_am": "[-5, infinity)", "is_correct": true },
-        { "id": "c_g9_u2_1b", "label": "B", "text_en": "(-infinity, -5]", "text_am": "(-infinity, -5]", "is_correct": false },
-        { "id": "c_g9_u2_1c", "label": "C", "text_en": "[5, infinity)", "text_am": "[5, infinity)", "is_correct": false },
-        { "id": "c_g9_u2_1d", "label": "D", "text_en": "(-infinity, -1]", "text_am": "(-infinity, -1]", "is_correct": false }
+        {
+          "id": "c_g9_u2_1a",
+          "label": "A",
+          "text_en": "[-5, infinity)",
+          "text_am": "[-5, infinity)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g9_u2_1b",
+          "label": "B",
+          "text_en": "(-infinity, -5]",
+          "text_am": "(-infinity, -5]",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_u2_1c",
+          "label": "C",
+          "text_en": "[5, infinity)",
+          "text_am": "[5, infinity)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g9_u2_1d",
+          "label": "D",
+          "text_en": "(-infinity, -1]",
+          "text_am": "(-infinity, -1]",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "Expand: 3x - 6 <= 5x + 4 => 3x - 5x <= 4 + 6 => -2x <= 10. Dividing by -2 reverses the inequality: x >= -5. In interval notation, this is [-5, infinity).",
@@ -376,10 +728,34 @@
       "source_page": 6,
       "content_version": 1,
       "choices": [
-        { "id": "c_g10_u1_1a", "label": "A", "text_en": "4", "text_am": "4", "is_correct": true },
-        { "id": "c_g10_u1_1b", "label": "B", "text_en": "-4", "text_am": "-4", "is_correct": false },
-        { "id": "c_g10_u1_1c", "label": "C", "text_en": "6", "text_am": "6", "is_correct": false },
-        { "id": "c_g10_u1_1d", "label": "D", "text_en": "2", "text_am": "2", "is_correct": false }
+        {
+          "id": "c_g10_u1_1a",
+          "label": "A",
+          "text_en": "4",
+          "text_am": "4",
+          "is_correct": true
+        },
+        {
+          "id": "c_g10_u1_1b",
+          "label": "B",
+          "text_en": "-4",
+          "text_am": "-4",
+          "is_correct": false
+        },
+        {
+          "id": "c_g10_u1_1c",
+          "label": "C",
+          "text_en": "6",
+          "text_am": "6",
+          "is_correct": false
+        },
+        {
+          "id": "c_g10_u1_1d",
+          "label": "D",
+          "text_en": "2",
+          "text_am": "2",
+          "is_correct": false
+        }
       ],
       "explanation": {
         "solution_text_en": "By the Remainder Theorem, P(2) = 7. P(2) = 2(2^3) - 3(2^2) + k(2) - 5 = 2(8) - 3(4) + 2k - 5 = 16 - 12 + 2k - 5 = 2k - 1. Set 2k - 1 = 7 => 2k = 8 => k = 4.",

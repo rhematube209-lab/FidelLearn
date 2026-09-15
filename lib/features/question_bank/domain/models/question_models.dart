@@ -148,6 +148,10 @@ class Question extends Equatable {
   final String? questionTextAm;
   final String? diagramAsset;
   final VectorDiagram? vectorDiagram;
+  final int? curriculumGrade; // Grade under New Curriculum (9, 10, 11, 12)
+  final String? curriculumUnitId; // Unit under New Curriculum
+  final String? curriculumTopicId; // Topic under New Curriculum
+  final String? curriculumFramework; // 'new_curriculum_2023'
   final String difficulty; // 'easy' | 'medium' | 'hard'
   final VerificationStatus verificationStatus;
   final String sourceName;
@@ -168,6 +172,10 @@ class Question extends Equatable {
     this.questionTextAm,
     this.diagramAsset,
     this.vectorDiagram,
+    this.curriculumGrade,
+    this.curriculumUnitId,
+    this.curriculumTopicId,
+    this.curriculumFramework,
     required this.difficulty,
     required this.verificationStatus,
     required this.sourceName,
@@ -188,6 +196,10 @@ class Question extends Equatable {
     String? questionTextAm,
     String? diagramAsset,
     VectorDiagram? vectorDiagram,
+    int? curriculumGrade,
+    String? curriculumUnitId,
+    String? curriculumTopicId,
+    String? curriculumFramework,
     String? difficulty,
     VerificationStatus? verificationStatus,
     String? sourceName,
@@ -208,6 +220,10 @@ class Question extends Equatable {
       questionTextAm: questionTextAm ?? this.questionTextAm,
       diagramAsset: diagramAsset ?? this.diagramAsset,
       vectorDiagram: vectorDiagram ?? this.vectorDiagram,
+      curriculumGrade: curriculumGrade ?? this.curriculumGrade,
+      curriculumUnitId: curriculumUnitId ?? this.curriculumUnitId,
+      curriculumTopicId: curriculumTopicId ?? this.curriculumTopicId,
+      curriculumFramework: curriculumFramework ?? this.curriculumFramework,
       difficulty: difficulty ?? this.difficulty,
       verificationStatus: verificationStatus ?? this.verificationStatus,
       sourceName: sourceName ?? this.sourceName,
@@ -258,6 +274,10 @@ class Question extends Equatable {
               json['vector_diagram'] as Map<String, dynamic>,
             )
           : null,
+      curriculumGrade: (json['curriculum_grade'] as num?)?.toInt(),
+      curriculumUnitId: json['curriculum_unit_id']?.toString(),
+      curriculumTopicId: json['curriculum_topic_id']?.toString(),
+      curriculumFramework: json['curriculum_framework']?.toString(),
       difficulty: json['difficulty']?.toString() ?? 'medium',
       verificationStatus: VerificationStatus.fromString(
         json['verification_status']?.toString() ?? 'published',
@@ -290,6 +310,10 @@ class Question extends Equatable {
       'question_text_am': questionTextAm,
       'diagram_asset': diagramAsset,
       if (vectorDiagram != null) 'vector_diagram': vectorDiagram!.toJson(),
+      if (curriculumGrade != null) 'curriculum_grade': curriculumGrade,
+      if (curriculumUnitId != null) 'curriculum_unit_id': curriculumUnitId,
+      if (curriculumTopicId != null) 'curriculum_topic_id': curriculumTopicId,
+      if (curriculumFramework != null) 'curriculum_framework': curriculumFramework,
       'difficulty': difficulty,
       'verification_status': verificationStatus.toDbString(),
       'source_name': sourceName,
@@ -313,6 +337,10 @@ class Question extends Equatable {
         questionTextAm,
         diagramAsset,
         vectorDiagram,
+        curriculumGrade,
+        curriculumUnitId,
+        curriculumTopicId,
+        curriculumFramework,
         difficulty,
         verificationStatus,
         sourceName,
@@ -322,3 +350,96 @@ class Question extends Equatable {
         explanation,
       ];
 }
+
+/// Official curriculum classification mapping for national examination items
+class QuestionCurriculumMapping extends Equatable {
+  final String id;
+  final String questionId;
+  final String subjectId;
+  final int examYear;
+  final String curriculumFramework;
+  final int curriculumGrade; // 9, 10, 11, or 12
+  final String curriculumUnitId;
+  final String? curriculumTopicId;
+  final int questionOrderInExam;
+  final String? unitTitleEn;
+  final String? unitTitleAm;
+  final String? topicTitleEn;
+  final String? topicTitleAm;
+  final String? cognitiveLevel;
+  final String? notes;
+
+  const QuestionCurriculumMapping({
+    required this.id,
+    required this.questionId,
+    required this.subjectId,
+    required this.examYear,
+    this.curriculumFramework = 'new_curriculum_2023',
+    required this.curriculumGrade,
+    required this.curriculumUnitId,
+    this.curriculumTopicId,
+    required this.questionOrderInExam,
+    this.unitTitleEn,
+    this.unitTitleAm,
+    this.topicTitleEn,
+    this.topicTitleAm,
+    this.cognitiveLevel,
+    this.notes,
+  });
+
+  factory QuestionCurriculumMapping.fromJson(Map<String, dynamic> json) {
+    return QuestionCurriculumMapping(
+      id: json['id']?.toString() ?? '',
+      questionId: json['question_id']?.toString() ?? '',
+      subjectId: json['subject_id']?.toString() ?? '',
+      examYear: (json['exam_year'] as num?)?.toInt() ?? 2013,
+      curriculumFramework:
+          json['curriculum_framework']?.toString() ?? 'new_curriculum_2023',
+      curriculumGrade: (json['curriculum_grade'] as num?)?.toInt() ?? 12,
+      curriculumUnitId: json['curriculum_unit_id']?.toString() ?? '',
+      curriculumTopicId: json['curriculum_topic_id']?.toString(),
+      questionOrderInExam:
+          (json['question_order_in_exam'] as num?)?.toInt() ?? 1,
+      unitTitleEn: json['unit_title_en']?.toString(),
+      unitTitleAm: json['unit_title_am']?.toString(),
+      topicTitleEn: json['topic_title_en']?.toString(),
+      topicTitleAm: json['topic_title_am']?.toString(),
+      cognitiveLevel: json['cognitive_level']?.toString(),
+      notes: json['notes']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question_id': questionId,
+      'subject_id': subjectId,
+      'exam_year': examYear,
+      'curriculum_framework': curriculumFramework,
+      'curriculum_grade': curriculumGrade,
+      'curriculum_unit_id': curriculumUnitId,
+      'curriculum_topic_id': curriculumTopicId,
+      'question_order_in_exam': questionOrderInExam,
+      'unit_title_en': unitTitleEn,
+      'unit_title_am': unitTitleAm,
+      'topic_title_en': topicTitleEn,
+      'topic_title_am': topicTitleAm,
+      'cognitive_level': cognitiveLevel,
+      'notes': notes,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        questionId,
+        subjectId,
+        examYear,
+        curriculumFramework,
+        curriculumGrade,
+        curriculumUnitId,
+        curriculumTopicId,
+        questionOrderInExam,
+      ];
+}
+

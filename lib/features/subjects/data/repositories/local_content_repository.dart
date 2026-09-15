@@ -159,6 +159,28 @@ class LocalContentRepository implements ContentRepository {
     return false;
   }
 
+  static bool matchesSubjectDiscipline(String a, String b) {
+    if (matchesSubjectId(a, b)) return true;
+    final aBase = baseSubjectCode(a);
+    final bBase = baseSubjectCode(b);
+    return aBase.isNotEmpty && aBase == bBase;
+  }
+
+  static String baseSubjectCode(String id) {
+    final lower = id.toLowerCase().trim();
+    if (lower.contains('bio')) return 'biology';
+    if (lower.contains('math')) return 'mathematics';
+    if (lower.contains('phys')) return 'physics';
+    if (lower.contains('chem')) return 'chemistry';
+    if (lower.contains('eng')) return 'english';
+    if (lower.contains('hist')) return 'history';
+    if (lower.contains('geo')) return 'geography';
+    if (lower.contains('econ')) return 'economics';
+    if (lower.contains('apt')) return 'aptitude';
+    if (lower.contains('sci')) return 'science';
+    return lower;
+  }
+
   static String canonicalSubjectId(String id) {
     final lower = id.toLowerCase().trim();
     final gradeMatch = RegExp(r'(g\d+|\d+)').firstMatch(lower);
@@ -287,11 +309,24 @@ class LocalContentRepository implements ContentRepository {
     await initializeSeedData();
 
     var filtered = _questions.where((q) {
-      if (grade != null && q.grade != grade) return false;
-      if (!matchesSubjectId(q.subjectId, subjectId)) return false;
+      if (grade != null && q.grade != grade && q.curriculumGrade != grade) {
+        return false;
+      }
+      if (!matchesSubjectId(q.subjectId, subjectId) &&
+          !matchesSubjectDiscipline(q.subjectId, subjectId)) {
+        return false;
+      }
       if (q.verificationStatus != VerificationStatus.published) return false;
-      if (unitId != null && q.unitId != unitId) return false;
-      if (topicId != null && q.topicId != topicId) return false;
+      if (unitId != null &&
+          q.unitId != unitId &&
+          q.curriculumUnitId != unitId) {
+        return false;
+      }
+      if (topicId != null &&
+          q.topicId != topicId &&
+          q.curriculumTopicId != topicId) {
+        return false;
+      }
       if (difficulty != null && q.difficulty != difficulty) return false;
       if (examYear != null && q.examYear != examYear) return false;
       if (startYear != null && (q.examYear == null || q.examYear! < startYear)) {

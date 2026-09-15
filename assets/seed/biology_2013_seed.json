@@ -252,7 +252,11 @@
         "simpler_explanation_en": "Lucy walked upright on two feet despite having a chimpanzee-sized brain.",
         "key_concept": "Hominid evolutionary sequence: Bipedalism preceded encephalization.",
         "common_pitfall": "Assuming large brain size was the primary initial driver of human evolution."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_002",
@@ -299,7 +303,11 @@
         "simpler_explanation_en": "Behavior describes how an organism acts and reacts to its environment.",
         "key_concept": "Ethological definition of animal behavior.",
         "common_pitfall": "Confusing plant physiological tropisms with animal behavioral definitions."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_003",
@@ -346,7 +354,11 @@
         "simpler_explanation_en": "Withdrawing your hand from danger is an automatic reflex you are born with.",
         "key_concept": "Innate behavior and unconditioned reflex arcs.",
         "common_pitfall": "Thinking reflex reactions are acquired through trial-and-error conditioning."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_004",
@@ -393,7 +405,11 @@
         "simpler_explanation_en": "Seasonal migration is governed by an internal yearly biological clock.",
         "key_concept": "Circannual and circadian biological rhythms.",
         "common_pitfall": "Confusing simple stimulus-driven reflexes or taxes with endogenous biological clocks."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_005",
@@ -440,7 +456,11 @@
         "simpler_explanation_en": "A dog must be trained by humans to hunt, making it learned behavior.",
         "key_concept": "Learned behavior vs innate/instinctive behaviors.",
         "common_pitfall": "Assuming insect nest construction or honey production is learned rather than instinctive."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_006",
@@ -487,7 +507,11 @@
         "simpler_explanation_en": "Prokaryotic bacteria lack a nuclear membrane enclosing their genetic material.",
         "key_concept": "Prokaryotic cellular organization: absence of nuclear membrane.",
         "common_pitfall": "Forgetting that protozoa and certain algae are also unicellular and flagellated."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_007",
@@ -570,7 +594,11 @@
           }
         ]
       },
-      "diagram_asset": "assets/images/exams/bio_2013/q07_bacteria_shapes.png"
+      "diagram_asset": "assets/images/exams/bio_2013/q07_bacteria_shapes.png",
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_008",
@@ -617,7 +645,11 @@
         "simpler_explanation_en": "The bacterium replicates the recombinant DNA and produces the insulin protein.",
         "key_concept": "Recombinant DNA biotechnology and gene expression vectors.",
         "common_pitfall": "Thinking bacteria are the genetic source of human insulin."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u3",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_009",
@@ -664,7 +696,11 @@
         "simpler_explanation_en": "Bacteria do not alter human host cell DNA chromosomes.",
         "key_concept": "Mechanisms of bacterial pathogenesis.",
         "common_pitfall": "Confusing oncogenic viral genomic integration with bacterial mechanisms."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_010",
@@ -711,7 +747,11 @@
         "simpler_explanation_en": "Functional diseases cause symptom disturbance without visible structural damage on organs.",
         "key_concept": "Distinction between functional and organic/infectious diseases.",
         "common_pitfall": "Believing all diseases must produce visible tissue lesions."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_011",
@@ -794,7 +834,11 @@
           }
         ]
       },
-      "diagram_asset": "assets/images/exams/bio_2013/q11_bacteriophage_structure.png"
+      "diagram_asset": "assets/images/exams/bio_2013/q11_bacteriophage_structure.png",
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_012",
@@ -841,7 +885,11 @@
         "simpler_explanation_en": "Stigma and discrimination are social impacts of HIV/AIDS.",
         "key_concept": "Social versus biological manifestations of HIV/AIDS.",
         "common_pitfall": "Confusing physiological symptoms (weight loss) with social factors."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_013",
@@ -888,7 +936,11 @@
         "simpler_explanation_en": "Herpes is a DNA virus; HIV and flu are RNA viruses.",
         "key_concept": "Classification of animal viruses by nucleic acid type.",
         "common_pitfall": "Misidentifying HIV retrovirus as a DNA virus."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_014",
@@ -935,7 +987,11 @@
         "simpler_explanation_en": "Lytic cycle bursts and splits the host cell to release new viruses.",
         "key_concept": "Lytic vs lysogenic viral life cycles.",
         "common_pitfall": "Thinking lytic cycles integrate DNA into host genome."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_015",
@@ -982,7 +1038,11 @@
         "simpler_explanation_en": "Student B recognizes that educated youth should lead by example in voluntary health testing.",
         "key_concept": "Public health responsibility and voluntary HIV testing.",
         "common_pitfall": "Succumbing to unfounded fear or conspiracy theories regarding testing."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_016",
@@ -1029,7 +1089,11 @@
         "simpler_explanation_en": "Glycolysis converts glucose to pyruvate in the cell cytoplasm.",
         "key_concept": "Spatial compartmentalization of aerobic respiration stages.",
         "common_pitfall": "Placing Krebs cycle reactions in the cytoplasm."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_017",
@@ -1076,7 +1140,11 @@
         "simpler_explanation_en": "1 mole of glucose gives 2 ATP in Krebs; 2 moles of glucose give 4 ATP.",
         "key_concept": "Substrate-level phosphorylation yields in the Krebs cycle.",
         "common_pitfall": "Calculating total oxidative phosphorylation ATP instead of substrate level."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_018",
@@ -1123,7 +1191,11 @@
         "simpler_explanation_en": "Decarboxylation of pyruvate releases CO2 during fermentation.",
         "key_concept": "Enzymatic reactions of alcoholic fermentation.",
         "common_pitfall": "Thinking acetaldehyde reduction releases CO2."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_019",
@@ -1170,7 +1242,11 @@
         "simpler_explanation_en": "NADH reduces pyruvate to lactate to regenerate NAD+.",
         "key_concept": "Redox balance in anaerobic lactate fermentation.",
         "common_pitfall": "Confusing pyruvate reduction with lactate oxidation."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_020",
@@ -1217,7 +1293,11 @@
         "simpler_explanation_en": "Lactic acid builds up in oxygen-deprived muscles, causing muscle fatigue.",
         "key_concept": "Physiology of anaerobic exercise and lactic acidosis.",
         "common_pitfall": "Attributing acute muscle fatigue to carbon dioxide."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_021",
@@ -1264,7 +1344,11 @@
         "simpler_explanation_en": "A change in DNA nucleotide sequence from GAG to GTG is a mutation.",
         "key_concept": "Point mutation and molecular basis of sickle cell hemoglobin.",
         "common_pitfall": "Confusing mutation with gene transcription or translation."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u5",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_022",
@@ -1311,7 +1395,11 @@
         "simpler_explanation_en": "Mutations occur spontaneously and randomly in nature.",
         "key_concept": "Spontaneous and random nature of genetic mutations.",
         "common_pitfall": "Believing natural mutations occur in a planned or regular predictable pattern."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u5",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_023",
@@ -1358,7 +1446,11 @@
         "simpler_explanation_en": "Spontaneous generation claimed life arises spontaneously from non-living matter.",
         "key_concept": "Historical theories on the origin of life: Abiogenesis vs Biogenesis.",
         "common_pitfall": "Confusing spontaneous generation with modern biochemical abiogenesis theory."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_024",
@@ -1405,7 +1497,11 @@
         "simpler_explanation_en": "Neo-Darwinism integrates genetics and behavior with natural selection.",
         "key_concept": "Modern Evolutionary Synthesis (Neo-Darwinian theory).",
         "common_pitfall": "Assuming neo-Darwinism only relies on Lamarckian acquired traits."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_025",
@@ -1452,7 +1548,11 @@
         "simpler_explanation_en": "Lamarck claimed that organs used frequently grow stronger and are passed on.",
         "key_concept": "Lamarckian evolutionary theory: Use and disuse.",
         "common_pitfall": "Confusing Lamarck's ideas with Darwinian natural selection."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_026",
@@ -1499,7 +1599,11 @@
         "simpler_explanation_en": "Operant behavior is shaped and rewarded during animal training.",
         "key_concept": "Operant conditioning and behavioral modification.",
         "common_pitfall": "Confusing innate unconditioned reflexes with operant conditioning."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_027",
@@ -1546,7 +1650,11 @@
         "simpler_explanation_en": "Habituation occurs when an animal gets used to a stimulus and ignores it.",
         "key_concept": "Habituation as non-associative learned behavior.",
         "common_pitfall": "Confusing habituation with filial imprinting or classical conditioning."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_028",
@@ -1593,7 +1701,11 @@
         "simpler_explanation_en": "Both the explosive sniffing training and imprinting following behavior are learned.",
         "key_concept": "Learned behavior categories: conditioning and imprinting.",
         "common_pitfall": "Assuming following behavior in imprinting is purely an unmodifiable innate reflex."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_029",
@@ -1640,7 +1752,11 @@
         "simpler_explanation_en": "Touching and mutual grooming are common courtship behaviors in animals.",
         "key_concept": "Animal courtship displays vs territorial behavior.",
         "common_pitfall": "Classifying territorial scent marking or defense fighting as courtship."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_030",
@@ -1687,7 +1803,11 @@
         "simpler_explanation_en": "Marking boundaries with scent marks is territorial behavior.",
         "key_concept": "Territoriality and chemical communication in canids.",
         "common_pitfall": "Confusing territorial scent marking with mating courtship."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_031",
@@ -1734,7 +1854,11 @@
         "simpler_explanation_en": "Tundra is the cold, dry biome with permanently frozen soil (permafrost).",
         "key_concept": "Characteristics of global terrestrial biomes: Arctic and alpine tundra.",
         "common_pitfall": "Confusing tundra with taiga/boreal forest (which has trees and thawed topsoil)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_032",
@@ -1781,7 +1905,11 @@
         "simpler_explanation_en": "Deserts have poor soil and few animals; tropical montane forests have fertile soil and many animals.",
         "key_concept": "Comparative soil fertility and animal biodiversity across biomes.",
         "common_pitfall": "Assuming hot deserts possess fertile soil."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_033",
@@ -1828,7 +1956,11 @@
         "simpler_explanation_en": "Biodiversity encompasses genetic diversity, species diversity, and ecosystem diversity.",
         "key_concept": "Comprehensive definition of biological diversity.",
         "common_pitfall": "Restricting biodiversity to only the total count of organisms in a single spot."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u5",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_034",
@@ -1875,7 +2007,11 @@
         "simpler_explanation_en": "Area 2 has virtually equal population counts (~16-17) across all six species.",
         "key_concept": "Species evenness and ecological community balance.",
         "common_pitfall": "Confusing single-species dominance (Area 1) with community-wide equal success."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u6",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_035",
@@ -1922,7 +2058,11 @@
         "simpler_explanation_en": "Predation drives cyclic balance between predator and prey population sizes.",
         "key_concept": "Predator-prey population dynamics and cyclic equilibrium.",
         "common_pitfall": "Selecting non-cyclic competition factors."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_036",
@@ -1969,7 +2109,11 @@
         "simpler_explanation_en": "Viruses are completely inert and non-functional outside a living host cell.",
         "key_concept": "Acellular nature of viruses vs living cellular organisms.",
         "common_pitfall": "Believing viruses lack nucleic acid genetic material."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u1",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_037",
@@ -2016,7 +2160,11 @@
         "simpler_explanation_en": "Nutrient recycling is essential because finite mineral nutrients would run out if not recycled.",
         "key_concept": "Biogeochemical nutrient cycling in ecosystems.",
         "common_pitfall": "Believing nutrients arrive continually from space."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_038",
@@ -2063,7 +2211,11 @@
         "simpler_explanation_en": "Organisms feed, excrete wastes, respire, and finally decompose upon death.",
         "key_concept": "Sequential pathways of matter flow through organismal life cycles.",
         "common_pitfall": "Placing death and decomposition before feeding or excretion."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_039",
@@ -2110,7 +2262,11 @@
         "simpler_explanation_en": "Cellular respiration releases carbon dioxide and water, not phosphate into the soil.",
         "key_concept": "Sedimentary phosphate biogeochemical cycle.",
         "common_pitfall": "Confusing the carbon cycle byproduct (CO2) with phosphate release."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_040",
@@ -2157,7 +2313,11 @@
         "simpler_explanation_en": "Ecological succession describes the orderly progression from pioneer species to a mature forest.",
         "key_concept": "Primary ecological succession stages.",
         "common_pitfall": "Confusing the whole process of succession with just the end-state climax community."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_041",
@@ -2204,7 +2364,11 @@
         "simpler_explanation_en": "Births > deaths means increase; deaths > births means decrease; equal means constant.",
         "key_concept": "Fundamental demographic population change equation.",
         "common_pitfall": "Inverting natality (births) and mortality (deaths)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_042",
@@ -2251,7 +2415,11 @@
         "simpler_explanation_en": "X increases by adding 5 (arithmetic growth), while Y doubles every step (exponential growth).",
         "key_concept": "Arithmetic (linear) growth vs Exponential (geometric) population growth.",
         "common_pitfall": "Confusing arithmetic additive growth with exponential multiplicative growth."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_043",
@@ -2298,7 +2466,11 @@
         "simpler_explanation_en": "Fruit flies have a short generation time (~10 days) and produce many offspring.",
         "key_concept": "Model genetic organisms in research.",
         "common_pitfall": "Thinking Drosophila have 23 chromosome pairs (humans have 23; Drosophila have only 4 pairs)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_044",
@@ -2345,7 +2517,11 @@
         "simpler_explanation_en": "50% of the offspring inherit bb (homozygous blue).",
         "key_concept": "Mendelian monohybrid test cross genetics.",
         "common_pitfall": "Counting only dominant homozygotes (BB) and missing recessive homozygotes (bb)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_045",
@@ -2420,7 +2596,11 @@
           }
         ]
       },
-      "diagram_asset": "assets/images/exams/bio_2013/q45_hybrid_vigor_productivity.png"
+      "diagram_asset": "assets/images/exams/bio_2013/q45_hybrid_vigor_productivity.png",
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_046",
@@ -2467,7 +2647,11 @@
         "simpler_explanation_en": "Comparing DNA and molecular sequences is comparative biochemistry.",
         "key_concept": "Molecular and biochemical evidences for evolution.",
         "common_pitfall": "Confusing gross anatomical structure with molecular biochemistry."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_047",
@@ -2514,7 +2698,11 @@
         "simpler_explanation_en": "The stomach is soft tissue that quickly decomposes and does not form fossils.",
         "key_concept": "Fossilization potential and paleontological evidence.",
         "common_pitfall": "Assuming soft internal viscera fossilize readily like bones and teeth."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_048",
@@ -2561,7 +2749,11 @@
         "simpler_explanation_en": "Natural selection is the differential survival of organisms with advantageous traits.",
         "key_concept": "Mechanism of Darwinian natural selection.",
         "common_pitfall": "Confusing the mechanism (natural selection) with the resulting outcome (adaptation/evolution)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_049",
@@ -2608,7 +2800,11 @@
         "simpler_explanation_en": "Disruptive selection favors both extremes and selects against the intermediate average.",
         "key_concept": "Modes of natural selection: Stabilizing, Directional, Disruptive.",
         "common_pitfall": "Confusing stabilizing selection (favors mean) with disruptive selection."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_050",
@@ -2655,7 +2851,11 @@
         "simpler_explanation_en": "Humans did not evolve from modern chimpanzees; both shared a common ancestor.",
         "key_concept": "Phylogenetic relationship of hominids and great apes.",
         "common_pitfall": "The popular misconception that humans evolved directly from modern chimpanzees."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_051",
@@ -2702,7 +2902,11 @@
         "simpler_explanation_en": "Hemoglobin is a protein made of amino acid polypeptide chains.",
         "key_concept": "Protein structure and function: Quaternary globular proteins.",
         "common_pitfall": "Classifying hemoglobin as a lipid or carbohydrate."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_052",
@@ -2749,7 +2953,11 @@
         "simpler_explanation_en": "Maltose formula is C12H22O11 due to the loss of water during condensation.",
         "key_concept": "Carbohydrate chemistry: Disaccharide condensation reactions.",
         "common_pitfall": "Forgetting that condensation removes a water molecule (H2O)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_053",
@@ -2796,7 +3004,11 @@
         "simpler_explanation_en": "An orange precipitate confirms reducing sugar is present (statement C is false).",
         "key_concept": "Qualitative food tests: Benedict's test for reducing sugars.",
         "common_pitfall": "Confusing reducing sugar reactions with non-reducing sugars."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_054",
@@ -2843,7 +3055,11 @@
         "simpler_explanation_en": "Acid hydrolysis splits non-reducing sucrose into reducing sugars.",
         "key_concept": "Testing for non-reducing sugars via acid hydrolysis.",
         "common_pitfall": "Thinking acid directly reduces Benedict's reagent without breaking down sucrose."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_055",
@@ -2890,7 +3106,11 @@
         "simpler_explanation_en": "Enzyme specificity means each enzyme catalyzes only one specific chemical reaction.",
         "key_concept": "Lock-and-key and induced-fit enzyme specificity.",
         "common_pitfall": "Confusing catalytic reuse or denaturation with the definition of specificity."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_056",
@@ -2937,7 +3157,11 @@
         "simpler_explanation_en": "Biology advances food security, agriculture, and biotechnology to feed growing populations.",
         "key_concept": "Applied biological sciences and global food security.",
         "common_pitfall": "Choosing non-biological disciplines like civil construction or aviation."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u1",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_057",
@@ -2984,7 +3208,11 @@
         "simpler_explanation_en": "Fundraising is an economic/charitable activity rather than a biological science discipline.",
         "key_concept": "Scientific roles of biomedical research vs social-financial programs.",
         "common_pitfall": "Classifying monetary donations as biological scientific research."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_058",
@@ -3031,7 +3259,11 @@
         "simpler_explanation_en": "Female circumcision does not prevent AIDS (it causes severe harm and tissue trauma).",
         "key_concept": "Epidemiological evidence in HIV prevention.",
         "common_pitfall": "Believing female genital mutilation provides medical protection against virus transmission."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_059",
@@ -3078,7 +3310,11 @@
         "simpler_explanation_en": "Water's optical transparency allows light penetration for aquatic photosynthesis.",
         "key_concept": "Physicochemical properties of water supporting life.",
         "common_pitfall": "Claiming water has low specific heat capacity or high viscosity."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_060",
@@ -3125,7 +3361,11 @@
         "simpler_explanation_en": "Secrecy and lack of testing in Community B lead to higher HIV incidence.",
         "key_concept": "Public health awareness and community disease transmission.",
         "common_pitfall": "Assuming lack of open discussion equates to absence of infection."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u5",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_061",
@@ -3172,7 +3412,11 @@
         "simpler_explanation_en": "Ice is less dense than water, so it floats on surface and insulates aquatic life below.",
         "key_concept": "Anomalous expansion and density properties of water.",
         "common_pitfall": "Assuming solid ice is denser than liquid water."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_062",
@@ -3219,7 +3463,11 @@
         "simpler_explanation_en": "Rows 1 and 3 properly classify carbon-based biological molecules as organic and minerals/acids as inorganic.",
         "key_concept": "Chemical classification of organic vs inorganic substances.",
         "common_pitfall": "Confusing carbon oxides or simple minerals with organic macromolecules."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_063",
@@ -3266,7 +3514,11 @@
         "simpler_explanation_en": "Cellulose is built from beta-glucose units, whereas starch uses alpha-glucose.",
         "key_concept": "Structural carbohydrates: Cellulose beta-1,4 glycosidic linkages.",
         "common_pitfall": "Confusing cellulose with starch (alpha-glucose polymers)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_064",
@@ -3313,7 +3565,11 @@
         "simpler_explanation_en": "Two fatty acids + glycerol + phosphate group = phospholipid.",
         "key_concept": "Structure of amphipathic phospholipids.",
         "common_pitfall": "Confusing triglycerides (three fatty acids) with phospholipids."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_065",
@@ -3360,7 +3616,11 @@
         "simpler_explanation_en": "Determining genetic features is the job of DNA, not lipids.",
         "key_concept": "Biological functions of lipids vs nucleic acids.",
         "common_pitfall": "Overlooking the genetic role of nucleic acids."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_066",
@@ -3407,7 +3667,11 @@
         "simpler_explanation_en": "Water down gradient = Osmosis; Na+ down gradient = Facilitated diffusion; Glucose against gradient = Active transport.",
         "key_concept": "Membrane transport mechanisms: Passive vs Active transport.",
         "common_pitfall": "Confusing facilitated diffusion with active transport against a gradient."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u3",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_067",
@@ -3454,7 +3718,11 @@
         "simpler_explanation_en": "Water flows by osmosis from hypotonic B into hypertonic A, causing water level in A to rise.",
         "key_concept": "Osmotic water movement and tonicity across semipermeable membranes.",
         "common_pitfall": "Inverting osmotic flow direction from hypertonic to hypotonic."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u3",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_068",
@@ -3501,7 +3769,11 @@
         "simpler_explanation_en": "The phospholipid bilayer forms the foundational fluid matrix of cell membranes.",
         "key_concept": "Fluid-mosaic model of biological membranes.",
         "common_pitfall": "Believing proteins form a rigid uniform continuous sheet."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u3",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_069",
@@ -3548,7 +3820,11 @@
         "simpler_explanation_en": "Water moved out of A into B, meaning solution A had higher water potential.",
         "key_concept": "Water potential gradients and osmotic flow direction.",
         "common_pitfall": "Assuming water moves toward higher water potential rather than away from it."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u3",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_070",
@@ -3595,7 +3871,11 @@
         "simpler_explanation_en": "Without osmotic balance, toxic metabolites accumulate and damage liver cells.",
         "key_concept": "Osmotic regulation and liver cellular physiology.",
         "common_pitfall": "Assuming animal cells without cell walls become happily turgid like plant cells."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u3",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_071",
@@ -3642,7 +3922,11 @@
         "simpler_explanation_en": "Order: Microscope invented (IV) -> Cork cells seen (I) -> Protozoa found (II) -> Cell theory proposed (III).",
         "key_concept": "Historical timeline of cytology and cell theory.",
         "common_pitfall": "Placing Hooke before the invention of the compound microscope."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u3",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_072",
@@ -3689,7 +3973,11 @@
         "simpler_explanation_en": "Bacterial cell walls consist of peptidoglycan (sugar and amino acid polymers).",
         "key_concept": "Peptidoglycan composition of prokaryotic cell walls.",
         "common_pitfall": "Assuming bacterial cell walls are made of cellulose or chitin."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u3",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_073",
@@ -3736,7 +4024,11 @@
         "simpler_explanation_en": "Eukaryotes have linear chromosomes and larger 80S ribosomes.",
         "key_concept": "Comparative cytology: Eukaryotes vs Prokaryotes.",
         "common_pitfall": "Confusing bacterial pili with eukaryotic cilia or flagella."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u3",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_074",
@@ -3783,7 +4075,11 @@
         "simpler_explanation_en": "Cholesterol buffers and stabilizes the fluid nature of the cell membrane.",
         "key_concept": "Cholesterol function in membrane fluidity buffering.",
         "common_pitfall": "Believing proteins form the bilayer matrix rather than phospholipids."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u3",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_075",
@@ -3830,7 +4126,11 @@
         "simpler_explanation_en": "Mitochondria synthesize ATP through cellular respiration.",
         "key_concept": "Organelle functions: Mitochondria as sites of ATP synthesis.",
         "common_pitfall": "Confusing Golgi apparatus (protein modification) with lysosomes (digestion)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "bio_g9_u3",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_076",
@@ -3877,7 +4177,11 @@
         "simpler_explanation_en": "Photosystems and electron carriers are organized directly on the thylakoid membrane.",
         "key_concept": "Thylakoid membrane architecture and light-dependent photosystems.",
         "common_pitfall": "Suggesting photosynthetic light reactions float freely in the cytosol."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_077",
@@ -3924,7 +4228,11 @@
         "simpler_explanation_en": "Closed stomata cause internal CO2 starvation, causing RuBisCO to bind oxygen.",
         "key_concept": "Photorespiration and stomatal dynamics in C3 plants.",
         "common_pitfall": "Thinking plants experience oxygen shortage during photorespiration."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_078",
@@ -3999,7 +4307,11 @@
           }
         ]
       },
-      "diagram_asset": "assets/images/exams/bio_2013/q78_chloroplast_structure.png"
+      "diagram_asset": "assets/images/exams/bio_2013/q78_chloroplast_structure.png",
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_079",
@@ -4046,7 +4358,11 @@
         "simpler_explanation_en": "GP is reduced to TP using NADPH and ATP in the Calvin cycle.",
         "key_concept": "Calvin cycle biochemistry: Reduction of GP to TP.",
         "common_pitfall": "Thinking CO2 reacts with GP (CO2 actually reacts with RuBP to form GP)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_080",
@@ -4093,7 +4409,11 @@
         "simpler_explanation_en": "CAM plants capture and store CO2 as malate at night to save water.",
         "key_concept": "Temporal separation of carbon fixation in CAM desert plants.",
         "common_pitfall": "Confusing temporal separation of CAM with spatial Kranz anatomy of C4 plants."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u4",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_081",
@@ -4140,7 +4460,11 @@
         "simpler_explanation_en": "Enzymes allow metabolic reactions to occur at normal body temperatures.",
         "key_concept": "Activation energy lowering and physiological thermodynamics.",
         "common_pitfall": "Claiming enzymes reduce the kinetic energy of reactants."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_082",
@@ -4207,7 +4531,11 @@
           }
         ]
       },
-      "diagram_asset": "assets/images/exams/bio_2013/q82_enzyme_reaction.png"
+      "diagram_asset": "assets/images/exams/bio_2013/q82_enzyme_reaction.png",
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_083",
@@ -4254,7 +4582,11 @@
         "simpler_explanation_en": "Lipases break down oil and fat stains in laundry detergent powders.",
         "key_concept": "Industrial biotechnology: Enzyme applications in detergents.",
         "common_pitfall": "Confusing fruit-juice clarifying pectinase or cheese chymosin with detergents."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_084",
@@ -4301,7 +4633,11 @@
         "simpler_explanation_en": "Binding distorts chemical bonds in the substrate, making them easier to break.",
         "key_concept": "Induced-fit catalytic mechanisms and transition state stabilization.",
         "common_pitfall": "Assuming substrate binding creates permanent irreversible bonds."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_085",
@@ -4348,7 +4684,11 @@
         "simpler_explanation_en": "Riboflavin (Vitamin B2) is the precursor for FAD cofactors in metabolism.",
         "key_concept": "Vitamins as coenzyme precursors in enzyme kinetics.",
         "common_pitfall": "Confusing water-soluble B2 cofactors with lipid-soluble vitamins."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_086",
@@ -4395,7 +4735,11 @@
         "simpler_explanation_en": "Crossing over shuffles alleles to create novel gene combinations in gametes.",
         "key_concept": "Genetic recombination during meiotic crossing over.",
         "common_pitfall": "Claiming crossing over creates brand new genes from scratch."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "bio_g10_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_087",
@@ -4442,7 +4786,11 @@
         "simpler_explanation_en": "Non-essential amino acids are made by converting intermediate molecules from glycolysis and Krebs cycle.",
         "key_concept": "Transamination and biosynthesis of non-essential amino acids.",
         "common_pitfall": "Believing our bodies synthesize amino acids from pure fatty acids."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_088",
@@ -4489,7 +4837,11 @@
         "simpler_explanation_en": "Step X is joining the cut insulin gene into the opened plasmid ring with DNA ligase.",
         "key_concept": "Recombinant DNA gene cloning workflow.",
         "common_pitfall": "Attempting transformation into bacteria before ligating the gene into the plasmid."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "bio_g12_u3",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_089",
@@ -4536,7 +4888,11 @@
         "simpler_explanation_en": "Original template strand TACGTA directs synthesis of complementary DNA strand ATGCAT.",
         "key_concept": "Meselson-Stahl semiconservative DNA replication and base pairing.",
         "common_pitfall": "Confusing DNA replication with RNA transcription by inserting uracil (U)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u5",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_090",
@@ -4583,7 +4939,11 @@
         "simpler_explanation_en": "tRNA anticodon matches and binds to the complementary mRNA codon during translation.",
         "key_concept": "Mechanism of translation on the ribosome.",
         "common_pitfall": "Confusing tRNA with mRNA or thinking ribosomes move two codons at a time."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u5",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_091",
@@ -4630,7 +4990,11 @@
         "simpler_explanation_en": "Conclusions lead directly to accepting or rejecting the initial hypothesis.",
         "key_concept": "Steps of the scientific method and hypothesis evaluation.",
         "common_pitfall": "Choosing initial research steps that occur prior to experimentation."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u1",
+      "cognitive_level": "knowledge"
     },
     {
       "id": "q_bio_2013_092",
@@ -4677,7 +5041,11 @@
         "simpler_explanation_en": "The experimental drug produced measurable recovery beyond the placebo baseline.",
         "key_concept": "Controlled scientific experimentation and placebo controls.",
         "common_pitfall": "Claiming no conclusion can be drawn from a statistically valid controlled trial."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u1",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_093",
@@ -4724,7 +5092,11 @@
         "simpler_explanation_en": "The measured outcome (blue-black color intensity) is the dependent variable.",
         "key_concept": "Identifying independent, dependent, and controlled variables in experiments.",
         "common_pitfall": "Confusing the manipulated parameter (pH) with the measured outcome variable."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u1",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_094",
@@ -4771,7 +5143,11 @@
         "simpler_explanation_en": "A quadrat is used for sampling organism populations in ecology, not for filtering liquids.",
         "key_concept": "Laboratory and ecological field apparatus functions.",
         "common_pitfall": "Confusing ecological quadrats with laboratory filter funnels."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u1",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_095",
@@ -4818,7 +5194,11 @@
         "simpler_explanation_en": "A plant press flattens and dries collected plant specimens for preservation.",
         "key_concept": "Botanical field preservation tools and herbarium methods.",
         "common_pitfall": "Selecting animal traps (pitfall) or survey theodolites for plant preservation."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u1",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_096",
@@ -4865,7 +5245,11 @@
         "simpler_explanation_en": "Synthesizing new biomolecules like amino acids is anabolism (constructive metabolism).",
         "key_concept": "Metabolic classification: Anabolism (synthesis) vs Catabolism (breakdown).",
         "common_pitfall": "Confusing constructive synthesis (anabolism) with destructive breakdown (catabolism)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_097",
@@ -4912,7 +5296,11 @@
         "simpler_explanation_en": "pH changes alter H+ concentration, disrupting ionic bonds in the enzyme.",
         "key_concept": "Physicochemical factors affecting enzyme kinetics: pH and ionic interactions.",
         "common_pitfall": "Attributing thermal denaturation primarily to ionic bonds rather than hydrogen bonds and hydrophobic interactions."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "analysis"
     },
     {
       "id": "q_bio_2013_098",
@@ -4959,7 +5347,11 @@
         "simpler_explanation_en": "Allosteric activators bind at allosteric regulatory sites away from the active site.",
         "key_concept": "Allosteric enzyme regulation and conformational kinetics.",
         "common_pitfall": "Confusing the allosteric site with the substrate-binding active site."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "comprehension"
     },
     {
       "id": "q_bio_2013_099",
@@ -5006,7 +5398,11 @@
         "simpler_explanation_en": "Low temperatures decrease kinetic collisions, forming fewer enzyme-substrate complexes.",
         "key_concept": "Temperature dependence of enzyme kinetics (kinetic collision theory).",
         "common_pitfall": "Believing cold temperatures denature enzymes (cold slows kinetics; high heat denatures)."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "application"
     },
     {
       "id": "q_bio_2013_100",
@@ -5053,7 +5449,11 @@
         "simpler_explanation_en": "More ibuprofen blocks more COX-2, lowering prostaglandins and decreasing pain.",
         "key_concept": "Enzyme inhibition pharmacology: NSAIDs and pain mediation.",
         "common_pitfall": "Thinking higher inhibitor levels increase prostaglandin production."
-      }
+      },
+      "curriculum_framework": "new_curriculum_2023",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "bio_g11_u2",
+      "cognitive_level": "application"
     }
   ]
 }
