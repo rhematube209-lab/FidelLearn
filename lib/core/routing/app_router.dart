@@ -15,6 +15,7 @@ import '../../features/exam_ghost/presentation/screens/exam_ghost_screen.dart';
 import '../../features/exams/domain/models/exam_models.dart';
 import '../../features/exams/presentation/screens/exam_builder_screen.dart';
 import '../../features/exams/presentation/screens/exam_runner_screen.dart';
+import '../../features/exams/presentation/screens/subject_exams_hub_screen.dart';
 import '../../features/home/presentation/screens/student_home_screen.dart';
 import '../../features/mistakes/presentation/screens/mistakes_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -76,6 +77,13 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
         GoRoute(
           path: '/subjects',
           builder: (context, state) => const SubjectsScreen(),
+        ),
+        GoRoute(
+          path: '/subject_exams/:subjectId',
+          builder: (context, state) {
+            final subjectId = state.pathParameters['subjectId'] ?? '';
+            return SubjectExamsHubScreen(subjectId: subjectId);
+          },
         ),
         GoRoute(
           path: '/exam_builder',

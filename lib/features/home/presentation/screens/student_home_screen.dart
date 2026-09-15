@@ -1385,7 +1385,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: () => context.push('/exam_builder?subjectId=${subject.id}'),
+          onTap: () => context.push('/subject_exams/${subject.id}'),
           borderRadius: BorderRadius.circular(16),
           splashColor: theme.primaryColor.withValues(alpha: 0.12),
           highlightColor: theme.primaryColor.withValues(alpha: 0.06),
