@@ -10,7 +10,7 @@ import '../../../../core/widgets/fidel_option_card.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/audio_explanation_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
-import '../../../question_bank/presentation/widgets/svg_diagram_viewer.dart';
+import '../../../question_bank/presentation/widgets/question_diagram_viewer.dart';
 import '../widgets/audio_player_card.dart';
 
 class SolutionReviewScreen extends ConsumerStatefulWidget {
@@ -448,11 +448,11 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
         ),
         const SizedBox(height: 20),
 
-        // Vector Diagram (if present)
-        if (currentQ.vectorDiagram != null) ...[
-          SvgDiagramViewer(diagram: currentQ.vectorDiagram!),
-          const SizedBox(height: 20),
-        ],
+        // Official Document Image / Vector Diagram (if present)
+        QuestionDiagramViewer(question: currentQ),
+        if ((currentQ.diagramAsset != null && currentQ.diagramAsset!.isNotEmpty) ||
+            currentQ.vectorDiagram != null)
+          const SizedBox(height: 16),
 
         // Choices with verified state
         Text(

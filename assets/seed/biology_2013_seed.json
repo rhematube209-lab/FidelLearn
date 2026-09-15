@@ -569,7 +569,8 @@
             "description_am": "C: ዘንግ ቅርፅ (ባሲለስ)"
           }
         ]
-      }
+      },
+      "diagram_asset": "assets/images/exams/bio_2013/q07_bacteria_shapes.png"
     },
     {
       "id": "q_bio_2013_008",
@@ -792,7 +793,8 @@
             "description_am": "3: ጭራ"
           }
         ]
-      }
+      },
+      "diagram_asset": "assets/images/exams/bio_2013/q11_bacteriophage_structure.png"
     },
     {
       "id": "q_bio_2013_012",
@@ -2417,7 +2419,8 @@
             "description_am": "Z: ድቅል ብልጫ (ከፍተኛ ምርት)"
           }
         ]
-      }
+      },
+      "diagram_asset": "assets/images/exams/bio_2013/q45_hybrid_vigor_productivity.png"
     },
     {
       "id": "q_bio_2013_046",
@@ -3995,7 +3998,8 @@
             "description_am": "E: ስትሮማ (የካልቪን ዑደት)"
           }
         ]
-      }
+      },
+      "diagram_asset": "assets/images/exams/bio_2013/q78_chloroplast_structure.png"
     },
     {
       "id": "q_bio_2013_079",
@@ -4202,7 +4206,8 @@
             "description_am": "ኢንዛይም E: ኦክሲዶሪዳክቴዝ"
           }
         ]
-      }
+      },
+      "diagram_asset": "assets/images/exams/bio_2013/q82_enzyme_reaction.png"
     },
     {
       "id": "q_bio_2013_083",

@@ -125,5 +125,33 @@ void main() {
       final unitsByBio = await repository.getUnits('bio_g12');
       expect(unitsByBio.length, 7);
     });
+
+    test(
+        'verifies extracted document diagram images are linked to Questions 7, 11, 45, 78, and 82',
+        () async {
+      await repository.initializeSeedData();
+
+      final questions = await repository.getQuestions(
+        grade: 12,
+        subjectId: 'biology_g12',
+      );
+
+      // Map of expected question numbers to their extracted images
+      final expectedDiagrams = {
+        6: 'assets/images/exams/bio_2013/q07_bacteria_shapes.png',
+        10: 'assets/images/exams/bio_2013/q11_bacteriophage_structure.png',
+        44: 'assets/images/exams/bio_2013/q45_hybrid_vigor_productivity.png',
+        77: 'assets/images/exams/bio_2013/q78_chloroplast_structure.png',
+        81: 'assets/images/exams/bio_2013/q82_enzyme_reaction.png',
+      };
+
+      for (final entry in expectedDiagrams.entries) {
+        final q = questions[entry.key];
+        expect(q.diagramAsset, isNotNull,
+            reason: 'Question ${entry.key + 1} must have a diagramAsset');
+        expect(q.diagramAsset, entry.value);
+      }
+    });
   });
 }
+
