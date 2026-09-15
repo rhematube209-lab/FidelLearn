@@ -71,10 +71,11 @@ class SupabaseContentRepository implements ContentRepository {
     final client = _client;
     if (client != null) {
       try {
+        final canonicalId = LocalContentRepository.canonicalSubjectId(subjectId);
         final response = await client
             .from('units')
             .select()
-            .eq('subject_id', subjectId)
+            .inFilter('subject_id', [subjectId, canonicalId])
             .order('unit_number', ascending: true)
             .timeout(const Duration(seconds: 5));
 
@@ -184,10 +185,12 @@ class SupabaseContentRepository implements ContentRepository {
     final client = _client;
     if (client != null) {
       try {
+        final canonicalId = LocalContentRepository.canonicalSubjectId(subjectId);
+        final subjectIds = {subjectId, canonicalId}.toList();
         dynamic query = client
             .from('questions')
             .select('*, choices:answer_choices(*), explanations(*)')
-            .eq('subject_id', subjectId)
+            .inFilter('subject_id', subjectIds)
             .eq('verification_status', 'published');
 
         if (grade != null) {

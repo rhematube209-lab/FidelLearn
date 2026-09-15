@@ -105,5 +105,25 @@ void main() {
       expect(q100.correctChoice.label, 'A');
       expect(q100.correctChoice.textEn, 'Pain of the body is decreased.');
     });
+
+    test('supports bio_g12 and biology_g12 aliases seamlessly in questions and units',
+        () async {
+      await repository.initializeSeedData();
+
+      expect(LocalContentRepository.matchesSubjectId('biology_g12', 'bio_g12'),
+          isTrue);
+      expect(LocalContentRepository.canonicalSubjectId('bio_g12'),
+          'biology_g12');
+
+      final questionsByBio = await repository.getQuestions(
+        grade: 12,
+        subjectId: 'bio_g12',
+        examYear: 2013,
+      );
+      expect(questionsByBio.length, 100);
+
+      final unitsByBio = await repository.getUnits('bio_g12');
+      expect(unitsByBio.length, 7);
+    });
   });
 }

@@ -45,7 +45,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 1,
         ),
         Subject(
-          id: 'bio_g$grade',
+          id: 'biology_g$grade',
           code: 'BIO$grade',
           nameEn: 'Biology',
           nameAm: 'ባዮሎጂ',
@@ -54,7 +54,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 2,
         ),
         Subject(
-          id: 'phys_g$grade',
+          id: 'physics_g$grade',
           code: 'PHYS$grade',
           nameEn: 'Physics',
           nameAm: 'ፊዚክስ',
@@ -63,7 +63,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 3,
         ),
         Subject(
-          id: 'chem_g$grade',
+          id: 'chemistry_g$grade',
           code: 'CHEM$grade',
           nameEn: 'Chemistry',
           nameAm: 'ኬሚስትሪ',
@@ -72,7 +72,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 4,
         ),
         Subject(
-          id: 'eng_g$grade',
+          id: 'english_g$grade',
           code: 'ENG$grade',
           nameEn: 'English',
           nameAm: 'እንግሊዝኛ',
@@ -93,7 +93,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 1,
         ),
         Subject(
-          id: 'hist_g$grade',
+          id: 'history_g$grade',
           code: 'HIST$grade',
           nameEn: 'History',
           nameAm: 'ታሪክ',
@@ -102,7 +102,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 2,
         ),
         Subject(
-          id: 'geo_g$grade',
+          id: 'geography_g$grade',
           code: 'GEO$grade',
           nameEn: 'Geography',
           nameAm: 'ጂኦግራፊ',
@@ -111,7 +111,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 3,
         ),
         Subject(
-          id: 'econ_g$grade',
+          id: 'economics_g$grade',
           code: 'ECON$grade',
           nameEn: 'Economics',
           nameAm: 'ኢኮኖሚክስ',
@@ -120,7 +120,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           sortOrder: 4,
         ),
         Subject(
-          id: 'eng_g$grade',
+          id: 'english_g$grade',
           code: 'ENG$grade',
           nameEn: 'English',
           nameAm: 'እንግሊዝኛ',

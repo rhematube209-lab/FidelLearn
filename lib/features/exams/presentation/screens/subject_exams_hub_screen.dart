@@ -10,6 +10,7 @@ import '../../../../core/widgets/fidel_badge.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../subjects/data/repositories/local_content_repository.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 
 class SubjectExamsHubScreen extends ConsumerStatefulWidget {
@@ -202,6 +203,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         final cleanId = widget.subjectId.toLowerCase();
         found = subjects
             .where((s) =>
+                s.id.toLowerCase() == cleanId ||
+                LocalContentRepository.matchesSubjectId(s.id, widget.subjectId) ||
                 s.id.toLowerCase().contains(cleanId) ||
                 cleanId.contains(s.id.toLowerCase()) ||
                 s.code.toLowerCase().contains(cleanId))
@@ -209,7 +212,11 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       }
 
       // Default fallback subject object
-      found ??= _resolveDefaultSubject(widget.subjectId, grade, stream);
+      found ??= _resolveDefaultSubject(
+        LocalContentRepository.canonicalSubjectId(widget.subjectId),
+        grade,
+        stream,
+      );
 
       // Load attempts history for this subject
       List<ExamAttempt> attempts = [];
@@ -253,10 +260,11 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   Subject _resolveDefaultSubject(String id, int grade, String stream) {
+    final canonId = LocalContentRepository.canonicalSubjectId(id);
     final lower = id.toLowerCase();
     if (lower.contains('math')) {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'MATH$grade',
         nameEn: 'Mathematics',
         nameAm: 'ሒሳብ',
@@ -266,7 +274,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       );
     } else if (lower.contains('bio')) {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'BIO$grade',
         nameEn: 'Biology',
         nameAm: 'ባዮሎጂ',
@@ -276,7 +284,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       );
     } else if (lower.contains('phys')) {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'PHYS$grade',
         nameEn: 'Physics',
         nameAm: 'ፊዚክስ',
@@ -286,7 +294,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       );
     } else if (lower.contains('chem')) {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'CHEM$grade',
         nameEn: 'Chemistry',
         nameAm: 'ኬሚስትሪ',
@@ -296,7 +304,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       );
     } else if (lower.contains('eng')) {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'ENG$grade',
         nameEn: 'English',
         nameAm: 'እንግሊዝኛ',
@@ -306,7 +314,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       );
     } else {
       return Subject(
-        id: id,
+        id: canonId,
         code: 'SUBJ$grade',
         nameEn: 'National Exam Subject',
         nameAm: 'የትምህርት ዓይነት',
@@ -317,7 +325,27 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     }
   }
 
-  Future<void> _downloadYear(_OfficialExamYearInfo yearInfo) async {
+  _OfficialExamYearInfo _resolveYearInfo(
+      _OfficialExamYearInfo base, Subject subject) {
+    final isBio = LocalContentRepository.matchesSubjectId(
+            subject.id, 'biology_g12') ||
+        subject.nameEn.toLowerCase().contains('bio');
+    if (isBio && base.ethiopianYear == 2013) {
+      return base.copyWith(
+        standardQuestionCount: 100,
+        bookletCode: 'Booklet 12',
+        standardTimeMinutes: 120,
+        descriptionEn:
+            'Official 2013 E.C. National Exam (100 Questions, Booklet 12) administered by NEAEA.',
+        descriptionAm:
+            'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2013 ዓ.ም. ባለ 100 ጥያቄ ፈተና (ጥራዝ 12)።',
+      );
+    }
+    return base;
+  }
+
+  Future<void> _downloadYear(_OfficialExamYearInfo rawYearInfo) async {
+    final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
     if (_downloadingYears.contains(yearInfo.ethiopianYear)) return;
 
     setState(() => _downloadingYears.add(yearInfo.ethiopianYear));
@@ -389,7 +417,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     }
   }
 
-  Future<void> _removeDownloadedYear(_OfficialExamYearInfo yearInfo) async {
+  Future<void> _removeDownloadedYear(_OfficialExamYearInfo rawYearInfo) async {
+    final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
     final user = ref.read(currentUserProvider).valueOrNull;
     final isAmharic = user?.preferredLanguage == 'am';
 
@@ -452,7 +481,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
 
-  Future<void> _startYearExam(_OfficialExamYearInfo yearInfo) async {
+  Future<void> _startYearExam(_OfficialExamYearInfo rawYearInfo) async {
+    final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
     if (_isLaunching) return;
 
     // If not yet downloaded, securely download and cache first
@@ -1181,7 +1211,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       ),
       itemCount: _availableYears.length,
       itemBuilder: (context, index) {
-        final yearInfo = _availableYears[index];
+        final rawYearInfo = _availableYears[index];
+        final yearInfo = _resolveYearInfo(rawYearInfo, subject);
         return _buildYearCard(context, subject, yearInfo, hubTheme, isAmharic, isDark);
       },
     );
@@ -1572,6 +1603,29 @@ class _OfficialExamYearInfo {
     required this.descriptionEn,
     required this.descriptionAm,
   });
+
+  _OfficialExamYearInfo copyWith({
+    int? ethiopianYear,
+    int? gregorianYear,
+    String? bookletCode,
+    int? standardQuestionCount,
+    int? standardTimeMinutes,
+    bool? isLatest,
+    String? descriptionEn,
+    String? descriptionAm,
+  }) {
+    return _OfficialExamYearInfo(
+      ethiopianYear: ethiopianYear ?? this.ethiopianYear,
+      gregorianYear: gregorianYear ?? this.gregorianYear,
+      bookletCode: bookletCode ?? this.bookletCode,
+      standardQuestionCount:
+          standardQuestionCount ?? this.standardQuestionCount,
+      standardTimeMinutes: standardTimeMinutes ?? this.standardTimeMinutes,
+      isLatest: isLatest ?? this.isLatest,
+      descriptionEn: descriptionEn ?? this.descriptionEn,
+      descriptionAm: descriptionAm ?? this.descriptionAm,
+    );
+  }
 }
 
 class _SubjectHubTheme {

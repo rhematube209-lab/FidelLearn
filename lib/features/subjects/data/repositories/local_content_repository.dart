@@ -151,10 +151,41 @@ class LocalContentRepository implements ContentRepository {
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
 
+  static bool matchesSubjectId(String a, String b) {
+    if (a == b) return true;
+    final aCanon = canonicalSubjectId(a);
+    final bCanon = canonicalSubjectId(b);
+    if (aCanon == bCanon) return true;
+    return false;
+  }
+
+  static String canonicalSubjectId(String id) {
+    final lower = id.toLowerCase().trim();
+    final gradeMatch = RegExp(r'(g\d+|\d+)').firstMatch(lower);
+    final gradeSuffix = gradeMatch != null
+        ? (gradeMatch.group(0)!.startsWith('g')
+            ? gradeMatch.group(0)!
+            : 'g${gradeMatch.group(0)!}')
+        : 'g12';
+
+    if (lower.contains('bio')) return 'biology_$gradeSuffix';
+    if (lower.contains('math')) return 'math_$gradeSuffix';
+    if (lower.contains('phys')) return 'physics_$gradeSuffix';
+    if (lower.contains('chem')) return 'chemistry_$gradeSuffix';
+    if (lower.contains('eng')) return 'english_$gradeSuffix';
+    if (lower.contains('hist')) return 'history_$gradeSuffix';
+    if (lower.contains('geo')) return 'geography_$gradeSuffix';
+    if (lower.contains('econ')) return 'economics_$gradeSuffix';
+    if (lower.contains('apt')) return 'aptitude_$gradeSuffix';
+    if (lower.contains('sci')) return 'science_$gradeSuffix';
+
+    return lower;
+  }
+
   @override
   Future<List<Unit>> getUnits(String subjectId) async {
     await initializeSeedData();
-    return _units.where((u) => u.subjectId == subjectId).toList()
+    return _units.where((u) => matchesSubjectId(u.subjectId, subjectId)).toList()
       ..sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
   }
 
@@ -257,7 +288,7 @@ class LocalContentRepository implements ContentRepository {
 
     var filtered = _questions.where((q) {
       if (grade != null && q.grade != grade) return false;
-      if (q.subjectId != subjectId) return false;
+      if (!matchesSubjectId(q.subjectId, subjectId)) return false;
       if (q.verificationStatus != VerificationStatus.published) return false;
       if (unitId != null && q.unitId != unitId) return false;
       if (topicId != null && q.topicId != topicId) return false;

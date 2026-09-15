@@ -172,4 +172,66 @@ void main() {
     // Verify success snackbar notification
     expect(find.textContaining('downloaded & verified for offline practice'), findsOneWidget);
   });
+
+  testWidgets('SubjectExamsHubScreen displays Booklet 12 • 100 Qs for Biology 2013 E.C.',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    final storage = AuthSessionStorage();
+    final mockUser = UserProfile(
+      id: 'test_student_bio',
+      phoneNumber: '+251911000000',
+      displayName: 'Aster Aweke',
+      role: UserRole.student,
+      grade: 12,
+      stream: 'natural',
+      preferredLanguage: 'en',
+      createdAt: DateTime(2026, 1, 1),
+    );
+
+    final authRepo = MockAuthRepository(
+      sessionStorage: storage,
+      initialUser: mockUser,
+    );
+
+    final mockRepo = LocalContentRepository();
+    mockRepo.initializeWithData(
+      packages: const [],
+      units: const [],
+      topics: const [],
+      questions: const [],
+      subjects: [
+        const Subject(
+          id: 'biology_g12',
+          code: 'BIO12',
+          nameEn: 'Biology',
+          nameAm: 'ባዮሎጂ',
+          grade: 12,
+          stream: 'natural',
+          sortOrder: 2,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authSessionStorageProvider.overrideWithValue(storage),
+          authRepositoryProvider.overrideWithValue(authRepo),
+          contentRepositoryProvider.overrideWithValue(mockRepo),
+        ],
+        child: const MaterialApp(
+          home: SubjectExamsHubScreen(subjectId: 'bio_g12'),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify Biology 2013 card specifically shows 'Booklet 12 • 100 Qs'
+    expect(find.text('Booklet 12 • 100 Qs'), findsOneWidget);
+    expect(find.text('2013 E.C.'), findsOneWidget);
+  });
 }
