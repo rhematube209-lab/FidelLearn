@@ -1226,23 +1226,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppTheme.darkBg : AppTheme.lightBg,
-      appBar: AppBar(
-        title: Text(
-          isAmharic && subject.nameAm.isNotEmpty ? subject.nameAm : subject.nameEn,
-          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.tune_rounded),
-            tooltip: isAmharic ? 'ብጁ ፈተና' : 'Custom Builder',
-            onPressed: () => context.push('/exam_builder?subjectId=${subject.id}'),
-          ),
-        ],
-      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : LayoutBuilder(
@@ -1250,35 +1233,58 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                 final screenWidth = constraints.maxWidth;
                 final isWide = screenWidth >= 900;
 
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1160),
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isWide ? 32.0 : 16.0,
-                        vertical: 20.0,
+                return SingleChildScrollView(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 🌟 1. Full-Width Edge-to-Edge Hero Card (with Header & Fully Customize Practice Card inside)
+                      _buildEdgeToEdgeHeroSection(
+                        context,
+                        subject,
+                        hubTheme,
+                        isWide,
+                        isAmharic,
+                        isDark,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // 1. Subject Header Banner
-                          _buildHeaderBanner(context, subject, hubTheme, isAmharic, isDark),
-                          const SizedBox(height: 24),
 
-                          // 2. Pathway Selector: Option B (Fully Customize on Your Own) Prominent CTA
-                          _buildCustomBuilderCTA(context, subject, hubTheme, isAmharic, isDark),
-                          const SizedBox(height: 28),
+                      // 📚 2. Content Container Below Hero Card
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isWide ? 32.0 : 16.0,
+                          vertical: 24.0,
+                        ),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 1160),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Pathway 1: Previous Years National Exams Header & Controls
+                                _buildPastYearsSectionHeader(
+                                  context,
+                                  hubTheme,
+                                  isAmharic,
+                                  isDark,
+                                ),
+                                const SizedBox(height: 16),
 
-                          // 3. Pathway 1: Previous Years National Exams Header & Controls
-                          _buildPastYearsSectionHeader(context, hubTheme, isAmharic, isDark),
-                          const SizedBox(height: 16),
-
-                          // 4. Past Examination Papers Grid
-                          _buildExamYearsGrid(context, subject, hubTheme, isWide, isAmharic, isDark),
-                          const SizedBox(height: 40),
-                        ],
+                                // Past Examination Papers Grid
+                                _buildExamYearsGrid(
+                                  context,
+                                  subject,
+                                  hubTheme,
+                                  isWide,
+                                  isAmharic,
+                                  isDark,
+                                ),
+                                const SizedBox(height: 40),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 );
               },
@@ -1287,183 +1293,265 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   // ===========================================================================
-  // 🌟 1. SUBJECT HEADER BANNER
+  // 🌟 1. FULL-WIDTH EDGE-TO-EDGE HERO SECTION
   // ===========================================================================
-  Widget _buildHeaderBanner(
+  Widget _buildEdgeToEdgeHeroSection(
     BuildContext context,
     Subject subject,
     _SubjectHubTheme hubTheme,
+    bool isWide,
     bool isAmharic,
     bool isDark,
   ) {
+    final topPadding = MediaQuery.of(context).padding.top;
+
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [hubTheme.gradientStart, hubTheme.gradientEnd],
+          colors: [
+            hubTheme.gradientStart,
+            hubTheme.gradientEnd,
+          ],
         ),
         boxShadow: [
           BoxShadow(
-            color: hubTheme.accentColor.withValues(alpha: 0.30),
-            blurRadius: 18,
-            offset: const Offset(0, 6),
+            color: hubTheme.accentColor.withValues(alpha: 0.35),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          // Background Decorative Circle
-          Positioned(
-            right: -20,
-            top: -20,
-            child: Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.08),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
+        child: Stack(
+          children: [
+            // Top-left ambient glow
+            Positioned(
+              left: -35,
+              top: -35,
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.10),
+                ),
               ),
             ),
-          ),
+            // Bottom-right ambient glow
+            Positioned(
+              right: -30,
+              bottom: -30,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.12),
+                ),
+              ),
+            ),
 
-          Padding(
-            padding: const EdgeInsets.all(22.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Subject Emblem
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.16),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.25),
-                        ),
-                      ),
-                      child: Center(
-                        child: hubTheme.symbol != null
-                            ? Text(
-                                hubTheme.symbol!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              )
-                            : Icon(
-                                hubTheme.icon ?? Icons.school,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-
-                    // Title & Badges
-                    Expanded(
-                      child: Column(
+            // Content Container
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1160),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: topPadding > 0 ? topPadding + 10 : 18,
+                    left: isWide ? 32.0 : 16.0,
+                    right: isWide ? 32.0 : 16.0,
+                    bottom: 22.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 1. Top Section: Subject Emblem, Badges, Name, and Back Button in Top-Right Corner
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.20),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  'Grade ${subject.grade} • ${subject.stream.toUpperCase()}',
-                                  style: const TextStyle(
-                                    fontSize: 10.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                    letterSpacing: 0.4,
-                                  ),
-                                ),
+                          // Subject Emblem (Left)
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.30),
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981).withValues(alpha: 0.30),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: const Color(0xFF6EE7B7).withValues(alpha: 0.5),
-                                  ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.15),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
                                 ),
-                                child: const Text(
-                                  'MoE Verified',
-                                  style: TextStyle(
-                                    fontSize: 10.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFFD1FAE5),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: Center(
+                              child: hubTheme.symbol != null
+                                  ? Text(
+                                      hubTheme.symbol!,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    )
+                                  : Icon(
+                                      hubTheme.icon ?? Icons.school,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                            ),
                           ),
-                          const SizedBox(height: 6),
-                          Text(
-                            isAmharic && subject.nameAm.isNotEmpty
-                                ? '${subject.nameEn} (${subject.nameAm})'
-                                : subject.nameEn,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                              letterSpacing: -0.4,
+                          const SizedBox(width: 14),
+
+                          // Badges & Subject Title (Center)
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 3.5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.20),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        'Grade ${subject.grade} • ${subject.stream.toUpperCase()}',
+                                        style: const TextStyle(
+                                          fontSize: 10.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                          letterSpacing: 0.4,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 3.5),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF10B981)
+                                            .withValues(alpha: 0.30),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                          color: const Color(0xFF6EE7B7)
+                                              .withValues(alpha: 0.5),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        isAmharic ? 'ሚኒስቴር-ተስማሚ' : 'MoE Verified',
+                                        style: const TextStyle(
+                                          fontSize: 10.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xFFD1FAE5),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  isAmharic && subject.nameAm.isNotEmpty
+                                      ? '${subject.nameEn} (${subject.nameAm})'
+                                      : subject.nameEn,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+
+                          // Back Button (Top-Right Corner per reference)
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.20),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.25),
+                              ),
+                            ),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              icon: const Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                              tooltip: isAmharic ? 'ተመለስ' : 'Back',
+                              onPressed: () => context.pop(),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 18),
+                      const SizedBox(height: 16),
 
-                // Quick stats strip inside banner
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.20),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildHeaderStat(
-                        '${_availableYears.length}',
-                        isAmharic ? 'የፈተና ዓመታት' : 'Official Years',
+                      // 3. Quick Stats Strip
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.22),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.15),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _buildHeaderStat(
+                              '${_availableYears.length}',
+                              isAmharic ? 'የፈተና ዓመታት' : 'Official Years',
+                            ),
+                            Container(width: 1, height: 24, color: Colors.white24),
+                            _buildHeaderStat(
+                              _totalAvailableQuestions > 0
+                                  ? '$_totalAvailableQuestions+'
+                                  : '360+ Qs',
+                              isAmharic ? 'የተረጋገጡ ጥያቄዎች' : 'Verified Questions',
+                            ),
+                            Container(width: 1, height: 24, color: Colors.white24),
+                            _buildHeaderStat(
+                              '${_subjectAttempts.length}',
+                              isAmharic ? 'የተጠናቀቁ ፈተናዎች' : 'Completed Tests',
+                            ),
+                          ],
+                        ),
                       ),
-                      Container(width: 1, height: 24, color: Colors.white24),
-                      _buildHeaderStat(
-                        _totalAvailableQuestions > 0
-                            ? '$_totalAvailableQuestions+'
-                            : '360+ Qs',
-                        isAmharic ? 'የተረጋገጡ ጥያቄዎች' : 'Verified Questions',
-                      ),
-                      Container(width: 1, height: 24, color: Colors.white24),
-                      _buildHeaderStat(
-                        '${_subjectAttempts.length}',
-                        isAmharic ? 'የተጠናቀቁ ፈተናዎች' : 'Completed Tests',
+                      const SizedBox(height: 16),
+
+                      // 4. Fully Customize Practice Card (Nested inside the Hero!)
+                      _buildCustomBuilderCTA(
+                        context,
+                        subject,
+                        hubTheme,
+                        isAmharic,
+                        isDark,
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1504,18 +1592,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   ) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : Colors.white,
+        color: Colors.black.withValues(alpha: 0.22),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark
-              ? hubTheme.accentColor.withValues(alpha: 0.40)
-              : hubTheme.accentColor.withValues(alpha: 0.25),
-          width: 1.5,
+          color: Colors.white.withValues(alpha: 0.25),
+          width: 1.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: hubTheme.accentColor.withValues(alpha: 0.08),
-            blurRadius: 12,
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
@@ -1527,7 +1613,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
           onTap: () => context.push('/exam_builder?subjectId=${subject.id}'),
           borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.all(18.0),
+            padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
                 // Icon
@@ -1535,12 +1621,15 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: hubTheme.accentColor.withValues(alpha: 0.12),
+                    color: Colors.white.withValues(alpha: 0.18),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.28),
+                    ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.tune_rounded,
-                    color: hubTheme.accentColor,
+                    color: Colors.white,
                     size: 22,
                   ),
                 ),
@@ -1555,10 +1644,10 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         children: [
                           Text(
                             isAmharic ? 'ብጁ የልምምድ ፈተና አዘጋጅ' : 'Fully Customize Practice',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: isDark ? Colors.white : const Color(0xFF0F172A),
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -1566,15 +1655,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: hubTheme.accentColor.withValues(alpha: 0.15),
+                              color: Colors.white.withValues(alpha: 0.22),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               isAmharic ? 'ምርጫዎ' : 'CUSTOM',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w800,
-                                color: hubTheme.accentColor,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
                               ),
                             ),
                           ),
@@ -1587,7 +1677,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             : 'Select specific year, syllabus units & question count on your own',
                         style: TextStyle(
                           fontSize: 12,
-                          color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                          color: Colors.white.withValues(alpha: 0.88),
                           height: 1.3,
                         ),
                       ),
@@ -1595,29 +1685,36 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                   ),
                 ),
 
-                // Forward action button
+                // Forward action button (Build >)
                 const SizedBox(width: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: hubTheme.accentColor,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.12),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         isAmharic ? 'ክፈት' : 'Build',
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: hubTheme.accentColor,
                           fontSize: 12.5,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                       const SizedBox(width: 4),
-                      const Icon(
+                      Icon(
                         Icons.chevron_right_rounded,
-                        color: Colors.white,
+                        color: hubTheme.accentColor,
                         size: 16,
                       ),
                     ],

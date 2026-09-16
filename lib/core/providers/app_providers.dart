@@ -222,7 +222,6 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
   ///   'cosmic'   → ThemeMode.dark
   ///
   /// Legacy values 'light' and 'dark' are also handled for backwards compat.
-  static const String _valLavender = 'lavender';
   static const String _valCosmic = 'cosmic';
 
   ThemeModeNotifier([SharedPreferences? initialPrefs])

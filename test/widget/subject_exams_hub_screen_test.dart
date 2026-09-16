@@ -67,9 +67,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // 1. Check Header
+    // 1. Check Header & Navigation embedded in Hero Card
+    expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.tune_rounded), findsWidgets);
     expect(find.textContaining('Mathematics'), findsWidgets);
     expect(find.textContaining('Grade 12'), findsWidgets);
+    expect(find.text('Official Years'), findsOneWidget);
+    expect(find.text('Verified Questions'), findsOneWidget);
+    expect(find.text('Completed Tests'), findsOneWidget);
 
     // 2. Check Pathway B: Fully Customize Practice CTA
     expect(find.text('Fully Customize Practice'), findsOneWidget);
