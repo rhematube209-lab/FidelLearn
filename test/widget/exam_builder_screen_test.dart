@@ -10,6 +10,7 @@ import 'package:fidel_learn/features/exams/data/repositories/local_exam_reposito
 import 'package:fidel_learn/features/exams/presentation/screens/exam_builder_screen.dart';
 import 'package:fidel_learn/features/mistakes/data/repositories/local_mistake_repository.dart';
 import 'package:fidel_learn/features/subjects/data/repositories/local_content_repository.dart';
+import 'package:fidel_learn/features/subjects/domain/models/subject_models.dart';
 
 void main() {
   group('ExamBuilderScreen UI Specification Tests', () {
@@ -148,6 +149,152 @@ void main() {
       // Verify Timed CTA and Time Limit Slider
       expect(find.text('Start Timed Mock Exam'), findsOneWidget);
       expect(find.text('Time Limit'), findsOneWidget);
+    });
+
+    testWidgets(
+        'adapts branding and pre-selects Mathematics when arriving from math_g12',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: const [
+          Subject(
+            id: 'math_g12',
+            code: 'MATH12',
+            nameEn: 'Mathematics',
+            nameAm: 'ሒሳብ',
+            grade: 12,
+            stream: 'natural',
+            sortOrder: 1,
+          ),
+          Subject(
+            id: 'biology_g12',
+            code: 'BIO12',
+            nameEn: 'Biology',
+            nameAm: 'ሥነ-ህይወት',
+            grade: 12,
+            stream: 'natural',
+            sortOrder: 2,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'math_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify Mathematics branding and emblem
+      expect(find.text('Mathematics'), findsWidgets);
+      expect(find.text('∑'), findsWidgets);
+    });
+
+    testWidgets(
+        'adapts branding and pre-selects Biology when arriving from biology_g12',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: const [
+          Subject(
+            id: 'math_g12',
+            code: 'MATH12',
+            nameEn: 'Mathematics',
+            nameAm: 'ሒሳብ',
+            grade: 12,
+            stream: 'natural',
+            sortOrder: 1,
+          ),
+          Subject(
+            id: 'biology_g12',
+            code: 'BIO12',
+            nameEn: 'Biology',
+            nameAm: 'ሥነ-ህይወት',
+            grade: 12,
+            stream: 'natural',
+            sortOrder: 2,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'biology_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify Biology branding and emblem
+      expect(find.text('Biology'), findsWidgets);
+      expect(find.text('🧬'), findsWidgets);
     });
   });
 }

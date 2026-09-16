@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../subjects/data/repositories/local_content_repository.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/services/exam_engine.dart';
@@ -13,6 +14,30 @@ enum ExamYearFilterMode {
   range,
   single,
   all,
+}
+
+class _ExamBuilderTheme {
+  final Color primary;
+  final Color primaryContainer;
+  final Color onPrimary;
+  final Color accent;
+  final Color gradientStart;
+  final Color gradientEnd;
+  final Color surfaceTint;
+  final String symbol;
+  final IconData icon;
+
+  const _ExamBuilderTheme({
+    required this.primary,
+    required this.primaryContainer,
+    required this.onPrimary,
+    required this.accent,
+    required this.gradientStart,
+    required this.gradientEnd,
+    required this.surfaceTint,
+    required this.symbol,
+    required this.icon,
+  });
 }
 
 class ExamBuilderScreen extends ConsumerStatefulWidget {
@@ -26,13 +51,10 @@ class ExamBuilderScreen extends ConsumerStatefulWidget {
 }
 
 class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
-  // Theme Palette Tokens matching HTML / M3 Specification
+  // Base Palette Tokens matching HTML / M3 Specification
   static const Color primarySpruce = Color(0xFF003527);
-  static const Color primaryContainer = Color(0xFF064E3B);
   static const Color onPrimary = Color(0xFFFFFFFF);
   static const Color secondaryContainer = Color(0xFFFE932C);
-  static const Color secondaryFixed = Color(0xFFFFDCC3);
-  static const Color onSecondaryFixed = Color(0xFF2F1500);
   static const Color surfaceLight = Color(0xFFF8F9FF);
   static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
   static const Color surfaceContainerLow = Color(0xFFEFF4FF);
@@ -40,6 +62,169 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   static const Color onSurfaceLight = Color(0xFF0B1C30);
   static const Color onSurfaceVariant = Color(0xFF404944);
   static const Color outlineVariant = Color(0xFFBFC9C3);
+
+  // Dynamic Subject Theme Resolution
+  _ExamBuilderTheme _resolveTheme(Subject? subject) {
+    if (subject == null) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF003527),
+        primaryContainer: Color(0xFF064E3B),
+        onPrimary: Colors.white,
+        accent: Color(0xFF10B981),
+        gradientStart: Color(0xFF003527),
+        gradientEnd: Color(0xFF064E3B),
+        surfaceTint: Color(0xFFECFDF5),
+        symbol: '🎓',
+        icon: Icons.school_rounded,
+      );
+    }
+
+    final key = '${subject.id} ${subject.code} ${subject.nameEn}'.toLowerCase();
+    if (key.contains('math')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF4F46E5),
+        primaryContainer: Color(0xFF3730A3),
+        onPrimary: Colors.white,
+        accent: Color(0xFF6366F1),
+        gradientStart: Color(0xFF4F46E5),
+        gradientEnd: Color(0xFF312E81),
+        surfaceTint: Color(0xFFEEF2FF),
+        symbol: '∑',
+        icon: Icons.functions_rounded,
+      );
+    } else if (key.contains('bio')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF059669),
+        primaryContainer: Color(0xFF064E3B),
+        onPrimary: Colors.white,
+        accent: Color(0xFF10B981),
+        gradientStart: Color(0xFF059669),
+        gradientEnd: Color(0xFF064E3B),
+        surfaceTint: Color(0xFFECFDF5),
+        symbol: '🧬',
+        icon: Icons.biotech_rounded,
+      );
+    } else if (key.contains('phys')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF2563EB),
+        primaryContainer: Color(0xFF1E3A8A),
+        onPrimary: Colors.white,
+        accent: Color(0xFF3B82F6),
+        gradientStart: Color(0xFF2563EB),
+        gradientEnd: Color(0xFF1E3A8A),
+        surfaceTint: Color(0xFFEFF6FF),
+        symbol: '⚡',
+        icon: Icons.bolt_rounded,
+      );
+    } else if (key.contains('chem')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF9333EA),
+        primaryContainer: Color(0xFF581C87),
+        onPrimary: Colors.white,
+        accent: Color(0xFFA855F7),
+        gradientStart: Color(0xFF9333EA),
+        gradientEnd: Color(0xFF581C87),
+        surfaceTint: Color(0xFFFAF5FF),
+        symbol: '🧪',
+        icon: Icons.science_rounded,
+      );
+    } else if (key.contains('eng')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFFD97706),
+        primaryContainer: Color(0xFF78350F),
+        onPrimary: Colors.white,
+        accent: Color(0xFFF59E0B),
+        gradientStart: Color(0xFFD97706),
+        gradientEnd: Color(0xFF78350F),
+        surfaceTint: Color(0xFFFEF3C7),
+        symbol: '📖',
+        icon: Icons.menu_book_rounded,
+      );
+    } else if (key.contains('hist')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFFEA580C),
+        primaryContainer: Color(0xFF7C2D12),
+        onPrimary: Colors.white,
+        accent: Color(0xFFF97316),
+        gradientStart: Color(0xFFEA580C),
+        gradientEnd: Color(0xFF7C2D12),
+        surfaceTint: Color(0xFFFFF7ED),
+        symbol: '🏛️',
+        icon: Icons.history_edu_rounded,
+      );
+    } else if (key.contains('geo')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF0D9488),
+        primaryContainer: Color(0xFF134E4A),
+        onPrimary: Colors.white,
+        accent: Color(0xFF14B8A6),
+        gradientStart: Color(0xFF0D9488),
+        gradientEnd: Color(0xFF134E4A),
+        surfaceTint: Color(0xFFF0FDFA),
+        symbol: '🌍',
+        icon: Icons.public_rounded,
+      );
+    } else if (key.contains('econ')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF0284C7),
+        primaryContainer: Color(0xFF0C4A6E),
+        onPrimary: Colors.white,
+        accent: Color(0xFF0EA5E9),
+        gradientStart: Color(0xFF0284C7),
+        gradientEnd: Color(0xFF0C4A6E),
+        surfaceTint: Color(0xFFF0F9FF),
+        symbol: '📈',
+        icon: Icons.trending_up_rounded,
+      );
+    } else if (key.contains('civ')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF475569),
+        primaryContainer: Color(0xFF1E293B),
+        onPrimary: Colors.white,
+        accent: Color(0xFF64748B),
+        gradientStart: Color(0xFF475569),
+        gradientEnd: Color(0xFF1E293B),
+        surfaceTint: Color(0xFFF8FAFC),
+        symbol: '⚖️',
+        icon: Icons.balance_rounded,
+      );
+    } else if (key.contains('apt')) {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFFE11D48),
+        primaryContainer: Color(0xFF881337),
+        onPrimary: Colors.white,
+        accent: Color(0xFFF43F5E),
+        gradientStart: Color(0xFFE11D48),
+        gradientEnd: Color(0xFF881337),
+        surfaceTint: Color(0xFFFFF1F2),
+        symbol: '💡',
+        icon: Icons.lightbulb_rounded,
+      );
+    } else {
+      return const _ExamBuilderTheme(
+        primary: Color(0xFF003527),
+        primaryContainer: Color(0xFF064E3B),
+        onPrimary: Colors.white,
+        accent: Color(0xFF10B981),
+        gradientStart: Color(0xFF003527),
+        gradientEnd: Color(0xFF064E3B),
+        surfaceTint: Color(0xFFECFDF5),
+        symbol: '🎓',
+        icon: Icons.school_rounded,
+      );
+    }
+  }
+
+  Subject? get _selectedSubject =>
+      _subjects.where((s) => s.id == _selectedSubjectId).firstOrNull;
+
+  _ExamBuilderTheme get _currentTheme => _resolveTheme(_selectedSubject);
+  Color get activePrimary => _currentTheme.primary;
+  Color get activeContainer => _currentTheme.primaryContainer;
+  Color get activeAccent => _currentTheme.accent;
+  Color get activeSurfaceTint => _currentTheme.surfaceTint;
+  String get activeSymbol => _currentTheme.symbol;
+  IconData get activeIcon => _currentTheme.icon;
 
   // Curriculum Scope State
   int? _selectedGrade; // 9, 10, 11, 12, or null for all (9-12)
@@ -73,6 +258,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     2022,
     2023,
     2024,
+    2025,
+    2026,
   ];
 
   // Live Matching Questions Counter
@@ -98,19 +285,80 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final user = ref.read(currentUserProvider).valueOrNull;
     final contentRepo = ref.read(contentRepositoryProvider);
 
-    _selectedGrade = user?.grade ?? 12;
+    int targetGrade = user?.grade ?? 12;
+    if (widget.initialSubjectId != null) {
+      final match = RegExp(r'(?:g|grade)(\d+)', caseSensitive: false)
+          .firstMatch(widget.initialSubjectId!);
+      if (match != null) {
+        final parsed = int.tryParse(match.group(1)!);
+        if (parsed != null && parsed >= 9 && parsed <= 12) {
+          targetGrade = parsed;
+        }
+      }
+    }
+    _selectedGrade = targetGrade;
 
-    if (user != null) {
-      final subs = await contentRepo.getSubjects(
+    if (user != null ||
+        (widget.initialSubjectId != null &&
+            widget.initialSubjectId!.isNotEmpty)) {
+      final stream = user?.stream ?? 'natural';
+      List<Subject> subs = await contentRepo.getSubjects(
         grade: _selectedGrade,
-        stream: user.stream,
+        stream: stream,
       );
+
+      Subject? matched;
+      if (widget.initialSubjectId != null &&
+          widget.initialSubjectId!.isNotEmpty) {
+        final qId = widget.initialSubjectId!.trim().toLowerCase();
+        // 1. Exact ID match
+        matched = subs.where((s) => s.id.toLowerCase() == qId).firstOrNull;
+        // 2. Canonical subject ID match
+        matched ??= subs
+            .where((s) => LocalContentRepository.matchesSubjectId(
+                s.id, widget.initialSubjectId!))
+            .firstOrNull;
+        // 3. Discipline match
+        matched ??= subs
+            .where((s) => LocalContentRepository.matchesSubjectDiscipline(
+                s.id, widget.initialSubjectId!))
+            .firstOrNull;
+        // 4. Code or name substring
+        matched ??= subs
+            .where((s) =>
+                s.code.toLowerCase() == qId ||
+                s.nameEn.toLowerCase().contains(qId))
+            .firstOrNull;
+
+        // 5. If not found in current grade/stream, search across all subjects
+        if (matched == null) {
+          final allSubs = await contentRepo.getSubjects(stream: stream);
+          matched = allSubs
+              .where((s) =>
+                  s.id.toLowerCase() == qId ||
+                  LocalContentRepository.matchesSubjectId(
+                      s.id, widget.initialSubjectId!) ||
+                  LocalContentRepository.matchesSubjectDiscipline(
+                      s.id, widget.initialSubjectId!) ||
+                  s.code.toLowerCase() == qId ||
+                  s.nameEn.toLowerCase().contains(qId))
+              .firstOrNull;
+          if (matched != null) {
+            _selectedGrade = matched.grade;
+            subs = await contentRepo.getSubjects(
+                grade: _selectedGrade, stream: stream);
+          }
+        }
+      }
+
+      if (matched == null && subs.isNotEmpty) {
+        matched = subs.first;
+      }
+
       if (mounted) {
         setState(() {
           _subjects = subs;
-          if (subs.isNotEmpty) {
-            _selectedSubjectId = widget.initialSubjectId ?? subs.first.id;
-          }
+          _selectedSubjectId = matched?.id;
           _isLoading = false;
         });
       }
@@ -217,8 +465,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             _yearMode == ExamYearFilterMode.single ? _selectedSingleYear : null,
         startYear:
             _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
-        endYear:
-            _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
+        endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
       );
       if (mounted) {
         setState(() {
@@ -256,8 +503,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             _yearMode == ExamYearFilterMode.single ? _selectedSingleYear : null,
         startYear:
             _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
-        endYear:
-            _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
+        endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
       );
 
       if (questions.isEmpty) {
@@ -288,11 +534,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         ),
       );
 
-      final gradeLabel = _selectedGrade != null
-          ? 'Grade $_selectedGrade '
-          : 'Grades 9-12 ';
-      final unitObj =
-          _units.where((u) => u.id == _selectedUnitId).firstOrNull;
+      final gradeLabel =
+          _selectedGrade != null ? 'Grade $_selectedGrade ' : 'Grades 9-12 ';
+      final unitObj = _units.where((u) => u.id == _selectedUnitId).firstOrNull;
       final unitLabel = unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
       final yearLabel = _yearMode == ExamYearFilterMode.range
           ? ' [$_rangeStartYear-$_rangeEndYear E.C.]'
@@ -301,7 +545,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               : '');
       final modeLabel = _isTimed ? ' Timed Mock' : ' Practice';
 
-      final title = '$gradeLabel${subject.nameEn}$unitLabel$yearLabel$modeLabel';
+      final title =
+          '$gradeLabel${subject.nameEn}$unitLabel$yearLabel$modeLabel';
 
       final exam = Exam(
         id: 'exam_${DateTime.now().millisecondsSinceEpoch}',
@@ -373,10 +618,6 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     return Icons.school_rounded;
   }
 
-  Subject? get _selectedSubject {
-    return _subjects.where((s) => s.id == _selectedSubjectId).firstOrNull;
-  }
-
   Unit? get _selectedUnit {
     return _units.where((u) => u.id == _selectedUnitId).firstOrNull;
   }
@@ -390,11 +631,31 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   // ==========================================
   void _showGradePickerModal(BuildContext context, bool isDark) {
     final gradeOptions = [
-      {'label': 'Grade 12 (Secondary / EUEE Scope)', 'value': 12, 'desc': 'Official Ethiopian University Entrance Exam target'},
-      {'label': 'Grade 11 (Preparatory Scope)', 'value': 11, 'desc': 'Preparatory stream foundation curriculum'},
-      {'label': 'Grade 10 (Secondary Completion)', 'value': 10, 'desc': 'General secondary completion scope'},
-      {'label': 'Grade 9 (General Science & Foundations)', 'value': 9, 'desc': 'Secondary entrance & core basics'},
-      {'label': 'All Grades (9-12 Comprehensive Examination)', 'value': null, 'desc': 'Comprehensive archive across all high school years'},
+      {
+        'label': 'Grade 12 (Secondary / EUEE Scope)',
+        'value': 12,
+        'desc': 'Official Ethiopian University Entrance Exam target'
+      },
+      {
+        'label': 'Grade 11 (Preparatory Scope)',
+        'value': 11,
+        'desc': 'Preparatory stream foundation curriculum'
+      },
+      {
+        'label': 'Grade 10 (Secondary Completion)',
+        'value': 10,
+        'desc': 'General secondary completion scope'
+      },
+      {
+        'label': 'Grade 9 (General Science & Foundations)',
+        'value': 9,
+        'desc': 'Secondary entrance & core basics'
+      },
+      {
+        'label': 'All Grades (9-12 Comprehensive Examination)',
+        'value': null,
+        'desc': 'Comprehensive archive across all high school years'
+      },
     ];
 
     showModalBottomSheet<void>(
@@ -416,7 +677,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFCBD5E1),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -452,31 +715,36 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? (isDark
-                              ? primaryContainer.withValues(alpha: 0.3)
-                              : primaryContainer.withValues(alpha: 0.08))
-                          : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                              ? activePrimary.withValues(alpha: 0.25)
+                              : activeSurfaceTint)
+                          : (isDark
+                              ? const Color(0xFF1E293B)
+                              : surfaceContainerLow.withValues(alpha: 0.7)),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isSelected
-                            ? primaryContainer
-                            : Colors.transparent,
+                        color: isSelected ? activePrimary : Colors.transparent,
                         width: 1.5,
                       ),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
                       leading: Container(
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? primaryContainer
-                              : (isDark ? const Color(0xFF334155) : surfaceVariant),
+                              ? activePrimary
+                              : (isDark
+                                  ? const Color(0xFF334155)
+                                  : surfaceVariant),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Icon(
                           Icons.school_rounded,
-                          color: isSelected ? Colors.white : (isDark ? Colors.white70 : primaryContainer),
+                          color: isSelected
+                              ? Colors.white
+                              : (isDark ? Colors.white70 : activePrimary),
                           size: 20,
                         ),
                       ),
@@ -484,7 +752,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         label,
                         style: TextStyle(
                           fontSize: 14.5,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w600,
                           color: isDark ? Colors.white : onSurfaceLight,
                         ),
                       ),
@@ -496,7 +765,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
+                          ? Icon(Icons.check_circle_rounded,
+                              color: activePrimary)
                           : null,
                       onTap: () {
                         Navigator.pop(ctx);
@@ -538,7 +808,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFCBD5E1),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -571,33 +843,50 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         final s = _subjects[idx];
                         final isSelected = s.id == _selectedSubjectId;
                         final icon = _getSubjectIcon(s.code, s.nameEn);
+                        final sTheme = _resolveTheme(s);
 
                         return Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? (isDark
-                                    ? primaryContainer.withValues(alpha: 0.3)
-                                    : primaryContainer.withValues(alpha: 0.08))
-                                : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                                    ? sTheme.primary.withValues(alpha: 0.25)
+                                    : sTheme.surfaceTint)
+                                : (isDark
+                                    ? const Color(0xFF1E293B)
+                                    : surfaceContainerLow.withValues(
+                                        alpha: 0.7)),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: isSelected
-                                  ? primaryContainer
+                                  ? sTheme.primary
                                   : Colors.transparent,
                               width: 1.5,
                             ),
                           ),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 6),
                             leading: Container(
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: primaryContainer,
+                                color: sTheme.primary,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Icon(icon, color: onPrimary, size: 24),
+                              child: Center(
+                                child: sTheme.symbol.isNotEmpty &&
+                                        sTheme.symbol.length <= 2
+                                    ? Text(
+                                        sTheme.symbol,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      )
+                                    : Icon(icon, color: onPrimary, size: 24),
+                              ),
                             ),
                             title: Row(
                               children: [
@@ -607,7 +896,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : onSurfaceLight,
+                                      color: isDark
+                                          ? Colors.white
+                                          : onSurfaceLight,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -617,7 +908,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                   '(${s.nameAm})',
                                   style: TextStyle(
                                     fontSize: 13,
-                                    color: isDark ? Colors.white60 : onSurfaceVariant,
+                                    color: isDark
+                                        ? Colors.white60
+                                        : onSurfaceVariant,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -628,17 +921,21 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               child: Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: primaryContainer.withValues(alpha: 0.12),
+                                      color: sTheme.primary
+                                          .withValues(alpha: 0.12),
                                       borderRadius: BorderRadius.circular(999),
                                     ),
                                     child: Text(
                                       '${s.code} · Grade ${s.grade}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600,
-                                        color: primaryContainer,
+                                        color: isDark
+                                            ? sTheme.accent
+                                            : sTheme.primary,
                                       ),
                                     ),
                                   ),
@@ -646,8 +943,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               ),
                             ),
                             trailing: isSelected
-                                ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
-                                : const Icon(Icons.chevron_right_rounded, color: Colors.grey),
+                                ? Icon(Icons.check_circle_rounded,
+                                    color: sTheme.primary)
+                                : const Icon(Icons.chevron_right_rounded,
+                                    color: Colors.grey),
                             onTap: () {
                               Navigator.pop(ctx);
                               _onSubjectChanged(s.id);
@@ -691,7 +990,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFCBD5E1),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -726,13 +1027,16 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           decoration: BoxDecoration(
                             color: _selectedUnitId == null
                                 ? (isDark
-                                    ? primaryContainer.withValues(alpha: 0.3)
-                                    : primaryContainer.withValues(alpha: 0.08))
-                                : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                                    ? activePrimary.withValues(alpha: 0.25)
+                                    : activeSurfaceTint)
+                                : (isDark
+                                    ? const Color(0xFF1E293B)
+                                    : surfaceContainerLow.withValues(
+                                        alpha: 0.7)),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: _selectedUnitId == null
-                                  ? primaryContainer
+                                  ? activePrimary
                                   : Colors.transparent,
                               width: 1.5,
                             ),
@@ -745,13 +1049,16 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 color: surfaceVariant,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Icon(Icons.menu_book_rounded, color: onSurfaceLight, size: 20),
+                              child: const Icon(Icons.menu_book_rounded,
+                                  color: onSurfaceLight, size: 20),
                             ),
                             title: Text(
                               'All Units (Comprehensive Examination)',
                               style: TextStyle(
                                 fontSize: 14.5,
-                                fontWeight: _selectedUnitId == null ? FontWeight.bold : FontWeight.w600,
+                                fontWeight: _selectedUnitId == null
+                                    ? FontWeight.bold
+                                    : FontWeight.w600,
                                 color: isDark ? Colors.white : onSurfaceLight,
                               ),
                             ),
@@ -759,11 +1066,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               'Chapters 1 to ${_units.length} included',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: isDark ? Colors.white60 : onSurfaceVariant,
+                                color:
+                                    isDark ? Colors.white60 : onSurfaceVariant,
                               ),
                             ),
                             trailing: _selectedUnitId == null
-                                ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
+                                ? Icon(Icons.check_circle_rounded,
+                                    color: activePrimary)
                                 : null,
                             onTap: () {
                               Navigator.pop(ctx);
@@ -778,13 +1087,16 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? (isDark
-                                      ? primaryContainer.withValues(alpha: 0.3)
-                                      : primaryContainer.withValues(alpha: 0.08))
-                                  : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                                      ? activePrimary.withValues(alpha: 0.25)
+                                      : activeSurfaceTint)
+                                  : (isDark
+                                      ? const Color(0xFF1E293B)
+                                      : surfaceContainerLow.withValues(
+                                          alpha: 0.7)),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: isSelected
-                                    ? primaryContainer
+                                    ? activePrimary
                                     : Colors.transparent,
                                 width: 1.5,
                               ),
@@ -795,8 +1107,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 height: 38,
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? primaryContainer
-                                      : (isDark ? const Color(0xFF334155) : surfaceVariant),
+                                      ? activePrimary
+                                      : (isDark
+                                          ? const Color(0xFF334155)
+                                          : surfaceVariant),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
@@ -804,7 +1118,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     '${u.unitNumber}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: isSelected ? Colors.white : onSurfaceLight,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : onSurfaceLight,
                                       fontSize: 15,
                                     ),
                                   ),
@@ -814,7 +1130,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 'Unit ${u.unitNumber}: ${u.titleEn}',
                                 style: TextStyle(
                                   fontSize: 14.5,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.w600,
                                   color: isDark ? Colors.white : onSurfaceLight,
                                 ),
                               ),
@@ -822,11 +1140,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 u.titleAm,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: isDark ? Colors.white60 : onSurfaceVariant,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : onSurfaceVariant,
                                 ),
                               ),
                               trailing: isSelected
-                                  ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
+                                  ? Icon(Icons.check_circle_rounded,
+                                      color: activePrimary)
                                   : null,
                               onTap: () {
                                 Navigator.pop(ctx);
@@ -867,7 +1188,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFCBD5E1),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -898,13 +1221,15 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 decoration: BoxDecoration(
                   color: _selectedTopicId == null
                       ? (isDark
-                          ? primaryContainer.withValues(alpha: 0.3)
-                          : primaryContainer.withValues(alpha: 0.08))
-                      : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                          ? activePrimary.withValues(alpha: 0.25)
+                          : activeSurfaceTint)
+                      : (isDark
+                          ? const Color(0xFF1E293B)
+                          : surfaceContainerLow.withValues(alpha: 0.7)),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: _selectedTopicId == null
-                        ? primaryContainer
+                        ? activePrimary
                         : Colors.transparent,
                     width: 1.5,
                   ),
@@ -914,12 +1239,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     'All Topics in Selected Unit',
                     style: TextStyle(
                       fontSize: 14.5,
-                      fontWeight: _selectedTopicId == null ? FontWeight.bold : FontWeight.w600,
+                      fontWeight: _selectedTopicId == null
+                          ? FontWeight.bold
+                          : FontWeight.w600,
                       color: isDark ? Colors.white : onSurfaceLight,
                     ),
                   ),
                   trailing: _selectedTopicId == null
-                      ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
+                      ? Icon(Icons.check_circle_rounded, color: activePrimary)
                       : null,
                   onTap: () {
                     Navigator.pop(ctx);
@@ -935,14 +1262,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   decoration: BoxDecoration(
                     color: isSelected
                         ? (isDark
-                            ? primaryContainer.withValues(alpha: 0.3)
-                            : primaryContainer.withValues(alpha: 0.08))
-                        : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7)),
+                            ? activePrimary.withValues(alpha: 0.25)
+                            : activeSurfaceTint)
+                        : (isDark
+                            ? const Color(0xFF1E293B)
+                            : surfaceContainerLow.withValues(alpha: 0.7)),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: isSelected
-                          ? primaryContainer
-                          : Colors.transparent,
+                      color: isSelected ? activePrimary : Colors.transparent,
                       width: 1.5,
                     ),
                   ),
@@ -951,7 +1278,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       t.titleEn,
                       style: TextStyle(
                         fontSize: 14.5,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.w600,
                         color: isDark ? Colors.white : onSurfaceLight,
                       ),
                     ),
@@ -963,7 +1291,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       ),
                     ),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle_rounded, color: primaryContainer)
+                        ? Icon(Icons.check_circle_rounded, color: activePrimary)
                         : null,
                     onTap: () {
                       Navigator.pop(ctx);
@@ -980,7 +1308,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     );
   }
 
-  void _showYearPickerModal(BuildContext context, bool isDark, {required bool isStartYear}) {
+  void _showYearPickerModal(BuildContext context, bool isDark,
+      {required bool isStartYear}) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -1000,7 +1329,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFCBD5E1),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -1029,7 +1360,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 spacing: 8,
                 runSpacing: 8,
                 children: _availableYears.map((yr) {
-                  final isSelected = isStartYear ? _rangeStartYear == yr : _rangeEndYear == yr;
+                  final isSelected =
+                      isStartYear ? _rangeStartYear == yr : _rangeEndYear == yr;
                   return InkWell(
                     onTap: () {
                       Navigator.pop(ctx);
@@ -1050,11 +1382,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? primaryContainer
-                            : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
+                            ? activePrimary
+                            : (isDark
+                                ? const Color(0xFF1E293B)
+                                : surfaceContainerLow),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isSelected ? primaryContainer : Colors.transparent,
+                          color:
+                              isSelected ? activePrimary : Colors.transparent,
                         ),
                       ),
                       child: Column(
@@ -1077,7 +1412,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               fontWeight: FontWeight.w600,
                               color: isSelected
                                   ? Colors.white70
-                                  : (isDark ? Colors.white60 : primarySpruce),
+                                  : (isDark ? Colors.white60 : activePrimary),
                             ),
                           ),
                         ],
@@ -1114,7 +1449,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFCBD5E1),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -1156,11 +1493,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? primaryContainer
-                            : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
+                            ? activePrimary
+                            : (isDark
+                                ? const Color(0xFF1E293B)
+                                : surfaceContainerLow),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isSelected ? primaryContainer : Colors.transparent,
+                          color:
+                              isSelected ? activePrimary : Colors.transparent,
                         ),
                       ),
                       child: Column(
@@ -1183,7 +1523,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               fontWeight: FontWeight.w600,
                               color: isSelected
                                   ? Colors.white70
-                                  : (isDark ? Colors.white60 : primarySpruce),
+                                  : (isDark ? Colors.white60 : activePrimary),
                             ),
                           ),
                         ],
@@ -1208,6 +1548,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final user = ref.watch(currentUserProvider).valueOrNull;
+    final isAmharic = user?.preferredLanguage == 'am';
 
     final bgColor = isDark ? const Color(0xFF0B0F19) : surfaceLight;
 
@@ -1222,8 +1564,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             // Scrollable Content
             Expanded(
               child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(color: primaryContainer))
+                  ? Center(
+                      child: CircularProgressIndicator(color: activePrimary))
                   : SingleChildScrollView(
                       padding: EdgeInsets.symmetric(
                         horizontal: isDesktop ? 48.0 : 16.0,
@@ -1235,6 +1577,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
+                              // 🌟 0. Adaptive Subject Hero Banner
+                              _buildSubjectHeroBanner(
+                                  context, isDark, isAmharic),
+
                               // Page Title & Mode Switcher
                               _buildHeaderAndModeSwitcher(isDark),
                               const SizedBox(height: 16),
@@ -1252,7 +1598,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       flex: 55,
                                       child: Column(
                                         children: [
-                                          _buildCurriculumScopeCard(context, isDark),
+                                          _buildCurriculumScopeCard(
+                                              context, isDark),
                                           const SizedBox(height: 16),
                                           _buildPastPapersCard(context, isDark),
                                         ],
@@ -1263,7 +1610,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       flex: 45,
                                       child: Column(
                                         children: [
-                                          _buildExamParametersCard(context, isDark),
+                                          _buildExamParametersCard(
+                                              context, isDark),
                                           const SizedBox(height: 16),
                                           _buildSummaryConfirmationCard(isDark),
                                         ],
@@ -1301,6 +1649,195 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   }
 
   // ==========================================
+  // 🌟 0. ADAPTIVE SUBJECT HERO BANNER
+  // ==========================================
+  Widget _buildSubjectHeroBanner(
+    BuildContext context,
+    bool isDark,
+    bool isAmharic,
+  ) {
+    final subject = _selectedSubject;
+    final theme = _currentTheme;
+    final streamLabel = subject != null
+        ? (subject.stream.toLowerCase().contains('social')
+            ? (isAmharic ? 'ማህበራዊ ሳይንስ' : 'SOCIAL')
+            : (isAmharic ? 'የተፈጥሮ ሳይንስ' : 'NATURAL'))
+        : (isAmharic ? 'የተፈጥሮ ሳይንስ' : 'NATURAL');
+    final gradeLabel = 'Grade ${_selectedGrade ?? subject?.grade ?? 12}';
+    final subjectTitle = subject != null
+        ? (isAmharic && subject.nameAm.isNotEmpty
+            ? subject.nameAm
+            : subject.nameEn)
+        : (isAmharic ? 'አጠቃላይ የፈተና ዝግጅት' : 'National Exam Studio');
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [theme.gradientStart, theme.gradientEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: theme.gradientStart.withValues(alpha: 0.28),
+            blurRadius: 14,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Emblem / Symbol container
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.35),
+                width: 1.2,
+              ),
+            ),
+            child: Center(
+              child: theme.symbol.isNotEmpty && theme.symbol.length <= 2
+                  ? Text(
+                      theme.symbol,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    )
+                  : Icon(
+                      theme.icon,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+            ),
+          ),
+          const SizedBox(width: 14),
+          // Title and Badges
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 2.5),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        '$gradeLabel • $streamLabel',
+                        style: const TextStyle(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 7, vertical: 2.5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10B981).withValues(alpha: 0.25),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color:
+                              const Color(0xFF6EE7B7).withValues(alpha: 0.45),
+                          width: 0.8,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.verified_rounded,
+                              color: Color(0xFF6EE7B7), size: 10.5),
+                          const SizedBox(width: 3),
+                          Text(
+                            isAmharic ? 'የጸደቀ' : 'MoE Verified',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFFE6FFFA),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  subjectTitle,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  isAmharic
+                      ? 'ብጁ የዓመት፣ የምዕራፍና የጥያቄ ብዛት ምርጫ'
+                      : 'Customized units, archive years & practice parameters',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white.withValues(alpha: 0.88),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Switch Subject Action button
+          if (_subjects.length > 1)
+            InkWell(
+              onTap: () => _showSubjectPickerModal(context, isDark),
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.16),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.28),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.swap_horiz_rounded,
+                        color: Colors.white, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      isAmharic ? 'ቀይር' : 'Change',
+                      style: const TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================
   // 1. TOP FIXED HEADER
   // ==========================================
   Widget _buildTopFixedHeader(BuildContext context, bool isDark) {
@@ -1308,10 +1845,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       height: 64,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF111827).withValues(alpha: 0.95) : Colors.white.withValues(alpha: 0.95),
+        color: isDark
+            ? const Color(0xFF111827).withValues(alpha: 0.95)
+            : Colors.white.withValues(alpha: 0.95),
         border: Border(
           bottom: BorderSide(
-            color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+            color: isDark
+                ? const Color(0xFF1E293B)
+                : surfaceVariant.withValues(alpha: 0.4),
           ),
         ),
       ),
@@ -1326,24 +1867,36 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   tooltip: 'Back',
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                  constraints:
+                      const BoxConstraints(minWidth: 36, minHeight: 36),
                 ),
               const SizedBox(width: 4),
               Container(
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: primaryContainer,
+                  color: activePrimary,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
-                      color: Color(0x1A000000),
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
+                      color: activePrimary.withValues(alpha: 0.25),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.school_rounded, color: onPrimary, size: 22),
+                child: Center(
+                  child: activeSymbol.isNotEmpty && activeSymbol.length <= 2
+                      ? Text(
+                          activeSymbol,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : Icon(activeIcon, color: onPrimary, size: 22),
+                ),
               ),
               const SizedBox(width: 10),
               Column(
@@ -1377,7 +1930,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Stack(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.notifications_none_rounded, size: 22),
+                    icon:
+                        const Icon(Icons.notifications_none_rounded, size: 22),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('No new notifications')),
@@ -1395,7 +1949,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         color: secondaryContainer,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: isDark ? const Color(0xFF111827) : Colors.white,
+                          color:
+                              isDark ? const Color(0xFF111827) : Colors.white,
                           width: 1.5,
                         ),
                       ),
@@ -1414,7 +1969,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     color: primarySpruce,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.person_rounded, color: Colors.white, size: 20),
+                  child: const Icon(Icons.person_rounded,
+                      color: Colors.white, size: 20),
                 ),
               ),
             ],
@@ -1448,7 +2004,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.bold,
-                color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                color: isDark ? activeAccent : activePrimary,
               ),
             ),
             Padding(
@@ -1479,7 +2035,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
-              color: isDark ? const Color(0xFF334155) : surfaceVariant.withValues(alpha: 0.5),
+              color: isDark
+                  ? const Color(0xFF334155)
+                  : surfaceVariant.withValues(alpha: 0.5),
             ),
           ),
           child: Row(
@@ -1517,7 +2075,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           Icons.psychology_rounded,
                           size: 18,
                           color: !_isTimed
-                              ? (isDark ? const Color(0xFF6EE7B7) : primarySpruce)
+                              ? (isDark ? activeAccent : activePrimary)
                               : (isDark ? Colors.white60 : onSurfaceVariant),
                         ),
                         const SizedBox(width: 8),
@@ -1525,7 +2083,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           'Self-Paced',
                           style: TextStyle(
                             fontSize: 13.5,
-                            fontWeight: !_isTimed ? FontWeight.w700 : FontWeight.w500,
+                            fontWeight:
+                                !_isTimed ? FontWeight.w700 : FontWeight.w500,
                             color: !_isTimed
                                 ? (isDark ? Colors.white : onSurfaceLight)
                                 : (isDark ? Colors.white60 : onSurfaceVariant),
@@ -1569,7 +2128,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           Icons.timer_outlined,
                           size: 18,
                           color: _isTimed
-                              ? (isDark ? const Color(0xFF6EE7B7) : primarySpruce)
+                              ? (isDark ? activeAccent : activePrimary)
                               : (isDark ? Colors.white60 : onSurfaceVariant),
                         ),
                         const SizedBox(width: 8),
@@ -1577,7 +2136,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           'Timed Exam',
                           style: TextStyle(
                             fontSize: 13.5,
-                            fontWeight: _isTimed ? FontWeight.w700 : FontWeight.w500,
+                            fontWeight:
+                                _isTimed ? FontWeight.w700 : FontWeight.w500,
                             color: _isTimed
                                 ? (isDark ? Colors.white : onSurfaceLight)
                                 : (isDark ? Colors.white60 : onSurfaceVariant),
@@ -1608,7 +2168,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         color: isDark ? const Color(0xFF111827) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark
+              ? const Color(0xFF1E293B)
+              : surfaceVariant.withValues(alpha: 0.4),
         ),
         boxShadow: [
           BoxShadow(
@@ -1630,8 +2192,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   Container(
                     width: 10,
                     height: 10,
-                    decoration: const BoxDecoration(
-                      color: primarySpruce,
+                    decoration: BoxDecoration(
+                      color: activePrimary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -1681,7 +2243,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                color: isDark
+                    ? const Color(0xFF1E293B)
+                    : surfaceContainerLow.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isDark ? const Color(0xFF334155) : Colors.transparent,
@@ -1692,7 +2256,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.school_rounded, color: primaryContainer, size: 22),
+                      Icon(Icons.school_rounded,
+                          color: activePrimary, size: 22),
                       const SizedBox(width: 10),
                       Text(
                         _selectedGrade != null
@@ -1733,7 +2298,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                color: isDark
+                    ? const Color(0xFF1E293B)
+                    : surfaceContainerLow.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: isDark ? const Color(0xFF334155) : Colors.transparent,
@@ -1749,14 +2316,26 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: primaryContainer,
+                            color: activePrimary,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Icon(
-                            _getSubjectIcon(sub?.code, sub?.nameEn),
-                            color: onPrimary,
-                            size: 24,
-                          ),
+                          child: activeSymbol.isNotEmpty &&
+                                  activeSymbol.length <= 2
+                              ? Center(
+                                  child: Text(
+                                    activeSymbol,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  _getSubjectIcon(sub?.code, sub?.nameEn),
+                                  color: onPrimary,
+                                  size: 24,
+                                ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -1771,7 +2350,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold,
-                                        color: isDark ? Colors.white : onSurfaceLight,
+                                        color: isDark
+                                            ? Colors.white
+                                            : onSurfaceLight,
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -1782,8 +2363,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       '(${sub.nameAm})',
                                       style: TextStyle(
                                         fontSize: 13,
+                                        color: isDark
+                                            ? Colors.white60
+                                            : onSurfaceVariant,
                                         fontWeight: FontWeight.w500,
-                                        color: isDark ? Colors.white60 : onSurfaceVariant,
                                       ),
                                     ),
                                   ],
@@ -1793,9 +2376,11 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               Row(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: primaryContainer.withValues(alpha: 0.12),
+                                      color:
+                                          activePrimary.withValues(alpha: 0.12),
                                       borderRadius: BorderRadius.circular(999),
                                     ),
                                     child: Text(
@@ -1803,7 +2388,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       style: TextStyle(
                                         fontSize: 10.5,
                                         fontWeight: FontWeight.w700,
-                                        color: isDark ? const Color(0xFF6EE7B7) : primaryContainer,
+                                        color: isDark
+                                            ? activeAccent
+                                            : activePrimary,
                                       ),
                                     ),
                                   ),
@@ -1842,7 +2429,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                color: isDark
+                    ? const Color(0xFF1E293B)
+                    : surfaceContainerLow.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isDark ? const Color(0xFF334155) : Colors.transparent,
@@ -1858,7 +2447,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           width: 32,
                           height: 32,
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF334155) : surfaceVariant,
+                            color: isDark
+                                ? const Color(0xFF334155)
+                                : surfaceVariant,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Icon(
@@ -1889,7 +2480,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     : 'Chapters 1 to ${_units.length} included',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: isDark ? Colors.white60 : onSurfaceVariant,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : onSurfaceVariant,
                                 ),
                               ),
                             ],
@@ -1924,9 +2517,12 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               onTap: () => _showTopicPickerModal(context, isDark),
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                  color: isDark
+                      ? const Color(0xFF1E293B)
+                      : surfaceContainerLow.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -1935,11 +2531,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     Expanded(
                       child: Row(
                         children: [
-                          const Icon(Icons.topic_outlined, size: 18, color: primaryContainer),
+                          Icon(Icons.topic_outlined,
+                              size: 18, color: activePrimary),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              _selectedTopic?.titleEn ?? 'All Topics in Selected Unit',
+                              _selectedTopic?.titleEn ??
+                                  'All Topics in Selected Unit',
                               style: TextStyle(
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w600,
@@ -1976,7 +2574,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         color: isDark ? const Color(0xFF111827) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark
+              ? const Color(0xFF1E293B)
+              : surfaceVariant.withValues(alpha: 0.4),
         ),
         boxShadow: [
           BoxShadow(
@@ -2144,15 +2744,20 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: () => _showYearPickerModal(context, isDark, isStartYear: true),
+                    onTap: () => _showYearPickerModal(context, isDark,
+                        isStartYear: true),
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                        color: isDark
+                            ? const Color(0xFF1E293B)
+                            : surfaceContainerLow.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF334155) : outlineVariant.withValues(alpha: 0.3),
+                          color: isDark
+                              ? const Color(0xFF334155)
+                              : outlineVariant.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Column(
@@ -2177,7 +2782,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : onSurfaceLight,
+                                      color: isDark
+                                          ? Colors.white
+                                          : onSurfaceLight,
                                     ),
                                   ),
                                   const SizedBox(width: 4),
@@ -2186,7 +2793,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
-                                      color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                                      color:
+                                          isDark ? activeAccent : activePrimary,
                                     ),
                                   ),
                                 ],
@@ -2194,7 +2802,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               Icon(
                                 Icons.calendar_month_rounded,
                                 size: 18,
-                                color: isDark ? Colors.white60 : onSurfaceVariant,
+                                color:
+                                    isDark ? Colors.white60 : onSurfaceVariant,
                               ),
                             ],
                           ),
@@ -2206,15 +2815,20 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: InkWell(
-                    onTap: () => _showYearPickerModal(context, isDark, isStartYear: false),
+                    onTap: () => _showYearPickerModal(context, isDark,
+                        isStartYear: false),
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                        color: isDark
+                            ? const Color(0xFF1E293B)
+                            : surfaceContainerLow.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF334155) : outlineVariant.withValues(alpha: 0.3),
+                          color: isDark
+                              ? const Color(0xFF334155)
+                              : outlineVariant.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Column(
@@ -2239,7 +2853,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : onSurfaceLight,
+                                      color: isDark
+                                          ? Colors.white
+                                          : onSurfaceLight,
                                     ),
                                   ),
                                   const SizedBox(width: 4),
@@ -2248,7 +2864,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
-                                      color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                                      color:
+                                          isDark ? activeAccent : activePrimary,
                                     ),
                                   ),
                                 ],
@@ -2256,7 +2873,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               Icon(
                                 Icons.calendar_month_rounded,
                                 size: 18,
-                                color: isDark ? Colors.white60 : onSurfaceVariant,
+                                color:
+                                    isDark ? Colors.white60 : onSurfaceVariant,
                               ),
                             ],
                           ),
@@ -2274,10 +2892,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow.withValues(alpha: 0.7),
+                  color: isDark
+                      ? const Color(0xFF1E293B)
+                      : surfaceContainerLow.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF334155) : outlineVariant.withValues(alpha: 0.3),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : outlineVariant.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -2299,7 +2921,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                            color: isDark ? activeAccent : activePrimary,
                           ),
                         ),
                       ],
@@ -2384,11 +3006,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: isActive
-              ? secondaryFixed
+              ? (isDark
+                  ? activePrimary.withValues(alpha: 0.25)
+                  : activeSurfaceTint)
               : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
-            color: isActive ? secondaryContainer : Colors.transparent,
+            color: isActive ? activePrimary : Colors.transparent,
           ),
         ),
         child: Text(
@@ -2397,7 +3021,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             fontSize: 12,
             fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
             color: isActive
-                ? onSecondaryFixed
+                ? (isDark ? activeAccent : activePrimary)
                 : (isDark ? Colors.white70 : onSurfaceVariant),
           ),
         ),
@@ -2411,28 +3035,39 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: hasQuestions
-            ? (isDark ? const Color(0xFF064E3B).withValues(alpha: 0.3) : const Color(0xFFECFDF5))
-            : (isDark ? const Color(0xFF78350F).withValues(alpha: 0.25) : const Color(0xFFFFFBEB)),
+            ? (isDark
+                ? activePrimary.withValues(alpha: 0.18)
+                : activeSurfaceTint)
+            : (isDark
+                ? const Color(0xFF78350F).withValues(alpha: 0.25)
+                : const Color(0xFFFFFBEB)),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: hasQuestions
-              ? (isDark ? const Color(0xFF047857) : const Color(0xFFA7F3D0))
+              ? (isDark
+                  ? activePrimary.withValues(alpha: 0.5)
+                  : activePrimary.withValues(alpha: 0.25))
               : (isDark ? const Color(0xFFD97706) : const Color(0xFFFDE68A)),
         ),
       ),
       child: Row(
         children: [
           if (_isCountingQuestions)
-            const SizedBox(
+            SizedBox(
               width: 15,
               height: 15,
-              child: CircularProgressIndicator(strokeWidth: 2, color: primaryContainer),
+              child: CircularProgressIndicator(
+                  strokeWidth: 2, color: activePrimary),
             )
           else
             Icon(
-              hasQuestions ? Icons.check_circle_rounded : Icons.info_outline_rounded,
+              hasQuestions
+                  ? Icons.check_circle_rounded
+                  : Icons.info_outline_rounded,
               size: 17,
-              color: hasQuestions ? const Color(0xFF059669) : const Color(0xFFD97706),
+              color: hasQuestions
+                  ? (isDark ? activeAccent : activePrimary)
+                  : const Color(0xFFD97706),
             ),
           const SizedBox(width: 8),
           Expanded(
@@ -2446,8 +3081,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: hasQuestions
-                    ? (isDark ? const Color(0xFF6EE7B7) : const Color(0xFF065F46))
-                    : (isDark ? const Color(0xFFFCD34D) : const Color(0xFF92400E)),
+                    ? (isDark ? activeAccent : activePrimary)
+                    : (isDark
+                        ? const Color(0xFFFCD34D)
+                        : const Color(0xFF92400E)),
               ),
             ),
           ),
@@ -2466,7 +3103,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         color: isDark ? const Color(0xFF111827) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark
+              ? const Color(0xFF1E293B)
+              : surfaceVariant.withValues(alpha: 0.4),
         ),
         boxShadow: [
           BoxShadow(
@@ -2484,10 +3123,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: secondaryContainer.withValues(alpha: 0.15),
+                  color: activePrimary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.tune_rounded, color: secondaryContainer, size: 18),
+                child: Icon(Icons.tune_rounded, color: activePrimary, size: 18),
               ),
               const SizedBox(width: 10),
               Text(
@@ -2517,7 +3156,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: primaryContainer.withValues(alpha: 0.12),
+                  color: activePrimary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
@@ -2525,7 +3164,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? const Color(0xFF6EE7B7) : primaryContainer,
+                    color: isDark ? activeAccent : activePrimary,
                   ),
                 ),
               ),
@@ -2545,8 +3184,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? primaryContainer
-                            : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
+                            ? activePrimary
+                            : (isDark
+                                ? const Color(0xFF1E293B)
+                                : surfaceContainerLow),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
@@ -2554,7 +3195,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           '$preset Qs',
                           style: TextStyle(
                             fontSize: 11.5,
-                            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                            fontWeight:
+                                isSelected ? FontWeight.w800 : FontWeight.w600,
                             color: isSelected
                                 ? Colors.white
                                 : (isDark ? Colors.white70 : onSurfaceVariant),
@@ -2570,9 +3212,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           const SizedBox(height: 8),
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: primaryContainer,
-              inactiveTrackColor: isDark ? const Color(0xFF334155) : surfaceContainerLow,
-              thumbColor: primaryContainer,
+              activeTrackColor: activePrimary,
+              inactiveTrackColor:
+                  isDark ? const Color(0xFF334155) : surfaceContainerLow,
+              thumbColor: activePrimary,
               trackHeight: 4,
             ),
             child: Slider(
@@ -2600,19 +3243,20 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 ),
                 Text(
                   '$_timeLimitMinutes min (${(_timeLimitMinutes * 60 ~/ _questionCount)}s / q)',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: secondaryContainer,
+                    color: isDark ? activeAccent : activePrimary,
                   ),
                 ),
               ],
             ),
             SliderTheme(
               data: SliderTheme.of(context).copyWith(
-                activeTrackColor: secondaryContainer,
-                inactiveTrackColor: isDark ? const Color(0xFF334155) : surfaceContainerLow,
-                thumbColor: secondaryContainer,
+                activeTrackColor: activePrimary,
+                inactiveTrackColor:
+                    isDark ? const Color(0xFF334155) : surfaceContainerLow,
+                thumbColor: activePrimary,
                 trackHeight: 4,
               ),
               child: Slider(
@@ -2620,7 +3264,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 min: 5,
                 max: 90,
                 divisions: 17,
-                onChanged: (val) => setState(() => _timeLimitMinutes = val.toInt()),
+                onChanged: (val) =>
+                    setState(() => _timeLimitMinutes = val.toInt()),
               ),
             ),
           ],
@@ -2665,7 +3310,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
-                ? primaryContainer
+                ? activePrimary
                 : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
             borderRadius: BorderRadius.circular(8),
           ),
@@ -2691,7 +3336,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   // ==========================================
   Widget _buildSummaryConfirmationCard(bool isDark) {
     final sub = _selectedSubject;
-    final subName = sub != null ? '${sub.nameEn} (Core Subject)' : 'All Subjects';
+    final subName =
+        sub != null ? '${sub.nameEn} (Core Subject)' : 'All Subjects';
     final paperLabel = _yearMode == ExamYearFilterMode.range
         ? '$_rangeStartYear–$_rangeEndYear Past Papers'
         : '$_selectedSingleYear E.C. Past Paper';
@@ -2707,7 +3353,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             : surfaceContainerLow.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: primaryContainer.withValues(alpha: 0.15),
+          color: activePrimary.withValues(alpha: 0.18),
         ),
       ),
       child: Column(
@@ -2717,7 +3363,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.task_alt_rounded, size: 18, color: primaryContainer),
+                  Icon(Icons.task_alt_rounded, size: 18, color: activePrimary),
                   const SizedBox(width: 8),
                   Text(
                     'Your Practice',
@@ -2732,7 +3378,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: primaryContainer.withValues(alpha: 0.12),
+                  color: activePrimary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
@@ -2740,7 +3386,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    color: isDark ? const Color(0xFF6EE7B7) : primaryContainer,
+                    color: isDark ? activeAccent : activePrimary,
                   ),
                 ),
               ),
@@ -2749,7 +3395,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           const SizedBox(height: 10),
           Divider(
             height: 1,
-            color: isDark ? const Color(0xFF334155) : surfaceVariant.withValues(alpha: 0.6),
+            color: isDark
+                ? const Color(0xFF334155)
+                : surfaceVariant.withValues(alpha: 0.6),
           ),
           const SizedBox(height: 10),
           _buildSummaryRow(
@@ -2813,7 +3461,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       ),
       child: Row(
         children: [
-          const Icon(Icons.warning_amber_rounded, color: AppTheme.danger, size: 20),
+          const Icon(Icons.warning_amber_rounded,
+              color: AppTheme.danger, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -2840,10 +3489,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF111827).withValues(alpha: 0.95) : surfaceLight.withValues(alpha: 0.95),
+        color: isDark
+            ? const Color(0xFF111827).withValues(alpha: 0.95)
+            : surfaceLight.withValues(alpha: 0.95),
         border: Border(
           top: BorderSide(
-            color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+            color: isDark
+                ? const Color(0xFF1E293B)
+                : surfaceVariant.withValues(alpha: 0.4),
           ),
         ),
       ),
@@ -2856,10 +3509,12 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             child: ElevatedButton(
               onPressed: isDisabled ? null : _startExam,
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryContainer,
+                backgroundColor: activePrimary,
                 foregroundColor: onPrimary,
-                disabledBackgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFCBD5E1),
-                disabledForegroundColor: isDark ? Colors.white38 : Colors.black38,
+                disabledBackgroundColor:
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFCBD5E1),
+                disabledForegroundColor:
+                    isDark ? Colors.white38 : Colors.black38,
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -2888,7 +3543,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Icon(
                 Icons.cloud_done_rounded,
                 size: 15,
-                color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                color: isDark ? activeAccent : activePrimary,
               ),
               const SizedBox(width: 4),
               Text(
@@ -2912,7 +3567,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Icon(
                 Icons.sync_rounded,
                 size: 15,
-                color: isDark ? const Color(0xFF6EE7B7) : primarySpruce,
+                color: isDark ? activeAccent : activePrimary,
               ),
               const SizedBox(width: 4),
               Text(
@@ -2936,10 +3591,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     return Container(
       height: 56,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF111827) : surfaceContainerLowest.withValues(alpha: 0.98),
+        color: isDark
+            ? const Color(0xFF111827)
+            : surfaceContainerLowest.withValues(alpha: 0.98),
         border: Border(
           top: BorderSide(
-            color: isDark ? const Color(0xFF1E293B) : surfaceVariant.withValues(alpha: 0.4),
+            color: isDark
+                ? const Color(0xFF1E293B)
+                : surfaceVariant.withValues(alpha: 0.4),
           ),
         ),
       ),
@@ -2991,7 +3650,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     required VoidCallback onTap,
     required bool isDark,
   }) {
-    final activeColor = isDark ? const Color(0xFF6EE7B7) : primaryContainer;
+    final activeColor = isDark ? activeAccent : activePrimary;
     final inactiveColor = isDark ? Colors.white54 : onSurfaceVariant;
 
     return InkWell(
