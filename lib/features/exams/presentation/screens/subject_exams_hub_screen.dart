@@ -1640,35 +1640,13 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            isAmharic ? 'ብጁ የልምምድ ፈተና አዘጋጅ' : 'Fully Customize Practice',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.22),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              isAmharic ? 'ምርጫዎ' : 'CUSTOM',
-                              style: const TextStyle(
-                                fontSize: 9.5,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        isAmharic ? 'ብጁ የልምምድ ፈተና አዘጋጅ' : 'Fully Customize Practice',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(height: 3),
                       Text(
