@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/auth/data/repositories/mock_auth_repository.dart';
 import '../../features/auth/data/repositories/supabase_auth_repository.dart';
@@ -204,7 +205,64 @@ final airtimeRedemptionServiceProvider =
 });
 
 // --- Theme & Locale State ---
-final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
+final sharedPreferencesProvider = Provider<SharedPreferences?>((ref) => null);
+
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return ThemeModeNotifier(prefs);
+});
+
+class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  static const String prefKey = 'fidellearn_user_theme_mode';
+  final SharedPreferences? _initialPrefs;
+
+  ThemeModeNotifier([this._initialPrefs])
+      : super(_determineInitialTheme(_initialPrefs)) {
+    if (_initialPrefs == null) {
+      _loadPersistedTheme();
+    }
+  }
+
+  static ThemeMode _determineInitialTheme(SharedPreferences? prefs) {
+    if (prefs == null) return ThemeMode.light; // Default to Lavender (light)
+    final saved = prefs.getString(prefKey);
+    if (saved == 'dark' || saved == 'cosmic') {
+      return ThemeMode.dark;
+    }
+    return ThemeMode.light; // Default to Lavender
+  }
+
+  Future<void> _loadPersistedTheme() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString(prefKey);
+      if (saved == 'dark' || saved == 'cosmic') {
+        super.state = ThemeMode.dark;
+      } else {
+        super.state = ThemeMode.light;
+      }
+    } catch (_) {
+      // Keep default ThemeMode.light
+    }
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    super.state = mode;
+    try {
+      final prefs = _initialPrefs ?? await SharedPreferences.getInstance();
+      await prefs.setString(prefKey, mode == ThemeMode.dark ? 'dark' : 'light');
+    } catch (_) {
+      // Gracefully ignore storage failures in headless test runners
+    }
+  }
+
+  @override
+  set state(ThemeMode mode) {
+    setThemeMode(mode);
+  }
+}
+
 final localeProvider = StateProvider<Locale>((ref) => const Locale('en'));
 
 // --- Current User State ---

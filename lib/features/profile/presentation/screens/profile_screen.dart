@@ -272,13 +272,24 @@ class ProfileScreen extends ConsumerWidget {
               ),
               SegmentedButton<ThemeMode>(
                 segments: const [
-                  ButtonSegment(value: ThemeMode.dark, label: Text('Cosmic')),
                   ButtonSegment(
-                      value: ThemeMode.light, label: Text('Lavender')),
+                    value: ThemeMode.light,
+                    label: Text('Lavender'),
+                    icon: Icon(Icons.light_mode_rounded, size: 16),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    label: Text('Cosmic'),
+                    icon: Icon(Icons.dark_mode_rounded, size: 16),
+                  ),
                 ],
-                selected: {currentTheme},
+                selected: {
+                  currentTheme == ThemeMode.dark
+                      ? ThemeMode.dark
+                      : ThemeMode.light
+                },
                 onSelectionChanged: (set) {
-                  ref.read(themeModeProvider.notifier).state = set.first;
+                  ref.read(themeModeProvider.notifier).setThemeMode(set.first);
                 },
               ),
             ],
