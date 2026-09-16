@@ -49,7 +49,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: true,
-      descriptionEn: 'Official 2016 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2016 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2016 ዓ.ም. ፈተና።',
     ),
     _OfficialExamYearInfo(
@@ -59,7 +60,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: false,
-      descriptionEn: 'Official 2015 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2015 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'የ2015 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ማጠቃለያ ፈተና።',
     ),
     _OfficialExamYearInfo(
@@ -69,7 +71,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: false,
-      descriptionEn: 'Official 2014 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2014 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ማጠቃለያ ፈተና።',
     ),
     _OfficialExamYearInfo(
@@ -79,7 +82,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: false,
-      descriptionEn: 'Official 2013 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2013 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'የ2013 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ማጠቃለያ ፈተና።',
     ),
     _OfficialExamYearInfo(
@@ -89,7 +93,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: false,
-      descriptionEn: 'Official 2012 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2012 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'የ2012 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ማጠቃለያ ፈተና።',
     ),
     _OfficialExamYearInfo(
@@ -99,7 +104,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
       isLatest: false,
-      descriptionEn: 'Official 2011 E.C. National Exam paper administered by NEAEA.',
+      descriptionEn:
+          'Official 2011 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'የ2011 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ማጠቃለያ ፈተና።',
     ),
   ];
@@ -115,7 +121,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
       if (mounted) {
         setState(() {
-          _downloadedYears = Set.from(_memoryDownloadedYears[widget.subjectId]!);
+          _downloadedYears =
+              Set.from(_memoryDownloadedYears[widget.subjectId]!);
         });
       }
       return;
@@ -141,7 +148,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         final key = 'downloaded_exams_${widget.subjectId}';
         final saved = prefs.getStringList(key);
         if (saved != null) {
-          final parsed = saved.map((e) => int.tryParse(e)).whereType<int>().toSet();
+          final parsed =
+              saved.map((e) => int.tryParse(e)).whereType<int>().toSet();
           _downloadedYears = parsed;
           _memoryDownloadedYears[widget.subjectId] = Set.from(parsed);
           if (mounted) setState(() {});
@@ -204,7 +212,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         found = subjects
             .where((s) =>
                 s.id.toLowerCase() == cleanId ||
-                LocalContentRepository.matchesSubjectId(s.id, widget.subjectId) ||
+                LocalContentRepository.matchesSubjectId(
+                    s.id, widget.subjectId) ||
                 s.id.toLowerCase().contains(cleanId) ||
                 cleanId.contains(s.id.toLowerCase()) ||
                 s.code.toLowerCase().contains(cleanId))
@@ -260,76 +269,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   Subject _resolveDefaultSubject(String id, int grade, String stream) {
-    final canonId = LocalContentRepository.canonicalSubjectId(id);
-    final lower = id.toLowerCase();
-    if (lower.contains('math')) {
-      return Subject(
-        id: canonId,
-        code: 'MATH$grade',
-        nameEn: 'Mathematics',
-        nameAm: 'ሒሳብ',
-        grade: grade,
-        stream: stream,
-        sortOrder: 1,
-      );
-    } else if (lower.contains('bio')) {
-      return Subject(
-        id: canonId,
-        code: 'BIO$grade',
-        nameEn: 'Biology',
-        nameAm: 'ባዮሎጂ',
-        grade: grade,
-        stream: stream,
-        sortOrder: 2,
-      );
-    } else if (lower.contains('phys')) {
-      return Subject(
-        id: canonId,
-        code: 'PHYS$grade',
-        nameEn: 'Physics',
-        nameAm: 'ፊዚክስ',
-        grade: grade,
-        stream: stream,
-        sortOrder: 3,
-      );
-    } else if (lower.contains('chem')) {
-      return Subject(
-        id: canonId,
-        code: 'CHEM$grade',
-        nameEn: 'Chemistry',
-        nameAm: 'ኬሚስትሪ',
-        grade: grade,
-        stream: stream,
-        sortOrder: 4,
-      );
-    } else if (lower.contains('eng')) {
-      return Subject(
-        id: canonId,
-        code: 'ENG$grade',
-        nameEn: 'English',
-        nameAm: 'እንግሊዝኛ',
-        grade: grade,
-        stream: 'common',
-        sortOrder: 5,
-      );
-    } else {
-      return Subject(
-        id: canonId,
-        code: 'SUBJ$grade',
-        nameEn: 'National Exam Subject',
-        nameAm: 'የትምህርት ዓይነት',
-        grade: grade,
-        stream: stream,
-        sortOrder: 6,
-      );
-    }
+    return LocalContentRepository.resolveDefaultSubject(
+      id,
+      grade: grade,
+      stream: stream,
+    );
   }
 
   _OfficialExamYearInfo _resolveYearInfo(
       _OfficialExamYearInfo base, Subject subject) {
-    final isBio = LocalContentRepository.matchesSubjectId(
-            subject.id, 'biology_g12') ||
-        subject.nameEn.toLowerCase().contains('bio');
+    final isBio =
+        LocalContentRepository.matchesSubjectId(subject.id, 'biology_g12') ||
+            subject.nameEn.toLowerCase().contains('bio');
     if (isBio && base.ethiopianYear == 2013) {
       return base.copyWith(
         standardQuestionCount: 100,
@@ -379,17 +330,20 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             SnackBar(
               backgroundColor: const Color(0xFF059669),
               behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               content: Row(
                 children: [
-                  const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+                  const Icon(Icons.check_circle_rounded,
+                      color: Colors.white, size: 20),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       isAmharic
                           ? 'የ${yearInfo.ethiopianYear} ዓ.ም. ፈተና ከመስመር ውጭ ለመለማመድ በተሳካ ሁኔታ ወርዷል!'
                           : '${yearInfo.ethiopianYear} E.C. Exam downloaded & verified for offline practice!',
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 13),
                     ),
                   ),
                 ],
@@ -405,7 +359,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
           SnackBar(
             backgroundColor: AppTheme.danger,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text(
               isAmharic
                   ? 'ፈተናውን ማውረድ አልተቻለም: $e'
@@ -427,7 +382,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       builder: (ctx) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.delete_outline_rounded, color: AppTheme.danger, size: 22),
+            const Icon(Icons.delete_outline_rounded,
+                color: AppTheme.danger, size: 22),
             const SizedBox(width: 8),
             Text(
               isAmharic ? 'የፈተና ጥቅልን ሰርዝ' : 'Remove Offline Exam',
@@ -468,7 +424,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: Text(
               isAmharic
                   ? 'የ${yearInfo.ethiopianYear} ዓ.ም. ፈተና ከመሳሪያዎ ተሰርዟል።'
@@ -479,7 +436,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       }
     }
   }
-
 
   String _getOfficialSubjectCode(Subject subject) {
     final s = '${subject.id} ${subject.code} ${subject.nameEn}'.toLowerCase();
@@ -509,7 +465,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     }
   }
 
-  Future<void> _showExamBriefingDialog(_OfficialExamYearInfo rawYearInfo) async {
+  Future<void> _showExamBriefingDialog(
+      _OfficialExamYearInfo rawYearInfo) async {
     final yearInfo = _resolveYearInfo(rawYearInfo, _subject);
     final user = ref.read(currentUserProvider).valueOrNull;
     final isAmharic = user?.preferredLanguage == 'am';
@@ -526,7 +483,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       builder: (dialogCtx) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
-            final bookletCode = yearInfo.bookletCode.replaceAll('Booklet', '').trim();
+            final bookletCode =
+                yearInfo.bookletCode.replaceAll('Booklet', '').trim();
             final subjectCode = _getOfficialSubjectCode(subject);
             final streamName = _getStreamDisplayName(subject, isAmharic);
             final subjectName = isAmharic && subject.nameAm.isNotEmpty
@@ -544,15 +502,19 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
                 side: BorderSide(
-                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  color: isDark
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0),
                   width: 1.2,
                 ),
               ),
-              insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              insetPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 620),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -562,12 +524,15 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 9, vertical: 4),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF1E3A8A).withValues(alpha: 0.12),
+                              color: const Color(0xFF1E3A8A)
+                                  .withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                color: const Color(0xFF1E3A8A).withValues(alpha: 0.3),
+                                color: const Color(0xFF1E3A8A)
+                                    .withValues(alpha: 0.3),
                               ),
                             ),
                             child: Row(
@@ -598,7 +563,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             onPressed: () => Navigator.pop(dialogCtx),
                             tooltip: isAmharic ? 'ዝጋ' : 'Close',
                             visualDensity: VisualDensity.compact,
-                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : const Color(0xFF64748B),
                           ),
                         ],
                       ),
@@ -644,7 +611,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               style: TextStyle(
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w600,
-                                color: isDark ? AppTheme.darkMuted : const Color(0xFF475569),
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : const Color(0xFF475569),
                               ),
                             ),
                           ],
@@ -659,7 +628,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                            color: isDark
+                                ? const Color(0xFF334155)
+                                : const Color(0xFFCBD5E1),
                             width: 1.0,
                           ),
                         ),
@@ -689,7 +660,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               TableRow(
                                 decoration: BoxDecoration(
                                   color: isDark
-                                      ? const Color(0xFF1E293B).withValues(alpha: 0.6)
+                                      ? const Color(0xFF1E293B)
+                                          .withValues(alpha: 0.6)
                                       : const Color(0xFFF8FAFC),
                                 ),
                                 children: [
@@ -716,7 +688,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               TableRow(
                                 decoration: BoxDecoration(
                                   color: isDark
-                                      ? const Color(0xFF0F172A).withValues(alpha: 0.4)
+                                      ? const Color(0xFF0F172A)
+                                          .withValues(alpha: 0.4)
                                       : Colors.white,
                                 ),
                                 children: [
@@ -727,7 +700,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                     isDark,
                                   ),
                                   _buildBriefingCell(
-                                    isAmharic ? 'የምዘና ምንጭ: NEAEA' : 'Source: NEAEA Archive',
+                                    isAmharic
+                                        ? 'የምዘና ምንጭ: NEAEA'
+                                        : 'Source: NEAEA Archive',
                                     isDark,
                                   ),
                                   _buildBriefingCell(
@@ -754,7 +729,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         style: TextStyle(
                           fontSize: 13.5,
                           fontWeight: FontWeight.w800,
-                          color: isDark ? Colors.white : const Color(0xFF0F172A),
+                          color:
+                              isDark ? Colors.white : const Color(0xFF0F172A),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -800,7 +776,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           Row(
                             children: [
                               Icon(
-                                isTimed ? Icons.timer_outlined : Icons.all_inclusive_rounded,
+                                isTimed
+                                    ? Icons.timer_outlined
+                                    : Icons.all_inclusive_rounded,
                                 size: 16,
                                 color: hubTheme.accentColor,
                               ),
@@ -810,7 +788,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                 style: TextStyle(
                                   fontSize: 12.5,
                                   fontWeight: FontWeight.w600,
-                                  color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                                  color: isDark
+                                      ? AppTheme.darkMuted
+                                      : const Color(0xFF64748B),
                                 ),
                               ),
                             ],
@@ -820,7 +800,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               _buildDialogTimerPill(
                                 label: isAmharic ? '120 ደቂቃ' : '120m',
                                 isActive: isTimed,
-                                onTap: () => setDialogState(() => isTimed = true),
+                                onTap: () =>
+                                    setDialogState(() => isTimed = true),
                                 hubTheme: hubTheme,
                                 isDark: isDark,
                               ),
@@ -828,7 +809,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               _buildDialogTimerPill(
                                 label: isAmharic ? 'ያልተገደበ' : 'Untimed',
                                 isActive: !isTimed,
-                                onTap: () => setDialogState(() => isTimed = false),
+                                onTap: () =>
+                                    setDialogState(() => isTimed = false),
                                 hubTheme: hubTheme,
                                 isDark: isDark,
                               ),
@@ -943,7 +925,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                   border: Border.all(
                     color: isSelected
                         ? accentColor
-                        : (isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8)),
+                        : (isDark
+                            ? AppTheme.darkMuted
+                            : const Color(0xFF94A3B8)),
                     width: 2,
                   ),
                 ),
@@ -974,13 +958,15 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: isDark ? Colors.white : const Color(0xFF0F172A),
+                            color:
+                                isDark ? Colors.white : const Color(0xFF0F172A),
                           ),
                         ),
                       ),
                       const SizedBox(width: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: accentColor.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
@@ -1001,7 +987,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                     subtitle,
                     style: TextStyle(
                       fontSize: 11,
-                      color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                      color:
+                          isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
                       height: 1.3,
                     ),
                   ),
@@ -1076,7 +1063,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       final user = ref.read(currentUserProvider).valueOrNull;
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please sign in to begin exam practice.')),
+          const SnackBar(
+              content: Text('Please sign in to begin exam practice.')),
         );
         return;
       }
@@ -1116,7 +1104,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       }
 
       // Cap at standard question count
-      final examQuestions = questions.take(yearInfo.standardQuestionCount).toList();
+      final examQuestions =
+          questions.take(yearInfo.standardQuestionCount).toList();
 
       final examTitle =
           '${yearInfo.ethiopianYear} E.C. (${yearInfo.gregorianYear}) ${subject.nameEn} National Exam';
@@ -1422,7 +1411,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 3.5),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha: 0.20),
+                                        color: Colors.white
+                                            .withValues(alpha: 0.20),
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Text(
@@ -1449,7 +1439,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                         ),
                                       ),
                                       child: Text(
-                                        isAmharic ? 'ሚኒስቴር-ተስማሚ' : 'MoE Verified',
+                                        isAmharic
+                                            ? 'ሚኒስቴር-ተስማሚ'
+                                            : 'MoE Verified',
                                         style: const TextStyle(
                                           fontSize: 10.5,
                                           fontWeight: FontWeight.w700,
@@ -1520,14 +1512,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               '${_availableYears.length}',
                               isAmharic ? 'የፈተና ዓመታት' : 'Official Years',
                             ),
-                            Container(width: 1, height: 24, color: Colors.white24),
+                            Container(
+                                width: 1, height: 24, color: Colors.white24),
                             _buildHeaderStat(
                               _totalAvailableQuestions > 0
                                   ? '$_totalAvailableQuestions+'
                                   : '360+ Qs',
                               isAmharic ? 'የተረጋገጡ ጥያቄዎች' : 'Verified Questions',
                             ),
-                            Container(width: 1, height: 24, color: Colors.white24),
+                            Container(
+                                width: 1, height: 24, color: Colors.white24),
                             _buildHeaderStat(
                               '${_subjectAttempts.length}',
                               isAmharic ? 'የተጠናቀቁ ፈተናዎች' : 'Completed Tests',
@@ -1641,7 +1635,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isAmharic ? 'ብጁ የልምምድ ፈተና አዘጋጅ' : 'Fully Customize Practice',
+                        isAmharic
+                            ? 'ብጁ የልምምድ ፈተና አዘጋጅ'
+                            : 'Fully Customize Practice',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
@@ -1666,7 +1662,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                 // Forward action button (Build >)
                 const SizedBox(width: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
@@ -1863,7 +1860,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       itemBuilder: (context, index) {
         final rawYearInfo = _availableYears[index];
         final yearInfo = _resolveYearInfo(rawYearInfo, subject);
-        return _buildYearCard(context, subject, yearInfo, hubTheme, isAmharic, isDark);
+        return _buildYearCard(
+            context, subject, yearInfo, hubTheme, isAmharic, isDark);
       },
     );
   }
@@ -1933,9 +1931,11 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 2.5),
                             decoration: BoxDecoration(
-                              color: hubTheme.accentColor.withValues(alpha: 0.12),
+                              color:
+                                  hubTheme.accentColor.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(7),
                             ),
                             child: Text(
@@ -1954,7 +1954,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
-                                color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : const Color(0xFF64748B),
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -1963,15 +1965,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                       ),
                     ),
                     const SizedBox(width: 6),
-
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (isDownloading)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 3),
                             decoration: BoxDecoration(
-                              color: hubTheme.accentColor.withValues(alpha: 0.12),
+                              color:
+                                  hubTheme.accentColor.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -1999,12 +2002,15 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           )
                         else if (isDownloaded) ...[
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2.5),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                              color: const Color(0xFF10B981)
+                                  .withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                                color: const Color(0xFF10B981)
+                                    .withValues(alpha: 0.35),
                               ),
                             ),
                             child: Row(
@@ -2037,18 +2043,25 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               child: Icon(
                                 Icons.delete_outline_rounded,
                                 size: 15,
-                                color: isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8),
+                                color: isDark
+                                    ? AppTheme.darkMuted
+                                    : const Color(0xFF94A3B8),
                               ),
                             ),
                           ),
                         ] else ...[
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2.5),
                             decoration: BoxDecoration(
-                              color: (isDark ? Colors.white10 : const Color(0xFFF1F5F9)),
+                              color: (isDark
+                                  ? Colors.white10
+                                  : const Color(0xFFF1F5F9)),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0),
+                                color: isDark
+                                    ? AppTheme.darkBorder
+                                    : const Color(0xFFE2E8F0),
                               ),
                             ),
                             child: Row(
@@ -2057,7 +2070,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                 Icon(
                                   Icons.cloud_outlined,
                                   size: 11,
-                                  color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                                  color: isDark
+                                      ? AppTheme.darkMuted
+                                      : const Color(0xFF64748B),
                                 ),
                                 const SizedBox(width: 3),
                                 const Text(
@@ -2088,15 +2103,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           style: TextStyle(
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                            color:
+                                isDark ? Colors.white : const Color(0xFF1E293B),
                           ),
                         ),
                         if (yearInfo.isLatest) ...[
                           const SizedBox(width: 5),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 1),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                              color: const Color(0xFF10B981)
+                                  .withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: const Text(
@@ -2112,7 +2130,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         if (yearAttempt != null) ...[
                           const SizedBox(width: 6),
                           FidelBadge(
-                            text: '${yearAttempt.percentage.toStringAsFixed(0)}%',
+                            text:
+                                '${yearAttempt.percentage.toStringAsFixed(0)}%',
                             variant: yearAttempt.percentage >= 70
                                 ? FidelBadgeVariant.success
                                 : FidelBadgeVariant.warning,
@@ -2123,10 +2142,14 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      isAmharic ? yearInfo.descriptionAm : yearInfo.descriptionEn,
+                      isAmharic
+                          ? yearInfo.descriptionAm
+                          : yearInfo.descriptionEn,
                       style: TextStyle(
                         fontSize: 11,
-                        color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                        color: isDark
+                            ? AppTheme.darkMuted
+                            : const Color(0xFF64748B),
                         height: 1.25,
                       ),
                       maxLines: 2,
@@ -2143,9 +2166,13 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
-                          _timedMode ? Icons.schedule_rounded : Icons.all_inclusive_rounded,
+                          _timedMode
+                              ? Icons.schedule_rounded
+                              : Icons.all_inclusive_rounded,
                           size: 12,
-                          color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                          color: isDark
+                              ? AppTheme.darkMuted
+                              : const Color(0xFF64748B),
                         ),
                         const SizedBox(width: 3),
                         Text(
@@ -2155,12 +2182,13 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : const Color(0xFF64748B),
                           ),
                         ),
                       ],
                     ),
-
                     if (isDownloading)
                       ElevatedButton.icon(
                         onPressed: null,
@@ -2171,10 +2199,12 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         ),
                         label: Text(
                           isAmharic ? 'በማውረድ ላይ...' : 'Downloading...',
-                          style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                              fontSize: 10.5, fontWeight: FontWeight.w700),
                         ),
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 6),
                           visualDensity: VisualDensity.compact,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -2187,12 +2217,14 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         icon: const Icon(Icons.play_arrow_rounded, size: 15),
                         label: Text(
                           isAmharic ? 'ፈተና ጀምር' : 'Start Exam',
-                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.w700),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: hubTheme.accentColor,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
                           elevation: 0,
                           visualDensity: VisualDensity.compact,
                           shape: RoundedRectangleBorder(
@@ -2206,15 +2238,22 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         icon: const Icon(Icons.download_rounded, size: 14),
                         label: Text(
                           isAmharic ? 'አውርድ' : 'Download',
-                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.w700),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
-                          foregroundColor: isDark ? Colors.white : const Color(0xFF0F172A),
+                          backgroundColor: isDark
+                              ? const Color(0xFF1E293B)
+                              : const Color(0xFFF1F5F9),
+                          foregroundColor:
+                              isDark ? Colors.white : const Color(0xFF0F172A),
                           side: BorderSide(
-                            color: isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1),
+                            color: isDark
+                                ? AppTheme.darkBorder
+                                : const Color(0xFFCBD5E1),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
                           elevation: 0,
                           visualDensity: VisualDensity.compact,
                           shape: RoundedRectangleBorder(

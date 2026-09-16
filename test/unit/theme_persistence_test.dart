@@ -12,7 +12,8 @@ void main() {
       SharedPreferences.setMockInitialValues({});
     });
 
-    test('defaults to Lavender (ThemeMode.light) when no saved preference exists',
+    test(
+        'defaults to Lavender (ThemeMode.light) when no saved preference exists',
         () async {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
@@ -29,7 +30,8 @@ void main() {
           reason: 'Default theme must be Lavender (ThemeMode.light)');
     });
 
-    test('persists user selection of Cosmic (ThemeMode.dark) to SharedPreferences',
+    test(
+        'persists user selection of Cosmic (ThemeMode.dark) to SharedPreferences',
         () async {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();

@@ -937,7 +937,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
         // Official Document Image / Vector Diagram (if present)
         QuestionDiagramViewer(question: currentQ),
-        if ((currentQ.diagramAsset != null && currentQ.diagramAsset!.isNotEmpty) ||
+        if ((currentQ.diagramAsset != null &&
+                currentQ.diagramAsset!.isNotEmpty) ||
             currentQ.vectorDiagram != null)
           const SizedBox(height: 16),
 

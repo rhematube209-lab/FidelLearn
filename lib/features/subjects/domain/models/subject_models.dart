@@ -175,8 +175,8 @@ class ContentPackage extends Equatable {
 
   factory ContentPackage.fromJson(Map<String, dynamic> json) {
     return ContentPackage(
-      packageId: json['package_id']?.toString() ??
-          (json['id']?.toString() ?? ''),
+      packageId:
+          json['package_id']?.toString() ?? (json['id']?.toString() ?? ''),
       subjectId: json['subject_id']?.toString() ?? '',
       nameEn: json['name_en']?.toString() ?? '',
       nameAm: json['name_am']?.toString() ?? '',

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -90,7 +91,11 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
           builder: (context, state) {
             final subjectId = state.uri.queryParameters['subjectId'];
             final mode = state.uri.queryParameters['mode'];
-            return ExamBuilderScreen(initialSubjectId: subjectId, mode: mode);
+            return ExamBuilderScreen(
+              key: ValueKey('exam_builder_${subjectId}_$mode'),
+              initialSubjectId: subjectId,
+              mode: mode,
+            );
           },
         ),
         GoRoute(

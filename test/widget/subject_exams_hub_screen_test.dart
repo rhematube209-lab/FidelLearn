@@ -10,7 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('SubjectExamsHubScreen renders separate Download buttons initially',
+  testWidgets(
+      'SubjectExamsHubScreen renders separate Download buttons initially',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -79,7 +80,8 @@ void main() {
     // 2. Check Pathway B: Fully Customize Practice CTA
     expect(find.text('Fully Customize Practice'), findsOneWidget);
     expect(
-      find.text('Select specific year, syllabus units & question count on your own'),
+      find.text(
+          'Select specific year, syllabus units & question count on your own'),
       findsOneWidget,
     );
     expect(find.text('Build'), findsOneWidget);
@@ -109,7 +111,8 @@ void main() {
     expect(find.text('Untimed'), findsWidgets);
   });
 
-  testWidgets('Tapping Download on an exam year downloads it and transitions button to Start Exam',
+  testWidgets(
+      'Tapping Download on an exam year downloads it and transitions button to Start Exam',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -183,10 +186,12 @@ void main() {
     expect(find.text('Download'), findsNWidgets(5));
 
     // Verify success snackbar notification
-    expect(find.textContaining('downloaded & verified for offline practice'), findsOneWidget);
+    expect(find.textContaining('downloaded & verified for offline practice'),
+        findsOneWidget);
   });
 
-  testWidgets('SubjectExamsHubScreen displays Booklet 12 • 100 Qs for Biology 2013 E.C.',
+  testWidgets(
+      'SubjectExamsHubScreen displays Booklet 12 • 100 Qs for Biology 2013 E.C.',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
@@ -344,7 +349,8 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('2013 E.C. / 2020–2021 G.C. — 100 Questions with Correct Answers'),
+      find.text(
+          '2013 E.C. / 2020–2021 G.C. — 100 Questions with Correct Answers'),
       findsOneWidget,
     );
 
@@ -366,11 +372,11 @@ void main() {
     );
 
     // 7. Verify switching feedback modes works
-    await tester.tap(find.text('Show answer immediately after choice is selected'));
+    await tester
+        .tap(find.text('Show answer immediately after choice is selected'));
     await tester.pumpAndSettle();
 
     // 8. Verify Start Exam CTA is present inside dialog
     expect(find.text('Start Exam Now'), findsOneWidget);
   });
 }
-

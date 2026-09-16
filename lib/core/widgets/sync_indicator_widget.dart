@@ -162,7 +162,8 @@ class SyncIndicatorWidget extends ConsumerWidget {
               icon: const Icon(Icons.refresh, size: 16),
               label: const Text('Sync Now'),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
             ),
           ),

@@ -27,7 +27,8 @@ void main() {
       expect(unit3.titleEn, contains('Relations and Functions'));
     });
 
-    test('retrieves Grade 9 Mathematics Unit 3 questions within year range 2013-2017',
+    test(
+        'retrieves Grade 9 Mathematics Unit 3 questions within year range 2013-2017',
         () async {
       final questions = await contentRepo.getQuestions(
         grade: 9,
@@ -59,7 +60,8 @@ void main() {
       expect(years.contains(2017), isTrue);
     });
 
-    test('retrieves Grade 9 Mathematics Unit 3 questions for a single year (2014)',
+    test(
+        'retrieves Grade 9 Mathematics Unit 3 questions for a single year (2014)',
         () async {
       final questions = await contentRepo.getQuestions(
         grade: 9,
@@ -90,7 +92,8 @@ void main() {
       expect(grades.contains(12), isTrue);
     });
 
-    test('verifies answer choices and step-by-step solutions for Grade 9 Unit 3 questions',
+    test(
+        'verifies answer choices and step-by-step solutions for Grade 9 Unit 3 questions',
         () async {
       final questions = await contentRepo.getQuestions(
         grade: 9,

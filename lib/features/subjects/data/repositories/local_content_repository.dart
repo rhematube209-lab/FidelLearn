@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -141,14 +140,31 @@ class LocalContentRepository implements ContentRepository {
     required String stream,
   }) async {
     await initializeSeedData();
-    return _subjects
+    final list = _subjects
         .where(
           (s) =>
               (grade == null || s.grade == grade) &&
-              (s.stream == stream || s.stream == 'common' || s.stream == 'general'),
+              (s.stream == stream ||
+                  s.stream == 'common' ||
+                  s.stream == 'general'),
         )
-        .toList()
-      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        .toList();
+
+    // Ensure all standard subjects for this grade/stream are available
+    final defaultList = getAllDefaultSubjects(grade: grade ?? 12);
+    final existingIds = list.map((s) => s.id.toLowerCase()).toSet();
+    final existingNames = list.map((s) => s.nameEn.toLowerCase()).toSet();
+    for (final def in defaultList) {
+      if ((def.stream == stream ||
+              def.stream == 'common' ||
+              def.stream == 'general') &&
+          !existingIds.contains(def.id.toLowerCase()) &&
+          !existingNames.contains(def.nameEn.toLowerCase())) {
+        list.add(def);
+      }
+    }
+
+    return list..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
 
   static bool matchesSubjectId(String a, String b) {
@@ -204,11 +220,381 @@ class LocalContentRepository implements ContentRepository {
     return lower;
   }
 
+  static Subject resolveDefaultSubject(String id,
+      {int grade = 12, String? stream}) {
+    final canonId = canonicalSubjectId(id);
+    final lower = id.toLowerCase().trim();
+    final effectiveStream = stream ??
+        (lower.contains('hist') ||
+                lower.contains('geo') ||
+                lower.contains('econ')
+            ? 'social'
+            : 'natural');
+
+    if (lower.contains('math')) {
+      return Subject(
+        id: canonId,
+        code: 'MATH$grade',
+        nameEn: 'Mathematics',
+        nameAm: 'ሒሳብ',
+        grade: grade,
+        stream: effectiveStream,
+        iconAsset: 'assets/images/math_icon.png',
+        sortOrder: 1,
+      );
+    } else if (lower.contains('bio')) {
+      return Subject(
+        id: canonId,
+        code: 'BIO$grade',
+        nameEn: 'Biology',
+        nameAm: 'ባዮሎጂ',
+        grade: grade,
+        stream: 'natural',
+        iconAsset: 'assets/images/biology_icon.png',
+        sortOrder: 2,
+      );
+    } else if (lower.contains('phys')) {
+      return Subject(
+        id: canonId,
+        code: 'PHYS$grade',
+        nameEn: 'Physics',
+        nameAm: 'ፊዚክስ',
+        grade: grade,
+        stream: 'natural',
+        iconAsset: 'assets/images/physics_icon.png',
+        sortOrder: 3,
+      );
+    } else if (lower.contains('chem')) {
+      return Subject(
+        id: canonId,
+        code: 'CHEM$grade',
+        nameEn: 'Chemistry',
+        nameAm: 'ኬሚስትሪ',
+        grade: grade,
+        stream: 'natural',
+        iconAsset: 'assets/images/chemistry_icon.png',
+        sortOrder: 4,
+      );
+    } else if (lower.contains('eng')) {
+      return Subject(
+        id: canonId,
+        code: 'ENG$grade',
+        nameEn: 'English',
+        nameAm: 'እንግሊዝኛ',
+        grade: grade,
+        stream: 'common',
+        iconAsset: 'assets/images/english_icon.png',
+        sortOrder: 5,
+      );
+    } else if (lower.contains('apt')) {
+      return Subject(
+        id: canonId,
+        code: 'APT$grade',
+        nameEn: 'Scholastic Aptitude',
+        nameAm: 'አፕቲትዩድ',
+        grade: grade,
+        stream: 'common',
+        iconAsset: 'assets/images/aptitude_icon.png',
+        sortOrder: 6,
+      );
+    } else if (lower.contains('hist')) {
+      return Subject(
+        id: canonId,
+        code: 'HIST$grade',
+        nameEn: 'History',
+        nameAm: 'ታሪክ',
+        grade: grade,
+        stream: 'social',
+        iconAsset: 'assets/images/history_icon.png',
+        sortOrder: 1,
+      );
+    } else if (lower.contains('geo')) {
+      return Subject(
+        id: canonId,
+        code: 'GEO$grade',
+        nameEn: 'Geography',
+        nameAm: 'ጂኦግራፊ',
+        grade: grade,
+        stream: 'social',
+        iconAsset: 'assets/images/geography_icon.png',
+        sortOrder: 2,
+      );
+    } else if (lower.contains('econ')) {
+      return Subject(
+        id: canonId,
+        code: 'ECON$grade',
+        nameEn: 'Economics',
+        nameAm: 'ኢኮኖሚክስ',
+        grade: grade,
+        stream: 'social',
+        iconAsset: 'assets/images/economics_icon.png',
+        sortOrder: 3,
+      );
+    } else if (lower.contains('civ')) {
+      return Subject(
+        id: canonId,
+        code: 'CIV$grade',
+        nameEn: 'Civics',
+        nameAm: 'ስነ-ዜጋ',
+        grade: grade,
+        stream: 'common',
+        sortOrder: 7,
+      );
+    } else {
+      return Subject(
+        id: canonId,
+        code: 'SUBJ$grade',
+        nameEn: 'National Exam Subject',
+        nameAm: 'የትምህርት ዓይነት',
+        grade: grade,
+        stream: effectiveStream,
+        sortOrder: 10,
+      );
+    }
+  }
+
+  static List<Subject> getAllDefaultSubjects({int grade = 12}) {
+    return [
+      resolveDefaultSubject('math_g$grade', grade: grade, stream: 'natural'),
+      resolveDefaultSubject('biology_g$grade', grade: grade, stream: 'natural'),
+      resolveDefaultSubject('physics_g$grade', grade: grade, stream: 'natural'),
+      resolveDefaultSubject('chemistry_g$grade',
+          grade: grade, stream: 'natural'),
+      resolveDefaultSubject('english_g$grade', grade: grade, stream: 'common'),
+      resolveDefaultSubject('aptitude_g$grade', grade: grade, stream: 'common'),
+      resolveDefaultSubject('history_g$grade', grade: grade, stream: 'social'),
+      resolveDefaultSubject('geography_g$grade',
+          grade: grade, stream: 'social'),
+      resolveDefaultSubject('economics_g$grade',
+          grade: grade, stream: 'social'),
+    ];
+  }
+
+  static List<Unit> getDefaultUnits(String subjectId) {
+    final lower = subjectId.toLowerCase();
+    if (lower.contains('phys')) {
+      return const [
+        Unit(
+            id: 'phys_u1',
+            subjectId: 'physics_g12',
+            unitNumber: 1,
+            titleEn: 'Thermodynamics',
+            titleAm: 'ቴርሞዳይናሚክስ'),
+        Unit(
+            id: 'phys_u2',
+            subjectId: 'physics_g12',
+            unitNumber: 2,
+            titleEn: 'Oscillations and Waves',
+            titleAm: 'ሞገዶችና ንዝረቶች'),
+        Unit(
+            id: 'phys_u3',
+            subjectId: 'physics_g12',
+            unitNumber: 3,
+            titleEn: 'Wave Optics',
+            titleAm: 'የሞገድ ኦፕቲክስ'),
+        Unit(
+            id: 'phys_u4',
+            subjectId: 'physics_g12',
+            unitNumber: 4,
+            titleEn: 'Electrostatics',
+            titleAm: 'ኤሌክትሮስታቲክስ'),
+        Unit(
+            id: 'phys_u5',
+            subjectId: 'physics_g12',
+            unitNumber: 5,
+            titleEn: 'Steady Electric Current & Circuit',
+            titleAm: 'የኤሌክትሪክ ፍሰትና ዑደት'),
+        Unit(
+            id: 'phys_u6',
+            subjectId: 'physics_g12',
+            unitNumber: 6,
+            titleEn: 'Magnetism',
+            titleAm: 'ማግኔቲዝም'),
+        Unit(
+            id: 'phys_u7',
+            subjectId: 'physics_g12',
+            unitNumber: 7,
+            titleEn: 'Electromagnetic Induction',
+            titleAm: 'ኤሌክትሮማግኔቲክ ኢንዳክሽን'),
+      ];
+    } else if (lower.contains('chem')) {
+      return const [
+        Unit(
+            id: 'chem_u1',
+            subjectId: 'chemistry_g12',
+            unitNumber: 1,
+            titleEn: 'Solutions and Solubility',
+            titleAm: 'መፍትሔዎችና የመሟሟት ባህሪ'),
+        Unit(
+            id: 'chem_u2',
+            subjectId: 'chemistry_g12',
+            unitNumber: 2,
+            titleEn: 'Acid-Base Equilibria',
+            titleAm: 'የአሲድና ቤዝ ሚዛን'),
+        Unit(
+            id: 'chem_u3',
+            subjectId: 'chemistry_g12',
+            unitNumber: 3,
+            titleEn: 'Electrochemistry & Redox Reactions',
+            titleAm: 'ኤሌክትሮኬሚስትሪ'),
+        Unit(
+            id: 'chem_u4',
+            subjectId: 'chemistry_g12',
+            unitNumber: 4,
+            titleEn: 'Chemistry in Industry & Elements',
+            titleAm: 'ኬሚስትሪ በኢንዱስትሪ'),
+        Unit(
+            id: 'chem_u5',
+            subjectId: 'chemistry_g12',
+            unitNumber: 5,
+            titleEn: 'Polymers and Biomolecules',
+            titleAm: 'ፖሊመሮችና ባዮሞለኪዩሎች'),
+      ];
+    } else if (lower.contains('eng')) {
+      return const [
+        Unit(
+            id: 'eng_u1',
+            subjectId: 'english_g12',
+            unitNumber: 1,
+            titleEn: 'Family Life and Society',
+            titleAm: 'የቤተሰብ ሕይወትና ማህበረሰብ'),
+        Unit(
+            id: 'eng_u2',
+            subjectId: 'english_g12',
+            unitNumber: 2,
+            titleEn: 'Education and Global Future',
+            titleAm: 'ትምህርትና የወደፊት ዕድሎች'),
+        Unit(
+            id: 'eng_u3',
+            subjectId: 'english_g12',
+            unitNumber: 3,
+            titleEn: 'Science, Technology & AI',
+            titleAm: 'ሳይንስ፣ ቴክኖሎጂና አርቴፊሻል ኢንተለጀንስ'),
+        Unit(
+            id: 'eng_u4',
+            subjectId: 'english_g12',
+            unitNumber: 4,
+            titleEn: 'Ethiopian Cultural Heritage',
+            titleAm: 'የኢትዮጵያ ባህላዊ ቅርስ'),
+        Unit(
+            id: 'eng_u5',
+            subjectId: 'english_g12',
+            unitNumber: 5,
+            titleEn: 'Grammar, Reading & Vocabulary',
+            titleAm: 'ሰዋሰው፣ ንባብና የቃላት አጠቃቀም'),
+      ];
+    } else if (lower.contains('hist')) {
+      return const [
+        Unit(
+            id: 'hist_u1',
+            subjectId: 'history_g12',
+            unitNumber: 1,
+            titleEn: 'State Formation & Sovereignty in Ethiopia',
+            titleAm: 'የሀገር ግንባታና ሉዓላዊነት በኢትዮጵያ'),
+        Unit(
+            id: 'hist_u2',
+            subjectId: 'history_g12',
+            unitNumber: 2,
+            titleEn: 'The Horn of Africa in the 19th Century',
+            titleAm: 'የአፍሪካ ቀንድ በ19ኛው ክፍለ ዘመን'),
+        Unit(
+            id: 'hist_u3',
+            subjectId: 'history_g12',
+            unitNumber: 3,
+            titleEn: 'Ethiopian Resistance & Victory of Adwa',
+            titleAm: 'የኢትዮጵያ ተጋድሎና የአድዋ ድል'),
+        Unit(
+            id: 'hist_u4',
+            subjectId: 'history_g12',
+            unitNumber: 4,
+            titleEn: 'Modernization and State Consolidation',
+            titleAm: 'ዘመናዊነትና የመንግስት መጠናከር'),
+        Unit(
+            id: 'hist_u5',
+            subjectId: 'history_g12',
+            unitNumber: 5,
+            titleEn: 'Contemporary Ethiopia & Global Relations',
+            titleAm: 'ወቅታዊቷ ኢትዮጵያና ዓለም አቀፍ ግንኙነቶች'),
+      ];
+    } else if (lower.contains('geo')) {
+      return const [
+        Unit(
+            id: 'geo_u1',
+            subjectId: 'geography_g12',
+            unitNumber: 1,
+            titleEn: 'Geology & Rift Valley of Ethiopia',
+            titleAm: 'የኢትዮጵያ ጂኦሎጂና ስምጥ ሸለቆ'),
+        Unit(
+            id: 'geo_u2',
+            subjectId: 'geography_g12',
+            unitNumber: 2,
+            titleEn: 'Climate & Drainage Systems of Ethiopia',
+            titleAm: 'የአየር ንብረትና የውሃ ፍሰት ስርአቶች'),
+        Unit(
+            id: 'geo_u3',
+            subjectId: 'geography_g12',
+            unitNumber: 3,
+            titleEn: 'Natural Resources & Environmental Issues',
+            titleAm: 'የተፈጥሮ ሀብትና የአካባቢ ጥበቃ'),
+        Unit(
+            id: 'geo_u4',
+            subjectId: 'geography_g12',
+            unitNumber: 4,
+            titleEn: 'Population Dynamics & Urbanization',
+            titleAm: 'የህዝብ ቁጥር እድገትና ከተሞች'),
+        Unit(
+            id: 'geo_u5',
+            subjectId: 'geography_g12',
+            unitNumber: 5,
+            titleEn: 'Economic Activities & Sustainable Development',
+            titleAm: 'የኢኮኖሚ እንቅስቃሴዎችና ዘላቂ ልማት'),
+      ];
+    } else if (lower.contains('econ')) {
+      return const [
+        Unit(
+            id: 'econ_u1',
+            subjectId: 'economics_g12',
+            unitNumber: 1,
+            titleEn: 'Market Equilibrium & Price Mechanism',
+            titleAm: 'የገበያ ሚዛንና የዋጋ ስርአት'),
+        Unit(
+            id: 'econ_u2',
+            subjectId: 'economics_g12',
+            unitNumber: 2,
+            titleEn: 'National Income Accounting & GDP',
+            titleAm: 'ብሔራዊ ገቢና አጠቃላይ የሀገር ውስጥ ምርት'),
+        Unit(
+            id: 'econ_u3',
+            subjectId: 'economics_g12',
+            unitNumber: 3,
+            titleEn: 'Money, Banking & Financial Institutions',
+            titleAm: 'ገንዘብ፣ ባንክና የፋይናንስ ተቋማት'),
+        Unit(
+            id: 'econ_u4',
+            subjectId: 'economics_g12',
+            unitNumber: 4,
+            titleEn: 'Macroeconomic Problems & Policies',
+            titleAm: 'የማክሮ ኢኮኖሚ ችግሮችና ፖሊሲዎች'),
+        Unit(
+            id: 'econ_u5',
+            subjectId: 'economics_g12',
+            unitNumber: 5,
+            titleEn: 'International Trade & Economic Growth',
+            titleAm: 'ዓለም አቀፍ ንግድና የኢኮኖሚ እድገት'),
+      ];
+    }
+    return const [];
+  }
+
   @override
   Future<List<Unit>> getUnits(String subjectId) async {
     await initializeSeedData();
-    return _units.where((u) => matchesSubjectId(u.subjectId, subjectId)).toList()
+    final matched = _units
+        .where((u) => matchesSubjectId(u.subjectId, subjectId))
+        .toList()
       ..sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
+    if (matched.isNotEmpty) return matched;
+    return getDefaultUnits(subjectId);
   }
 
   @override
@@ -329,13 +715,15 @@ class LocalContentRepository implements ContentRepository {
       }
       if (difficulty != null && q.difficulty != difficulty) return false;
       if (examYear != null && q.examYear != examYear) return false;
-      if (startYear != null && (q.examYear == null || q.examYear! < startYear)) {
+      if (startYear != null &&
+          (q.examYear == null || q.examYear! < startYear)) {
         return false;
       }
       if (endYear != null && (q.examYear == null || q.examYear! > endYear)) {
         return false;
       }
-      if (examYears != null && examYears.isNotEmpty &&
+      if (examYears != null &&
+          examYears.isNotEmpty &&
           (q.examYear == null || !examYears.contains(q.examYear))) {
         return false;
       }

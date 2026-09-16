@@ -64,13 +64,12 @@ class AnswerChoice extends Equatable {
   factory AnswerChoice.fromJson(Map<String, dynamic> json) {
     return AnswerChoice(
       id: json['id']?.toString() ?? '',
-      label: json['label']?.toString() ??
-          (json['choice_label']?.toString() ?? ''),
+      label:
+          json['label']?.toString() ?? (json['choice_label']?.toString() ?? ''),
       textEn: json['text_en']?.toString() ??
           (json['choice_text_en']?.toString() ??
               (json['text']?.toString() ?? '')),
-      textAm: json['text_am']?.toString() ??
-          json['choice_text_am']?.toString(),
+      textAm: json['text_am']?.toString() ?? json['choice_text_am']?.toString(),
       isCorrect: json['is_correct'] as bool? ?? false,
     );
   }
@@ -266,8 +265,8 @@ class Question extends Equatable {
       examYear: (json['exam_year'] as num?)?.toInt(),
       questionTextEn: json['question_text_en']?.toString() ?? '',
       questionTextAm: json['question_text_am']?.toString(),
-      diagramAsset: json['diagram_asset']?.toString() ??
-          json['diagram_url']?.toString(),
+      diagramAsset:
+          json['diagram_asset']?.toString() ?? json['diagram_url']?.toString(),
       vectorDiagram: json['vector_diagram'] != null &&
               json['vector_diagram'] is Map<String, dynamic>
           ? VectorDiagram.fromJson(
@@ -313,7 +312,8 @@ class Question extends Equatable {
       if (curriculumGrade != null) 'curriculum_grade': curriculumGrade,
       if (curriculumUnitId != null) 'curriculum_unit_id': curriculumUnitId,
       if (curriculumTopicId != null) 'curriculum_topic_id': curriculumTopicId,
-      if (curriculumFramework != null) 'curriculum_framework': curriculumFramework,
+      if (curriculumFramework != null)
+        'curriculum_framework': curriculumFramework,
       'difficulty': difficulty,
       'verification_status': verificationStatus.toDbString(),
       'source_name': sourceName,
@@ -442,4 +442,3 @@ class QuestionCurriculumMapping extends Equatable {
         questionOrderInExam,
       ];
 }
-

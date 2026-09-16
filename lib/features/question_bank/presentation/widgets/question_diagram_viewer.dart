@@ -86,7 +86,9 @@ class QuestionDiagramViewer extends StatelessWidget {
                       Icon(
                         Icons.image_outlined,
                         size: 15,
-                        color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1E3A8A),
+                        color: isDark
+                            ? const Color(0xFF93C5FD)
+                            : const Color(0xFF1E3A8A),
                       ),
                       const SizedBox(width: 6),
                       Text(
@@ -103,17 +105,21 @@ class QuestionDiagramViewer extends StatelessWidget {
                     ],
                   ),
                   InkWell(
-                    onTap: () => _openFullscreenModal(context, assetPath, isDark),
+                    onTap: () =>
+                        _openFullscreenModal(context, assetPath, isDark),
                     borderRadius: BorderRadius.circular(6),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 3),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.fullscreen_rounded,
                             size: 16,
-                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : const Color(0xFF64748B),
                           ),
                           const SizedBox(width: 3),
                           Text(
@@ -121,7 +127,9 @@ class QuestionDiagramViewer extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : const Color(0xFF64748B),
                             ),
                           ),
                         ],
@@ -137,7 +145,8 @@ class QuestionDiagramViewer extends StatelessWidget {
               onTap: () => _openFullscreenModal(context, assetPath, isDark),
               child: Container(
                 constraints: BoxConstraints(maxHeight: maxHeight),
-                color: Colors.white, // Keep white background for clean official exam line art
+                color: Colors
+                    .white, // Keep white background for clean official exam line art
                 padding: const EdgeInsets.all(12),
                 child: Center(
                   child: Image.asset(
@@ -182,7 +191,8 @@ class QuestionDiagramViewer extends StatelessWidget {
     );
   }
 
-  void _openFullscreenModal(BuildContext context, String assetPath, bool isDark) {
+  void _openFullscreenModal(
+      BuildContext context, String assetPath, bool isDark) {
     showDialog<void>(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.85),

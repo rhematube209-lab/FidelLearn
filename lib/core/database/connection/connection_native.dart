@@ -9,7 +9,8 @@ QueryExecutor openConnection({bool logStatements = false}) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'fidel_learn.sqlite'));
-    return NativeDatabase.createInBackground(file, logStatements: logStatements);
+    return NativeDatabase.createInBackground(file,
+        logStatements: logStatements);
   });
 }
 

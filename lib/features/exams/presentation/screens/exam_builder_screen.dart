@@ -52,7 +52,6 @@ class ExamBuilderScreen extends ConsumerStatefulWidget {
 
 class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   // Base Palette Tokens matching HTML / M3 Specification
-  static const Color primarySpruce = Color(0xFF003527);
   static const Color onPrimary = Color(0xFFFFFFFF);
   static const Color secondaryContainer = Color(0xFFFE932C);
   static const Color surfaceLight = Color(0xFFF8F9FF);
@@ -281,84 +280,149 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     _loadInitialData();
   }
 
-  Future<void> _loadInitialData() async {
-    final user = ref.read(currentUserProvider).valueOrNull;
-    final contentRepo = ref.read(contentRepositoryProvider);
+  @override
+  void didUpdateWidget(covariant ExamBuilderScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialSubjectId != widget.initialSubjectId ||
+        oldWidget.mode != widget.mode) {
+      if (widget.mode == 'mock') {
+        _isTimed = true;
+        _questionCount = 20;
+      }
+      _loadInitialData();
+    }
+  }
 
-    int targetGrade = user?.grade ?? 12;
-    if (widget.initialSubjectId != null) {
-      final match = RegExp(r'(?:g|grade)(\d+)', caseSensitive: false)
-          .firstMatch(widget.initialSubjectId!);
-      if (match != null) {
-        final parsed = int.tryParse(match.group(1)!);
-        if (parsed != null && parsed >= 9 && parsed <= 12) {
-          targetGrade = parsed;
+  Future<void> _loadInitialData() async {
+    try {
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final contentRepo = ref.read(contentRepositoryProvider);
+
+      int targetGrade = user?.grade ?? 12;
+      if (widget.initialSubjectId != null &&
+          widget.initialSubjectId!.trim().isNotEmpty) {
+        final match = RegExp(r'(?:g|grade)(\d+)', caseSensitive: false)
+            .firstMatch(widget.initialSubjectId!);
+        if (match != null) {
+          final parsed = int.tryParse(match.group(1)!);
+          if (parsed != null && parsed >= 6 && parsed <= 12) {
+            targetGrade = parsed;
+          }
         }
       }
-    }
-    _selectedGrade = targetGrade;
+      _selectedGrade = targetGrade;
 
-    if (user != null ||
-        (widget.initialSubjectId != null &&
-            widget.initialSubjectId!.isNotEmpty)) {
-      final stream = user?.stream ?? 'natural';
-      List<Subject> subs = await contentRepo.getSubjects(
-        grade: _selectedGrade,
-        stream: stream,
-      );
+      // Determine stream: social vs natural based on target subject or user stream
+      String stream = user?.stream ?? 'natural';
+      if (widget.initialSubjectId != null &&
+          widget.initialSubjectId!.trim().isNotEmpty) {
+        final rawId = widget.initialSubjectId!.toLowerCase();
+        if (rawId.contains('hist') ||
+            rawId.contains('geo') ||
+            rawId.contains('econ')) {
+          stream = 'social';
+        } else if (rawId.contains('bio') ||
+            rawId.contains('phys') ||
+            rawId.contains('chem')) {
+          stream = 'natural';
+        }
+      }
+
+      List<Subject> subs = [];
+      try {
+        subs = await contentRepo.getSubjects(
+          grade: _selectedGrade,
+          stream: stream,
+        );
+      } catch (e) {
+        debugPrint('ExamBuilderScreen: getSubjects error: $e');
+      }
+
+      // Merge with standard default subjects for this grade so subjects are never missing
+      final defaultSubs = LocalContentRepository.getAllDefaultSubjects(
+          grade: _selectedGrade ?? 12);
+      final existingIds = subs.map((s) => s.id.toLowerCase()).toSet();
+      final existingNames = subs.map((s) => s.nameEn.toLowerCase()).toSet();
+      for (final def in defaultSubs) {
+        if (!existingIds.contains(def.id.toLowerCase()) &&
+            !existingNames.contains(def.nameEn.toLowerCase())) {
+          if (def.stream == stream ||
+              def.stream == 'common' ||
+              def.stream == 'general') {
+            subs.add(def);
+          }
+        }
+      }
+      subs.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
       Subject? matched;
       if (widget.initialSubjectId != null &&
-          widget.initialSubjectId!.isNotEmpty) {
+          widget.initialSubjectId!.trim().isNotEmpty) {
         final qId = widget.initialSubjectId!.trim().toLowerCase();
-        // 1. Exact ID match
+
+        // 1. Exact ID match in subs
         matched = subs.where((s) => s.id.toLowerCase() == qId).firstOrNull;
-        // 2. Canonical subject ID match
+
+        // 2. Canonical subject ID match in subs
         matched ??= subs
             .where((s) => LocalContentRepository.matchesSubjectId(
                 s.id, widget.initialSubjectId!))
             .firstOrNull;
-        // 3. Discipline match
+
+        // 3. Discipline match in subs
         matched ??= subs
             .where((s) => LocalContentRepository.matchesSubjectDiscipline(
                 s.id, widget.initialSubjectId!))
             .firstOrNull;
-        // 4. Code or name substring
+
+        // 4. Code or name substring in subs
         matched ??= subs
             .where((s) =>
                 s.code.toLowerCase() == qId ||
                 s.nameEn.toLowerCase().contains(qId))
             .firstOrNull;
 
-        // 5. If not found in current grade/stream, search across all subjects
-        if (matched == null) {
-          final allSubs = await contentRepo.getSubjects(stream: stream);
-          matched = allSubs
-              .where((s) =>
-                  s.id.toLowerCase() == qId ||
-                  LocalContentRepository.matchesSubjectId(
-                      s.id, widget.initialSubjectId!) ||
-                  LocalContentRepository.matchesSubjectDiscipline(
-                      s.id, widget.initialSubjectId!) ||
-                  s.code.toLowerCase() == qId ||
-                  s.nameEn.toLowerCase().contains(qId))
-              .firstOrNull;
-          if (matched != null) {
-            _selectedGrade = matched.grade;
-            subs = await contentRepo.getSubjects(
-                grade: _selectedGrade, stream: stream);
-          }
+        // 5. Search in all default subjects regardless of stream
+        matched ??= defaultSubs
+            .where((s) =>
+                s.id.toLowerCase() == qId ||
+                LocalContentRepository.matchesSubjectId(
+                    s.id, widget.initialSubjectId!) ||
+                LocalContentRepository.matchesSubjectDiscipline(
+                    s.id, widget.initialSubjectId!) ||
+                s.code.toLowerCase() == qId ||
+                s.nameEn.toLowerCase().contains(qId))
+            .firstOrNull;
+
+        // 6. Synthesize from widget.initialSubjectId if still not found
+        matched ??= LocalContentRepository.resolveDefaultSubject(
+          widget.initialSubjectId!,
+          grade: _selectedGrade ?? 12,
+          stream: stream,
+        );
+
+        // Ensure the matched subject exists in _subjects list so picker reflects it
+        final targetSubject = matched;
+        if (!subs.any((s) => s.id == targetSubject.id)) {
+          subs.insert(0, targetSubject);
         }
       }
 
+      // CRITICAL: Only fall back to subs.first if NO initialSubjectId was provided!
       if (matched == null && subs.isNotEmpty) {
         matched = subs.first;
       }
 
+      final chosenSubjectId = matched?.id ??
+          (widget.initialSubjectId != null &&
+                  widget.initialSubjectId!.trim().isNotEmpty
+              ? widget.initialSubjectId
+              : null);
+
       if (mounted) {
         setState(() {
           _subjects = subs;
-          _selectedSubjectId = matched?.id;
+          _selectedSubjectId = chosenSubjectId;
           _isLoading = false;
         });
       }
@@ -368,8 +432,22 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       } else {
         await _updateMatchingQuestionCount();
       }
-    } else {
-      if (mounted) setState(() => _isLoading = false);
+    } catch (e) {
+      debugPrint('ExamBuilderScreen: _loadInitialData failure: $e');
+      if (mounted) {
+        setState(() {
+          if (widget.initialSubjectId != null &&
+              widget.initialSubjectId!.trim().isNotEmpty) {
+            final fallbackSub = LocalContentRepository.resolveDefaultSubject(
+              widget.initialSubjectId!,
+              grade: _selectedGrade ?? 12,
+            );
+            _subjects = [fallbackSub];
+            _selectedSubjectId = fallbackSub.id;
+          }
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -386,10 +464,28 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       _topics = [];
     });
 
-    final subs = await contentRepo.getSubjects(
-      grade: grade,
-      stream: user?.stream ?? 'natural',
-    );
+    final stream = user?.stream ?? 'natural';
+    List<Subject> subs = [];
+    try {
+      subs = await contentRepo.getSubjects(
+        grade: grade,
+        stream: stream,
+      );
+    } catch (_) {}
+
+    final defaultSubs =
+        LocalContentRepository.getAllDefaultSubjects(grade: grade ?? 12);
+    final existingIds = subs.map((s) => s.id.toLowerCase()).toSet();
+    for (final def in defaultSubs) {
+      if (!existingIds.contains(def.id.toLowerCase())) {
+        if (def.stream == stream ||
+            def.stream == 'common' ||
+            def.stream == 'general') {
+          subs.add(def);
+        }
+      }
+    }
+    subs.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
     if (mounted) {
       setState(() {
@@ -409,7 +505,15 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
   Future<void> _loadUnitsAndTopics(String subjectId) async {
     final contentRepo = ref.read(contentRepositoryProvider);
-    final units = await contentRepo.getUnits(subjectId);
+    List<Unit> units = [];
+    try {
+      units = await contentRepo.getUnits(subjectId);
+    } catch (_) {}
+
+    if (units.isEmpty) {
+      units = LocalContentRepository.getDefaultUnits(subjectId);
+    }
+
     if (mounted) {
       setState(() {
         _units = units;
@@ -1555,107 +1659,104 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
     return Scaffold(
       backgroundColor: bgColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Top Fixed Header Bar
-            _buildTopFixedHeader(context, isDark),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator(color: activePrimary))
+          : SingleChildScrollView(
+              padding: EdgeInsets.zero,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 🌟 1. Full-Width Edge-to-Edge Hero Card (Zero Side/Top Padding, matching Subject Hub & Home)
+                  _buildEdgeToEdgeHeroSection(
+                    context,
+                    isDesktop,
+                    isAmharic,
+                    isDark,
+                  ),
 
-            // Scrollable Content
-            Expanded(
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(color: activePrimary))
-                  : SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isDesktop ? 48.0 : 16.0,
-                        vertical: 16.0,
-                      ),
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 1100),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // 🌟 0. Adaptive Subject Hero Banner
-                              _buildSubjectHeroBanner(
-                                  context, isDark, isAmharic),
-
-                              // Page Title & Mode Switcher
-                              _buildHeaderAndModeSwitcher(isDark),
+                  // 📚 2. Content Container Below Hero Card
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isDesktop ? 48.0 : 16.0,
+                      vertical: 20.0,
+                    ),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (_errorMessage != null) ...[
+                              _buildErrorBanner(),
                               const SizedBox(height: 16),
-
-                              if (_errorMessage != null) ...[
-                                _buildErrorBanner(),
-                                const SizedBox(height: 16),
-                              ],
-
-                              if (isDesktop)
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 55,
-                                      child: Column(
-                                        children: [
-                                          _buildCurriculumScopeCard(
-                                              context, isDark),
-                                          const SizedBox(height: 16),
-                                          _buildPastPapersCard(context, isDark),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 24),
-                                    Expanded(
-                                      flex: 45,
-                                      child: Column(
-                                        children: [
-                                          _buildExamParametersCard(
-                                              context, isDark),
-                                          const SizedBox(height: 16),
-                                          _buildSummaryConfirmationCard(isDark),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              else ...[
-                                _buildCurriculumScopeCard(context, isDark),
-                                const SizedBox(height: 16),
-                                _buildPastPapersCard(context, isDark),
-                                const SizedBox(height: 16),
-                                _buildExamParametersCard(context, isDark),
-                                const SizedBox(height: 16),
-                                _buildSummaryConfirmationCard(isDark),
-                              ],
-
-                              const SizedBox(height: 32),
                             ],
-                          ),
+                            if (isDesktop)
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 55,
+                                    child: Column(
+                                      children: [
+                                        _buildCurriculumScopeCard(
+                                            context, isDark),
+                                        const SizedBox(height: 16),
+                                        _buildPastPapersCard(context, isDark),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 24),
+                                  Expanded(
+                                    flex: 45,
+                                    child: Column(
+                                      children: [
+                                        _buildExamParametersCard(
+                                            context, isDark),
+                                        const SizedBox(height: 16),
+                                        _buildSummaryConfirmationCard(isDark),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            else ...[
+                              _buildCurriculumScopeCard(context, isDark),
+                              const SizedBox(height: 16),
+                              _buildPastPapersCard(context, isDark),
+                              const SizedBox(height: 16),
+                              _buildExamParametersCard(context, isDark),
+                              const SizedBox(height: 16),
+                              _buildSummaryConfirmationCard(isDark),
+                            ],
+                            const SizedBox(height: 24),
+                          ],
                         ),
                       ),
                     ),
+                  ),
+                ],
+              ),
             ),
-
-            // Sticky Primary CTA & Bottom Bar
-            _buildStickyBottomBar(isDark),
-
-            // 4-Tab Bottom Navigation Bar (Mobile)
-            if (!isDesktop) _buildBottomNavigationBar(context, isDark),
-          ],
-        ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildStickyBottomBar(isDark),
+          if (!isDesktop) _buildBottomNavigationBar(context, isDark),
+        ],
       ),
     );
   }
 
   // ==========================================
-  // 🌟 0. ADAPTIVE SUBJECT HERO BANNER
+  // 🌟 1. FULL-WIDTH EDGE-TO-EDGE HERO SECTION
   // ==========================================
-  Widget _buildSubjectHeroBanner(
+  Widget _buildEdgeToEdgeHeroSection(
     BuildContext context,
-    bool isDark,
+    bool isWide,
     bool isAmharic,
+    bool isDark,
   ) {
+    final topPadding = MediaQuery.of(context).padding.top;
     final subject = _selectedSubject;
     final theme = _currentTheme;
     final streamLabel = subject != null
@@ -1668,490 +1769,422 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         ? (isAmharic && subject.nameAm.isNotEmpty
             ? subject.nameAm
             : subject.nameEn)
-        : (isAmharic ? 'አጠቃላይ የፈተና ዝግጅት' : 'National Exam Studio');
+        : (isAmharic ? 'አጠቃላይ የፈተና ዝግጅት' : 'National Exam Practice');
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(18),
+      width: double.infinity,
       decoration: BoxDecoration(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
         gradient: LinearGradient(
-          colors: [theme.gradientStart, theme.gradientEnd],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+          colors: [
+            theme.gradientStart,
+            theme.gradientEnd,
+          ],
         ),
-        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: theme.gradientStart.withValues(alpha: 0.28),
-            blurRadius: 14,
-            offset: const Offset(0, 5),
+            color: theme.accent.withValues(alpha: 0.35),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          // Emblem / Symbol container
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.35),
-                width: 1.2,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
+        child: Stack(
+          children: [
+            // Top-left ambient glow
+            Positioned(
+              left: -35,
+              top: -35,
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.10),
+                ),
               ),
             ),
-            child: Center(
-              child: theme.symbol.isNotEmpty && theme.symbol.length <= 2
-                  ? Text(
-                      theme.symbol,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    )
-                  : Icon(
-                      theme.icon,
-                      color: Colors.white,
-                      size: 26,
-                    ),
+            // Bottom-right ambient glow
+            Positioned(
+              right: -30,
+              bottom: -30,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.12),
+                ),
+              ),
             ),
-          ),
-          const SizedBox(width: 14),
-          // Title and Badges
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2.5),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        '$gradeLabel • $streamLabel',
-                        style: const TextStyle(
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: 0.4,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 7, vertical: 2.5),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF10B981).withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color:
-                              const Color(0xFF6EE7B7).withValues(alpha: 0.45),
-                          width: 0.8,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+
+            // Content Container
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: topPadding > 0 ? topPadding + 12 : 20,
+                    left: isWide ? 48.0 : 16.0,
+                    right: isWide ? 48.0 : 16.0,
+                    bottom: 22.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Row 1: Active Subject Pill (Left) & Back Button (Right)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Icon(Icons.verified_rounded,
-                              color: Color(0xFF6EE7B7), size: 10.5),
-                          const SizedBox(width: 3),
-                          Text(
-                            isAmharic ? 'የጸደቀ' : 'MoE Verified',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFFE6FFFA),
+                          // Active Subject Pill
+                          InkWell(
+                            onTap: _subjects.length > 1
+                                ? () => _showSubjectPickerModal(context, isDark)
+                                : null,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.32),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (theme.symbol.isNotEmpty &&
+                                      theme.symbol.runes.length <= 2)
+                                    Text(
+                                      theme.symbol,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    )
+                                  else
+                                    Icon(
+                                      theme.icon,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    subjectTitle,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                  if (_subjects.length > 1) ...[
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      width: 1,
+                                      height: 12,
+                                      color:
+                                          Colors.white.withValues(alpha: 0.35),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Icon(
+                                      Icons.swap_horiz_rounded,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      isAmharic ? 'ቀይር' : 'Change',
+                                      style: TextStyle(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.92),
+                                        fontSize: 11.5,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // Back Button in top-right corner
+                          Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.22),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.25),
+                              ),
+                            ),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              icon: const Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              tooltip: isAmharic ? 'ተመለስ' : 'Back',
+                              onPressed: () {
+                                if (Navigator.of(context).canPop()) {
+                                  Navigator.of(context).pop();
+                                } else {
+                                  context.go('/home');
+                                }
+                              },
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  subjectTitle,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  isAmharic
-                      ? 'ብጁ የዓመት፣ የምዕራፍና የጥያቄ ብዛት ምርጫ'
-                      : 'Customized units, archive years & practice parameters',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white.withValues(alpha: 0.88),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Switch Subject Action button
-          if (_subjects.length > 1)
-            InkWell(
-              onTap: () => _showSubjectPickerModal(context, isDark),
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.16),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.28),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.swap_horiz_rounded,
-                        color: Colors.white, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      isAmharic ? 'ቀይር' : 'Change',
-                      style: const TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
+                      const SizedBox(height: 16),
 
-  // ==========================================
-  // 1. TOP FIXED HEADER
-  // ==========================================
-  Widget _buildTopFixedHeader(BuildContext context, bool isDark) {
-    return Container(
-      height: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF111827).withValues(alpha: 0.95)
-            : Colors.white.withValues(alpha: 0.95),
-        border: Border(
-          bottom: BorderSide(
-            color: isDark
-                ? const Color(0xFF1E293B)
-                : surfaceVariant.withValues(alpha: 0.4),
-          ),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              if (Navigator.of(context).canPop())
-                IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded),
-                  onPressed: () => Navigator.of(context).pop(),
-                  tooltip: 'Back',
-                  padding: EdgeInsets.zero,
-                  constraints:
-                      const BoxConstraints(minWidth: 36, minHeight: 36),
-                ),
-              const SizedBox(width: 4),
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: activePrimary,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: activePrimary.withValues(alpha: 0.25),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: activeSymbol.isNotEmpty && activeSymbol.length <= 2
-                      ? Text(
-                          activeSymbol,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      : Icon(activeIcon, color: onPrimary, size: 22),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'FidelLearn',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.4,
-                      color: isDark ? Colors.white : primarySpruce,
-                    ),
-                  ),
-                  Text(
-                    'EXCELLENCE PREP',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
-                      color: isDark ? Colors.white60 : onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Stack(
-                children: [
-                  IconButton(
-                    icon:
-                        const Icon(Icons.notifications_none_rounded, size: 22),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('No new notifications')),
-                      );
-                    },
-                    tooltip: 'Notifications',
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: secondaryContainer,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color:
-                              isDark ? const Color(0xFF111827) : Colors.white,
-                          width: 1.5,
+                      // Row 2: Primary Headline
+                      Text(
+                        isAmharic ? 'ብጁ የፈተና ልምምድ' : 'Custom Exam Practice',
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -0.4,
+                          color: Colors.white,
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 4),
-              InkWell(
-                onTap: () => context.push('/profile'),
-                borderRadius: BorderRadius.circular(999),
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  decoration: const BoxDecoration(
-                    color: primarySpruce,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.person_rounded,
-                      color: Colors.white, size: 20),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+                      const SizedBox(height: 8),
 
-  // ==========================================
-  // 2. HEADER & MODE SWITCHER
-  // ==========================================
-  Widget _buildHeaderAndModeSwitcher(bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Custom Exam Practice',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.5,
-            color: isDark ? Colors.white : onSurfaceLight,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Text(
-              'EUEE',
-              style: TextStyle(
-                fontSize: 12.5,
-                fontWeight: FontWeight.bold,
-                color: isDark ? activeAccent : activePrimary,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: Text(
-                '·',
-                style: TextStyle(
-                  color: isDark ? Colors.white38 : outlineVariant,
-                  fontWeight: FontWeight.bold,
+                      // Curriculum & Verification Metadata Badges (Flush Left)
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.22),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'EUEE',
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.16),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '$gradeLabel • $streamLabel',
+                              style: const TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF10B981)
+                                  .withValues(alpha: 0.30),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: const Color(0xFF6EE7B7)
+                                    .withValues(alpha: 0.5),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.verified_rounded,
+                                  color: Color(0xFF6EE7B7),
+                                  size: 11,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isAmharic ? 'ሚኒስቴር-ተስማሚ' : 'MoE Verified',
+                                  style: const TextStyle(
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFFD1FAE5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 18),
+
+                      // Row 3: Segmented Mode Switcher (Self-Paced vs Timed Exam)
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.22),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.20),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  if (_isTimed) {
+                                    setState(() => _isTimed = false);
+                                  }
+                                },
+                                borderRadius: BorderRadius.circular(999),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 180),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 9),
+                                  decoration: BoxDecoration(
+                                    color: !_isTimed
+                                        ? Colors.white
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(999),
+                                    boxShadow: !_isTimed
+                                        ? [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withValues(alpha: 0.15),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ]
+                                        : null,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.psychology_rounded,
+                                        size: 18,
+                                        color: !_isTimed
+                                            ? theme.primary
+                                            : Colors.white
+                                                .withValues(alpha: 0.85),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        isAmharic ? 'በራስ ፍጥነት' : 'Self-Paced',
+                                        style: TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: !_isTimed
+                                              ? FontWeight.w800
+                                              : FontWeight.w600,
+                                          color: !_isTimed
+                                              ? const Color(0xFF0F172A)
+                                              : Colors.white
+                                                  .withValues(alpha: 0.90),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  if (!_isTimed) {
+                                    setState(() => _isTimed = true);
+                                  }
+                                },
+                                borderRadius: BorderRadius.circular(999),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 180),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 9),
+                                  decoration: BoxDecoration(
+                                    color: _isTimed
+                                        ? Colors.white
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(999),
+                                    boxShadow: _isTimed
+                                        ? [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withValues(alpha: 0.15),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ]
+                                        : null,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.timer_outlined,
+                                        size: 18,
+                                        color: _isTimed
+                                            ? theme.primary
+                                            : Colors.white
+                                                .withValues(alpha: 0.85),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        isAmharic
+                                            ? 'በጊዜ የተገደበ ፈተና'
+                                            : 'Timed Exam',
+                                        style: TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: _isTimed
+                                              ? FontWeight.w800
+                                              : FontWeight.w600,
+                                          color: _isTimed
+                                              ? const Color(0xFF0F172A)
+                                              : Colors.white
+                                                  .withValues(alpha: 0.90),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            Text(
-              'Ministry Aligned Archive',
-              style: TextStyle(
-                fontSize: 12.5,
-                fontWeight: FontWeight.w500,
-                color: isDark ? Colors.white60 : onSurfaceVariant,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        // Segmented Mode Switcher (Self-Paced vs Timed Exam)
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow,
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: isDark
-                  ? const Color(0xFF334155)
-                  : surfaceVariant.withValues(alpha: 0.5),
-            ),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _isTimed = false;
-                    });
-                  },
-                  borderRadius: BorderRadius.circular(999),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    padding: const EdgeInsets.symmetric(vertical: 9),
-                    decoration: BoxDecoration(
-                      color: !_isTimed
-                          ? (isDark ? const Color(0xFF0F172A) : Colors.white)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(999),
-                      boxShadow: !_isTimed
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.06),
-                                blurRadius: 4,
-                                offset: const Offset(0, 1),
-                              ),
-                            ]
-                          : null,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.psychology_rounded,
-                          size: 18,
-                          color: !_isTimed
-                              ? (isDark ? activeAccent : activePrimary)
-                              : (isDark ? Colors.white60 : onSurfaceVariant),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Self-Paced',
-                          style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight:
-                                !_isTimed ? FontWeight.w700 : FontWeight.w500,
-                            color: !_isTimed
-                                ? (isDark ? Colors.white : onSurfaceLight)
-                                : (isDark ? Colors.white60 : onSurfaceVariant),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _isTimed = true;
-                    });
-                  },
-                  borderRadius: BorderRadius.circular(999),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    padding: const EdgeInsets.symmetric(vertical: 9),
-                    decoration: BoxDecoration(
-                      color: _isTimed
-                          ? (isDark ? const Color(0xFF0F172A) : Colors.white)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(999),
-                      boxShadow: _isTimed
-                          ? [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.06),
-                                blurRadius: 4,
-                                offset: const Offset(0, 1),
-                              ),
-                            ]
-                          : null,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.timer_outlined,
-                          size: 18,
-                          color: _isTimed
-                              ? (isDark ? activeAccent : activePrimary)
-                              : (isDark ? Colors.white60 : onSurfaceVariant),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Timed Exam',
-                          style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight:
-                                _isTimed ? FontWeight.w700 : FontWeight.w500,
-                            color: _isTimed
-                                ? (isDark ? Colors.white : onSurfaceLight)
-                                : (isDark ? Colors.white60 : onSurfaceVariant),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -2163,19 +2196,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final unit = _selectedUnit;
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF111827) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark
-              ? const Color(0xFF1E293B)
-              : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
+          width: 1.2,
         ),
         boxShadow: [
+          if (!isDark)
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-3, -3),
+              blurRadius: 8,
+            ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.40)
+                : const Color(0xFF0F172A).withValues(alpha: 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: activePrimary.withValues(alpha: isDark ? 0.08 : 0.04),
+            blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
@@ -2183,44 +2229,106 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
+          // Header Row: Subject Card Icon + Title + Step 1 of 2 Neumorphic Badge
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Container(
-                    width: 10,
-                    height: 10,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
-                      color: activePrimary,
-                      shape: BoxShape.circle,
+                      color:
+                          activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: activePrimary.withValues(
+                            alpha: isDark ? 0.40 : 0.20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: activePrimary.withValues(alpha: 0.12),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.auto_stories_rounded,
+                        color: isDark ? activeAccent : activePrimary,
+                        size: 20,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 12),
                   Text(
                     'Curriculum Scope',
                     style: TextStyle(
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.3,
                       color: isDark ? Colors.white : onSurfaceLight,
                     ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow,
+                  color: isDark
+                      ? const Color(0xFF1E293B)
+                      : const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(999),
-                ),
-                child: Text(
-                  'Step 1 of 2',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white70 : onSurfaceVariant,
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
                   ),
+                  boxShadow: [
+                    if (!isDark)
+                      const BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-1, -1),
+                        blurRadius: 2,
+                      ),
+                    BoxShadow(
+                      color:
+                          Colors.black.withValues(alpha: isDark ? 0.20 : 0.04),
+                      offset: const Offset(1, 1),
+                      blurRadius: 3,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: activePrimary,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: activePrimary.withValues(alpha: 0.5),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Step 1 of 2',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white70 : onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -2232,49 +2340,89 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             'Target Grade Level',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white60 : onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+              color: isDark ? Colors.white70 : onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 7),
           InkWell(
             onTap: () => _showGradePickerModal(context, isDark),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF1E293B)
-                    : surfaceContainerLow.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(12),
+                color:
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF334155) : Colors.transparent,
+                  color: isDark
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0),
                 ),
+                boxShadow: [
+                  if (!isDark)
+                    const BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-1, -1),
+                      blurRadius: 3,
+                    ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.20 : 0.03),
+                    offset: const Offset(1, 2),
+                    blurRadius: 4,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.school_rounded,
-                          color: activePrimary, size: 22),
-                      const SizedBox(width: 10),
+                      Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          color: activePrimary.withValues(
+                              alpha: isDark ? 0.20 : 0.10),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.school_rounded,
+                          color: isDark ? activeAccent : activePrimary,
+                          size: 19,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
                       Text(
                         _selectedGrade != null
                             ? 'Grade $_selectedGrade (Secondary / EUEE Scope)'
                             : 'All Grades (9-12 Scope)',
                         style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
                           color: isDark ? Colors.white : onSurfaceLight,
                         ),
                       ),
                     ],
                   ),
-                  Icon(
-                    Icons.expand_more_rounded,
-                    color: isDark ? Colors.white60 : onSurfaceVariant,
-                    size: 20,
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.expand_more_rounded,
+                      color: isDark ? Colors.white60 : onSurfaceVariant,
+                      size: 18,
+                    ),
                   ),
                 ],
               ),
@@ -2287,24 +2435,39 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             'Subject',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white60 : onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+              color: isDark ? Colors.white70 : onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 7),
           InkWell(
             onTap: () => _showSubjectPickerModal(context, isDark),
             borderRadius: BorderRadius.circular(14),
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF1E293B)
-                    : surfaceContainerLow.withValues(alpha: 0.7),
+                color:
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF334155) : Colors.transparent,
+                  color: isDark
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0),
                 ),
+                boxShadow: [
+                  if (!isDark)
+                    const BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-1, -1),
+                      blurRadius: 3,
+                    ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.20 : 0.03),
+                    offset: const Offset(1, 2),
+                    blurRadius: 4,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2316,11 +2479,28 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: activePrimary,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                activePrimary,
+                                activePrimary.withValues(alpha: 0.85),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.25),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: activePrimary.withValues(alpha: 0.30),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
                           ),
                           child: activeSymbol.isNotEmpty &&
-                                  activeSymbol.length <= 2
+                                  activeSymbol.runes.length <= 2
                               ? Center(
                                   child: Text(
                                     activeSymbol,
@@ -2379,9 +2559,13 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 7, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color:
-                                          activePrimary.withValues(alpha: 0.12),
+                                      color: activePrimary.withValues(
+                                          alpha: isDark ? 0.20 : 0.10),
                                       borderRadius: BorderRadius.circular(999),
+                                      border: Border.all(
+                                        color: activePrimary.withValues(
+                                            alpha: isDark ? 0.35 : 0.20),
+                                      ),
                                     ),
                                     child: Text(
                                       'Core Subject · EUEE',
@@ -2402,10 +2586,23 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    color: isDark ? Colors.white60 : onSurfaceVariant,
-                    size: 20,
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      color: isDark ? Colors.white60 : onSurfaceVariant,
+                      size: 18,
+                    ),
                   ),
                 ],
               ),
@@ -2418,24 +2615,39 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             'Unit Coverage',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white60 : onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+              color: isDark ? Colors.white70 : onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 7),
           InkWell(
             onTap: () => _showUnitPickerModal(context, isDark),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF1E293B)
-                    : surfaceContainerLow.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(12),
+                color:
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF334155) : Colors.transparent,
+                  color: isDark
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0),
                 ),
+                boxShadow: [
+                  if (!isDark)
+                    const BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(-1, -1),
+                      blurRadius: 3,
+                    ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.20 : 0.03),
+                    offset: const Offset(1, 2),
+                    blurRadius: 4,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2444,21 +2656,25 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     child: Row(
                       children: [
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 36,
+                          height: 36,
                           decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xFF334155)
-                                : surfaceVariant,
-                            borderRadius: BorderRadius.circular(8),
+                            color:
+                                isDark ? const Color(0xFF0F172A) : Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0xFF334155)
+                                  : const Color(0xFFE2E8F0),
+                            ),
                           ),
                           child: Icon(
                             Icons.menu_book_rounded,
-                            size: 18,
-                            color: isDark ? Colors.white70 : onSurfaceLight,
+                            size: 19,
+                            color: isDark ? activeAccent : activePrimary,
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2469,11 +2685,12 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                     : 'All Units (Comprehensive Examination)',
                                 style: TextStyle(
                                   fontSize: 13.5,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                   color: isDark ? Colors.white : onSurfaceLight,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              const SizedBox(height: 2),
                               Text(
                                 unit != null
                                     ? unit.titleAm
@@ -2491,10 +2708,23 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.expand_more_rounded,
-                    color: isDark ? Colors.white60 : onSurfaceVariant,
-                    size: 18,
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.expand_more_rounded,
+                      color: isDark ? Colors.white60 : onSurfaceVariant,
+                      size: 18,
+                    ),
                   ),
                 ],
               ),
@@ -2508,22 +2738,42 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               'Topic Coverage (ንዑስ ርዕስ)',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isDark ? Colors.white60 : onSurfaceVariant,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.2,
+                color: isDark ? Colors.white70 : onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 7),
             InkWell(
               onTap: () => _showTopicPickerModal(context, isDark),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                   color: isDark
                       ? const Color(0xFF1E293B)
-                      : surfaceContainerLow.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(12),
+                      : const Color(0xFFF8FAFC),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
+                  ),
+                  boxShadow: [
+                    if (!isDark)
+                      const BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-1, -1),
+                        blurRadius: 3,
+                      ),
+                    BoxShadow(
+                      color:
+                          Colors.black.withValues(alpha: isDark ? 0.20 : 0.03),
+                      offset: const Offset(1, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2531,16 +2781,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     Expanded(
                       child: Row(
                         children: [
-                          Icon(Icons.topic_outlined,
-                              size: 18, color: activePrimary),
-                          const SizedBox(width: 10),
+                          Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? const Color(0xFF0F172A)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: isDark
+                                    ? const Color(0xFF334155)
+                                    : const Color(0xFFE2E8F0),
+                              ),
+                            ),
+                            child: Icon(Icons.topic_outlined,
+                                size: 19,
+                                color: isDark ? activeAccent : activePrimary),
+                          ),
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               _selectedTopic?.titleEn ??
                                   'All Topics in Selected Unit',
                               style: TextStyle(
                                 fontSize: 13.5,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                                 color: isDark ? Colors.white : onSurfaceLight,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -2549,10 +2815,23 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         ],
                       ),
                     ),
-                    Icon(
-                      Icons.expand_more_rounded,
-                      color: isDark ? Colors.white60 : onSurfaceVariant,
-                      size: 18,
+                    Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFF334155)
+                              : const Color(0xFFE2E8F0),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.expand_more_rounded,
+                        color: isDark ? Colors.white60 : onSurfaceVariant,
+                        size: 18,
+                      ),
                     ),
                   ],
                 ),
@@ -2569,19 +2848,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   // ==========================================
   Widget _buildPastPapersCard(BuildContext context, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF111827) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark
-              ? const Color(0xFF1E293B)
-              : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
+          width: 1.2,
         ),
         boxShadow: [
+          if (!isDark)
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-3, -3),
+              blurRadius: 8,
+            ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.40)
+                : const Color(0xFF0F172A).withValues(alpha: 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: secondaryContainer.withValues(alpha: isDark ? 0.08 : 0.04),
+            blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
@@ -2589,65 +2881,135 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
+          // Header Row: Subject Card Style Icon + Title + Step 2 of 2 Badge
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: secondaryContainer,
-                      shape: BoxShape.circle,
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: secondaryContainer.withValues(
+                          alpha: isDark ? 0.20 : 0.10),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: secondaryContainer.withValues(
+                            alpha: isDark ? 0.40 : 0.20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: secondaryContainer.withValues(alpha: 0.12),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.inventory_2_rounded,
+                        color: secondaryContainer,
+                        size: 20,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Past Papers',
-                    style: TextStyle(
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : onSurfaceLight,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Archive',
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white60 : onSurfaceVariant,
-                    ),
+                  const SizedBox(width: 12),
+                  Row(
+                    children: [
+                      Text(
+                        'Past Papers',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.3,
+                          color: isDark ? Colors.white : onSurfaceLight,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Archive',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white60 : onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow,
+                  color: isDark
+                      ? const Color(0xFF1E293B)
+                      : const Color(0xFFF1F5F9),
                   borderRadius: BorderRadius.circular(999),
-                ),
-                child: Text(
-                  'Step 2 of 2',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white70 : onSurfaceVariant,
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
                   ),
+                  boxShadow: [
+                    if (!isDark)
+                      const BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-1, -1),
+                        blurRadius: 2,
+                      ),
+                    BoxShadow(
+                      color:
+                          Colors.black.withValues(alpha: isDark ? 0.20 : 0.04),
+                      offset: const Offset(1, 1),
+                      blurRadius: 3,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: secondaryContainer,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: secondaryContainer,
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Step 2 of 2',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white70 : onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
 
-          // Filter Mode Switcher (Year Range vs Single Year)
+          // Neumorphic Filter Mode Switcher (Year Range vs Single Year)
           Container(
-            padding: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E293B) : surfaceContainerLow,
-              borderRadius: BorderRadius.circular(10),
+              color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color:
+                    isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+              ),
             ),
             child: Row(
               children: [
@@ -2657,21 +3019,29 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       setState(() => _yearMode = ExamYearFilterMode.range);
                       _updateMatchingQuestionCount();
                     },
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    borderRadius: BorderRadius.circular(10),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      padding: const EdgeInsets.symmetric(vertical: 9),
                       decoration: BoxDecoration(
                         color: _yearMode == ExamYearFilterMode.range
                             ? (isDark ? const Color(0xFF0F172A) : Colors.white)
                             : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: _yearMode == ExamYearFilterMode.range
                             ? [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.05),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
+                                  color: Colors.black
+                                      .withValues(alpha: isDark ? 0.35 : 0.08),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
                                 ),
+                                if (!isDark)
+                                  const BoxShadow(
+                                    color: Colors.white,
+                                    blurRadius: 2,
+                                    offset: Offset(0, -1),
+                                  ),
                               ]
                             : null,
                       ),
@@ -2681,8 +3051,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: _yearMode == ExamYearFilterMode.range
-                                ? FontWeight.bold
-                                : FontWeight.w500,
+                                ? FontWeight.w800
+                                : FontWeight.w600,
                             color: _yearMode == ExamYearFilterMode.range
                                 ? (isDark ? Colors.white : onSurfaceLight)
                                 : (isDark ? Colors.white60 : onSurfaceVariant),
@@ -2698,21 +3068,29 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       setState(() => _yearMode = ExamYearFilterMode.single);
                       _updateMatchingQuestionCount();
                     },
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    borderRadius: BorderRadius.circular(10),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      padding: const EdgeInsets.symmetric(vertical: 9),
                       decoration: BoxDecoration(
                         color: _yearMode == ExamYearFilterMode.single
                             ? (isDark ? const Color(0xFF0F172A) : Colors.white)
                             : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: _yearMode == ExamYearFilterMode.single
                             ? [
                                 BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.05),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
+                                  color: Colors.black
+                                      .withValues(alpha: isDark ? 0.35 : 0.08),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
                                 ),
+                                if (!isDark)
+                                  const BoxShadow(
+                                    color: Colors.white,
+                                    blurRadius: 2,
+                                    offset: Offset(0, -1),
+                                  ),
                               ]
                             : null,
                       ),
@@ -2722,8 +3100,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: _yearMode == ExamYearFilterMode.single
-                                ? FontWeight.bold
-                                : FontWeight.w500,
+                                ? FontWeight.w800
+                                : FontWeight.w600,
                             color: _yearMode == ExamYearFilterMode.single
                                 ? (isDark ? Colors.white : onSurfaceLight)
                                 : (isDark ? Colors.white60 : onSurfaceVariant),
@@ -2746,19 +3124,33 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   child: InkWell(
                     onTap: () => _showYearPickerModal(context, isDark,
                         isStartYear: true),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: isDark
                             ? const Color(0xFF1E293B)
-                            : surfaceContainerLow.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(12),
+                            : const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isDark
                               ? const Color(0xFF334155)
-                              : outlineVariant.withValues(alpha: 0.3),
+                              : const Color(0xFFE2E8F0),
                         ),
+                        boxShadow: [
+                          if (!isDark)
+                            const BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(-1, -1),
+                              blurRadius: 3,
+                            ),
+                          BoxShadow(
+                            color: Colors.black
+                                .withValues(alpha: isDark ? 0.20 : 0.03),
+                            offset: const Offset(1, 2),
+                            blurRadius: 4,
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2767,11 +3159,11 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                             'From Year',
                             style: TextStyle(
                               fontSize: 11.5,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: isDark ? Colors.white60 : onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 6),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -2780,30 +3172,46 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                   Text(
                                     '$_rangeStartYear',
                                     style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
                                       color: isDark
                                           ? Colors.white
                                           : onSurfaceLight,
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
+                                  const SizedBox(width: 5),
                                   Text(
                                     'E.C.',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       color:
                                           isDark ? activeAccent : activePrimary,
                                     ),
                                   ),
                                 ],
                               ),
-                              Icon(
-                                Icons.calendar_month_rounded,
-                                size: 18,
-                                color:
-                                    isDark ? Colors.white60 : onSurfaceVariant,
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? const Color(0xFF0F172A)
+                                      : Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isDark
+                                        ? const Color(0xFF334155)
+                                        : const Color(0xFFE2E8F0),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.calendar_month_rounded,
+                                  size: 16,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : onSurfaceVariant,
+                                ),
                               ),
                             ],
                           ),
@@ -2817,19 +3225,33 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   child: InkWell(
                     onTap: () => _showYearPickerModal(context, isDark,
                         isStartYear: false),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                     child: Container(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: isDark
                             ? const Color(0xFF1E293B)
-                            : surfaceContainerLow.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(12),
+                            : const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isDark
                               ? const Color(0xFF334155)
-                              : outlineVariant.withValues(alpha: 0.3),
+                              : const Color(0xFFE2E8F0),
                         ),
+                        boxShadow: [
+                          if (!isDark)
+                            const BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(-1, -1),
+                              blurRadius: 3,
+                            ),
+                          BoxShadow(
+                            color: Colors.black
+                                .withValues(alpha: isDark ? 0.20 : 0.03),
+                            offset: const Offset(1, 2),
+                            blurRadius: 4,
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2838,11 +3260,11 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                             'To Year',
                             style: TextStyle(
                               fontSize: 11.5,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: isDark ? Colors.white60 : onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 6),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -2851,30 +3273,46 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                   Text(
                                     '$_rangeEndYear',
                                     style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
                                       color: isDark
                                           ? Colors.white
                                           : onSurfaceLight,
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
+                                  const SizedBox(width: 5),
                                   Text(
                                     'E.C.',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       color:
                                           isDark ? activeAccent : activePrimary,
                                     ),
                                   ),
                                 ],
                               ),
-                              Icon(
-                                Icons.calendar_month_rounded,
-                                size: 18,
-                                color:
-                                    isDark ? Colors.white60 : onSurfaceVariant,
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? const Color(0xFF0F172A)
+                                      : Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isDark
+                                        ? const Color(0xFF334155)
+                                        : const Color(0xFFE2E8F0),
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.calendar_month_rounded,
+                                  size: 16,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : onSurfaceVariant,
+                                ),
                               ),
                             ],
                           ),
@@ -2888,19 +3326,33 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           else
             InkWell(
               onTap: () => _showSingleYearPickerModal(context, isDark),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: isDark
                       ? const Color(0xFF1E293B)
-                      : surfaceContainerLow.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(12),
+                      : const Color(0xFFF8FAFC),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: isDark
                         ? const Color(0xFF334155)
-                        : outlineVariant.withValues(alpha: 0.3),
+                        : const Color(0xFFE2E8F0),
                   ),
+                  boxShadow: [
+                    if (!isDark)
+                      const BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(-1, -1),
+                        blurRadius: 3,
+                      ),
+                    BoxShadow(
+                      color:
+                          Colors.black.withValues(alpha: isDark ? 0.20 : 0.03),
+                      offset: const Offset(1, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2910,26 +3362,39 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         Text(
                           '$_selectedSingleYear',
                           style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w900,
                             color: isDark ? Colors.white : onSurfaceLight,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Text(
                           'E.C. National Examination',
                           style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w700,
                             color: isDark ? activeAccent : activePrimary,
                           ),
                         ),
                       ],
                     ),
-                    Icon(
-                      Icons.calendar_month_rounded,
-                      size: 20,
-                      color: isDark ? Colors.white60 : onSurfaceVariant,
+                    Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFF334155)
+                              : const Color(0xFFE2E8F0),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.calendar_month_rounded,
+                        size: 16,
+                        color: isDark ? Colors.white60 : onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -3002,18 +3467,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       },
       borderRadius: BorderRadius.circular(999),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        duration: const Duration(milliseconds: 160),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7.5),
         decoration: BoxDecoration(
           color: isActive
-              ? (isDark
-                  ? activePrimary.withValues(alpha: 0.25)
-                  : activeSurfaceTint)
-              : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
+              ? (isDark ? activePrimary.withValues(alpha: 0.28) : activePrimary)
+              : (isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9)),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
-            color: isActive ? activePrimary : Colors.transparent,
+            color: isActive
+                ? (isDark ? activePrimary : Colors.transparent)
+                : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
           ),
+          boxShadow: [
+            if (isActive)
+              BoxShadow(
+                color: activePrimary.withValues(alpha: isDark ? 0.30 : 0.25),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              )
+            else if (!isDark)
+              const BoxShadow(
+                color: Colors.white,
+                offset: Offset(-1, -1),
+                blurRadius: 2,
+              ),
+          ],
         ),
         child: Text(
           label,
@@ -3021,7 +3500,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             fontSize: 12,
             fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
             color: isActive
-                ? (isDark ? activeAccent : activePrimary)
+                ? (isDark ? activeAccent : Colors.white)
                 : (isDark ? Colors.white70 : onSurfaceVariant),
           ),
         ),
@@ -3032,44 +3511,63 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   Widget _buildLiveQuestionsIndicator(bool isDark) {
     final hasQuestions = _matchingQuestionCount > 0;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         color: hasQuestions
             ? (isDark
-                ? activePrimary.withValues(alpha: 0.18)
-                : activeSurfaceTint)
+                ? const Color(0xFF064E3B).withValues(alpha: 0.40)
+                : const Color(0xFFECFDF5))
             : (isDark
                 ? const Color(0xFF78350F).withValues(alpha: 0.25)
                 : const Color(0xFFFFFBEB)),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: hasQuestions
               ? (isDark
-                  ? activePrimary.withValues(alpha: 0.5)
-                  : activePrimary.withValues(alpha: 0.25))
+                  ? const Color(0xFF059669).withValues(alpha: 0.50)
+                  : const Color(0xFFA7F3D0))
               : (isDark ? const Color(0xFFD97706) : const Color(0xFFFDE68A)),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: hasQuestions
+                ? const Color(0xFF10B981).withValues(alpha: 0.08)
+                : Colors.black.withValues(alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
           if (_isCountingQuestions)
             SizedBox(
-              width: 15,
-              height: 15,
+              width: 16,
+              height: 16,
               child: CircularProgressIndicator(
                   strokeWidth: 2, color: activePrimary),
             )
           else
-            Icon(
-              hasQuestions
-                  ? Icons.check_circle_rounded
-                  : Icons.info_outline_rounded,
-              size: 17,
-              color: hasQuestions
-                  ? (isDark ? activeAccent : activePrimary)
-                  : const Color(0xFFD97706),
+            Container(
+              width: 26,
+              height: 26,
+              decoration: BoxDecoration(
+                color: hasQuestions
+                    ? const Color(0xFF10B981).withValues(alpha: 0.20)
+                    : const Color(0xFFD97706).withValues(alpha: 0.20),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                hasQuestions
+                    ? Icons.check_circle_rounded
+                    : Icons.info_outline_rounded,
+                size: 16,
+                color: hasQuestions
+                    ? const Color(0xFF10B981)
+                    : const Color(0xFFD97706),
+              ),
             ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               _isCountingQuestions
@@ -3078,10 +3576,12 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       ? '✓ $_matchingQuestionCount Verified Questions match your criteria'
                       : 'No questions match this combination. Try broadening the year range or units.'),
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+                fontSize: 12.5,
+                fontWeight: FontWeight.w700,
                 color: hasQuestions
-                    ? (isDark ? activeAccent : activePrimary)
+                    ? (isDark
+                        ? const Color(0xFFD1FAE5)
+                        : const Color(0xFF065F46))
                     : (isDark
                         ? const Color(0xFFFCD34D)
                         : const Color(0xFF92400E)),
@@ -3098,19 +3598,32 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   // ==========================================
   Widget _buildExamParametersCard(BuildContext context, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF111827) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark
-              ? const Color(0xFF1E293B)
-              : surfaceVariant.withValues(alpha: 0.4),
+          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
+          width: 1.2,
         ),
         boxShadow: [
+          if (!isDark)
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-3, -3),
+              blurRadius: 8,
+            ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.40)
+                : const Color(0xFF0F172A).withValues(alpha: 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: activePrimary.withValues(alpha: isDark ? 0.08 : 0.04),
+            blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
@@ -3119,22 +3632,67 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: activePrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(Icons.tune_rounded, color: activePrimary, size: 18),
+              Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color:
+                          activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: activePrimary.withValues(
+                            alpha: isDark ? 0.40 : 0.20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: activePrimary.withValues(alpha: 0.12),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.tune_rounded,
+                        color: isDark ? activeAccent : activePrimary,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Exam Parameters',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.3,
+                      color: isDark ? Colors.white : onSurfaceLight,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              Text(
-                'Exam Parameters',
-                style: TextStyle(
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : onSurfaceLight,
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(
+                    color:
+                        activePrimary.withValues(alpha: isDark ? 0.35 : 0.20),
+                  ),
+                ),
+                child: Text(
+                  '$_questionCount Questions',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? activeAccent : activePrimary,
+                  ),
                 ),
               ),
             ],
@@ -3148,24 +3706,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               Text(
                 'Question Count',
                 style: TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white60 : onSurfaceVariant,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: activePrimary.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: Text(
-                  '$_questionCount Questions',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? activeAccent : activePrimary,
-                  ),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                  color: isDark ? Colors.white70 : onSurfaceVariant,
                 ),
               ),
             ],
@@ -3179,22 +3723,44 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: InkWell(
                     onTap: () => setState(() => _questionCount = preset),
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    borderRadius: BorderRadius.circular(10),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 160),
+                      padding: const EdgeInsets.symmetric(vertical: 8.5),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? activePrimary
                             : (isDark
                                 ? const Color(0xFF1E293B)
-                                : surfaceContainerLow),
-                        borderRadius: BorderRadius.circular(8),
+                                : const Color(0xFFF1F5F9)),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: isSelected
+                              ? activePrimary
+                              : (isDark
+                                  ? const Color(0xFF334155)
+                                  : const Color(0xFFE2E8F0)),
+                        ),
+                        boxShadow: [
+                          if (isSelected)
+                            BoxShadow(
+                              color: activePrimary.withValues(alpha: 0.30),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            )
+                          else if (!isDark)
+                            const BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(-1, -1),
+                              blurRadius: 2,
+                            ),
+                        ],
                       ),
                       child: Center(
                         child: Text(
                           '$preset Qs',
                           style: TextStyle(
-                            fontSize: 11.5,
+                            fontSize: 12,
                             fontWeight:
                                 isSelected ? FontWeight.w800 : FontWeight.w600,
                             color: isSelected
@@ -3214,9 +3780,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: activePrimary,
               inactiveTrackColor:
-                  isDark ? const Color(0xFF334155) : surfaceContainerLow,
+                  isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
               thumbColor: activePrimary,
-              trackHeight: 4,
+              trackHeight: 5,
             ),
             child: Slider(
               value: _questionCount.toDouble().clamp(5.0, 50.0),
@@ -3229,35 +3795,37 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
           // Timed Mode Settings
           if (_isTimed) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Time Limit',
                   style: TextStyle(
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white60 : onSurfaceVariant,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
+                    color: isDark ? Colors.white70 : onSurfaceVariant,
                   ),
                 ),
                 Text(
                   '$_timeLimitMinutes min (${(_timeLimitMinutes * 60 ~/ _questionCount)}s / q)',
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w800,
                     color: isDark ? activeAccent : activePrimary,
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 4),
             SliderTheme(
               data: SliderTheme.of(context).copyWith(
                 activeTrackColor: activePrimary,
                 inactiveTrackColor:
-                    isDark ? const Color(0xFF334155) : surfaceContainerLow,
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
                 thumbColor: activePrimary,
-                trackHeight: 4,
+                trackHeight: 5,
               ),
               child: Slider(
                 value: _timeLimitMinutes.toDouble(),
@@ -3271,13 +3839,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           ],
 
           // Difficulty Selector
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Text(
             'Difficulty Level',
             style: TextStyle(
-              fontSize: 12.5,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white60 : onSurfaceVariant,
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
+              color: isDark ? Colors.white70 : onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
@@ -3305,20 +3874,42 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           setState(() => _selectedDifficulty = val);
           _updateMatchingQuestionCount();
         },
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+        borderRadius: BorderRadius.circular(10),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 160),
+          padding: const EdgeInsets.symmetric(vertical: 8.5),
           decoration: BoxDecoration(
             color: isSelected
                 ? activePrimary
-                : (isDark ? const Color(0xFF1E293B) : surfaceContainerLow),
-            borderRadius: BorderRadius.circular(8),
+                : (isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9)),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected
+                  ? activePrimary
+                  : (isDark
+                      ? const Color(0xFF334155)
+                      : const Color(0xFFE2E8F0)),
+            ),
+            boxShadow: [
+              if (isSelected)
+                BoxShadow(
+                  color: activePrimary.withValues(alpha: 0.30),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                )
+              else if (!isDark)
+                const BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-1, -1),
+                  blurRadius: 2,
+                ),
+            ],
           ),
           child: Center(
             child: Text(
               label,
               style: TextStyle(
-                fontSize: 11.5,
+                fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                 color: isSelected
                     ? Colors.white
@@ -3346,15 +3937,37 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         : 'Self-Paced ($_questionCount Questions)';
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF0F172A).withValues(alpha: 0.8)
-            : surfaceContainerLow.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? const Color(0xFF111827) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: activePrimary.withValues(alpha: 0.18),
+          color: isDark
+              ? activePrimary.withValues(alpha: 0.30)
+              : activePrimary.withValues(alpha: 0.20),
+          width: 1.2,
         ),
+        boxShadow: [
+          if (!isDark)
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-3, -3),
+              blurRadius: 8,
+            ),
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.40)
+                : const Color(0xFF0F172A).withValues(alpha: 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: activePrimary.withValues(alpha: isDark ? 0.12 : 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -3363,55 +3976,73 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.task_alt_rounded, size: 18, color: activePrimary),
-                  const SizedBox(width: 8),
+                  Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      color:
+                          activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.task_alt_rounded,
+                      size: 19,
+                      color: isDark ? activeAccent : activePrimary,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
                   Text(
                     'Your Practice',
                     style: TextStyle(
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
                       color: isDark ? Colors.white : onSurfaceLight,
                     ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
                 decoration: BoxDecoration(
-                  color: activePrimary.withValues(alpha: 0.12),
+                  color: const Color(0xFF10B981)
+                      .withValues(alpha: isDark ? 0.25 : 0.12),
                   borderRadius: BorderRadius.circular(999),
+                  border: Border.all(
+                    color: const Color(0xFF10B981).withValues(alpha: 0.30),
+                  ),
                 ),
                 child: Text(
                   'Ready',
                   style: TextStyle(
                     fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? activeAccent : activePrimary,
+                    fontWeight: FontWeight.w800,
+                    color: isDark
+                        ? const Color(0xFF6EE7B7)
+                        : const Color(0xFF059669),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Divider(
             height: 1,
-            color: isDark
-                ? const Color(0xFF334155)
-                : surfaceVariant.withValues(alpha: 0.6),
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           _buildSummaryRow(
             'Curriculum',
             'Grade ${_selectedGrade ?? 12} · $subName',
             isDark,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           _buildSummaryRow(
             'Papers',
             paperLabel,
             isDark,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           _buildSummaryRow(
             'Practice Mode',
             modeLabel,

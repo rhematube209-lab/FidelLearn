@@ -12,7 +12,8 @@ void main() {
       await repository.initializeSeedData();
     });
 
-    test('retrieves Biology questions mapped to Grade 9 New Curriculum', () async {
+    test('retrieves Biology questions mapped to Grade 9 New Curriculum',
+        () async {
       final g9BioQuestions = await repository.getQuestions(
         grade: 9,
         subjectId: 'biology_g9',
@@ -26,7 +27,8 @@ void main() {
       }
     });
 
-    test('filters 2013 Biology questions by Grade 9 Unit 5 (Human Health)', () async {
+    test('filters 2013 Biology questions by Grade 9 Unit 5 (Human Health)',
+        () async {
       final healthQuestions = await repository.getQuestions(
         grade: 9,
         subjectId: 'biology_g9',
@@ -40,7 +42,9 @@ void main() {
       }
     });
 
-    test('filters 2013 Biology questions by Grade 11 Unit 4 (Photosynthesis & Respiration)', () async {
+    test(
+        'filters 2013 Biology questions by Grade 11 Unit 4 (Photosynthesis & Respiration)',
+        () async {
       final energyQuestions = await repository.getQuestions(
         grade: 11,
         subjectId: 'biology_g11',
@@ -55,7 +59,9 @@ void main() {
       }
     });
 
-    test('filters 2013 Biology questions by Grade 12 Unit 2 (Evolution & Behavior)', () async {
+    test(
+        'filters 2013 Biology questions by Grade 12 Unit 2 (Evolution & Behavior)',
+        () async {
       final evoQuestions = await repository.getQuestions(
         grade: 12,
         subjectId: 'biology_g12',
@@ -69,7 +75,8 @@ void main() {
       }
     });
 
-    test('retrieves all 100 questions when practicing full 2013 exam paper', () async {
+    test('retrieves all 100 questions when practicing full 2013 exam paper',
+        () async {
       final fullExamQuestions = await repository.getQuestions(
         grade: 12,
         subjectId: 'biology_g12',

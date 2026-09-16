@@ -37,13 +37,21 @@ void main() {
         initialUser: user,
       );
 
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             authSessionStorageProvider.overrideWithValue(storage),
             authRepositoryProvider.overrideWithValue(authRepo),
-            contentRepositoryProvider
-                .overrideWithValue(LocalContentRepository()),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
             examRepositoryProvider.overrideWithValue(LocalExamRepository()),
             bookmarkRepositoryProvider
                 .overrideWithValue(LocalBookmarkRepository()),
@@ -58,9 +66,9 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Top Fixed Header
-      expect(find.text('FidelLearn'), findsOneWidget);
-      expect(find.text('EXCELLENCE PREP'), findsOneWidget);
+      // Edge-to-Edge Hero Card (Corner Back Button & MoE Verification Badge)
+      expect(find.byIcon(Icons.arrow_back_rounded), findsWidgets);
+      expect(find.text('MoE Verified'), findsOneWidget);
 
       // Page Title & Mode Switcher
       expect(find.text('Custom Exam Practice'), findsOneWidget);
@@ -125,13 +133,21 @@ void main() {
         initialUser: user,
       );
 
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
             authSessionStorageProvider.overrideWithValue(storage),
             authRepositoryProvider.overrideWithValue(authRepo),
-            contentRepositoryProvider
-                .overrideWithValue(LocalContentRepository()),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
             examRepositoryProvider.overrideWithValue(LocalExamRepository()),
           ],
           child: const MaterialApp(
@@ -295,6 +311,239 @@ void main() {
       // Verify Biology branding and emblem
       expect(find.text('Biology'), findsWidgets);
       expect(find.text('🧬'), findsWidgets);
+    });
+
+    testWidgets(
+        'adapts branding and pre-selects Physics when arriving from physics_g12',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'physics_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify Physics branding and emblem
+      expect(find.text('Physics'), findsWidgets);
+      expect(find.text('⚡'), findsWidgets);
+    });
+
+    testWidgets(
+        'adapts branding and pre-selects Chemistry when arriving from chemistry_g12',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'chemistry_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify Chemistry branding and emblem
+      expect(find.text('Chemistry'), findsWidgets);
+      expect(find.text('🧪'), findsWidgets);
+    });
+
+    testWidgets(
+        'adapts branding to History when arriving from history_g12 even if user is natural stream',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'history_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify History branding and emblem
+      expect(find.text('History'), findsWidgets);
+      expect(find.text('🏛️'), findsWidgets);
+    });
+
+    testWidgets(
+        'dynamically updates subject branding when widget initialSubjectId updates',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-12',
+        phoneNumber: '+251911000000',
+        displayName: 'Abebe Bikila',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: LocalContentRepository.getAllDefaultSubjects(grade: 12),
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'biology_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.text('Biology'), findsWidgets);
+      expect(find.text('🧬'), findsWidgets);
+
+      // Now update widget in-place to Physics
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+          ],
+          child: const MaterialApp(
+            home: ExamBuilderScreen(initialSubjectId: 'physics_g12'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.text('Physics'), findsWidgets);
+      expect(find.text('⚡'), findsWidgets);
     });
   });
 }

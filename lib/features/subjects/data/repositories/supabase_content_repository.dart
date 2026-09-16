@@ -40,6 +40,9 @@ class SupabaseContentRepository implements ContentRepository {
     int? grade,
     required String stream,
   }) async {
+    final localSubjects =
+        await _localFallback.getSubjects(grade: grade, stream: stream);
+
     final client = _client;
     if (client != null) {
       try {
@@ -56,14 +59,26 @@ class SupabaseContentRepository implements ContentRepository {
             .map((json) => Subject.fromJson(json as Map<String, dynamic>))
             .toList();
 
-        if (list.isNotEmpty) return list;
+        if (list.isNotEmpty) {
+          // Merge local seed subjects that might not be in the remote DB yet!
+          final existingIds = list.map((s) => s.id.toLowerCase()).toSet();
+          final existingNames = list.map((s) => s.nameEn.toLowerCase()).toSet();
+          for (final localSub in localSubjects) {
+            if (!existingIds.contains(localSub.id.toLowerCase()) &&
+                !existingNames.contains(localSub.nameEn.toLowerCase())) {
+              list.add(localSub);
+            }
+          }
+          list.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+          return list;
+        }
       } catch (e) {
         debugPrint(
             'SupabaseContentRepository: getSubjects remote failed (using local fallback): $e');
       }
     }
 
-    return _localFallback.getSubjects(grade: grade, stream: stream);
+    return localSubjects;
   }
 
   @override
@@ -71,7 +86,8 @@ class SupabaseContentRepository implements ContentRepository {
     final client = _client;
     if (client != null) {
       try {
-        final canonicalId = LocalContentRepository.canonicalSubjectId(subjectId);
+        final canonicalId =
+            LocalContentRepository.canonicalSubjectId(subjectId);
         final response = await client
             .from('units')
             .select()
@@ -185,7 +201,8 @@ class SupabaseContentRepository implements ContentRepository {
     final client = _client;
     if (client != null) {
       try {
-        final canonicalId = LocalContentRepository.canonicalSubjectId(subjectId);
+        final canonicalId =
+            LocalContentRepository.canonicalSubjectId(subjectId);
         final subjectIds = {subjectId, canonicalId}.toList();
         dynamic query = client
             .from('questions')

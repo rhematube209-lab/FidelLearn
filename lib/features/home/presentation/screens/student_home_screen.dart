@@ -1260,7 +1260,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             if (isDesktopWidth) {
               return Row(
                 children: [
-                  for (int i = 0; i < effectiveSubjects.take(5).length; i++) ...[
+                  for (int i = 0;
+                      i < effectiveSubjects.take(5).length;
+                      i++) ...[
                     if (i > 0) const SizedBox(width: 12),
                     Expanded(
                       child: _buildRedesignedSubjectCard(

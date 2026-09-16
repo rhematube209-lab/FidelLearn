@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('QuestionDiagramViewer renders Image.asset when diagramAsset is present',
+  testWidgets(
+      'QuestionDiagramViewer renders Image.asset when diagramAsset is present',
       (WidgetTester tester) async {
     const questionWithImage = Question(
       id: 'q_test_diagram',
@@ -49,7 +50,8 @@ void main() {
     expect(find.byType(Dialog), findsNothing);
   });
 
-  testWidgets('QuestionDiagramViewer renders SizedBox.shrink when no diagram is present',
+  testWidgets(
+      'QuestionDiagramViewer renders SizedBox.shrink when no diagram is present',
       (WidgetTester tester) async {
     const questionWithoutDiagram = Question(
       id: 'q_test_no_diagram',
