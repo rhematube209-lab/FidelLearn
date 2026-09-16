@@ -214,53 +214,65 @@ final themeModeProvider =
 });
 
 class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  /// Persistence key used in SharedPreferences / localStorage.
   static const String prefKey = 'fidellearn_user_theme_mode';
-  final SharedPreferences? _initialPrefs;
 
-  ThemeModeNotifier([this._initialPrefs])
-      : super(_determineInitialTheme(_initialPrefs)) {
-    if (_initialPrefs == null) {
-      _loadPersistedTheme();
-    }
+  /// Possible persisted values:
+  ///   'lavender' → ThemeMode.light  (default)
+  ///   'cosmic'   → ThemeMode.dark
+  ///
+  /// Legacy values 'light' and 'dark' are also handled for backwards compat.
+  static const String _valLavender = 'lavender';
+  static const String _valCosmic = 'cosmic';
+
+  ThemeModeNotifier([SharedPreferences? initialPrefs])
+      : super(_determineInitialTheme(initialPrefs)) {
+    // Always re-load from storage to ensure persistence survives hard refresh.
+    // Even when initialPrefs is provided we re-check, because the in-memory
+    // prefs object may reflect stale data from a previous provider override.
+    _loadPersistedTheme(initialPrefs);
   }
 
+  /// Synchronously pick the best initial state before the async load resolves.
   static ThemeMode _determineInitialTheme(SharedPreferences? prefs) {
-    if (prefs == null) return ThemeMode.light; // Default to Lavender (light)
+    if (prefs == null) return ThemeMode.light; // Default → Lavender
     final saved = prefs.getString(prefKey);
-    if (saved == 'dark' || saved == 'cosmic') {
-      return ThemeMode.dark;
-    }
-    return ThemeMode.light; // Default to Lavender
+    return _savedToThemeMode(saved);
   }
 
-  Future<void> _loadPersistedTheme() async {
+  /// Convert a persisted string to a ThemeMode.
+  static ThemeMode _savedToThemeMode(String? saved) {
+    if (saved == _valCosmic || saved == 'dark') return ThemeMode.dark;
+    // 'lavender', 'light', null → Lavender (light)
+    return ThemeMode.light;
+  }
+
+  /// Async load from SharedPreferences so hard-refresh always restores choice.
+  Future<void> _loadPersistedTheme([SharedPreferences? hint]) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = hint ?? await SharedPreferences.getInstance();
       final saved = prefs.getString(prefKey);
-      if (saved == 'dark' || saved == 'cosmic') {
-        super.state = ThemeMode.dark;
-      } else {
-        super.state = ThemeMode.light;
-      }
+      final resolved = _savedToThemeMode(saved);
+      if (mounted) super.state = resolved;
     } catch (_) {
-      // Keep default ThemeMode.light
+      // Storage unavailable – keep ThemeMode.light (Lavender) as default.
     }
   }
 
+  /// Persist and apply the chosen theme.
   Future<void> setThemeMode(ThemeMode mode) async {
     super.state = mode;
     try {
-      final prefs = _initialPrefs ?? await SharedPreferences.getInstance();
-      await prefs.setString(prefKey, mode == ThemeMode.dark ? 'dark' : 'light');
+      final prefs = await SharedPreferences.getInstance();
+      final value = mode == ThemeMode.dark ? 'dark' : 'light';
+      await prefs.setString(prefKey, value);
     } catch (_) {
-      // Gracefully ignore storage failures in headless test runners
+      // Gracefully ignore storage failures in headless test runners.
     }
   }
 
   @override
-  set state(ThemeMode mode) {
-    setThemeMode(mode);
-  }
+  set state(ThemeMode mode) => setThemeMode(mode);
 }
 
 final localeProvider = StateProvider<Locale>((ref) => const Locale('en'));

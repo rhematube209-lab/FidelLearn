@@ -73,10 +73,18 @@ void main() {
 
     // 2. Check Pathway B: Fully Customize Practice CTA
     expect(find.text('Fully Customize Practice'), findsOneWidget);
+    expect(
+      find.text('Select specific year, syllabus units & question count on your own'),
+      findsOneWidget,
+    );
     expect(find.text('Build'), findsOneWidget);
 
     // 3. Check Pathway A: Previous Years National Exams
     expect(find.text('Previous Years National Exams'), findsOneWidget);
+    expect(
+      find.text('Practice complete official exams by selecting a year.'),
+      findsOneWidget,
+    );
     expect(find.text('2016 E.C.'), findsOneWidget);
     expect(find.text('2015 E.C.'), findsOneWidget);
     expect(find.text('2014 E.C.'), findsOneWidget);

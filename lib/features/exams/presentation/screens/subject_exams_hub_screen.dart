@@ -1583,8 +1583,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                       const SizedBox(height: 3),
                       Text(
                         isAmharic
-                            ? 'የስርዓተ ትምህርት ክፍሎችን፣ የተወሰኑ ርዕሶችን፣ የጥያቄ ብዛትና የጊዜ ገደብ መርጠው ይለማመዱ።'
-                            : 'Select specific syllabus units, weak topics, difficulty, and question count on your own.',
+                            ? 'የፈተና ዓመትን፣ የስርዓተ ትምህርት ክፍሎችንና የጥያቄ ብዛትን መርጠው ይለማመዱ።'
+                            : 'Select specific year, syllabus units & question count on your own',
                         style: TextStyle(
                           fontSize: 12,
                           color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
@@ -1663,7 +1663,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
               Text(
                 isAmharic
                     ? 'የተሟላውን ፈተና በዓመት መርጠው ልክ እንደ ፈተናው አዳራሽ ይፈትኑ'
-                    : 'Practice complete official exam booklets by selecting a year',
+                    : 'Practice complete official exams by selecting a year.',
                 style: TextStyle(
                   fontSize: 12,
                   color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
