@@ -31,6 +31,7 @@ fidel_learn/
 │   ├── offline-sync.md              # Offline queue, retry backoff, and idempotency spec
 │   ├── security.md                  # Supabase RLS policies, RBAC, and child privacy
 │   ├── content-package-format.md    # Offline zip bundle (.flpkg) specification
+│   ├── app-review.md                # Comprehensive application review, feature breakdown & roadmap
 │   └── implementation-plan.md       # Roadmap & verification checkpoints
 ├── lib/
 │   ├── app/                         # App widget, theme bindings, route configuration

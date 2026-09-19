@@ -381,7 +381,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                           _buildQuickActions(context, isDark),
                                           const SizedBox(height: 24),
                                           _buildFeaturedExamCard(
-                                              context, isDark),
+                                              context, isDark, isAmharic),
                                         ],
                                       ),
                                     ),
@@ -413,7 +413,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 // Mobile: Quick Actions & Intelligence Cards
                                 _buildQuickActions(context, isDark),
                                 const SizedBox(height: 24),
-                                _buildFeaturedExamCard(context, isDark),
+                                _buildFeaturedExamCard(context, isDark, isAmharic),
                                 const SizedBox(height: 24),
                                 _buildReadinessGaugeCard(context, isDark),
                                 const SizedBox(height: 28),
@@ -1507,17 +1507,79 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Grade ${subject.grade}',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: isDark
-                                ? AppTheme.darkMuted
-                                : const Color(0xFF64748B),
-                            height: 1.0,
-                          ),
+                        Flexible(
+                          child: (subject.id.contains('physics') ||
+                                  subject.code.contains('PHYS'))
+                              ? Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF59E0B)
+                                        .withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: const Color(0xFFF59E0B)
+                                          .withValues(alpha: 0.45),
+                                      width: 0.8,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    isAmharic
+                                        ? '2014 ፈተና (32 Qs)'
+                                        : '2014 Exam (32 Qs)',
+                                    style: const TextStyle(
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w800,
+                                      color: Color(0xFFD97706),
+                                      height: 1.0,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              : (subject.id.contains('biology') ||
+                                      subject.code.contains('BIO'))
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF10B981)
+                                            .withValues(alpha: 0.15),
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: const Color(0xFF10B981)
+                                              .withValues(alpha: 0.45),
+                                          width: 0.8,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        isAmharic
+                                            ? '2013 ፈተና (100 Qs)'
+                                            : '2013 Exam (100 Qs)',
+                                        style: const TextStyle(
+                                          fontSize: 9.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xFF059669),
+                                          height: 1.0,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  : Text(
+                                      isAmharic
+                                          ? '${subject.grade}ኛ ክፍል'
+                                          : 'Grade ${subject.grade}',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                        color: isDark
+                                            ? AppTheme.darkMuted
+                                            : const Color(0xFF64748B),
+                                        height: 1.0,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                         ),
+                        const SizedBox(width: 4),
                         Container(
                           width: 20,
                           height: 20,
@@ -1869,31 +1931,123 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // 🧬 FEATURED BIOLOGY EXAM CARD
+  // ⚡ / 🧬 FEATURED OFFICIAL EXAM CARD (Physics 2014 & Biology 2013)
   // ==========================================
-  Widget _buildFeaturedExamCard(BuildContext context, bool isDark) {
+  int _featuredExamTab = 0; // 0: Physics 2014, 1: Biology 2013
+
+  Widget _buildFeaturedExamCard(
+    BuildContext context,
+    bool isDark,
+    bool isAmharic,
+  ) {
+    final isPhysics = _featuredExamTab == 0;
+    final accentColor =
+        isPhysics ? const Color(0xFFD97706) : AppTheme.greenDark;
+    final borderColor = isPhysics
+        ? const Color(0xFFF59E0B).withValues(alpha: 0.45)
+        : AppTheme.green.withValues(alpha: 0.35);
+    final bgColor = isPhysics
+        ? (isDark ? const Color(0xFF261D0B) : const Color(0xFFFFFBEB))
+        : (isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4));
+
     return FidelCard(
       padding: const EdgeInsets.all(18),
-      backgroundColor:
-          isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4),
-      borderColor: AppTheme.green.withValues(alpha: 0.35),
+      backgroundColor: bgColor,
+      borderColor: borderColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Selector tabs: Physics 2014 vs Biology 2013
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildFeaturedTabPill(
+                title: isAmharic
+                    ? '⚡ ፊዚክስ 2014 (32 ጥያቄ)'
+                    : '⚡ Physics 2014 (32 Qs)',
+                isActive: isPhysics,
+                activeColor: const Color(0xFFD97706),
+                isDark: isDark,
+                onTap: () => setState(() => _featuredExamTab = 0),
+              ),
+              _buildFeaturedTabPill(
+                title: isAmharic
+                    ? '🧬 ባዮሎጂ 2013 (100 ጥያቄ)'
+                    : '🧬 Biology 2013 (100 Qs)',
+                isActive: !isPhysics,
+                activeColor: const Color(0xFF059669),
+                isDark: isDark,
+                onTap: () => setState(() => _featuredExamTab = 1),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Top Info Row: Badge + Year Details
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const FidelBadge(
-                text: 'OFFICIAL EXAM',
-                variant: FidelBadgeVariant.success,
-                isSmall: true,
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                decoration: BoxDecoration(
+                  color: (isPhysics
+                          ? const Color(0xFFF59E0B)
+                          : const Color(0xFF10B981))
+                      .withValues(alpha: 0.16),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: (isPhysics
+                            ? const Color(0xFFF59E0B)
+                            : const Color(0xFF10B981))
+                        .withValues(alpha: 0.45),
+                    width: 0.8,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.verified_rounded,
+                      size: 12,
+                      color: isPhysics
+                          ? const Color(0xFFD97706)
+                          : const Color(0xFF059669),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      isPhysics
+                          ? (isAmharic
+                              ? 'የተረጋገጠ ፈተና • 32 ጥያቄ'
+                              : 'OFFICIAL EXAM • 32 Qs')
+                          : (isAmharic
+                              ? 'የተረጋገጠ ፈተና • 100 ጥያቄ'
+                              : 'OFFICIAL EXAM • 100 Qs'),
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        color: isPhysics
+                            ? const Color(0xFFD97706)
+                            : const Color(0xFF059669),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Flexible(
                 child: Text(
-                  '2013 E.C. (2021 G.C.)',
+                  isPhysics
+                      ? (isAmharic
+                          ? '2014 ዓ.ም. (2022) • ቡክሌት 11'
+                          : '2014 E.C. (2022 G.C.) • Booklet 11')
+                      : (isAmharic
+                          ? '2013 ዓ.ም. (2021) • ቡክሌት 12'
+                          : '2013 E.C. (2021 G.C.) • Booklet 12'),
                   style: TextStyle(
                     color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                     fontSize: 11.5,
+                    fontWeight: FontWeight.w500,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -1902,8 +2056,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ],
           ),
           const SizedBox(height: 12),
+
+          // Title
           Text(
-            'ESSLCE Biology (100 Questions)',
+            isPhysics
+                ? (isAmharic
+                    ? 'የ2014 የፊዚክስ ብሔራዊ ፈተና (32 ጥያቄዎች)'
+                    : 'ESSLCE Physics 2014 (32 Questions)')
+                : (isAmharic
+                    ? 'የ2013 የባዮሎጂ ብሔራዊ ፈተና (100 ጥያቄዎች)'
+                    : 'ESSLCE Biology 2013 (100 Questions)'),
             style: TextStyle(
               fontSize: 15.5,
               fontWeight: FontWeight.w700,
@@ -1911,8 +2073,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ),
           ),
           const SizedBox(height: 4),
+
+          // Description
           Text(
-            'Official National Exam with vector diagrams, bacteriophage models, & complete solutions.',
+            isPhysics
+                ? (isAmharic
+                    ? 'ከነሙሉ ማብራሪያ፣ የስዕልና ዲያግራም ምስሎች፣ እና ደረጃ በደረጃ የሂሳብ አሰራር ጋር የተዘጋጀ ይፋዊ ፈተና።'
+                    : 'Official National Exam with vector mechanics, circuits, wave optics, & complete step-by-step solutions.')
+                : (isAmharic
+                    ? 'ከነሙሉ ማብራሪያ፣ የቬክተር ዲያግራም እና የባክቴሪዮፋጅ ምስሎች ጋር የተዘጋጀ ይፋዊ ፈተና።'
+                    : 'Official National Exam with vector diagrams, bacteriophage models, & complete solutions.'),
             style: TextStyle(
               fontSize: 12,
               color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
@@ -1920,18 +2090,103 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ),
           ),
           const SizedBox(height: 14),
-          ElevatedButton.icon(
-            onPressed: () =>
-                context.push('/exam_builder?subjectId=biology_g12'),
-            icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
-            label: const Text('Start 100-Question Exam'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.greenDark,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            ),
+
+          // Action Buttons
+          Wrap(
+            spacing: 10,
+            runSpacing: 8,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  if (isPhysics) {
+                    context.push('/exam_builder?subjectId=physics_g12');
+                  } else {
+                    context.push('/exam_builder?subjectId=biology_g12');
+                  }
+                },
+                icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
+                label: Text(
+                  isPhysics
+                      ? (isAmharic
+                          ? 'የ32ቱን ጥያቄ ፈተና ጀምር'
+                          : 'Start 32-Question Exam')
+                      : (isAmharic
+                          ? 'የ100ውን ጥያቄ ፈተና ጀምር'
+                          : 'Start 100-Question Exam'),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: accentColor,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                ),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  if (isPhysics) {
+                    context.push('/subject_exams/physics_g12');
+                  } else {
+                    context.push('/subject_exams/biology_g12');
+                  }
+                },
+                icon: const Icon(Icons.folder_open_rounded, size: 16),
+                label: Text(
+                  isAmharic ? 'ሁሉንም ዓመታት እይ' : 'View All Years',
+                  style: const TextStyle(fontSize: 12),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor:
+                      isDark ? Colors.white70 : const Color(0xFF334155),
+                  side: BorderSide(
+                    color:
+                        isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFeaturedTabPill({
+    required String title,
+    required bool isActive,
+    required Color activeColor,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: isActive
+              ? activeColor.withValues(alpha: 0.18)
+              : (isDark ? Colors.white10 : const Color(0xFFF1F5F9)),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isActive
+                ? activeColor
+                : (isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0)),
+            width: isActive ? 1.4 : 1.0,
+          ),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
+            color: isActive
+                ? activeColor
+                : (isDark ? AppTheme.darkMuted : const Color(0xFF64748B)),
+          ),
+        ),
       ),
     );
   }

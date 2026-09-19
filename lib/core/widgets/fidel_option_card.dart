@@ -90,7 +90,7 @@ class FidelOptionCard extends StatelessWidget {
               ),
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Option Letter Badge (A, B, C, D)
                 Container(
@@ -115,37 +115,35 @@ class FidelOptionCard extends StatelessWidget {
 
                 // Question Choice Text
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        textEn,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: state == FidelOptionState.selected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          color: textColor,
+                          height: 1.4,
+                        ),
+                      ),
+                      if (textAm != null && textAm!.isNotEmpty) ...[
+                        const SizedBox(height: 4),
                         Text(
-                          textEn,
+                          textAm!,
                           style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: state == FidelOptionState.selected
-                                ? FontWeight.w600
-                                : FontWeight.w400,
-                            color: textColor,
-                            height: 1.4,
+                            fontSize: 13,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted,
+                            height: 1.3,
                           ),
                         ),
-                        if (textAm != null && textAm!.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            textAm!,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: isDark
-                                  ? AppTheme.darkMuted
-                                  : AppTheme.lightMuted,
-                              height: 1.3,
-                            ),
-                          ),
-                        ],
                       ],
-                    ),
+                    ],
                   ),
                 ),
 

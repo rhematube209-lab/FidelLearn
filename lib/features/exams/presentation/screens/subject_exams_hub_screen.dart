@@ -118,11 +118,21 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   Future<void> _loadDownloadedYears() async {
+    final cleanId = widget.subjectId.toLowerCase();
+    final defaultDownloaded = <int>{};
+    if (cleanId.contains('phys')) {
+      defaultDownloaded.add(2014);
+    } else if (cleanId.contains('bio')) {
+      defaultDownloaded.add(2013);
+    }
+
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
       if (mounted) {
         setState(() {
-          _downloadedYears =
-              Set.from(_memoryDownloadedYears[widget.subjectId]!);
+          final cached =
+              Set<int>.from(_memoryDownloadedYears[widget.subjectId]!);
+          cached.addAll(defaultDownloaded);
+          _downloadedYears = cached;
         });
       }
       return;
@@ -150,6 +160,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         if (saved != null) {
           final parsed =
               saved.map((e) => int.tryParse(e)).whereType<int>().toSet();
+          parsed.addAll(defaultDownloaded);
           _downloadedYears = parsed;
           _memoryDownloadedYears[widget.subjectId] = Set.from(parsed);
           if (mounted) setState(() {});
@@ -158,9 +169,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       }
     } catch (_) {}
 
-    // Default: None downloaded initially until the student downloads each year separately
-    _downloadedYears = {};
-    _memoryDownloadedYears[widget.subjectId] = {};
+    // Default: Bundled official archives are pre-downloaded offline
+    _downloadedYears = Set.from(defaultDownloaded);
+    _memoryDownloadedYears[widget.subjectId] = Set.from(defaultDownloaded);
     if (mounted) setState(() {});
   }
 
@@ -286,13 +297,56 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         standardQuestionCount: 100,
         bookletCode: 'Booklet 12',
         standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL 100 Qs',
         descriptionEn:
             'Official 2013 E.C. National Exam (100 Questions, Booklet 12) administered by NEAEA.',
         descriptionAm:
             'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2013 ዓ.ም. ባለ 100 ጥያቄ ፈተና (ጥራዝ 12)።',
       );
     }
+    final isPhys =
+        LocalContentRepository.matchesSubjectId(subject.id, 'physics_g12') ||
+            subject.nameEn.toLowerCase().contains('phys');
+    if (isPhys && base.ethiopianYear == 2014) {
+      return base.copyWith(
+        standardQuestionCount: 32,
+        bookletCode: 'Booklet 11',
+        standardTimeMinutes: 75,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL 32 Qs',
+        descriptionEn:
+            'Official 2014 E.C. (2022 G.C.) National Exam (Natural Science, 32 Questions, Booklet 11) with worked step-by-step solutions.',
+        descriptionAm:
+            'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ፊዚክስ ማጠቃለያ ፈተና (የተፈጥሮ ሳይንስ - 32 ጥያቄዎች፣ ጥራዝ 11 ከተሟላ ማብራሪያ ጋር)።',
+      );
+    }
     return base;
+  }
+
+  List<_OfficialExamYearInfo> _getDisplayYears(Subject subject) {
+    final isPhys =
+        LocalContentRepository.matchesSubjectId(subject.id, 'physics_g12') ||
+            subject.nameEn.toLowerCase().contains('phys');
+    final isBio =
+        LocalContentRepository.matchesSubjectId(subject.id, 'biology_g12') ||
+            subject.nameEn.toLowerCase().contains('bio');
+
+    if (isPhys) {
+      final y2014 =
+          _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2014).toList();
+      return [y2014, ...others];
+    }
+    if (isBio) {
+      final y2013 =
+          _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2013).toList();
+      return [y2013, ...others];
+    }
+    return _availableYears;
   }
 
   Future<void> _downloadYear(_OfficialExamYearInfo rawYearInfo) async {
@@ -490,10 +544,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             final subjectName = isAmharic && subject.nameAm.isNotEmpty
                 ? subject.nameAm
                 : subject.nameEn;
+            final hours = yearInfo.standardTimeMinutes ~/ 60;
+            final mins = yearInfo.standardTimeMinutes % 60;
             final timeAllowed = isTimed
                 ? (isAmharic
-                    ? '${yearInfo.standardTimeMinutes ~/ 60} ሰዓታት'
-                    : '${yearInfo.standardTimeMinutes ~/ 60} Hours')
+                    ? (hours > 0 && mins > 0
+                        ? '$hours ሰዓት ከ $mins ደቂቃ'
+                        : (hours > 0 ? '$hours ሰዓት' : '$mins ደቂቃ'))
+                    : (hours > 0 && mins > 0
+                        ? '$hours Hour $mins Min'
+                        : (hours > 0
+                            ? (hours == 1 ? '1 Hour' : '$hours Hours')
+                            : '$mins Min')))
                 : (isAmharic ? 'ያልተገደበ' : 'Untimed');
 
             return Dialog(
@@ -598,10 +660,10 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                   ? '$subjectName ለ$streamName ዘርፍ'
                                   : '$subjectName for $streamName Stream',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w800,
-                                color: Color(0xFFD97706),
+                                color: hubTheme.accentColor,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -717,7 +779,20 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+
+                      // =======================================================
+                      // 📐 REFERENCE CONSTANTS (Page 1 Official Exam Document)
+                      // =======================================================
+                      if (_hasReferenceConstants(subject)) ...[
+                        const SizedBox(height: 16),
+                        _buildReferenceConstantsSection(
+                          context,
+                          isDark,
+                          isAmharic,
+                          hubTheme,
+                        ),
+                      ],
+                      const SizedBox(height: 18),
 
                       // =======================================================
                       // 🎯 ANSWER FEEDBACK MODE SELECTION (The 2 Options Requested)
@@ -745,7 +820,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             : 'Instant feedback study mode. Step-by-step verified explanations and correct/incorrect indicators appear right after you pick.',
                         badge: isAmharic ? 'የጥናት ዘዴ' : 'STUDY MODE',
                         icon: Icons.bolt_rounded,
-                        accentColor: const Color(0xFFD97706),
+                        accentColor: hubTheme.accentColor,
                         isSelected: showInstant,
                         isDark: isDark,
                         onTap: () => setDialogState(() => showInstant = true),
@@ -798,7 +873,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           Row(
                             children: [
                               _buildDialogTimerPill(
-                                label: isAmharic ? '120 ደቂቃ' : '120m',
+                                label: isAmharic
+                                    ? '${yearInfo.standardTimeMinutes} ደቂቃ'
+                                    : '${yearInfo.standardTimeMinutes}m',
                                 isActive: isTimed,
                                 onTap: () =>
                                     setDialogState(() => isTimed = true),
@@ -1704,6 +1781,257 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   }
 
   // ===========================================================================
+  // 📐 REFERENCE CONSTANTS BUILDER (OFFICIAL PAGE 1 ESSLCE DOCUMENT SPEC)
+  // ===========================================================================
+  bool _hasReferenceConstants(Subject subject) {
+    final key = '${subject.id} ${subject.code} ${subject.nameEn}'.toLowerCase();
+    return key.contains('phys');
+  }
+
+  Widget _buildReferenceConstantsSection(
+    BuildContext context,
+    bool isDark,
+    bool isAmharic,
+    _SubjectHubTheme hubTheme,
+  ) {
+    final constants = [
+      (
+        'g',
+        '10 m/s²',
+        isAmharic ? 'የመሬት ስበት ስፋት' : 'Acceleration due to gravity',
+      ),
+      (
+        'M',
+        '6 × 10²⁴ kg',
+        isAmharic ? 'የመሬት መጠነ-ቁስ' : 'Mass of the Earth',
+      ),
+      (
+        'e',
+        '1.6 × 10⁻¹⁹ C',
+        isAmharic ? 'የኤሌክትሮን ቻርጅ' : 'Charge of electron',
+      ),
+      (
+        'G',
+        '6.67 × 10⁻¹¹ N·m²/kg²',
+        isAmharic ? 'የስበት ቋሚ' : 'Gravitational constant',
+      ),
+      (
+        'ρ',
+        '1000 kg/m³',
+        isAmharic ? 'የውሃ እፍጋት' : 'Density of water',
+      ),
+      (
+        'R',
+        '8.314 J/mol·K',
+        isAmharic ? 'የሞላር ጋዝ ቋሚ' : 'Molar gas constant',
+      ),
+      (
+        'ε₀',
+        '8.85 × 10⁻¹² F/m',
+        isAmharic ? 'የቫክዩም ፐርሚቲቪቲ' : 'Permittivity of vacuum',
+      ),
+      (
+        'μ₀',
+        '4π × 10⁻⁷ T·m/A',
+        isAmharic ? 'የመግነጢሳዊ ፐርሚአቢሊቲ' : 'Magnetic permeability',
+      ),
+      (
+        'k',
+        '9 × 10⁹ N·m²/C²',
+        isAmharic ? 'የኩሎምብ ቋሚ' : 'Coulomb’s constant',
+      ),
+      (
+        'c',
+        '4200 J/kg·K (Water)',
+        isAmharic ? 'የውሃ ስፔሲፊክ ሙቀት' : 'Specific heat of water',
+      ),
+      (
+        'c',
+        '420 J/kg·K (Copper)',
+        isAmharic ? 'የመዳብ ስፔሲፊክ ሙቀት' : 'Specific heat of copper',
+      ),
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark
+            ? const Color(0xFF1E293B).withValues(alpha: 0.60)
+            : const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+          width: 1.0,
+        ),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.functions_rounded,
+                size: 16,
+                color: hubTheme.accentColor,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  isAmharic
+                      ? 'የማጣቀሻ ቋሚዎች (Reference Constants)'
+                      : 'Reference Constants',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : const Color(0xFF0F172A),
+                  ),
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: hubTheme.accentColor.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: hubTheme.accentColor.withValues(alpha: 0.35),
+                  ),
+                ),
+                child: Text(
+                  isAmharic ? 'ገጽ 1 ሰነድ' : 'PAGE 1 SPEC',
+                  style: TextStyle(
+                    fontSize: 8.5,
+                    fontWeight: FontWeight.w800,
+                    color: hubTheme.accentColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            isAmharic
+                ? 'በፈተናው ወቅት ለስሌት እንዲረዱ በይፋዊው የፈተና ሰነድ ገጽ 1 ላይ የቀረቡ የማጣቀሻ እሴቶች፦'
+                : 'Physical constants issued on Page 1 of the official examination paper:',
+            style: TextStyle(
+              fontSize: 10.5,
+              color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+              height: 1.25,
+            ),
+          ),
+          const SizedBox(height: 10),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isTwoCol = constraints.maxWidth >= 380;
+              return Wrap(
+                spacing: 6,
+                runSpacing: 5,
+                children: constants.map((c) {
+                  final itemWidth = isTwoCol
+                      ? (constraints.maxWidth - 6) / 2
+                      : constraints.maxWidth;
+                  return Container(
+                    width: itemWidth,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4.5),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? const Color(0xFF0F172A).withValues(alpha: 0.6)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
+                        width: 0.8,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            c.$3,
+                            style: TextStyle(
+                              fontSize: 9.5,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : const Color(0xFF64748B),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${c.$1} = ',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  color: hubTheme.accentColor,
+                                ),
+                              ),
+                              TextSpan(
+                                text: c.$2,
+                                style: TextStyle(
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? Colors.white
+                                      : const Color(0xFF0F172A),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            decoration: BoxDecoration(
+              color: hubTheme.accentColor.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(
+                color: hubTheme.accentColor.withValues(alpha: 0.20),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.calculate_outlined,
+                  size: 13,
+                  color: hubTheme.accentColor,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    isAmharic
+                        ? 'ትሪጎኖሜትሪ፡ sin 30° = cos 60° = 0.5 • sin 60° = cos 30° = 0.87 • sin 0° = cos 90° = 0 • sin 90° = cos 0° = 1'
+                        : 'Trig: sin 30° = cos 60° = 0.5 • sin 60° = cos 30° = 0.87 • sin 0° = cos 90° = 0 • sin 90° = cos 0° = 1',
+                    style: TextStyle(
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white70 : const Color(0xFF1E293B),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===========================================================================
   // 📚 3. PATHWAY 1: PREVIOUS YEARS SECTION HEADER & TIMED TOGGLE
   // ===========================================================================
   Widget _buildPastYearsSectionHeader(
@@ -1790,21 +2118,23 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     required bool isDark,
     required _SubjectHubTheme hubTheme,
   }) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      borderRadius: BorderRadius.circular(7),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
         decoration: BoxDecoration(
           color: isActive
               ? (isDark ? hubTheme.accentColor : Colors.white)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(7),
           boxShadow: isActive && !isDark
-              ? const [
+              ? [
                   BoxShadow(
-                    color: Color(0x0F000000),
+                    color: Colors.black.withValues(alpha: 0.06),
                     blurRadius: 4,
-                    offset: Offset(0, 1),
+                    offset: const Offset(0, 1),
                   ),
                 ]
               : null,
@@ -1836,9 +2166,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     );
   }
 
-  // ===========================================================================
-  // 📝 4. PAST EXAMINATION PAPERS GRID
-  // ===========================================================================
   Widget _buildExamYearsGrid(
     BuildContext context,
     Subject subject,
@@ -1847,6 +2174,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     bool isAmharic,
     bool isDark,
   ) {
+    final displayYears = _getDisplayYears(subject);
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -1856,9 +2184,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         mainAxisSpacing: 14,
         mainAxisExtent: isWide ? 200 : 180,
       ),
-      itemCount: _availableYears.length,
+      itemCount: displayYears.length,
       itemBuilder: (context, index) {
-        final rawYearInfo = _availableYears[index];
+        final rawYearInfo = displayYears[index];
         final yearInfo = _resolveYearInfo(rawYearInfo, subject);
         return _buildYearCard(
             context, subject, yearInfo, hubTheme, isAmharic, isDark);
@@ -1876,6 +2204,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   ) {
     final isDownloaded = _downloadedYears.contains(yearInfo.ethiopianYear);
     final isDownloading = _downloadingYears.contains(yearInfo.ethiopianYear);
+    final isVerified = yearInfo.isVerifiedArchive;
 
     // Check if the student previously attempted this specific exam year
     final yearAttempt = _subjectAttempts.where((a) {
@@ -1889,17 +2218,21 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         color: isDark ? AppTheme.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: yearInfo.isLatest
-              ? hubTheme.accentColor.withValues(alpha: 0.40)
-              : (isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0)),
-          width: yearInfo.isLatest ? 1.5 : 1.0,
+          color: isVerified
+              ? hubTheme.accentColor
+              : (yearInfo.isLatest
+                  ? hubTheme.accentColor.withValues(alpha: 0.40)
+                  : (isDark ? AppTheme.darkBorder : const Color(0xFFE2E8F0))),
+          width: isVerified ? 2.0 : (yearInfo.isLatest ? 1.5 : 1.0),
         ),
         boxShadow: [
           BoxShadow(
-            color: yearInfo.isLatest
-                ? hubTheme.accentColor.withValues(alpha: 0.10)
-                : const Color(0x06000000),
-            blurRadius: 10,
+            color: isVerified
+                ? hubTheme.accentColor.withValues(alpha: 0.20)
+                : (yearInfo.isLatest
+                    ? hubTheme.accentColor.withValues(alpha: 0.10)
+                    : const Color(0x06000000)),
+            blurRadius: isVerified ? 14 : 10,
             offset: const Offset(0, 3),
           ),
         ],
@@ -2096,7 +2429,10 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 5,
+                      runSpacing: 2,
                       children: [
                         Text(
                           '${yearInfo.bookletCode} • ${yearInfo.standardQuestionCount} Qs',
@@ -2107,8 +2443,29 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                 isDark ? Colors.white : const Color(0xFF1E293B),
                           ),
                         ),
-                        if (yearInfo.isLatest) ...[
-                          const SizedBox(width: 5),
+                        if (yearInfo.specialBadge != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: hubTheme.accentColor
+                                  .withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                color: hubTheme.accentColor
+                                    .withValues(alpha: 0.40),
+                              ),
+                            ),
+                            child: Text(
+                              yearInfo.specialBadge!,
+                              style: TextStyle(
+                                fontSize: 8.5,
+                                fontWeight: FontWeight.w800,
+                                color: hubTheme.accentColor,
+                              ),
+                            ),
+                          )
+                        else if (yearInfo.isLatest)
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 1),
@@ -2126,9 +2483,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               ),
                             ),
                           ),
-                        ],
-                        if (yearAttempt != null) ...[
-                          const SizedBox(width: 6),
+                        if (yearAttempt != null)
                           FidelBadge(
                             text:
                                 '${yearAttempt.percentage.toStringAsFixed(0)}%',
@@ -2137,7 +2492,6 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                 : FidelBadgeVariant.warning,
                             isSmall: true,
                           ),
-                        ],
                       ],
                     ),
                     const SizedBox(height: 2),
@@ -2216,7 +2570,11 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         onPressed: () => _showExamBriefingDialog(yearInfo),
                         icon: const Icon(Icons.play_arrow_rounded, size: 15),
                         label: Text(
-                          isAmharic ? 'ፈተና ጀምር' : 'Start Exam',
+                          isVerified
+                              ? (isAmharic
+                                  ? 'ጀምር (${yearInfo.standardQuestionCount} ጥያቄ)'
+                                  : 'Start (${yearInfo.standardQuestionCount} Qs)')
+                              : (isAmharic ? 'ፈተና ጀምር' : 'Start Exam'),
                           style: const TextStyle(
                               fontSize: 11, fontWeight: FontWeight.w700),
                         ),
@@ -2279,6 +2637,8 @@ class _OfficialExamYearInfo {
   final int standardQuestionCount;
   final int standardTimeMinutes;
   final bool isLatest;
+  final bool isVerifiedArchive;
+  final String? specialBadge;
   final String descriptionEn;
   final String descriptionAm;
 
@@ -2289,6 +2649,8 @@ class _OfficialExamYearInfo {
     required this.standardQuestionCount,
     required this.standardTimeMinutes,
     required this.isLatest,
+    this.isVerifiedArchive = false,
+    this.specialBadge,
     required this.descriptionEn,
     required this.descriptionAm,
   });
@@ -2300,6 +2662,8 @@ class _OfficialExamYearInfo {
     int? standardQuestionCount,
     int? standardTimeMinutes,
     bool? isLatest,
+    bool? isVerifiedArchive,
+    String? specialBadge,
     String? descriptionEn,
     String? descriptionAm,
   }) {
@@ -2311,6 +2675,8 @@ class _OfficialExamYearInfo {
           standardQuestionCount ?? this.standardQuestionCount,
       standardTimeMinutes: standardTimeMinutes ?? this.standardTimeMinutes,
       isLatest: isLatest ?? this.isLatest,
+      isVerifiedArchive: isVerifiedArchive ?? this.isVerifiedArchive,
+      specialBadge: specialBadge ?? this.specialBadge,
       descriptionEn: descriptionEn ?? this.descriptionEn,
       descriptionAm: descriptionAm ?? this.descriptionAm,
     );

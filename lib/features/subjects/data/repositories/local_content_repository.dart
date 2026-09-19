@@ -27,6 +27,7 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/content_seed_g12.json',
                     'assets/seed/biology_2013_seed.json',
                     'assets/seed/math_2014_seed.json',
+                    'assets/seed/physics_2014_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
                   ]);
 
@@ -375,47 +376,83 @@ class LocalContentRepository implements ContentRepository {
     if (lower.contains('phys')) {
       return const [
         Unit(
-            id: 'phys_u1',
+            id: 'phys_g9_u2',
             subjectId: 'physics_g12',
             unitNumber: 1,
-            titleEn: 'Thermodynamics',
-            titleAm: 'ቴርሞዳይናሚክስ'),
+            titleEn: '[Grade 9] Unit 2: Physical Quantities',
+            titleAm: 'የመለኪያ መጠኖችና ስህተቶች'),
         Unit(
-            id: 'phys_u2',
+            id: 'phys_g9_u6',
             subjectId: 'physics_g12',
             unitNumber: 2,
-            titleEn: 'Oscillations and Waves',
-            titleAm: 'ሞገዶችና ንዝረቶች'),
+            titleEn: '[Grade 9] Unit 6: Mechanical Oscillation and Sound Wave',
+            titleAm: 'ንዝረቶችና የድምፅ ሞገዶች'),
         Unit(
-            id: 'phys_u3',
+            id: 'phys_g10_u1',
             subjectId: 'physics_g12',
             unitNumber: 3,
-            titleEn: 'Wave Optics',
-            titleAm: 'የሞገድ ኦፕቲክስ'),
+            titleEn: '[Grade 10] Unit 1: Vector Quantities',
+            titleAm: 'የቬክተር መጠኖች'),
         Unit(
-            id: 'phys_u4',
+            id: 'phys_g10_u2',
             subjectId: 'physics_g12',
             unitNumber: 4,
-            titleEn: 'Electrostatics',
-            titleAm: 'ኤሌክትሮስታቲክስ'),
+            titleEn: '[Grade 10] Unit 2: Uniformly Accelerated Motion',
+            titleAm: 'የፍጥነት ለውጥ እንቅስቃሴ'),
         Unit(
-            id: 'phys_u5',
+            id: 'phys_g10_u4',
             subjectId: 'physics_g12',
             unitNumber: 5,
-            titleEn: 'Steady Electric Current & Circuit',
+            titleEn: '[Grade 10] Unit 4: Static and Current Electricity',
             titleAm: 'የኤሌክትሪክ ፍሰትና ዑደት'),
         Unit(
-            id: 'phys_u6',
+            id: 'phys_g10_u5',
             subjectId: 'physics_g12',
             unitNumber: 6,
-            titleEn: 'Magnetism',
+            titleEn: '[Grade 10] Unit 5: Magnetism',
             titleAm: 'ማግኔቲዝም'),
         Unit(
-            id: 'phys_u7',
+            id: 'phys_g10_u6',
             subjectId: 'physics_g12',
             unitNumber: 7,
-            titleEn: 'Electromagnetic Induction',
-            titleAm: 'ኤሌክትሮማግኔቲክ ኢንዳክሽን'),
+            titleEn: '[Grade 10] Unit 6: Electromagnetic Waves & Geometrical Optics',
+            titleAm: 'ኤሌክትሮማግኔቲክ ሞገድና ጂኦሜትሪያዊ ኦፕቲክስ'),
+        Unit(
+            id: 'phys_g11_u4',
+            subjectId: 'physics_g12',
+            unitNumber: 8,
+            titleEn: '[Grade 11] Unit 4: Dynamics',
+            titleAm: 'ዳይናሚክስ፣ ጉልበትና ሃይል'),
+        Unit(
+            id: 'phys_g11_u6',
+            subjectId: 'physics_g12',
+            unitNumber: 9,
+            titleEn: '[Grade 11] Unit 6: Electrostatics and Electric Circuit',
+            titleAm: 'ኤሌክትሮስታቲክስና ዑደቶች'),
+        Unit(
+            id: 'phys_g11_u7',
+            subjectId: 'physics_g12',
+            unitNumber: 10,
+            titleEn: '[Grade 11] Unit 7: Nuclear Physics',
+            titleAm: 'ኒውክሌር ፊዚክስ'),
+        Unit(
+            id: 'phys_g12_u2',
+            subjectId: 'physics_g12',
+            unitNumber: 11,
+            titleEn: '[Grade 12] Unit 2: Two-Dimensional Motion',
+            titleAm: 'ባለ ሁለት አቅጣጫ እንቅስቃሴና ስበት'),
+        Unit(
+            id: 'phys_g12_u4',
+            subjectId: 'physics_g12',
+            unitNumber: 12,
+            titleEn: '[Grade 12] Unit 4: Electromagnetism',
+            titleAm: 'ኤሌክትሮማግኔቲዝምና ኤሲ ዑደቶች'),
+        Unit(
+            id: 'phys_g12_u5',
+            subjectId: 'physics_g12',
+            unitNumber: 13,
+            titleEn: '[Grade 12] Unit 5: Basics of Electronics',
+            titleAm: 'መሰረታዊ ኤሌክትሮኒክስ'),
       ];
     } else if (lower.contains('chem')) {
       return const [

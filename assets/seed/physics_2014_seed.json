@@ -1,0 +1,2437 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_physics_2014",
+      "subject_id": "physics_g12",
+      "name_en": "Grade 12 Physics (ESSLCE 2014 E.C. National Exam)",
+      "name_am": "የ12ኛ ክፍል ፊዚክስ (የ2014 ዓ.ም. ብሔራዊ ፈተና)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 1048576,
+      "publisher": "National Educational Assessment and Examinations Agency (NEAEA)",
+      "license": "official_archive",
+      "attribution": "ESSLCE Physics 2014 E.C. (2022 G.C.) Natural Science Stream",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "physics_g12",
+      "code": "PHYS12",
+      "name_en": "Physics",
+      "name_am": "ፊዚክስ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/physics_icon.png",
+      "sort_order": 3
+    }
+  ],
+  "units": [
+    {
+      "id": "phys_g9_u2",
+      "subject_id": "physics_g12",
+      "unit_number": 1,
+      "title_en": "[Grade 9] Unit 2: Physical Quantities",
+      "title_am": "የመለኪያ መጠኖችና ስህተቶች"
+    },
+    {
+      "id": "phys_g9_u6",
+      "subject_id": "physics_g12",
+      "unit_number": 2,
+      "title_en": "[Grade 9] Unit 6: Mechanical Oscillation and Sound Wave",
+      "title_am": "ንዝረቶችና የድምፅ ሞገዶች"
+    },
+    {
+      "id": "phys_g10_u1",
+      "subject_id": "physics_g12",
+      "unit_number": 3,
+      "title_en": "[Grade 10] Unit 1: Vector Quantities",
+      "title_am": "የቬክተር መጠኖች"
+    },
+    {
+      "id": "phys_g10_u2",
+      "subject_id": "physics_g12",
+      "unit_number": 4,
+      "title_en": "[Grade 10] Unit 2: Uniformly Accelerated Motion",
+      "title_am": "የፍጥነት ለውጥ እንቅስቃሴ"
+    },
+    {
+      "id": "phys_g10_u4",
+      "subject_id": "physics_g12",
+      "unit_number": 5,
+      "title_en": "[Grade 10] Unit 4: Static and Current Electricity",
+      "title_am": "የኤሌክትሪክ ፍሰትና ዑደት"
+    },
+    {
+      "id": "phys_g10_u5",
+      "subject_id": "physics_g12",
+      "unit_number": 6,
+      "title_en": "[Grade 10] Unit 5: Magnetism",
+      "title_am": "ማግኔቲዝም"
+    },
+    {
+      "id": "phys_g10_u6",
+      "subject_id": "physics_g12",
+      "unit_number": 7,
+      "title_en": "[Grade 10] Unit 6: Electromagnetic Waves & Geometrical Optics",
+      "title_am": "ኤሌክትሮማግኔቲክ ሞገድና ጂኦሜትሪያዊ ኦፕቲክስ"
+    },
+    {
+      "id": "phys_g11_u4",
+      "subject_id": "physics_g12",
+      "unit_number": 8,
+      "title_en": "[Grade 11] Unit 4: Dynamics",
+      "title_am": "ዳይናሚክስ፣ ጉልበትና ሃይል"
+    },
+    {
+      "id": "phys_g11_u6",
+      "subject_id": "physics_g12",
+      "unit_number": 9,
+      "title_en": "[Grade 11] Unit 6: Electrostatics and Electric Circuit",
+      "title_am": "ኤሌክትሮስታቲክስና ዑደቶች"
+    },
+    {
+      "id": "phys_g11_u7",
+      "subject_id": "physics_g12",
+      "unit_number": 10,
+      "title_en": "[Grade 11] Unit 7: Nuclear Physics",
+      "title_am": "ኒውክሌር ፊዚክስ"
+    },
+    {
+      "id": "phys_g12_u2",
+      "subject_id": "physics_g12",
+      "unit_number": 11,
+      "title_en": "[Grade 12] Unit 2: Two-Dimensional Motion",
+      "title_am": "ባለ ሁለት አቅጣጫ እንቅስቃሴና ስበት"
+    },
+    {
+      "id": "phys_g12_u4",
+      "subject_id": "physics_g12",
+      "unit_number": 12,
+      "title_en": "[Grade 12] Unit 4: Electromagnetism",
+      "title_am": "ኤሌክትሮማግኔቲዝምና ኤሲ ዑደቶች"
+    },
+    {
+      "id": "phys_g12_u5",
+      "subject_id": "physics_g12",
+      "unit_number": 13,
+      "title_en": "[Grade 12] Unit 5: Basics of Electronics",
+      "title_am": "መሰረታዊ ኤሌክትሮኒክስ"
+    }
+  ],
+  "topics": [
+    {
+      "id": "phys_t_mirror",
+      "unit_id": "phys_g10_u6",
+      "title_en": "Plane mirror image formation",
+      "title_am": "የጠፍጣፋ መስተዋት ምስል አፈጣጠር",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_concave_mirror",
+      "unit_id": "phys_g10_u6",
+      "title_en": "Concave mirror, mirror equation & magnification",
+      "title_am": "የኮንኬቭ መስተዋት ቀመርና ማጉላት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_unit_vector",
+      "unit_id": "phys_g10_u1",
+      "title_en": "Unit vector",
+      "title_am": "ዩኒት ቬክተር",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_collinear_vectors",
+      "unit_id": "phys_g10_u1",
+      "title_en": "Collinear vectors / scalar multiples",
+      "title_am": "ተመሳሳይ አቅጣጫ ቬክተሮች",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_errors",
+      "unit_id": "phys_g9_u2",
+      "title_en": "Random and systematic errors",
+      "title_am": "የዘፈቀደ እና ስልታዊ ስህተቶች",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_motion_graphs",
+      "unit_id": "phys_g10_u2",
+      "title_en": "Motion graphs & constant acceleration",
+      "title_am": "የእንቅስቃሴ ግራፎችና ቋሚ ፍጥነት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_satellite_speed",
+      "unit_id": "phys_g12_u2",
+      "title_en": "Satellite orbital speed",
+      "title_am": "የሳተላይት ምህዋራዊ ፍጥነት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_friction_inclined",
+      "unit_id": "phys_g11_u4",
+      "title_en": "Friction with an inclined applied force",
+      "title_am": "ግጭትና የተዘነበለ ሃይል",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_impulse_collision",
+      "unit_id": "phys_g11_u4",
+      "title_en": "Impulse, momentum & force during collision",
+      "title_am": "ኢምፐልስ፣ ሞመንተምና ግጭት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_work_energy",
+      "unit_id": "phys_g11_u4",
+      "title_en": "Work-energy theorem",
+      "title_am": "የስራና ጉልበት እርግጠኛ ህግ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_standing_waves",
+      "unit_id": "phys_g9_u6",
+      "title_en": "Standing waves & superposition",
+      "title_am": "ቋሚ ሞገዶችና ድመራ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_young_double_slit",
+      "unit_id": "phys_g10_u6",
+      "title_en": "Young's double-slit interference",
+      "title_am": "የያንክ ሁለት ክፍተት ጣልቃ-ገብነት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_electric_dipole",
+      "unit_id": "phys_g11_u6",
+      "title_en": "Electric dipole in an electric field",
+      "title_am": "የኤሌክትሪክ ዳይፖል በኤሌክትሪክ መስክ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_electric_potential",
+      "unit_id": "phys_g11_u6",
+      "title_en": "Electric potential due to a point charge",
+      "title_am": "የነጥብ ቻርጅ ኤሌክትሪክ ቮልቴጅ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_resistor_network",
+      "unit_id": "phys_g10_u4",
+      "title_en": "Series-parallel resistor combination",
+      "title_am": "ተከታታይና ትይዩ ሬዚስተሮች",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_solenoid_bfield",
+      "unit_id": "phys_g10_u5",
+      "title_en": "Magnetic field of a solenoid",
+      "title_am": "የሶሌኖይድ ማግኔቲክ መስክ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_faraday_induction",
+      "unit_id": "phys_g12_u4",
+      "title_en": "Faraday's law / electromagnetic induction",
+      "title_am": "የፋራዴይ ህግና ኢንዳክሽን",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_rlc_ac_power",
+      "unit_id": "phys_g12_u4",
+      "title_en": "Series RLC circuit & average AC power",
+      "title_am": "የአር ኤል ሲ ዑደትና አማካይ ጉልበት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_heisenberg_uncertainty",
+      "unit_id": "phys_g11_u7",
+      "title_en": "Heisenberg uncertainty principle",
+      "title_am": "የሃይሰንበርግ እርግጠኛ አለመሆን መርህ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_nuclear_binding",
+      "unit_id": "phys_g11_u7",
+      "title_en": "Nuclear binding energy per nucleon",
+      "title_am": "የኒውክሊየስ አስገዳጅ ጉልበት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_sound_reflection",
+      "unit_id": "phys_g9_u6",
+      "title_en": "Reflection/refraction of sound & ultrasound",
+      "title_am": "የድምፅ ነጸብራቅና አልትራሳውንድ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_work_torque",
+      "unit_id": "phys_g12_u2",
+      "title_en": "Work done by torque",
+      "title_am": "በቶርክ የሚሰራ ስራ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_satellite_period",
+      "unit_id": "phys_g12_u2",
+      "title_en": "Satellite orbital period / gravitation",
+      "title_am": "የሳተላይት ዙረት ጊዜ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_charging_methods",
+      "unit_id": "phys_g10_u4",
+      "title_en": "Charging by contact and induction",
+      "title_am": "በመነካካትና በኢንዳክሽን ቻርጅ ማድረግ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_capacitor_dielectric",
+      "unit_id": "phys_g11_u6",
+      "title_en": "Capacitor with dielectric",
+      "title_am": "ዳይኤሌክትሪክ ያለው ካፓሲተር",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_resistance_factors",
+      "unit_id": "phys_g11_u6",
+      "title_en": "Resistance, resistivity, length & area",
+      "title_am": "የሬዚስታንስ ተፅዕኖ ፈጣሪዎች",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_ohms_law_exp",
+      "unit_id": "phys_g10_u4",
+      "title_en": "Ohm's law experiment; ammeter & voltmeter",
+      "title_am": "የኦም ህግ ሙከራ፤ አሚተርና ቮልትሚተር",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_charged_particle_bfield",
+      "unit_id": "phys_g10_u5",
+      "title_en": "Charged particle in a magnetic field",
+      "title_am": "ቻርጅ ያለው ቅንጣት በማግኔት መስክ ውስጥ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_transformer_ratios",
+      "unit_id": "phys_g12_u4",
+      "title_en": "Transformer turns, voltage & current ratios",
+      "title_am": "የትራንስፎርመር ጥምርታና ቮልቴጅ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_pn_diode",
+      "unit_id": "phys_g12_u5",
+      "title_en": "P–N junction diode",
+      "title_am": "ፒ-ኤን ዳዮድ",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_vector_components",
+      "unit_id": "phys_g10_u1",
+      "title_en": "Vector components & resultant",
+      "title_am": "የቬክተር ክፍሎችና ውጤት",
+      "importance_weight": 1.0
+    },
+    {
+      "id": "phys_t_vertical_motion",
+      "unit_id": "phys_g10_u2",
+      "title_en": "Vertical motion under gravity",
+      "title_am": "በስበት ስር ወደ ላይ የሚደረግ እንቅስቃሴ",
+      "importance_weight": 1.0
+    }
+  ],
+  "questions": [
+    {
+      "id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u6",
+      "topic_id": "phys_t_mirror",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u6",
+      "curriculum_topic_id": "phys_t_mirror",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 1,
+      "question_text_en": "Suppose a triangular object (O) is placed in front of a plane mirror and its image is observed at position (X). Which one of the following diagrams represents the image (I) formed by the mirror when it is observed from position (X)?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 2,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "8091d28b-c068-5ace-b950-9ff569cdb9f6",
+          "question_id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+          "label": "A",
+          "text_en": "Diagram A",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "45dc7188-7b4d-5f02-afcc-315fe5920899",
+          "question_id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+          "label": "B",
+          "text_en": "Diagram B",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "5eace127-ff23-516a-82ad-61a5c97e4822",
+          "question_id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+          "label": "C",
+          "text_en": "Diagram C",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "3698b73a-2492-54ba-83c5-66c55d6a73e7",
+          "question_id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+          "label": "D",
+          "text_en": "Diagram D",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "03366287-46c6-599d-80e5-4535725f41e3",
+        "question_id": "e1b7c4c0-445f-5aeb-a446-a1185ff772a9",
+        "solution_text_en": "1. For a plane mirror, the image of an object is virtual, upright, and the same size as the object, and it forms as far behind the mirror as the object is in front of it.\n2. Because the object sits on the ground, its image must sit on the same ground line, not floating above it.\n3. The image location does not depend on where the observer stands — only the line of sight used to see it changes with position.\n4. Comparing the four diagrams: only in diagram A does the image (I) sit on the ground at the same height and the same apparent size as the object (O), positioned symmetrically about the mirror.\n5. The other diagrams either enlarge the image (B), lift it off the ground (C), or distort its shape (D) — none of which a plane mirror does.\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Plane mirror images are always upright, same size, and at the same distance behind the mirror sitting on the ground line (Diagram A).",
+        "key_concept": "Plane Mirror Law of Reflection: Virtual, upright, unmagnified (m = +1), image distance equals object distance (di = -do).",
+        "common_pitfall": "Thinking the observer's viewing angle shifts the location of the virtual image rather than just the line of sight."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q01_plane_mirror_reflection.png"
+    },
+    {
+      "id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u6",
+      "topic_id": "phys_t_concave_mirror",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u6",
+      "curriculum_topic_id": "phys_t_concave_mirror",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 2,
+      "question_text_en": "An object is placed 25.0 cm in front of a concave mirror having focal length of 10.0 cm. The magnification of the mirror is ____",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 3,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "d7dfe2f3-1b83-562d-add2-e738b2684afa",
+          "question_id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+          "label": "A",
+          "text_en": "2.5",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "77cbb15c-e578-5589-ac4a-b1e13287571d",
+          "question_id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+          "label": "B",
+          "text_en": "16.7",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "511261df-08b7-5876-9400-8554699fbcf7",
+          "question_id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+          "label": "C",
+          "text_en": "0.67",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "28583cf1-16ce-5ee6-9354-cfa78ba7eb92",
+          "question_id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+          "label": "D",
+          "text_en": "1.5",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "a57d8bcd-8563-59f3-a052-428c2b7084e8",
+        "question_id": "f1b1b28f-b562-5fdc-b46e-1471abfddb62",
+        "solution_text_en": "1. Mirror equation: 1/f = 1/do + 1/di, with do = 25.0 cm and f = 10.0 cm.\n2. Solve for the image distance:\n   1/di = 1/f - 1/do = 1/10 - 1/25 = 0.1 - 0.04 = 0.06 cm^-1\n   di = 1 / 0.06 ≈ 16.7 cm.\n3. Magnification: m = - di / do = - 16.7 / 25 ≈ - 0.67.\n4. The magnitude of the magnification is 0.67 (the negative sign only indicates the image is inverted).\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Use 1/f = 1/do + 1/di to find di = 16.7 cm, then magnification magnitude |m| = di / do = 16.7 / 25 = 0.67.",
+        "key_concept": "Mirror equation 1/f = 1/do + 1/di and lateral magnification formula m = -di / do.",
+        "common_pitfall": "Forgetting that magnification is di / do, not do / di or simply di alone (16.7)."
+      }
+    },
+    {
+      "id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u1",
+      "topic_id": "phys_t_unit_vector",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u1",
+      "curriculum_topic_id": "phys_t_unit_vector",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 3,
+      "question_text_en": "The unit vector in the direction of A⃗ = 3î + 4ĵ is ______.",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 3,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "83427eb0-16cb-539e-b647-ae0270dff4f5",
+          "question_id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+          "label": "A",
+          "text_en": "3/5 î + 4/5 ĵ",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "c3f2a7b3-ea61-5982-8bed-6fdb01e2e72a",
+          "question_id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+          "label": "B",
+          "text_en": "2î - ĵ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "891c5c15-2b33-514a-a658-c3938c44ecb2",
+          "question_id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+          "label": "C",
+          "text_en": "3/2 î + 4/2 ĵ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "eb62493e-3de9-5f5d-a16f-55b858c39562",
+          "question_id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+          "label": "D",
+          "text_en": "î + ĵ",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "9ed00e64-bd58-5d02-bcd5-261821e003d1",
+        "question_id": "4f1d69d1-6728-5634-a68b-f019faa53339",
+        "solution_text_en": "1. The magnitude of A⃗ = 3î + 4ĵ is:\n   |A⃗| = √(3² + 4²) = √(9 + 16) = √25 = 5.\n2. The unit vector is the vector divided by its own magnitude:\n   Â = A⃗ / |A⃗| = (3î + 4ĵ) / 5 = 3/5 î + 4/5 ĵ.\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Divide each vector component by the vector's length (|A| = √(3² + 4²) = 5) to get 3/5 î + 4/5 ĵ.",
+        "key_concept": "Unit Vector Definition: Â = A⃗ / |A⃗|, where |A⃗| = √(Ax² + Ay²).",
+        "common_pitfall": "Dividing components by 2 or subtracting them instead of dividing by the Euclidean norm."
+      }
+    },
+    {
+      "id": "88a1645a-8e61-570b-a423-de70e4c10954",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u1",
+      "topic_id": "phys_t_collinear_vectors",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u1",
+      "curriculum_topic_id": "phys_t_collinear_vectors",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 4,
+      "question_text_en": "Which of the following pair of vectors are collinear?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 3,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "660d59c3-e98c-5bb4-a6cd-19d786e0608a",
+          "question_id": "88a1645a-8e61-570b-a423-de70e4c10954",
+          "label": "A",
+          "text_en": "2î - 3ĵ and -4î - 6ĵ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e8213764-5a91-51b3-a5c1-09552115c55b",
+          "question_id": "88a1645a-8e61-570b-a423-de70e4c10954",
+          "label": "B",
+          "text_en": "î + ĵ and -î + ĵ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "5395787a-c118-5877-89da-0961efb276c9",
+          "question_id": "88a1645a-8e61-570b-a423-de70e4c10954",
+          "label": "C",
+          "text_en": "2î + 3ĵ and -4î + 6ĵ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "037b2b3a-9988-53bc-821b-fbe69c098f54",
+          "question_id": "88a1645a-8e61-570b-a423-de70e4c10954",
+          "label": "D",
+          "text_en": "2î + 3ĵ and -4î - 6ĵ",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "fd3f96f1-abe2-5d7a-ad67-7d6dc46910c6",
+        "question_id": "88a1645a-8e61-570b-a423-de70e4c10954",
+        "solution_text_en": "1. Two vectors are collinear when one is a scalar multiple of the other — the ratio of corresponding components must be identical.\n2. Test D: -4 / 2 = -2 and -6 / 3 = -2. Both ratios agree, so (-4î - 6ĵ) = -2(2î + 3ĵ). Both lie along the same line (anti-parallel).\n3. Test the others: A gives ratios -2 and 2 (disagree); B gives -1 and 1 (disagree); C gives -2 and 2 (disagree).\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Collinear vectors must be scalar multiples: (-4î - 6ĵ) = -2 * (2î + 3ĵ).",
+        "key_concept": "Collinearity condition: Vector B = k * Vector A (Ax/Bx = Ay/By = constant).",
+        "common_pitfall": "Ignoring signs: 2î - 3ĵ and -4î - 6ĵ are NOT scalar multiples because -4/2 = -2 while -6/-3 = +2."
+      }
+    },
+    {
+      "id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g9_u2",
+      "topic_id": "phys_t_errors",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "phys_g9_u2",
+      "curriculum_topic_id": "phys_t_errors",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 5,
+      "question_text_en": "Which of the following statements distinguishes between random and systematic errors?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 4,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "e0db97ef-a549-5a6a-9dc6-ec8a155c2e0d",
+          "question_id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+          "label": "A",
+          "text_en": "Systematic error can be minimized by taking several readings and averaging; whereas random error cannot be minimized.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "7f3fae3b-ebfa-5948-94e5-f005eb0a3764",
+          "question_id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+          "label": "B",
+          "text_en": "Systematic error makes measured values to be always above or always below the true value; whereas random error causes measured values to be sometimes above and sometimes below the true value.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "3352d5bb-c463-5595-ad9b-21f6efcfd5c7",
+          "question_id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+          "label": "C",
+          "text_en": "Random error makes measured values to be always above or always below the true value; whereas systematic error causes measured values to be sometimes above and sometimes below the true value.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "ae55e9c5-aea0-5229-b6db-ee6caba28402",
+          "question_id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+          "label": "D",
+          "text_en": "Random error is biased, whereas systematic error does not show bias.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "516b591d-a941-5a47-8792-68eae5ac9828",
+        "question_id": "1aac95fa-0352-51c2-9e66-8a1f3ac6992d",
+        "solution_text_en": "1. A systematic error biases every reading in the same direction (consistently too high, or consistently too low) due to calibration or instrumental zero-offset.\n2. A random error scatters readings unpredictably above and below the true value due to unpredictable environmental fluctuations, and averages out over multiple trials.\n3. Option B accurately states this distinction. Option A reverses the effect of averaging (averaging minimizes random error, not systematic). Option C inverts the definitions, and Option D misattributes bias.\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Systematic error is one-directional (biased); random error fluctuates unpredictably above and below the mean.",
+        "key_concept": "Error Analysis: Systematic (one-sided, calibration flaw) vs. Random (statistical scatter, reducible by averaging).",
+        "common_pitfall": "Believing averaging repeated trials removes systematic error; systematic error remains unchanged by averaging."
+      }
+    },
+    {
+      "id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u2",
+      "topic_id": "phys_t_motion_graphs",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u2",
+      "curriculum_topic_id": "phys_t_motion_graphs",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 6,
+      "question_text_en": "For an object moving in straight line,",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 4,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "d1597ce8-d503-5c02-bc8d-b98f7a3ffa98",
+          "question_id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+          "label": "A",
+          "text_en": "if the displacement changes by equal amount in equal time interval, the displacement-time graph is horizontal line.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "614b908e-3c4a-52a6-8432-14fca046f03a",
+          "question_id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+          "label": "B",
+          "text_en": "the area of the region under the displacement-time graph and the slope of velocity-time graph are, respectively, the acceleration and displacement of the object.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "aa94e136-a264-5f0f-90d3-ba9b2d8a856d",
+          "question_id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+          "label": "C",
+          "text_en": "if the velocity increases by equal amount in equal time interval, the velocity-time graph is straight line with positive slope and the acceleration-time graph is horizontal.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "542aa353-6766-56c4-9d00-6fe4e7cdf2de",
+          "question_id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+          "label": "D",
+          "text_en": "the slope of displacement-time graph and the area of the region under acceleration-time graph are, respectively, the acceleration and velocity of the object.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "4697b8da-b7b3-517f-9635-4bba75eec685",
+        "question_id": "bb653bb3-193f-5ae3-8e12-fe5d6fe2a339",
+        "solution_text_en": "1. 'Velocity increases by equal amounts in equal time intervals' is the exact definition of constant acceleration.\n2. A velocity that increases linearly with time gives a velocity–time graph that is a straight line with a constant positive slope.\n3. Because the acceleration is constant, the acceleration–time graph is a horizontal line.\n4. Option A is false because equal displacement in equal time intervals yields an inclined straight line (not horizontal). Options B and D confuse slopes and areas.\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Constant acceleration means velocity increases steadily (straight positive slope on v-t graph) and acceleration is constant (horizontal on a-t graph).",
+        "key_concept": "Kinematic graphs: slope of s-t is velocity, slope of v-t is acceleration, area under v-t is displacement.",
+        "common_pitfall": "Confusing the slope of s-t (which is velocity) with acceleration."
+      }
+    },
+    {
+      "id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u2",
+      "topic_id": "phys_t_satellite_speed",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u2",
+      "curriculum_topic_id": "phys_t_satellite_speed",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 7,
+      "question_text_en": "Which of the following is true about satellite motion?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 5,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "421b612c-158e-53d9-9562-00674d2a9464",
+          "question_id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+          "label": "A",
+          "text_en": "A satellite moving closer to the Earth takes longer time to complete one revolution than a satellite farther from the Earth.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "f5f1dcf9-27d9-582b-8fba-a41d29b212de",
+          "question_id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+          "label": "B",
+          "text_en": "For two satellites moving around the Earth at equal orbital radius, a heavier satellite has larger speed than a lighter one.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "fdbc1f3f-3c63-5187-a83c-4728d0b9658f",
+          "question_id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+          "label": "C",
+          "text_en": "For equal orbital radius, a satellite moving around the Earth has smaller speed than a satellite moving about Moon.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "b2284408-6c30-5a16-8e04-2f3e4e376b14",
+          "question_id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+          "label": "D",
+          "text_en": "A satellite closer to Earth is faster than a satellite farther from the Earth.",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "67373205-e90c-5b94-834f-fb14db83b70e",
+        "question_id": "7f7ab3ca-8743-5624-9220-da7fbba23ee2",
+        "solution_text_en": "1. For a satellite in circular orbit, gravity provides the centripetal force: G*M*m / r² = m*v² / r => v = √(G*M / r).\n2. As orbital radius r decreases (closer to Earth), orbital velocity v increases. Thus, closer satellites travel faster.\n3. The satellite's own mass m cancels out, so heavier and lighter satellites at the same radius move at the exact same speed (ruling out B).\n4. Earth has a much larger mass M than the Moon, so orbital speed around Earth is greater than around the Moon at equal radius (ruling out C).\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Orbital speed v = √(GM/r) means closer orbits (smaller r) must move faster to avoid falling into Earth.",
+        "key_concept": "Orbital mechanics: v = √(GM/r) and Kepler's Third Law T² ∝ r³.",
+        "common_pitfall": "Assuming heavier satellites need to move faster; satellite mass cancels out completely."
+      }
+    },
+    {
+      "id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u4",
+      "topic_id": "phys_t_friction_inclined",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u4",
+      "curriculum_topic_id": "phys_t_friction_inclined",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 8,
+      "question_text_en": "A block of mass m is placed on a horizontal surface. The coefficient of static friction between the block and the surface is μ. A force of magnitude F acts on the block at an angle θ as shown in the figure below. The minimum magnitude of the force F required to slide the block on the surface is",
+      "question_text_am": null,
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 5,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "0f355d54-9704-514a-bfd4-4b1e032be1d1",
+          "question_id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+          "label": "A",
+          "text_en": "μmg / (cosθ - μsinθ)",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "2d69edd7-52b7-54e4-b49c-238a3ebf85ff",
+          "question_id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+          "label": "B",
+          "text_en": "μmg / (cosθ + μsinθ)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "495e5fbd-9b9c-5b1b-9546-d56359eb276e",
+          "question_id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+          "label": "C",
+          "text_en": "μmg / (cosθ - sinθ)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "dff25d45-1bff-5b1d-8a12-079a5ef4f3a9",
+          "question_id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+          "label": "D",
+          "text_en": "μmg / (cosθ + sinθ)",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "62ac78d5-ca54-583d-8a40-168aee68383a",
+        "question_id": "7ac952ed-257e-5aed-861f-d910b2966f5d",
+        "solution_text_en": "1. From the diagram, F pushes into the block at an angle θ below the horizontal, having a horizontal forward component F*cosθ and a downward vertical component F*sinθ.\n2. Vertical equilibrium (block remains on the surface): N = mg + F*sinθ.\n3. At the verge of sliding, the horizontal forward force equals the maximum static friction: F*cosθ = μ*N = μ(mg + F*sinθ).\n4. Distribute and collect F terms: F*cosθ - μ*F*sinθ = μ*mg => F(cosθ - μ*sinθ) = μ*mg.\n5. Solve for F: F = μmg / (cosθ - μsinθ).\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "The downward component of F increases normal force (N = mg + F sinθ), yielding F = μmg / (cosθ - μsinθ).",
+        "key_concept": "Newton's laws with friction: N = mg + Fy, and verge of motion Fx = fs,max = μ*N.",
+        "common_pitfall": "Assuming N = mg; when pushing downward at an angle, the normal force increases by F*sinθ."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q08_block_inclined_force_friction.png"
+    },
+    {
+      "id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u4",
+      "topic_id": "phys_t_impulse_collision",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u4",
+      "curriculum_topic_id": "phys_t_impulse_collision",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 9,
+      "question_text_en": "A ball of mass m moving with a speed v strikes a hard wall at an angle θ with the wall. It is reflected with the same speed at the same angle as shown in the figure below. If the ball is in contact with the wall for time t, then the average force acting on the wall is given by",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 6,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "bb699fd6-8b2d-5229-b532-b0fd85664ec3",
+          "question_id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+          "label": "A",
+          "text_en": "mv/t cos θ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "99932f15-2143-5941-bb31-831f095c82ea",
+          "question_id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+          "label": "B",
+          "text_en": "mv/t sin θ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "6b74fb7d-388d-5116-bcb3-d83420a15e00",
+          "question_id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+          "label": "C",
+          "text_en": "2mv/t cos θ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "2b30c120-4258-5398-8367-f6abaf61dd3e",
+          "question_id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+          "label": "D",
+          "text_en": "2mv/t sin θ",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "5e159567-e8a0-5397-b175-f5bd21866d6f",
+        "question_id": "57f77e37-1fae-5d50-bbc9-31b9a1da172a",
+        "solution_text_en": "1. Note that the angle θ is defined relative to the wall surface, so the velocity component perpendicular to the wall is v*sinθ, while the parallel component v*cosθ is unaffected.\n2. Before collision, perpendicular momentum toward the wall is mv*sinθ. After elastic reflection, it is -mv*sinθ.\n3. Total momentum change in the normal direction has magnitude: Δp = mv*sinθ - (-mv*sinθ) = 2mv*sinθ.\n4. By Newton's second law, average force F_avg = Δp / t = 2mv*sinθ / t.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Since angle θ is measured to the wall, normal velocity is v*sinθ. Momentum reversal gives Δp = 2mv*sinθ, so F = 2mv*sinθ / t.",
+        "key_concept": "Impulse-Momentum Theorem: F_avg * Δt = Δp = 2*m*v_perpendicular.",
+        "common_pitfall": "Using cosθ instead of sinθ because standard angles are often measured from the normal rather than the surface."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q09_ball_collision_momentum.png"
+    },
+    {
+      "id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u4",
+      "topic_id": "phys_t_work_energy",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u4",
+      "curriculum_topic_id": "phys_t_work_energy",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 10,
+      "question_text_en": "According to the work-energy theorem,",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 7,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "ec304b2b-c3b2-5cde-b41b-db802f2bbb95",
+          "question_id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+          "label": "A",
+          "text_en": "work done by tension on an object tied to a string and moving in a horizontal circle is negative.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e14de2c6-11fe-5db0-a059-a9e7f6f4742a",
+          "question_id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+          "label": "B",
+          "text_en": "work done by gravity on an object thrown downward is negative.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "4dea8ed7-3ac8-51a3-a190-1a89756e53be",
+          "question_id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+          "label": "C",
+          "text_en": "work done by gravity on an object thrown upward and moving upward is negative.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "e6b87703-0a22-5177-bd2b-db6706800934",
+          "question_id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+          "label": "D",
+          "text_en": "work done by gravitational force on a satellite moving around the earth in a circular orbit is positive.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "ddcba07e-770f-5471-a68e-fc69e5dc4f5c",
+        "question_id": "2787c2c2-3590-5edd-b3ea-e4bcf8dae08c",
+        "solution_text_en": "1. Work is defined as W = F⃗ · d⃗ = F*d*cos(ϕ), where ϕ is the angle between force and displacement.\n2. When an object moves upward, displacement is upward while gravity acts downward (ϕ = 180°). Since cos(180°) = -1, work done by gravity is negative.\n3. Tension on an object in circular motion and gravity on a satellite in circular orbit are perpendicular to velocity (ϕ = 90°, cos(90°) = 0), so work done is zero (ruling out A and D).\n4. Gravity on a falling object is in the direction of motion (positive work, ruling out B).\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Gravity pulls downward while the object ascends upward (opposite directions), so work is negative.",
+        "key_concept": "Work Definition: W = F d cosθ. Negative work occurs when force opposes displacement (cos 180° = -1).",
+        "common_pitfall": "Thinking circular motion tension does negative work; centripetal forces act at 90° and do zero work."
+      }
+    },
+    {
+      "id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g9_u6",
+      "topic_id": "phys_t_standing_waves",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "phys_g9_u6",
+      "curriculum_topic_id": "phys_t_standing_waves",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 11,
+      "question_text_en": "Standing wave is formed when two identical waves traveling in opposite directions in the same medium interfere with each other. If y1 and y2 are the interfering waves and y=y1+y2 is the resulting standing wave, which of the following is a correct combination?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 7,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "a523e330-1f3a-50a6-bb8c-f655b96609cd",
+          "question_id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+          "label": "A",
+          "text_en": "y1=A sin(kx-ωt), y2=A sin(kx+ωt), y=A sin(kx)cos(2ωt)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "869792bf-dff0-544d-8dc5-6451bab115be",
+          "question_id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+          "label": "B",
+          "text_en": "y1=A sin(kx-ωt), y2=A sin(kx+ωt), y=2A sin(kx)cos(ωt)",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "4b9f7809-27f0-5b55-8877-d7a6c69c3112",
+          "question_id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+          "label": "C",
+          "text_en": "y1=A sin(kx-ωt), y2=A sin(kx-ωt), y=2A sin(kx)cos(ωt)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "59378e06-d48f-5c79-9aa1-9edf159e3fc9",
+          "question_id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+          "label": "D",
+          "text_en": "y1=A sin(kx-ωt), y2=A cos(kx+ωt), y=2A sin(kx-ωt)",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "2e2d7adc-9afc-522b-8f81-a1efdc163ef0",
+        "question_id": "35cea244-146d-53fb-a7a0-863fbcaf4d46",
+        "solution_text_en": "1. A standing wave results from two waves of equal amplitude and frequency travelling in opposite directions: y1 = A sin(kx - ωt) and y2 = A sin(kx + ωt).\n2. Using the sum-to-product identity sin α + sin β = 2 sin((α+β)/2) cos((α-β)/2):\n   y = y1 + y2 = 2A sin(kx) cos(-ωt) = 2A sin(kx) cos(ωt).\n3. Option B matches this mathematical form exactly.\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Superposition of opposite traveling waves: A sin(kx - ωt) + A sin(kx + ωt) = 2A sin(kx) cos(ωt).",
+        "key_concept": "Standing Waves: Spatial term sin(kx) separated from temporal oscillation cos(ωt) with doubled amplitude 2A.",
+        "common_pitfall": "Choosing Option A which mistakenly doubles the angular frequency to 2ωt."
+      }
+    },
+    {
+      "id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u6",
+      "topic_id": "phys_t_young_double_slit",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u6",
+      "curriculum_topic_id": "phys_t_young_double_slit",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 12,
+      "question_text_en": "A Young double slit experiment consists of two narrow slits separated by 0.06 mm and 1.2 m away from a screen. If the slits are illuminated with a light of wavelength 563 nm, the location of the fourth bright fringe on the screen is",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 8,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "f02e432a-8ce0-5684-a393-86c3e6f1cd73",
+          "question_id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+          "label": "A",
+          "text_en": "0.394 cm",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "4f9f6a9c-9f2d-526a-9146-762a30854224",
+          "question_id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+          "label": "B",
+          "text_en": "0.45 cm",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "6e5fee0e-d773-51ab-8ddd-f81812755077",
+          "question_id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+          "label": "C",
+          "text_en": "3.94 cm",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "bf9f3314-3515-55c4-a99a-a64ffc51668d",
+          "question_id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+          "label": "D",
+          "text_en": "4.5 cm",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "bcb74d6c-6581-5167-a18c-21331817f140",
+        "question_id": "4024bba7-24ee-5e35-a7d3-3548d36ecf39",
+        "solution_text_en": "1. In double-slit interference, the position of the m-th bright fringe is: ym = m * λ * L / d.\n2. Convert parameters to SI units:\n   d = 0.06 mm = 6 × 10^-5 m\n   L = 1.2 m\n   λ = 563 nm = 563 × 10^-9 m\n   m = 4\n3. Calculate:\n   y4 = 4 × (563 × 10^-9 m) × (1.2 m) / (6 × 10^-5 m)\n   y4 = 2.7024 × 10^-6 / (6 × 10^-5) = 0.0450 m = 4.5 cm.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "y4 = 4 * λ * L / d = (4 * 563e-9 * 1.2) / 6e-5 = 0.045 m = 4.5 cm.",
+        "key_concept": "Young's Double-Slit Bright Fringe Formula: ym = m * λ * L / d.",
+        "common_pitfall": "Unit conversion errors: 0.06 mm = 6 × 10^-5 m (not 6 × 10^-4 m)."
+      }
+    },
+    {
+      "id": "6759f016-b66c-5001-8865-aee786cd2678",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u6",
+      "topic_id": "phys_t_electric_dipole",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u6",
+      "curriculum_topic_id": "phys_t_electric_dipole",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 13,
+      "question_text_en": "An electric dipole consists of a negative charge -q placed at a point with x and y coordinates (-2,-2) and a positive charge +q at (2,2). The dipole is placed in a uniform electric field E directed in the positive x direction. If the dipole axis makes an angle θ with the field, which of the following is true about the dipole?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 8,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "aa63d55d-4f88-5147-a893-a8fc39bad206",
+          "question_id": "6759f016-b66c-5001-8865-aee786cd2678",
+          "label": "A",
+          "text_en": "The field rotates the dipole in the direction of decreasing the angle θ, until the dipole becomes parallel to the field.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "a28f040d-7972-54b1-b2a2-c4780fa7cc34",
+          "question_id": "6759f016-b66c-5001-8865-aee786cd2678",
+          "label": "B",
+          "text_en": "The field rotates it in the direction of increasing the angle θ, until the dipole is perpendicular to the field.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "ca7657ed-8f16-592e-961c-42ec16233360",
+          "question_id": "6759f016-b66c-5001-8865-aee786cd2678",
+          "label": "C",
+          "text_en": "It is in both translational and rotational equilibrium.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e02c2c0a-864b-5304-8d9f-798b270e67c0",
+          "question_id": "6759f016-b66c-5001-8865-aee786cd2678",
+          "label": "D",
+          "text_en": "It travels in the direction of the electric field.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "00fcc147-8338-5757-b88c-745a17232902",
+        "question_id": "6759f016-b66c-5001-8865-aee786cd2678",
+        "solution_text_en": "1. The electric dipole moment p⃗ points from negative to positive charge (from (-2,-2) to (2,2)), oriented at 45° to the +x axis.\n2. In a uniform electric field, the net force F_net = qE - qE = 0, so there is no net translational force (ruling out D).\n3. The field exerts an alignment torque: τ⃗ = p⃗ × E⃗. The magnitude of torque is τ = p*E*sinθ.\n4. This restoring torque always rotates the dipole toward alignment with E⃗, reducing θ until θ = 0 (stable equilibrium parallel to the field).\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "A uniform electric field exerts zero net force but exerts a torque τ = p × E that rotates the dipole toward alignment with the field (decreasing θ).",
+        "key_concept": "Dipole in uniform E-field: F_net = 0, Torque τ⃗ = p⃗ × E⃗ (aligns dipole parallel to E).",
+        "common_pitfall": "Confusing net force with torque; net force is zero but torque is non-zero when θ ≠ 0."
+      }
+    },
+    {
+      "id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u6",
+      "topic_id": "phys_t_electric_potential",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u6",
+      "curriculum_topic_id": "phys_t_electric_potential",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 14,
+      "question_text_en": "The electric potential at a distance of 2 cm from a -1.6 x 10^-9 C point charge is",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 9,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "7ad298b9-86dc-5238-ba41-7f00e3d39cdb",
+          "question_id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+          "label": "A",
+          "text_en": "-14.4 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "1273415f-b510-5b8b-ae9f-4004eecbdd11",
+          "question_id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+          "label": "B",
+          "text_en": "720 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "7a355f9f-243f-562f-9dfc-14ab76b9be1b",
+          "question_id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+          "label": "C",
+          "text_en": "4.4 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "7e448d0f-6c1f-5e00-9c72-da3eb09711b9",
+          "question_id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+          "label": "D",
+          "text_en": "-720 V",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "915b056e-6b87-5c96-a982-cd509dda3c99",
+        "question_id": "020673e8-e33d-53a4-ab40-2fb7c48b1545",
+        "solution_text_en": "1. Electric potential from a point charge: V = k * q / r.\n2. Using k = 9 × 10^9 N·m²/C², q = -1.6 × 10^-9 C, and r = 2 cm = 0.02 m:\n   V = (9 × 10^9) × (-1.6 × 10^-9) / 0.02 = -14.4 / 0.02 = -720 V.\n3. Option A (-14.4 V) is the numerator alone, forgetting to divide by r.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "V = k*q / r = (9e9 * -1.6e-9) / 0.02 = -14.4 / 0.02 = -720 V.",
+        "key_concept": "Electric Potential of a Point Charge: V = k*q / r (scalar quantity that retains charge sign).",
+        "common_pitfall": "Omitting the negative sign or failing to convert distance from 2 cm to 0.02 m."
+      }
+    },
+    {
+      "id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u4",
+      "topic_id": "phys_t_resistor_network",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u4",
+      "curriculum_topic_id": "phys_t_resistor_network",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 15,
+      "question_text_en": "Two resistors R1=1 Ω and R2=4 Ω are connected in parallel to each other and their combination is connected in series with a third resistor R3=2 Ω. The whole combination is connected to a voltage source of potential difference 14 V. The potential difference across R1 is",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 9,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "4013110d-2446-56d6-a2af-b6e03c0f4e15",
+          "question_id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+          "label": "A",
+          "text_en": "10 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "87195a37-2393-5f70-9a2b-cf49a04791bb",
+          "question_id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+          "label": "B",
+          "text_en": "14 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "56ca1e0a-1406-5bdc-9d5b-b4ab6750b1f3",
+          "question_id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+          "label": "C",
+          "text_en": "5 V",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "8c0e950e-dc42-5ce0-8db2-34d23e56e6cf",
+          "question_id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+          "label": "D",
+          "text_en": "4 V",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "5582a38b-b0ba-503f-a9ac-e79c4b5f21e9",
+        "question_id": "079854fb-d3d2-5db6-ae53-4cde98e55249",
+        "solution_text_en": "1. Find equivalent resistance of parallel resistors R1 and R2:\n   Rp = (R1 * R2) / (R1 + R2) = (1 * 4) / (1 + 4) = 4/5 = 0.8 Ω.\n2. Total circuit resistance:\n   R_total = Rp + R3 = 0.8 Ω + 2.0 Ω = 2.8 Ω.\n3. Total current supplied by the 14 V source:\n   I_total = V / R_total = 14 / 2.8 = 5 A.\n4. Voltage across the parallel combination (and therefore across R1):\n   V_R1 = I_total * Rp = 5 A × 0.8 Ω = 4 V.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Parallel block Rp = (1*4)/(1+4) = 0.8 Ω. Total R = 2.8 Ω. Current I = 14/2.8 = 5 A. Voltage V_R1 = 5 * 0.8 = 4 V.",
+        "key_concept": "Series-Parallel Circuit Analysis: Ohm's Law and voltage divider across parallel branches.",
+        "common_pitfall": "Applying the full 14 V across R1 without accounting for the voltage drop across series resistor R3."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q15_resistor_circuit_combination.png"
+    },
+    {
+      "id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u5",
+      "topic_id": "phys_t_solenoid_bfield",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u5",
+      "curriculum_topic_id": "phys_t_solenoid_bfield",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 16,
+      "question_text_en": "Consider a long and tightly wound solenoid carrying current I, having length L and N turns of winding. If n is the number of turns per unit length, which of the following describes the magnetic field produced by the solenoid?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 10,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "39bc596c-12aa-5b6b-aaf4-eec0384cf3e3",
+          "question_id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+          "label": "A",
+          "text_en": "The magnetic field inside the solenoid is zero, whereas the field outside is proportional to the length of the solenoid.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "a0c3a23f-e588-5767-8a92-ecdef7946911",
+          "question_id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+          "label": "B",
+          "text_en": "The magnetic field inside the solenoid is constant and is parallel to the solenoid’s axis, whereas the field outside is negligible.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "b1b6e41c-ce86-51f3-ab91-7c4846495cde",
+          "question_id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+          "label": "C",
+          "text_en": "The magnetic field inside the solenoid is uniform and perpendicular to the axis of the solenoid.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "2825cc62-f9e6-56c8-b5a7-8ea2ba8a2faf",
+          "question_id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+          "label": "D",
+          "text_en": "The magnetic field outside the solenoid is as strong as the field inside it.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "5a5dd097-0037-5833-a850-3eae77d1681a",
+        "question_id": "96694da7-1cb3-513b-a12b-049cdca7f603",
+        "solution_text_en": "1. For an ideal tightly wound, long solenoid, Ampère's Law demonstrates that the internal magnetic field is uniform and directed parallel to the central axis: B = μ0 * n * I.\n2. Outside the solenoid windings, field lines from opposing sides cancel out, rendering the external field virtually zero (negligible).\n3. Option B accurately captures both the uniform axial internal field and the negligible exterior field.\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Inside an ideal solenoid, B = μ0*n*I is uniform and parallel to the axis; outside, the field is approximately zero.",
+        "key_concept": "Magnetic Field of a Solenoid: B_inside = μ0*n*I (uniform, axial), B_outside ≈ 0.",
+        "common_pitfall": "Thinking the magnetic field inside is perpendicular to the axis rather than along the axis."
+      }
+    },
+    {
+      "id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u4",
+      "topic_id": "phys_t_faraday_induction",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u4",
+      "curriculum_topic_id": "phys_t_faraday_induction",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 17,
+      "question_text_en": "According to the law of electromagnetic induction,",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 10,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "3c8214a7-e586-58a0-846f-d428300714a3",
+          "question_id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+          "label": "A",
+          "text_en": "the magnitude of emf induced in a circuit is directly proportional to the rate of change the magnetic flux crossing any surface bounded by the circuit.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "771132b4-82d4-5e59-bcce-f5dd8f28b7b3",
+          "question_id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+          "label": "B",
+          "text_en": "a changing magnetic field parallel to the plane of a circuit induces an emf in it.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "a34ba675-2d5d-5c72-9e0d-6a78c51d946d",
+          "question_id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+          "label": "C",
+          "text_en": "a constant magnetic flux crossing the surface of a circuit induced an emf in the circuit.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "95b9b6d6-a461-5e28-9e89-cbbd8ec334c6",
+          "question_id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+          "label": "D",
+          "text_en": "an emf is induced in a circuit when a constant magnetic field crosses its surface.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "edf16c35-e6c8-5494-9cd6-a40ff6200f3e",
+        "question_id": "f661b08b-0e8c-502c-892c-bda2446c331c",
+        "solution_text_en": "1. Faraday's Law of Induction states that the induced electromotive force (EMF) is directly proportional to the time rate of change of magnetic flux: ε = - dΦB / dt.\n2. A constant magnetic flux or constant field produces zero change (dΦB/dt = 0), inducing no EMF (ruling out C and D).\n3. A field parallel to the plane of the circuit has zero normal component, meaning ΦB = 0 at all times, inducing no EMF (ruling out B).\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Faraday's Law: Induced EMF magnitude is directly proportional to the rate of change of magnetic flux (dΦ/dt).",
+        "key_concept": "Faraday's Law of Electromagnetic Induction: ε = -N * (ΔΦB / Δt).",
+        "common_pitfall": "Believing a large constant magnetic field induces voltage; only a changing field induces an EMF."
+      }
+    },
+    {
+      "id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u4",
+      "topic_id": "phys_t_rlc_ac_power",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u4",
+      "curriculum_topic_id": "phys_t_rlc_ac_power",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 18,
+      "question_text_en": "A resistor R, a capacitor C, and inductor L are connected in series to an AC voltage source that generates a sinusoidal voltage, V(t)=Vpsin(ω t), with Vp and ω being the peak voltage and angular frequency of the source. If XC, XL, and Z are capacitive reactance, inductive reactance, and impedance, respectively, Irms and Vrms are the root-mean-square (rms) values of the current and voltage, the average power dissipated in series the RLC circuit is given by",
+      "question_text_am": null,
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 11,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "e33c71ad-475c-5bac-8553-d265c46ab34f",
+          "question_id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+          "label": "A",
+          "text_en": "2 Ip Vp [ R / √(R² + (XL - XC)²) ]",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "00c20ace-1fbf-55a7-9b30-71bdb555799f",
+          "question_id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+          "label": "B",
+          "text_en": "Irms Vrms",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "804b6723-a228-5872-8a0c-58d31bffb6e8",
+          "question_id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+          "label": "C",
+          "text_en": "Irms Vrms [ R / √(R² + (XL - XC)²) ]",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "8f36f5af-7b48-550f-bc04-8e9d87160569",
+          "question_id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+          "label": "D",
+          "text_en": "Irms² Z",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "4a75f0b8-6952-53dd-b9d0-fd85ccb803a3",
+        "question_id": "8e2b1e09-f1b5-553f-b995-385cb8881827",
+        "solution_text_en": "1. Average power dissipated in any AC series circuit is given by P_avg = Irms * Vrms * cos(ϕ), where cos(ϕ) is the power factor.\n2. For a series RLC circuit, total impedance is Z = √(R² + (XL - XC)²), and the power factor is cos(ϕ) = R / Z = R / √(R² + (XL - XC)²).\n3. Substituting cos(ϕ) yields: P_avg = Irms * Vrms * [ R / √(R² + (XL - XC)²) ].\n4. Option B only applies to purely resistive circuits (cos ϕ = 1), and Option D incorrectly uses impedance Z instead of resistance R.\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Average AC power is P = Irms * Vrms * cos ϕ, with power factor cos ϕ = R / Z = R / √(R² + (XL - XC)²).",
+        "key_concept": "AC Circuit Power: P_avg = Irms * Vrms * cos ϕ, where power factor cos ϕ = R / Z.",
+        "common_pitfall": "Assuming power is Irms²*Z; power is only dissipated by the resistor (Irms²*R), not reactive components."
+      }
+    },
+    {
+      "id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u7",
+      "topic_id": "phys_t_heisenberg_uncertainty",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u7",
+      "curriculum_topic_id": "phys_t_heisenberg_uncertainty",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 19,
+      "question_text_en": "According to the Heisenberg’s uncertainty principle,",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 11,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "bc5f4fd7-b3c1-5161-99f9-176054ff2c31",
+          "question_id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+          "label": "A",
+          "text_en": "the larger the position uncertainty, the larger the momentum uncertainty.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "5686aeb4-9738-51c4-9b2f-f75f6a6074fd",
+          "question_id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+          "label": "B",
+          "text_en": "if the uncertainty in position decreases, the momentum uncertainty decreases, too.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "26dc57fe-a933-55e9-9dad-79068a7ccac4",
+          "question_id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+          "label": "C",
+          "text_en": "the more precisely we measure the position of a particle, we become less precise of its momentum and vice versa.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "6862eb2b-0f78-524f-9894-3aade089969c",
+          "question_id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+          "label": "D",
+          "text_en": "we can measure both the position and momentum of a particle simultaneously with unlimited precision.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "cf3d062e-74c9-59ec-86dc-4bd87133caef",
+        "question_id": "4adbce63-3652-52a9-a5c6-6c35eeb2303b",
+        "solution_text_en": "1. Heisenberg's Uncertainty Principle states that Δx * Δp ≥ ħ / 2.\n2. The product of position uncertainty Δx and momentum uncertainty Δp has a fundamental lower limit.\n3. If position is measured with higher precision (smaller Δx), the uncertainty in momentum Δp must correspondingly increase (less precision), establishing an inescapable physical trade-off.\n4. Options A, B, and D contradict this inverse trade-off.\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Δx * Δp ≥ ħ/2 means higher precision in position implies lower precision in momentum, and vice versa.",
+        "key_concept": "Heisenberg Uncertainty Principle: Δx * Δp ≥ ħ / 2.",
+        "common_pitfall": "Thinking measurement technology advances could eliminate uncertainty; it is a fundamental quantum wave property."
+      }
+    },
+    {
+      "id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u7",
+      "topic_id": "phys_t_nuclear_binding",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u7",
+      "curriculum_topic_id": "phys_t_nuclear_binding",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 20,
+      "question_text_en": "The graph of nuclear binding energy per nucleon (BE/A) versus mass number (A) has its peak near an atomic weight A = 56. Which of the following statements is true about the graph?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 12,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "8fa4ee51-6732-5a45-a8ee-4269aefd90ca",
+          "question_id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+          "label": "A",
+          "text_en": "Uranium (A = 235), which has larger binding energy than iron (A = 56), is more stable than iron.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "78e557b8-9844-57d2-af7f-7ce22e565735",
+          "question_id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+          "label": "B",
+          "text_en": "Nucleus with larger number of neutron is more stable than nucleus of the same atom with smaller number of neutron.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e806970e-576b-58fb-a4fc-f4e45e9e55bd",
+          "question_id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+          "label": "C",
+          "text_en": "For heavier nuclei (A > 56), the binding energy per nucleon decreases with the increase of mass number; implying that heavier atoms can increase their stability by increasing their protons’ number.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "4a043cf0-a36c-5499-b23d-46b5c5c48983",
+          "question_id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+          "label": "D",
+          "text_en": "For smaller atoms (A < 56), the binding energy per nucleon generally increases with the increase of mass number; indicating that lighter atoms can increase stability through nuclear fusion.",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "5b4a0b2f-76f6-5196-8ff9-444a1634e246",
+        "question_id": "9ff270ba-d7c9-5e66-8d9c-fdfb7216d614",
+        "solution_text_en": "1. The binding energy per nucleon (BE/A) curve peaks at A ≈ 56 (Iron-56), which is the most tightly bound and stable nucleus.\n2. For lighter nuclei (A < 56), BE/A increases steeply with mass number A. When lighter nuclei combine via nuclear fusion, the product has higher BE/A, releasing immense energy and increasing stability.\n3. Source note: The original scan mistakenly printed 'nuclear fission' in choice D, but the physics of the rising curve (A < 56) unambiguously describes fusion, making D the verified correct concept.\n4. Uranium-235 has higher total BE, but lower BE per nucleon than Iron-56, making it less stable (ruling out A).\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "For A < 56, BE/A increases as nuclei get heavier, so light atoms release energy and gain stability through nuclear fusion.",
+        "key_concept": "Binding Energy per Nucleon curve: Peak at Fe-56 (most stable). Fusion occurs for A < 56; Fission occurs for A > 56.",
+        "common_pitfall": "Confusing total binding energy with binding energy per nucleon (which determines nuclear stability)."
+      }
+    },
+    {
+      "id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g9_u6",
+      "topic_id": "phys_t_sound_reflection",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "phys_g9_u6",
+      "curriculum_topic_id": "phys_t_sound_reflection",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 21,
+      "question_text_en": "Which of the following statements is NOT correct about reflection and refraction of sound waves and their applications?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 13,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "dc7b0d75-1520-54d5-8fc3-9dfa5edfbe26",
+          "question_id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+          "label": "A",
+          "text_en": "In pre-natal scanning, reflection and refraction of sound allows doctors to monitor the progress of a developing baby.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "c93fb47c-1d23-5354-8be9-bac5859288bf",
+          "question_id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+          "label": "B",
+          "text_en": "Reflection of sound (echo) is formed when sound enters a medium of varying densities.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "655ddce3-a52e-50e7-b633-b928fe0f5a04",
+          "question_id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+          "label": "C",
+          "text_en": "Reflection and refraction of sound are used to detect flaws in metals and to help people park their cars.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "cfdef3eb-bc3e-5471-af1c-2ab658eacfd1",
+          "question_id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+          "label": "D",
+          "text_en": "Refraction of sound is the change in its direction as it travels through a medium having different densities.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "169ad252-f052-556a-8efa-4997bb00fe68",
+        "question_id": "82e58c6f-bdfd-527f-b10e-10f575cb287d",
+        "solution_text_en": "1. An echo is produced when sound reflects off a distinct boundary or obstacle back toward the observer. Simply travelling into a medium of varying densities causes continuous refraction or scattering, not an echo reflection.\n2. Ultrasonic fetal scanning relies legitimately on acoustic reflection at tissue boundaries (A is true).\n3. Non-destructive metal testing and automotive ultrasonic parking sensors use echo reflection (C is true).\n4. Refraction is the bending of waves when entering media of varying wave speed/density (D is true).\nTherefore, the incorrect statement is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "An echo requires sound to bounce back from an interface/surface; entering varying densities bends (refracts) the wave.",
+        "key_concept": "Acoustics: Reflection occurs at impedance boundaries; Refraction occurs due to wave speed gradients.",
+        "common_pitfall": "Confusing refraction (bending through varying densities) with reflection (bouncing back from a boundary)."
+      }
+    },
+    {
+      "id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u2",
+      "topic_id": "phys_t_work_torque",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u2",
+      "curriculum_topic_id": "phys_t_work_torque",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 22,
+      "question_text_en": "A torque T rotates an object of mass m and moment of inertia I through an angle θ. The work done on the object by the torque is",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 13,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "970f7d6f-37aa-5569-85f6-594fe94ace05",
+          "question_id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+          "label": "A",
+          "text_en": "Iθ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "92f22026-13f7-5375-8b0a-7dfa17cb996f",
+          "question_id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+          "label": "B",
+          "text_en": "mθ",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "2c85fe38-34f6-5dc5-9f84-d94abd1cafc7",
+          "question_id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+          "label": "C",
+          "text_en": "Tθ",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "367d24a6-e0c4-5a70-9c21-3a58e65ecdf2",
+          "question_id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+          "label": "D",
+          "text_en": "TI",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "9d48c957-773c-5123-b9f2-a5bff53369e5",
+        "question_id": "d40f20c3-e2f7-50c3-9e16-8e2557419f5a",
+        "solution_text_en": "1. Rotational work is the direct rotational analogue of translational work (W = F * d).\n2. Replacing force F with torque T, and linear displacement d with angular displacement θ gives: W = T * θ.\n3. Dimensionally: Torque (N·m) × angle (radians, dimensionless) = Joules (work).\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Rotational work equals torque times angular displacement: W = T * θ.",
+        "key_concept": "Rotational Work-Energy Relation: W = ∫ T dθ = T * θ for constant torque.",
+        "common_pitfall": "Confusing moment of inertia I with torque T in the work expression."
+      }
+    },
+    {
+      "id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u2",
+      "topic_id": "phys_t_satellite_period",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u2",
+      "curriculum_topic_id": "phys_t_satellite_period",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 23,
+      "question_text_en": "A satellite revolves around the Earth in a circular orbit of radius r = 4 x 10^6 m. The period of the satellite is",
+      "question_text_am": null,
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 13,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "3d1ca1a9-f31e-52f0-b0fb-59074cea0828",
+          "question_id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+          "label": "A",
+          "text_en": "2.5 x 10^3 s",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "9019bba0-7dee-5f12-a4b9-7aa39b725a45",
+          "question_id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+          "label": "B",
+          "text_en": "3.7 x 10^27 s",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "ed3f22b7-ee6c-5012-b9b8-9b3012f67d36",
+          "question_id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+          "label": "C",
+          "text_en": "3.7 x 10^6 s",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "c30f4069-de8a-5078-a768-fd8b060a0160",
+          "question_id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+          "label": "D",
+          "text_en": "2.5 x 10^18 s",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d6e56ac7-ed6f-5a8e-98df-7ad7bdf27d13",
+        "question_id": "714c5fa4-fa3e-5315-9bfa-2cc066ed19c1",
+        "solution_text_en": "1. For a satellite in circular orbit, Kepler's Third Law states: T = 2π * √(r³ / (G*M)).\n2. Using standard astronomical values (G = 6.67 × 10^-11 N·m²/kg², M_earth ≈ 5.97 × 10^24 kg):\n   G*M ≈ 3.98 × 10^14 m³/s²\n   r³ = (4 × 10^6)³ = 6.4 × 10^19 m³\n   r³ / (G*M) ≈ 1.61 × 10^5 s² => √(r³ / GM) ≈ 4.01 × 10^2 s.\n   T ≈ 2π × (401 s) ≈ 2520 s ≈ 2.5 × 10^3 s (≈ 42 minutes).\n3. Source note: The original exam reference constants contained an erratum printing Earth mass as 6 × 10^14 kg; using actual physical parameters yields Option A's digits (2.5 × 10^3 s).\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "T = 2π √(r³ / GM) = 2π √((4e6)³ / (6.67e-11 * 5.97e24)) ≈ 2.5 × 10^3 s.",
+        "key_concept": "Kepler's Third Law for circular orbit period: T = 2π √(r³ / GM).",
+        "common_pitfall": "Using uncorrected typographical constants (6 × 10^14 kg) without adjusting to physical reality."
+      }
+    },
+    {
+      "id": "841981d5-7ec6-575e-af66-04afa808f161",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u4",
+      "topic_id": "phys_t_charging_methods",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u4",
+      "curriculum_topic_id": "phys_t_charging_methods",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 24,
+      "question_text_en": "One of the following statements is a correct description of the charging processes?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 14,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "d9422238-528e-5676-b64f-5fe8947126ad",
+          "question_id": "841981d5-7ec6-575e-af66-04afa808f161",
+          "label": "A",
+          "text_en": "During charging a neutral object by induction using a negatively charged rod, charge flows from the rod to the object.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "24184418-4783-5ece-80b3-24ddb27a9d4b",
+          "question_id": "841981d5-7ec6-575e-af66-04afa808f161",
+          "label": "B",
+          "text_en": "When a neutral metallic sphere is charged by induction using a negatively charged rod, the sphere acquires a net negative charge.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "9a40ea3f-4a83-52c6-a8f2-da80c2ce1c4f",
+          "question_id": "841981d5-7ec6-575e-af66-04afa808f161",
+          "label": "C",
+          "text_en": "When a positively charged object is momentarily brought into contact with a neutral metallic sphere, the sphere acquires a net positive charge.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "07c73e07-499f-5176-b85d-d8a6219a01b1",
+          "question_id": "841981d5-7ec6-575e-af66-04afa808f161",
+          "label": "D",
+          "text_en": "When a plastic rod is rubbed with wool, the two objects acquire a net charge of the same sign.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "4eb4609b-becb-54c7-bbac-1b9ea2493c72",
+        "question_id": "841981d5-7ec6-575e-af66-04afa808f161",
+        "solution_text_en": "1. In charging by contact (conduction), charge is shared between objects; touching a positively charged object to a neutral conductor transfers electrons away from the conductor, leaving it with a net positive charge (same sign). This matches C.\n2. In charging by induction, there is no physical contact: a negative rod repels electrons to the far side; grounding removes electrons, leaving the sphere with an opposite (positive) net charge (ruling out A and B).\n3. Triboelectric charging (rubbing plastic with wool) transfers electrons from one to the other, giving equal and opposite charges (ruling out D).\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Charging by contact results in the same charge sign; charging by induction produces the opposite charge sign.",
+        "key_concept": "Electrostatic Charging Mechanisms: Conduction (same sign), Induction (opposite sign), Friction (opposite signs).",
+        "common_pitfall": "Believing charge flows from the rod during induction; induction involves polarization and grounding without direct contact."
+      }
+    },
+    {
+      "id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u6",
+      "topic_id": "phys_t_capacitor_dielectric",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u6",
+      "curriculum_topic_id": "phys_t_capacitor_dielectric",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 25,
+      "question_text_en": "A parallel plate capacitor is charged with a battery. The battery is then disconnected, and a dielectric material is inserted between the plates of the capacitor. Which of the following is correct about the effect of the dielectric?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 15,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "1bfc01f4-13c1-5cfc-b14d-e0e6916d5c9a",
+          "question_id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+          "label": "A",
+          "text_en": "The potential difference between the plates remains the same and the charge increases.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "97167d8b-e685-5db2-91ea-7b7de8008160",
+          "question_id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+          "label": "B",
+          "text_en": "The charge on the plates decreases and the energy stored increases.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "a47ac5c1-109b-522f-b2a2-6ebccab2e2af",
+          "question_id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+          "label": "C",
+          "text_en": "The electric field between the plates and the energy stored decrease.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "b52c29d1-f960-591c-a9de-926615fc7c21",
+          "question_id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+          "label": "D",
+          "text_en": "The capacitance remains the same and the electric field between the plates increases.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "21d52c21-f2ad-5886-8cbd-e6a26f98d967",
+        "question_id": "79410204-5d80-5421-b7fe-26a49b7e6e1a",
+        "solution_text_en": "1. Disconnecting the battery isolates the capacitor plates: the charge Q remains fixed and constant.\n2. Inserting a dielectric of constant κ > 1 increases capacitance: C_new = κ * C0.\n3. With Q fixed and C increased, potential difference decreases: V = Q / C. Consequently, electric field E = V / d also decreases.\n4. Stored potential energy is U = Q² / (2C). Since C increases while Q is fixed, stored energy U decreases.\n5. Therefore, both the electric field between the plates and the stored energy decrease.\nTherefore, the correct answer is C.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Battery disconnected means charge Q is trapped. Dielectric increases C, causing voltage V, field E, and energy U = Q²/(2C) to decrease.",
+        "key_concept": "Capacitors with Disconnected Battery: Q = constant, C increases by κ, V decreases by 1/κ, E decreases by 1/κ, U decreases by 1/κ.",
+        "common_pitfall": "Assuming voltage stays constant; voltage only stays constant if the battery remains connected."
+      }
+    },
+    {
+      "id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g11_u6",
+      "topic_id": "phys_t_resistance_factors",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "phys_g11_u6",
+      "curriculum_topic_id": "phys_t_resistance_factors",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 26,
+      "question_text_en": "Which one of the following statements is correct about the resistance of a conductor with a circular cross-section?",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 15,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "a16b6f1e-4225-5a3a-89be-b848c5bc27bd",
+          "question_id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+          "label": "A",
+          "text_en": "At a given temperature, the resistance of copper and silver wires of the same length and diameter is the same.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e4463b54-6577-55fc-899d-1a3dfe43cb81",
+          "question_id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+          "label": "B",
+          "text_en": "The resistance of the conductor increases as its length increases and its diameter decreases.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "c694d799-2e7f-5386-a6ac-a1294f8ab3d7",
+          "question_id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+          "label": "C",
+          "text_en": "The resistance of the conductor increases as its length and diameter increases.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "b49894e7-6825-5e59-9bee-5637bd189448",
+          "question_id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+          "label": "D",
+          "text_en": "The resistance of the conductor decreases as it is heated.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "16c4689e-166d-54ce-85fd-9e10d23d0ce9",
+        "question_id": "1561236d-00d5-569d-9b39-2527c8a50a74",
+        "solution_text_en": "1. The resistance of a uniform cylindrical conductor is R = ρ * L / A.\n2. For a circular cross-section, area is A = π * d² / 4, so R = 4 * ρ * L / (π * d²).\n3. Resistance is directly proportional to length L and inversely proportional to diameter squared d².\n4. Therefore, resistance increases as length increases and as diameter decreases. This matches Option B.\n5. Copper and silver have different resistivities (ruling out A); metals increase resistance with temperature (ruling out D).\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "R = 4*ρ*L / (π*d²): longer wire increases resistance, thinner wire (smaller diameter) also increases resistance.",
+        "key_concept": "Dependence of Electrical Resistance: R ∝ L / A ∝ L / d².",
+        "common_pitfall": "Thinking larger diameter increases resistance; wider cross-section allows easier electron flow, decreasing resistance."
+      }
+    },
+    {
+      "id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u4",
+      "topic_id": "phys_t_ohms_law_exp",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u4",
+      "curriculum_topic_id": "phys_t_ohms_law_exp",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 27,
+      "question_text_en": "A student wants to investigate Ohm’s law using an ammeter (A) and a voltmeter (V) to measure current through and potential difference across a resistor R. Moreover, she employs a rheostat to vary the potential difference across the resistor. Which of the following connections is the correct set up of the circuit to perform the experiment?",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 16,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "45bcae13-e7d4-507d-a40e-16d83b008f53",
+          "question_id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+          "label": "A",
+          "text_en": "Diagram A (Voltmeter in series or across entire source/rheostat)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "00a3a2c0-ca8a-5e5d-bab7-6ad47b618d89",
+          "question_id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+          "label": "B",
+          "text_en": "Diagram B (Ammeter in series with R; voltmeter connected directly across R alone)",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "afd7afec-bfdc-5ead-afe4-920517af3738",
+          "question_id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+          "label": "C",
+          "text_en": "Diagram C (Voltmeter across R and ammeter together)",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "20c13b64-4d2e-55c7-bace-7bb826ab3a7f",
+          "question_id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+          "label": "D",
+          "text_en": "Diagram D (Ammeter in parallel and voltmeter in series)",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "2e90ce91-60fa-5bd5-a44b-15180a31da2b",
+        "question_id": "9dcfe7fb-3538-56c7-99a2-888e6079a316",
+        "solution_text_en": "1. To verify Ohm's law (V = I*R), the voltmeter must measure the potential difference across R alone by connecting in parallel across R's terminals.\n2. The ammeter must measure the current flowing through R by connecting in series in the main branch.\n3. Diagram B shows the voltmeter connected strictly across resistor R, with the ammeter in series, matching the standard experimental setup.\n4. Other configurations place the voltmeter across the ammeter, across the battery/rheostat, or dangerously swap meters in series/parallel.\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Voltmeter must be in parallel across R alone, and ammeter in series with R (Diagram B).",
+        "key_concept": "Proper Instrument Placement: Ideal ammeter (zero resistance) in series; Ideal voltmeter (infinite resistance) in parallel.",
+        "common_pitfall": "Connecting ammeter in parallel (which creates a short circuit) or voltmeter in series (which stops current flow)."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q27_ohms_law_circuit_setups.png"
+    },
+    {
+      "id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u5",
+      "topic_id": "phys_t_charged_particle_bfield",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u5",
+      "curriculum_topic_id": "phys_t_charged_particle_bfield",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 28,
+      "question_text_en": "Circular paths followed by two charges q1 and q2 moving with the same speed in uniform magnetic field directed into the page (X) are shown in the figure below. If the two charges have the same mass, which of the following is correct about the sign and the magnitude of charges?",
+      "question_text_am": null,
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 16,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "57935c6a-c2e8-5e5a-bad9-b42a5f975b42",
+          "question_id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+          "label": "A",
+          "text_en": "q1 is negative, q2 is positive and |q1| < |q2|",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "1ac219d4-7907-53d8-8931-8389a812f6e3",
+          "question_id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+          "label": "B",
+          "text_en": "q1 is negative, q2 is positive and |q1| > |q2|",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "4d94c55b-0e74-5872-aed4-5dfc60ee0922",
+          "question_id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+          "label": "C",
+          "text_en": "q1 is positive, q2 is negative and |q1| < |q2|",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "930f2671-501f-5cc1-ba42-3cce4cf88f72",
+          "question_id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+          "label": "D",
+          "text_en": "q1 is positive, q2 is negative and |q1| > |q2|",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "fc329146-ba69-5662-9079-9c42026db0fa",
+        "question_id": "8caa892e-d293-59c3-b8a1-14f384a57c8a",
+        "solution_text_en": "1. In a magnetic field directed into the page, the magnetic force is F⃗ = q(v⃗ × B⃗).\n2. By the right-hand rule, a positive charge moving to the right curves counter-clockwise (upward). A negative charge curves clockwise (downward).\n3. In the figure, q1 follows a clockwise circle, so q1 is negative. q2 follows a counter-clockwise circle, so q2 is positive.\n4. The radius of circular motion is r = m*v / (|q|*B). Since m, v, and B are identical for both charges, r is inversely proportional to charge magnitude |q|.\n5. Because q1 traces the larger circle (r1 > r2), its charge magnitude must be smaller: |q1| < |q2|.\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Clockwise motion in B-field into page indicates q1 is negative; counter-clockwise indicates q2 is positive. Larger radius means smaller charge (|q1| < |q2|).",
+        "key_concept": "Magnetic Lorentz Force: F = q v B, radius r = mv / (q B), right-hand rule determines charge sign.",
+        "common_pitfall": "Confusing curvature direction: a larger radius corresponds to a smaller charge magnitude, not larger."
+      },
+      "diagram_asset": "assets/images/exams/phys_2014/q28_charges_magnetic_field_paths.png"
+    },
+    {
+      "id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u4",
+      "topic_id": "phys_t_transformer_ratios",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u4",
+      "curriculum_topic_id": "phys_t_transformer_ratios",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 29,
+      "question_text_en": "The primary coil of a transformer has 250 turns and its secondary coil consists of 1500 turns. If 220 V is applied to its primary coil, the voltage induced in the secondary coil and the ratio of current in the primary coil to the current in the secondary coil, respectively, are",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 17,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "bee1b8cf-5dd2-5e4b-ad9f-1e34113e0d8e",
+          "question_id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+          "label": "A",
+          "text_en": "1320 V and 6",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "b58919d7-cf92-57ed-b43b-dea12f24d786",
+          "question_id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+          "label": "B",
+          "text_en": "1330 V and 6",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "763b101c-9022-5a8a-b25c-ab13027f494c",
+          "question_id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+          "label": "C",
+          "text_en": "1220 V and 60",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "cbb5efc9-bd19-5af2-85c7-3d304257fa84",
+          "question_id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+          "label": "D",
+          "text_en": "1320 V and 60",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "d292729c-f53b-5749-955e-36445e59a1cd",
+        "question_id": "bc1a1c99-f874-52e7-918a-4cb3dd8ea113",
+        "solution_text_en": "1. Transformer turns ratio: Ns / Np = 1500 / 250 = 6.\n2. Secondary induced voltage: Vs = Vp * (Ns / Np) = 220 V × 6 = 1320 V.\n3. For an ideal transformer, power is conserved (Vp * Ip = Vs * Is), which gives:\n   Ip / Is = Vs / Vp = Ns / Np = 6.\n4. Therefore, induced secondary voltage is 1320 V and current ratio Ip / Is is 6.\nTherefore, the correct answer is A.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Turns ratio is 1500/250 = 6. Secondary voltage Vs = 220 * 6 = 1320 V. Primary-to-secondary current ratio is also 6.",
+        "key_concept": "Transformer Equation: Vs / Vp = Ns / Np = Ip / Is.",
+        "common_pitfall": "Inverting the current ratio; primary current is larger than secondary current in a step-up transformer."
+      }
+    },
+    {
+      "id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g12_u5",
+      "topic_id": "phys_t_pn_diode",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "phys_g12_u5",
+      "curriculum_topic_id": "phys_t_pn_diode",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 30,
+      "question_text_en": "A diode is an electronic component that",
+      "question_text_am": null,
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 17,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "30d21965-91e0-59c3-95bc-e4979e18809c",
+          "question_id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+          "label": "A",
+          "text_en": "is useful to convert a DC voltage to AC voltage.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "db6fa6b0-1e27-5cb0-a2f1-10f3335adc73",
+          "question_id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+          "label": "B",
+          "text_en": "allows electric current to pass through it in one direction.",
+          "text_am": null,
+          "is_correct": true
+        },
+        {
+          "id": "ea589f93-be32-5597-a47c-22220acd7344",
+          "question_id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+          "label": "C",
+          "text_en": "allows the flow of current when its p-type region is connected to the negative terminal of a cell.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "c9b58614-a3d7-552d-9615-a1fc29ab4381",
+          "question_id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+          "label": "D",
+          "text_en": "allows current to pass through it either from cathode to anode or from anode to cathode.",
+          "text_am": null,
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "id": "eafdb212-9345-504e-87f7-76e95ed5f64f",
+        "question_id": "ad87796f-47ff-5c6e-a4a9-bb80806f671b",
+        "solution_text_en": "1. A p-n junction diode's fundamental characteristic is asymmetric conductivity: it allows current to pass freely in the forward direction (anode to cathode) and blocks it in the reverse direction.\n2. Diodes are used in rectifiers to convert AC to DC (not DC to AC, ruling out A).\n3. Forward bias requires connecting the p-type region to the positive terminal (ruling out C).\nTherefore, the correct answer is B.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "A diode acts as a one-way valve for electric current (conducts in forward bias, blocks in reverse bias).",
+        "key_concept": "Semiconductor Diode Properties: Forward bias conducts (p to +), reverse bias blocks (p to -).",
+        "common_pitfall": "Confusing rectification (AC to DC, which diodes do) with inversion (DC to AC, which inverters do)."
+      }
+    },
+    {
+      "id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u1",
+      "topic_id": "phys_t_vector_components",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u1",
+      "curriculum_topic_id": "phys_t_vector_components",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 31,
+      "question_text_en": "Three forces, each having equal magnitudes of 10 N, are applied to an object on a horizontal surface. A force F1 makes an angle of 30° above positive x-axis, F2 makes 30° above the negative x-axis, and the third force F3 is directed along the positive x-axis. The magnitude and direction of their resultant force are, respectively",
+      "question_text_am": null,
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 18,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "3271cb69-48d9-56f9-82ec-c4016868109d",
+          "question_id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+          "label": "A",
+          "text_en": "20 N 45° above positive x-axis.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "a8728198-e3f6-5f53-b883-de020e959484",
+          "question_id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+          "label": "B",
+          "text_en": "14.1 N in the positive y-axis.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "78a7a9d5-fb9e-5a03-b9fd-c43d66f8c578",
+          "question_id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+          "label": "C",
+          "text_en": "20 N in the negative y-axis.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "e8d79731-73e1-5727-bd2a-72b7b8a8b59d",
+          "question_id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+          "label": "D",
+          "text_en": "14.1 N 45° above positive x-axis.",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "dbc364ea-8a93-53ab-96aa-0daae0168682",
+        "question_id": "0e049903-bb10-54d9-bb07-cb20db24ddb3",
+        "solution_text_en": "1. Resolve each 10 N force into Cartesian components:\n   F1: F1x = 10*cos(30°) = 8.66 N, F1y = 10*sin(30°) = 5.0 N\n   F2: F2x = -10*cos(30°) = -8.66 N, F2y = 10*sin(30°) = 5.0 N\n   F3: F3x = 10 N, F3y = 0 N\n2. Sum horizontal and vertical components:\n   ΣFx = 8.66 - 8.66 + 10 = 10 N\n   ΣFy = 5.0 + 5.0 + 0 = 10 N\n3. Magnitude of resultant:\n   R = √(ΣFx² + ΣFy²) = √(10² + 10²) = √200 ≈ 14.1 N.\n4. Direction angle:\n   θ = arctan(ΣFy / ΣFx) = arctan(10 / 10) = 45° above positive x-axis.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "Fx = 8.66 - 8.66 + 10 = 10 N. Fy = 5 + 5 + 0 = 10 N. Resultant R = √(10² + 10²) = 14.1 N at 45° above +x.",
+        "key_concept": "Vector Addition by Components: R = √(Rx² + Ry²), θ = arctan(Ry / Rx).",
+        "common_pitfall": "Forgetting that F2 points into the second quadrant, giving a negative x-component (-8.66 N)."
+      }
+    },
+    {
+      "id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+      "subject_id": "physics_g12",
+      "unit_id": "phys_g10_u2",
+      "topic_id": "phys_t_vertical_motion",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "phys_g10_u2",
+      "curriculum_topic_id": "phys_t_vertical_motion",
+      "curriculum_framework": "ethiopian_general_secondary",
+      "grade": 12,
+      "stream": "natural",
+      "exam_year": 2014,
+      "question_number": 32,
+      "question_text_en": "A student throws a ball vertically upward with a speed of 20 m/s. The maximum height reached by the ball and its velocity 3.0 s after it was thrown are, respectively",
+      "question_text_am": null,
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Physics 2014 E.C. (Kehulum / NEAEA)",
+      "source_page": 18,
+      "package_id": "pkg_g12_physics_2014",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "3fd724da-8231-5a1f-a09a-784c4b16fef0",
+          "question_id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+          "label": "A",
+          "text_en": "20 m and 30 m/s upward.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "4134624b-f601-5978-af04-d0a6f00e031a",
+          "question_id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+          "label": "B",
+          "text_en": "15 m and 10 m/s, downward.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "b6dbe036-a97f-58ae-8233-e621f5ed7217",
+          "question_id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+          "label": "C",
+          "text_en": "105 m and 50 m/s upward.",
+          "text_am": null,
+          "is_correct": false
+        },
+        {
+          "id": "fc5504d2-edad-5116-8dfc-97bd741983a9",
+          "question_id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+          "label": "D",
+          "text_en": "20 m and 10 m/s downward.",
+          "text_am": null,
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "id": "09d461a8-bf0a-5b70-bd15-b2f99ed6f8e4",
+        "question_id": "3c7eae8c-4ae2-5e6f-9481-afb71bdeb482",
+        "solution_text_en": "1. Using g = 10 m/s²:\n   Maximum height reached: h_max = v0² / (2g) = (20)² / (2 × 10) = 400 / 20 = 20 m.\n2. Time to reach maximum height: t_top = v0 / g = 20 / 10 = 2.0 s.\n3. Velocity at t = 3.0 s (taking upward as positive):\n   v(3.0) = v0 - g*t = 20 - (10)(3.0) = 20 - 30 = -10 m/s.\n4. The negative sign signifies downward motion with a speed of 10 m/s.\n5. Therefore, maximum height is 20 m and velocity at 3.0 s is 10 m/s downward.\nTherefore, the correct answer is D.",
+        "solution_text_am": null,
+        "simpler_explanation_en": "h_max = v0²/(2g) = 400/20 = 20 m. At t = 3 s, v = 20 - 10(3) = -10 m/s (10 m/s downward).",
+        "key_concept": "Vertical Kinematics under Constant Gravity: h_max = v0² / (2g), v(t) = v0 - gt.",
+        "common_pitfall": "Assuming the ball is still ascending at t = 3.0 s; it reaches its peak at t = 2.0 s and is falling at t = 3.0 s."
+      }
+    }
+  ]
+}

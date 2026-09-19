@@ -143,13 +143,13 @@ void main() {
       questions: const [],
       subjects: [
         const Subject(
-          id: 'physics_g12',
-          code: 'PHYS12',
-          nameEn: 'Physics',
-          nameAm: 'ፊዚክስ',
+          id: 'chem_g12',
+          code: 'CHEM12',
+          nameEn: 'Chemistry',
+          nameAm: 'ኬሚስትሪ',
           grade: 12,
           stream: 'natural',
-          sortOrder: 2,
+          sortOrder: 4,
         ),
       ],
     );
@@ -162,7 +162,7 @@ void main() {
           contentRepositoryProvider.overrideWithValue(mockRepo),
         ],
         child: const MaterialApp(
-          home: SubjectExamsHubScreen(subjectId: 'physics_g12'),
+          home: SubjectExamsHubScreen(subjectId: 'chem_g12'),
         ),
       ),
     );
@@ -311,31 +311,17 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // 1. Download the 2013 E.C. exam card (find the download button corresponding to 2013)
-    final downloadButtons = find.widgetWithText(ElevatedButton, 'Download');
-    expect(downloadButtons, findsWidgets);
+    // 1. Biology 2013 E.C. is pre-downloaded and verified offline!
+    final startExamBtn = find.widgetWithText(ElevatedButton, 'Start (100 Qs)');
+    expect(startExamBtn, findsWidgets);
 
-    // Tap the 4th download button (2013 E.C. is index 3)
-    await tester.tap(downloadButtons.at(3));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 700));
+    // 2. Tap 'Start (100 Qs)' to open the Official Briefing Dialog
+    await tester.ensureVisible(startExamBtn.first);
+    await tester.pumpAndSettle();
+    await tester.tap(startExamBtn.first);
     await tester.pumpAndSettle();
 
-    // 2. The button transitions to 'Start Exam'
-    final startExamBtn = find.widgetWithText(ElevatedButton, 'Start Exam');
-    expect(startExamBtn, findsOneWidget);
-
-    // Clear floating snackbar so it doesn't obscure the button
-    ScaffoldMessenger.of(tester.element(startExamBtn)).clearSnackBars();
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(startExamBtn);
-    await tester.pumpAndSettle();
-
-    // 3. Tap 'Start Exam' to open the Official Briefing Dialog
-    await tester.tap(startExamBtn);
-    await tester.pumpAndSettle();
-
-    // 4. Verify Official ESSLCE Header
+    // 3. Verify Official ESSLCE Header
     expect(
       find.textContaining('ETHIOPIAN SECONDARY SCHOOL'),
       findsOneWidget,
@@ -377,6 +363,96 @@ void main() {
     await tester.pumpAndSettle();
 
     // 8. Verify Start Exam CTA is present inside dialog
+    expect(find.text('Start Exam Now'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Physics 2014 E.C. starts 32-question exam from grid and shows Reference Constants in briefing dialog',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    final storage = AuthSessionStorage();
+    final mockUser = UserProfile(
+      id: 'test_student_phys',
+      phoneNumber: '+251911000000',
+      displayName: 'Haile Gebrselassie',
+      role: UserRole.student,
+      grade: 12,
+      stream: 'natural',
+      preferredLanguage: 'en',
+      createdAt: DateTime(2026, 1, 1),
+    );
+
+    final authRepo = MockAuthRepository(
+      sessionStorage: storage,
+      initialUser: mockUser,
+    );
+
+    final mockRepo = LocalContentRepository();
+    mockRepo.initializeWithData(
+      packages: const [],
+      units: const [],
+      topics: const [],
+      questions: const [],
+      subjects: [
+        const Subject(
+          id: 'physics_g12',
+          code: 'PHYS12',
+          nameEn: 'Physics',
+          nameAm: 'ፊዚክስ',
+          grade: 12,
+          stream: 'natural',
+          sortOrder: 3,
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authSessionStorageProvider.overrideWithValue(storage),
+          authRepositoryProvider.overrideWithValue(authRepo),
+          contentRepositoryProvider.overrideWithValue(mockRepo),
+        ],
+        child: const MaterialApp(
+          home: SubjectExamsHubScreen(subjectId: 'physics_g12'),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // 1. Verify Unnecessary Hero Spotlight Card is REMOVED
+    expect(find.text('OFFICIAL VERIFIED EXAM'), findsNothing);
+
+    // 2. In grid, 2014 E.C. is pinned with 'OFFICIAL 32 Qs' badge and 'Start (32 Qs)' button
+    expect(find.text('OFFICIAL 32 Qs'), findsOneWidget);
+    final startBtn = find.widgetWithText(ElevatedButton, 'Start (32 Qs)');
+    expect(startBtn, findsOneWidget);
+
+    // 3. Tap 'Start (32 Qs)' to open the Official Briefing Dialog
+    await tester.ensureVisible(startBtn);
+    await tester.pumpAndSettle();
+    await tester.tap(startBtn);
+    await tester.pumpAndSettle();
+
+    // 4. Verify briefing dialog displays specifications and official Reference Constants
+    expect(find.text('Physics for Natural Science Stream'), findsOneWidget);
+    expect(find.text('Number of Items: 32'), findsOneWidget);
+    expect(find.text('Booklet Code: 11'), findsOneWidget);
+    expect(find.text('Time Allowed: 1 Hour 15 Min'), findsOneWidget);
+
+    // 5. Verify official Reference Constants section from Document Page 1
+    expect(find.text('Reference Constants'), findsOneWidget);
+    expect(find.text('PAGE 1 SPEC'), findsOneWidget);
+    expect(find.text('Acceleration due to gravity'), findsOneWidget);
+    expect(find.text('Mass of the Earth'), findsOneWidget);
+    expect(find.text('Charge of electron'), findsOneWidget);
+    expect(find.textContaining('Trig: sin 30° = cos 60° = 0.5'), findsOneWidget);
+
+    // 6. Verify Start Exam CTA
     expect(find.text('Start Exam Now'), findsOneWidget);
   });
 }
