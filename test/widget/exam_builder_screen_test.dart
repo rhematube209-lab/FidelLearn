@@ -88,10 +88,12 @@ void main() {
       expect(find.text('Step 2 of 2'), findsOneWidget);
       expect(find.text('Year Range'), findsOneWidget);
       expect(find.text('Single Year'), findsOneWidget);
+
+      // Tap Year Range to test From Year / To Year controls
+      await tester.tap(find.text('Year Range'));
+      await tester.pumpAndSettle();
       expect(find.text('From Year'), findsOneWidget);
       expect(find.text('To Year'), findsOneWidget);
-      expect(find.text('Recent (2015-2017)'), findsOneWidget);
-      expect(find.text('5-Year Archive'), findsOneWidget);
 
       // Step 3 / Parameters & Summary
       expect(find.text('Exam Parameters'), findsOneWidget);

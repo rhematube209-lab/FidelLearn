@@ -8,6 +8,7 @@ import '../../../question_bank/domain/models/question_models.dart';
 import '../../../subjects/data/repositories/local_content_repository.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/exam_models.dart';
+import '../../domain/models/exam_availability.dart';
 import '../../domain/services/exam_engine.dart';
 
 enum ExamYearFilterMode {
@@ -237,7 +238,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   String? _selectedDifficulty; // null = all
 
   // National Exam Year Selection
-  ExamYearFilterMode _yearMode = ExamYearFilterMode.range;
+  ExamYearFilterMode _yearMode = ExamYearFilterMode.single;
   int _selectedSingleYear = 2014;
   int _rangeStartYear = 2013;
   int _rangeEndYear = 2017;
@@ -261,9 +262,37 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     2026,
   ];
 
-  // Live Matching Questions Counter
+  // Live Matching Questions Counter & Dynamic Availability
   int _matchingQuestionCount = 0;
   bool _isCountingQuestions = false;
+  List<ExamAvailability> _subjectAvailabilities = [];
+  Map<String, int> _unitQuestionCounts = {};
+
+  bool get _isFullPaper {
+    if (_yearMode != ExamYearFilterMode.single) return false;
+    if (_selectedUnitId != null ||
+        _selectedTopicId != null ||
+        _selectedDifficulty != null) {
+      return false;
+    }
+    if (_matchingQuestionCount <= 0) return false;
+    final avail = _subjectAvailabilities
+        .where((a) => a.year == _selectedSingleYear)
+        .firstOrNull;
+    if (avail != null && _matchingQuestionCount == avail.totalQuestions) {
+      return true;
+    }
+    return false;
+  }
+
+  List<int> get _dynamicQuestionCountPresets {
+    if (_matchingQuestionCount <= 0) return [10];
+    final standard = [5, 10, 20, 30, 50, 100];
+    final viable =
+        standard.where((n) => n < _matchingQuestionCount).toList();
+    viable.add(_matchingQuestionCount);
+    return viable;
+  }
 
   // Exam Simulation Parameters
   int _questionCount = 10;
@@ -285,6 +314,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.initialSubjectId != widget.initialSubjectId ||
         oldWidget.mode != widget.mode) {
+      _selectedSingleYear = 0;
       if (widget.mode == 'mock') {
         _isTimed = true;
         _questionCount = 20;
@@ -514,9 +544,48 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       units = LocalContentRepository.getDefaultUnits(subjectId);
     }
 
+    // Dynamic Exam Availability & Smart Year Correction
+    List<ExamAvailability> availabilities = [];
+    try {
+      availabilities = await contentRepo.getExamAvailabilities(subjectId);
+    } catch (_) {}
+
+    int selectedYear = _selectedSingleYear;
+    int rStart = _rangeStartYear;
+    int rEnd = _rangeEndYear;
+
+    if (availabilities.isNotEmpty) {
+      final availYears = availabilities.map((a) => a.year).toSet();
+      if (!availYears.contains(selectedYear)) {
+        selectedYear = availabilities.first.year;
+      }
+      final minYear =
+          availabilities.map((a) => a.year).reduce((a, b) => a < b ? a : b);
+      final maxYear =
+          availabilities.map((a) => a.year).reduce((a, b) => a > b ? a : b);
+      if (rStart > maxYear || rEnd < minYear) {
+        rStart = minYear;
+        rEnd = maxYear;
+      }
+    }
+
+    Map<String, int> unitCounts = {};
+    try {
+      unitCounts = await contentRepo.getUnitQuestionCounts(
+        subjectId: subjectId,
+        examYear: _yearMode == ExamYearFilterMode.single ? selectedYear : null,
+        grade: _selectedGrade,
+      );
+    } catch (_) {}
+
     if (mounted) {
       setState(() {
+        _subjectAvailabilities = availabilities;
+        _selectedSingleYear = selectedYear;
+        _rangeStartYear = rStart;
+        _rangeEndYear = rEnd;
         _units = units;
+        _unitQuestionCounts = unitCounts;
         _selectedUnitId = null;
         _selectedTopicId = null;
         _topics = [];
@@ -527,7 +596,10 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
   Future<void> _onSubjectChanged(String? subjectId) async {
     if (subjectId == null) return;
-    setState(() => _selectedSubjectId = subjectId);
+    setState(() {
+      _selectedSubjectId = subjectId;
+      _selectedSingleYear = 0;
+    });
     await _loadUnitsAndTopics(subjectId);
   }
 
@@ -571,10 +643,26 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
         endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
       );
+
+      final unitCounts = await contentRepo.getUnitQuestionCounts(
+        subjectId: _selectedSubjectId!,
+        examYear:
+            _yearMode == ExamYearFilterMode.single ? _selectedSingleYear : null,
+        grade: _selectedGrade,
+      );
+
       if (mounted) {
         setState(() {
           _matchingQuestionCount = qs.length;
+          _unitQuestionCounts = unitCounts;
           _isCountingQuestions = false;
+          if (_questionCount > _matchingQuestionCount &&
+              _matchingQuestionCount > 0) {
+            _questionCount = _matchingQuestionCount;
+          }
+          if (_isFullPaper) {
+            _questionCount = _matchingQuestionCount;
+          }
         });
       }
     } catch (_) {
@@ -613,17 +701,11 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       if (questions.isEmpty) {
         setState(() {
           _errorMessage =
-              'No questions match the selected criteria. Try selecting all units, broadening the year range (e.g. 2013-2017), or clearing difficulty.';
+              'No verified questions match the selected filters. Try changing the unit, difficulty, or exam year.';
           _isLoading = false;
         });
         return;
       }
-
-      final count =
-          questions.length < _questionCount ? questions.length : _questionCount;
-
-      final shuffled = List<Question>.from(questions)..shuffle();
-      final selectedQuestions = shuffled.sublist(0, count);
 
       final subject = _subjects.firstWhere(
         (s) => s.id == _selectedSubjectId,
@@ -638,10 +720,35 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         ),
       );
 
+      final isFullPaperLaunch =
+          _isFullPaper && _questionCount == _matchingQuestionCount;
+      List<Question> selectedQuestions;
+
+      if (isFullPaperLaunch) {
+        // Preserve official question order (sort by sourcePage, id, do NOT shuffle)
+        selectedQuestions = List<Question>.from(questions)
+          ..sort((a, b) {
+            if (a.sourcePage != null &&
+                b.sourcePage != null &&
+                a.sourcePage != b.sourcePage) {
+              return a.sourcePage!.compareTo(b.sourcePage!);
+            }
+            return a.id.compareTo(b.id);
+          });
+      } else {
+        final count = questions.length < _questionCount
+            ? questions.length
+            : _questionCount;
+        final shuffled = List<Question>.from(questions)..shuffle();
+        selectedQuestions = shuffled.sublist(0, count);
+      }
+
       final gradeLabel =
           _selectedGrade != null ? 'Grade $_selectedGrade ' : 'Grades 9-12 ';
-      final unitObj = _units.where((u) => u.id == _selectedUnitId).firstOrNull;
-      final unitLabel = unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
+      final unitObj =
+          _units.where((u) => u.id == _selectedUnitId).firstOrNull;
+      final unitLabel =
+          unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
       final yearLabel = _yearMode == ExamYearFilterMode.range
           ? ' [$_rangeStartYear-$_rangeEndYear E.C.]'
           : (_yearMode == ExamYearFilterMode.single
@@ -649,17 +756,22 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               : '');
       final modeLabel = _isTimed ? ' Timed Mock' : ' Practice';
 
-      final title =
-          '$gradeLabel${subject.nameEn}$unitLabel$yearLabel$modeLabel';
+      final title = isFullPaperLaunch
+          ? 'ESSLCE ${subject.nameEn} $_selectedSingleYear E.C. National Exam (Full Paper)'
+          : '$gradeLabel${subject.nameEn}$unitLabel$yearLabel$modeLabel';
 
       final exam = Exam(
         id: 'exam_${DateTime.now().millisecondsSinceEpoch}',
         title: title,
-        examType: _isTimed ? ExamType.mockFull : ExamType.customBuilder,
+        examType: isFullPaperLaunch
+            ? ExamType.practice
+            : (_isTimed ? ExamType.mockFull : ExamType.customBuilder),
         grade: _selectedGrade ?? user.grade,
         stream: user.stream,
         subjectId: _selectedSubjectId,
-        timeLimitMinutes: _isTimed ? _timeLimitMinutes : 0,
+        timeLimitMinutes: _isTimed
+            ? _timeLimitMinutes
+            : (isFullPaperLaunch ? 120 : 0),
         totalQuestions: selectedQuestions.length,
         questions: selectedQuestions,
         createdAt: DateTime.now(),
@@ -1145,121 +1257,173 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                               width: 1.5,
                             ),
                           ),
-                          child: ListTile(
-                            leading: Container(
-                              width: 38,
-                              height: 38,
-                              decoration: BoxDecoration(
-                                color: surfaceVariant,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Icon(Icons.menu_book_rounded,
-                                  color: onSurfaceLight, size: 20),
-                            ),
-                            title: Text(
-                              'All Units (Comprehensive Examination)',
-                              style: TextStyle(
-                                fontSize: 14.5,
-                                fontWeight: _selectedUnitId == null
-                                    ? FontWeight.bold
-                                    : FontWeight.w600,
-                                color: isDark ? Colors.white : onSurfaceLight,
-                              ),
-                            ),
-                            subtitle: Text(
-                              'Chapters 1 to ${_units.length} included',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    isDark ? Colors.white60 : onSurfaceVariant,
-                              ),
-                            ),
-                            trailing: _selectedUnitId == null
-                                ? Icon(Icons.check_circle_rounded,
-                                    color: activePrimary)
-                                : null,
-                            onTap: () {
-                              Navigator.pop(ctx);
-                              _onUnitChanged(null);
-                            },
-                          ),
-                        ),
-                        ..._units.map((u) {
-                          final isSelected = u.id == _selectedUnitId;
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? (isDark
-                                      ? activePrimary.withValues(alpha: 0.25)
-                                      : activeSurfaceTint)
-                                  : (isDark
-                                      ? const Color(0xFF1E293B)
-                                      : surfaceContainerLow.withValues(
-                                          alpha: 0.7)),
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: isSelected
-                                    ? activePrimary
-                                    : Colors.transparent,
-                                width: 1.5,
-                              ),
-                            ),
+                          child: Material(
+                            color: Colors.transparent,
                             child: ListTile(
                               leading: Container(
                                 width: 38,
                                 height: 38,
                                 decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? activePrimary
-                                      : (isDark
-                                          ? const Color(0xFF334155)
-                                          : surfaceVariant),
+                                  color: surfaceVariant,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    '${u.unitNumber}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: isSelected
-                                          ? Colors.white
-                                          : onSurfaceLight,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ),
+                                child: const Icon(Icons.menu_book_rounded,
+                                    color: onSurfaceLight, size: 20),
                               ),
                               title: Text(
-                                'Unit ${u.unitNumber}: ${u.titleEn}',
+                                'All Units (Comprehensive Examination)',
                                 style: TextStyle(
                                   fontSize: 14.5,
-                                  fontWeight: isSelected
+                                  fontWeight: _selectedUnitId == null
                                       ? FontWeight.bold
                                       : FontWeight.w600,
                                   color: isDark ? Colors.white : onSurfaceLight,
                                 ),
                               ),
                               subtitle: Text(
-                                u.titleAm,
+                                'Chapters 1 to ${_units.length} included',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: isDark
-                                      ? Colors.white60
-                                      : onSurfaceVariant,
+                                  color:
+                                      isDark ? Colors.white60 : onSurfaceVariant,
                                 ),
                               ),
-                              trailing: isSelected
+                              trailing: _selectedUnitId == null
                                   ? Icon(Icons.check_circle_rounded,
                                       color: activePrimary)
                                   : null,
                               onTap: () {
                                 Navigator.pop(ctx);
-                                _onUnitChanged(u.id);
+                                _onUnitChanged(null);
                               },
                             ),
-                          );
-                        }),
+                          ),
+                        ),
+                        ..._units.map((u) {
+                          final isSelected = u.id == _selectedUnitId;
+                          final unitCount = _unitQuestionCounts[u.id] ?? 0;
+                          final hasQs = unitCount > 0;
+
+                          return Opacity(
+                            opacity: hasQs ? 1.0 : 0.45,
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? (isDark
+                                        ? activePrimary.withValues(alpha: 0.25)
+                                        : activeSurfaceTint)
+                                    : (isDark
+                                        ? const Color(0xFF1E293B)
+                                        : surfaceContainerLow.withValues(
+                                            alpha: 0.7)),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? activePrimary
+                                      : Colors.transparent,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: ListTile(
+                                  leading: Container(
+                                    width: 38,
+                                    height: 38,
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? activePrimary
+                                          : (isDark
+                                              ? const Color(0xFF334155)
+                                              : surfaceVariant),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${u.unitNumber}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : onSurfaceLight,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  title: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Unit ${u.unitNumber}: ${u.titleEn}',
+                                          style: TextStyle(
+                                            fontSize: 14.5,
+                                            fontWeight: isSelected
+                                                ? FontWeight.bold
+                                                : FontWeight.w600,
+                                            color: isDark
+                                                ? Colors.white
+                                                : onSurfaceLight,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: hasQs
+                                            ? (isDark
+                                                ? const Color(0xFF065F46)
+                                                : const Color(0xFFD1FAE5))
+                                            : (isDark
+                                                ? const Color(0xFF334155)
+                                                : const Color(0xFFE2E8F0)),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        hasQs ? '$unitCount Qs' : '0 Qs',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: hasQs
+                                              ? (isDark
+                                                  ? const Color(0xFF34D399)
+                                                  : const Color(0xFF065F46))
+                                              : (isDark
+                                                  ? Colors.white38
+                                                  : Colors.black45),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Text(
+                                  u.titleAm,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: isDark
+                                        ? Colors.white60
+                                        : onSurfaceVariant,
+                                  ),
+                                ),
+                                trailing: isSelected
+                                    ? Icon(Icons.check_circle_rounded,
+                                        color: activePrimary)
+                                    : null,
+                                onTap: hasQs
+                                    ? () {
+                                        Navigator.pop(ctx);
+                                        _onUnitChanged(u.id);
+                                      }
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                       ],
                     ),
                   ),
@@ -1338,25 +1502,28 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     width: 1.5,
                   ),
                 ),
-                child: ListTile(
-                  title: Text(
-                    'All Topics in Selected Unit',
-                    style: TextStyle(
-                      fontSize: 14.5,
-                      fontWeight: _selectedTopicId == null
-                          ? FontWeight.bold
-                          : FontWeight.w600,
-                      color: isDark ? Colors.white : onSurfaceLight,
+                child: Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    title: Text(
+                      'All Topics in Selected Unit',
+                      style: TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: _selectedTopicId == null
+                            ? FontWeight.bold
+                            : FontWeight.w600,
+                        color: isDark ? Colors.white : onSurfaceLight,
+                      ),
                     ),
+                    trailing: _selectedTopicId == null
+                        ? Icon(Icons.check_circle_rounded, color: activePrimary)
+                        : null,
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      setState(() => _selectedTopicId = null);
+                      _updateMatchingQuestionCount();
+                    },
                   ),
-                  trailing: _selectedTopicId == null
-                      ? Icon(Icons.check_circle_rounded, color: activePrimary)
-                      : null,
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    setState(() => _selectedTopicId = null);
-                    _updateMatchingQuestionCount();
-                  },
                 ),
               ),
               ..._topics.map((t) {
@@ -1377,31 +1544,34 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       width: 1.5,
                     ),
                   ),
-                  child: ListTile(
-                    title: Text(
-                      t.titleEn,
-                      style: TextStyle(
-                        fontSize: 14.5,
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.w600,
-                        color: isDark ? Colors.white : onSurfaceLight,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      title: Text(
+                        t.titleEn,
+                        style: TextStyle(
+                          fontSize: 14.5,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.w600,
+                          color: isDark ? Colors.white : onSurfaceLight,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      t.titleAm,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: isDark ? Colors.white60 : onSurfaceVariant,
+                      subtitle: Text(
+                        t.titleAm,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: isDark ? Colors.white60 : onSurfaceVariant,
+                        ),
                       ),
+                      trailing: isSelected
+                          ? Icon(Icons.check_circle_rounded, color: activePrimary)
+                          : null,
+                      onTap: () {
+                        Navigator.pop(ctx);
+                        setState(() => _selectedTopicId = t.id);
+                        _updateMatchingQuestionCount();
+                      },
                     ),
-                    trailing: isSelected
-                        ? Icon(Icons.check_circle_rounded, color: activePrimary)
-                        : null,
-                    onTap: () {
-                      Navigator.pop(ctx);
-                      setState(() => _selectedTopicId = t.id);
-                      _updateMatchingQuestionCount();
-                    },
                   ),
                 );
               }),
@@ -1585,6 +1755,12 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                 runSpacing: 8,
                 children: _availableYears.map((yr) {
                   final isSelected = _selectedSingleYear == yr;
+                  final avail = _subjectAvailabilities
+                      .where((a) => a.year == yr)
+                      .firstOrNull;
+                  final qCount = avail?.totalQuestions ?? 0;
+                  final hasQs = qCount > 0;
+
                   return InkWell(
                     onTap: () {
                       Navigator.pop(ctx);
@@ -1593,8 +1769,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                     },
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
-                      width: 72,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      width: 78,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 4),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? activePrimary
@@ -1603,8 +1780,14 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 : surfaceContainerLow),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color:
-                              isSelected ? activePrimary : Colors.transparent,
+                          color: isSelected
+                              ? activePrimary
+                              : (hasQs
+                                  ? (isDark
+                                      ? activeAccent.withValues(alpha: 0.5)
+                                      : activePrimary.withValues(alpha: 0.4))
+                                  : Colors.transparent),
+                          width: hasQs && !isSelected ? 1.2 : 1.0,
                         ),
                       ),
                       child: Column(
@@ -1613,21 +1796,42 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           Text(
                             '$yr',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: isSelected
                                   ? Colors.white
                                   : (isDark ? Colors.white : onSurfaceLight),
                             ),
                           ),
-                          Text(
-                            'E.C.',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
+                          const SizedBox(height: 2),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 1.5),
+                            decoration: BoxDecoration(
                               color: isSelected
-                                  ? Colors.white70
-                                  : (isDark ? Colors.white60 : activePrimary),
+                                  ? Colors.white.withValues(alpha: 0.22)
+                                  : (hasQs
+                                      ? (isDark
+                                          ? const Color(0xFF065F46)
+                                          : const Color(0xFFD1FAE5))
+                                      : Colors.transparent),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              hasQs ? '$qCount Qs' : 'E.C.',
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w700,
+                                color: isSelected
+                                    ? Colors.white
+                                    : (hasQs
+                                        ? (isDark
+                                            ? const Color(0xFF34D399)
+                                            : const Color(0xFF065F46))
+                                        : (isDark
+                                            ? Colors.white38
+                                            : Colors.black45)),
+                              ),
                             ),
                           ),
                         ],
@@ -3406,35 +3610,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
-                _buildQuickPresetChip(
-                  label: 'Recent (2015-2017)',
-                  startYear: 2015,
-                  endYear: 2017,
-                  isDark: isDark,
-                ),
-                const SizedBox(width: 8),
-                _buildQuickPresetChip(
-                  label: '5-Year Archive',
-                  startYear: 2013,
-                  endYear: 2017,
-                  isDark: isDark,
-                ),
-                const SizedBox(width: 8),
-                _buildQuickPresetChip(
-                  label: 'All Verified (2010-2017)',
-                  startYear: 2010,
-                  endYear: 2017,
-                  isDark: isDark,
-                ),
-                const SizedBox(width: 8),
-                _buildQuickPresetChip(
-                  label: 'Pre-2015',
-                  startYear: 2010,
-                  endYear: 2014,
-                  isDark: isDark,
-                ),
-              ],
+              children: _buildDynamicYearPresetChips(isDark),
             ),
           ),
           const SizedBox(height: 14),
@@ -3444,6 +3620,101 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildDynamicYearPresetChips(bool isDark) {
+    final chips = <Widget>[];
+
+    if (_subjectAvailabilities.length > 1) {
+      final years = _subjectAvailabilities.map((a) => a.year).toList()..sort();
+      final minYear = years.first;
+      final maxYear = years.last;
+      chips.add(
+        _buildQuickPresetChip(
+          label: 'All Past Papers ($minYear–$maxYear E.C.)',
+          startYear: minYear,
+          endYear: maxYear,
+          isDark: isDark,
+        ),
+      );
+      chips.add(const SizedBox(width: 8));
+    }
+
+    for (int i = 0; i < _subjectAvailabilities.length; i++) {
+      final a = _subjectAvailabilities[i];
+      final isSingleActive = _yearMode == ExamYearFilterMode.single &&
+          _selectedSingleYear == a.year;
+      chips.add(
+        InkWell(
+          onTap: () {
+            setState(() {
+              _yearMode = ExamYearFilterMode.single;
+              _selectedSingleYear = a.year;
+            });
+            _updateMatchingQuestionCount();
+          },
+          borderRadius: BorderRadius.circular(999),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 160),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 7.5),
+            decoration: BoxDecoration(
+              color: isSingleActive
+                  ? (isDark
+                      ? activePrimary.withValues(alpha: 0.28)
+                      : activePrimary)
+                  : (isDark
+                      ? const Color(0xFF1E293B)
+                      : const Color(0xFFF1F5F9)),
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: isSingleActive
+                    ? (isDark ? activePrimary : Colors.transparent)
+                    : (isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0)),
+              ),
+              boxShadow: [
+                if (isSingleActive)
+                  BoxShadow(
+                    color:
+                        activePrimary.withValues(alpha: isDark ? 0.30 : 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+              ],
+            ),
+            child: Text(
+              '${a.year} E.C. · ${a.totalQuestions} Qs',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight:
+                    isSingleActive ? FontWeight.w800 : FontWeight.w600,
+                color: isSingleActive
+                    ? Colors.white
+                    : (isDark ? Colors.white70 : onSurfaceLight),
+              ),
+            ),
+          ),
+        ),
+      );
+      if (i < _subjectAvailabilities.length - 1) {
+        chips.add(const SizedBox(width: 8));
+      }
+    }
+
+    if (chips.isEmpty) {
+      chips.add(
+        _buildQuickPresetChip(
+          label: '2010–2017 Archive',
+          startYear: 2010,
+          endYear: 2017,
+          isDark: isDark,
+        ),
+      );
+    }
+
+    return chips;
   }
 
   Widget _buildQuickPresetChip({
@@ -3574,7 +3845,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   ? 'Calculating matching questions in national archive...'
                   : (hasQuestions
                       ? '✓ $_matchingQuestionCount Verified Questions match your criteria'
-                      : 'No questions match this combination. Try broadening the year range or units.'),
+                      : 'No verified questions match the selected filters. Try changing the unit, difficulty, or exam year.'),
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.w700,
@@ -3687,7 +3958,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                   ),
                 ),
                 child: Text(
-                  '$_questionCount Questions',
+                  _matchingQuestionCount > 0
+                      ? '$_matchingQuestionCount Questions Available'
+                      : '0 Questions Available',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
@@ -3715,18 +3988,26 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [5, 10, 20, 30, 50].map((preset) {
-              final isSelected = _questionCount == preset;
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: _dynamicQuestionCountPresets.map((preset) {
+                final isSelected = _questionCount == preset;
+                final isMax = preset == _matchingQuestionCount;
+                final label = isMax
+                    ? (_isFullPaper
+                        ? 'Full Paper · $preset Qs'
+                        : 'All Matching · $preset Qs')
+                    : '$preset Qs';
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6.0),
                   child: InkWell(
                     onTap: () => setState(() => _questionCount = preset),
                     borderRadius: BorderRadius.circular(10),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 160),
-                      padding: const EdgeInsets.symmetric(vertical: 8.5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8.5),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? activePrimary
@@ -3758,40 +4039,49 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          '$preset Qs',
+                          label,
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight:
-                                isSelected ? FontWeight.w800 : FontWeight.w600,
+                            fontWeight: isSelected
+                                ? FontWeight.w800
+                                : FontWeight.w600,
                             color: isSelected
                                 ? Colors.white
-                                : (isDark ? Colors.white70 : onSurfaceVariant),
+                                : (isDark
+                                    ? Colors.white70
+                                    : onSurfaceVariant),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 8),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              activeTrackColor: activePrimary,
-              inactiveTrackColor:
-                  isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
-              thumbColor: activePrimary,
-              trackHeight: 5,
-            ),
-            child: Slider(
-              value: _questionCount.toDouble().clamp(5.0, 50.0),
-              min: 5,
-              max: 50,
-              divisions: 9,
-              onChanged: (val) => setState(() => _questionCount = val.toInt()),
+                );
+              }).toList(),
             ),
           ),
+          if (_matchingQuestionCount > 5) ...[
+            const SizedBox(height: 8),
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: activePrimary,
+                inactiveTrackColor: isDark
+                    ? const Color(0xFF1E293B)
+                    : const Color(0xFFE2E8F0),
+                thumbColor: activePrimary,
+                trackHeight: 5,
+              ),
+              child: Slider(
+                value: _questionCount
+                    .toDouble()
+                    .clamp(5.0, _matchingQuestionCount.toDouble()),
+                min: 5,
+                max: _matchingQuestionCount.toDouble(),
+                divisions: (_matchingQuestionCount - 5).clamp(1, 50),
+                onChanged: (val) =>
+                    setState(() => _questionCount = val.toInt()),
+              ),
+            ),
+          ],
 
           // Timed Mode Settings
           if (_isTimed) ...[
@@ -4134,6 +4424,21 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (!hasQuestions && !_isCountingQuestions && !_isLoading)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                'No verified questions match the selected filters. Try changing the unit, difficulty, or exam year.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: isDark
+                      ? const Color(0xFFFCA5A5)
+                      : const Color(0xFFDC2626),
+                ),
+              ),
+            ),
           SizedBox(
             width: double.infinity,
             height: 48,

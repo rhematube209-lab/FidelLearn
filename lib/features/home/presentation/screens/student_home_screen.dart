@@ -12,6 +12,8 @@ import '../../../../core/widgets/fidel_section_header.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
 import '../../../exams/domain/models/exam_models.dart';
+import '../../../exams/domain/services/exam_engine.dart';
+import '../../../question_bank/domain/models/question_models.dart';
 import '../../../progress/domain/models/progress_models.dart';
 import '../../../progress/domain/services/remedial_drill_service.dart';
 import '../../../progress/domain/services/weak_topic_detector.dart';
@@ -276,6 +278,69 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       exam: exam,
       userId: user.id,
     );
+
+    if (mounted) {
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+    }
+  }
+
+  Future<void> _startFullOfficialExam(bool isPhysics) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    final contentRepo = ref.read(contentRepositoryProvider);
+    final examRepo = ref.read(examRepositoryProvider);
+
+    final subjectId = isPhysics ? 'physics_g12' : 'biology_g12';
+    final examYear = isPhysics ? 2014 : 2013;
+    final title = isPhysics
+        ? 'ESSLCE Physics 2014 E.C. (Natural Science, 32 Questions)'
+        : 'ESSLCE Biology 2013 E.C. (Natural Science, 100 Questions)';
+
+    final questions = await contentRepo.getQuestions(
+      grade: 12,
+      subjectId: subjectId,
+      examYear: examYear,
+    );
+
+    if (questions.isEmpty) {
+      if (mounted) {
+        await context.push('/subject_exams/$subjectId');
+      }
+      return;
+    }
+
+    final sortedQuestions = List<Question>.from(questions)
+      ..sort((a, b) {
+        if (a.sourcePage != null &&
+            b.sourcePage != null &&
+            a.sourcePage != b.sourcePage) {
+          return a.sourcePage!.compareTo(b.sourcePage!);
+        }
+        return a.id.compareTo(b.id);
+      });
+
+    final exam = Exam(
+      id:
+          'exam_${subjectId}_${examYear}_${DateTime.now().millisecondsSinceEpoch}',
+      title: title,
+      examType: ExamType.practice,
+      grade: 12,
+      stream: 'natural',
+      subjectId: subjectId,
+      timeLimitMinutes: isPhysics ? 120 : 150,
+      totalQuestions: sortedQuestions.length,
+      questions: sortedQuestions,
+      createdAt: DateTime.now(),
+    );
+
+    final attempt = ExamEngine.startAttempt(
+      attemptId: 'att_${DateTime.now().millisecondsSinceEpoch}',
+      userId: user.id,
+      exam: exam,
+    );
+
+    await examRepo.saveActiveAttempt(attempt);
 
     if (mounted) {
       await context
@@ -2097,6 +2162,25 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             runSpacing: 8,
             children: [
               ElevatedButton.icon(
+                onPressed: () => _startFullOfficialExam(isPhysics),
+                icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
+                label: Text(
+                  isPhysics
+                      ? (isAmharic
+                          ? 'የ32ቱን ጥያቄ ይፋዊ ፈተና ጀምር'
+                          : 'Start Official 32-Question Exam')
+                      : (isAmharic
+                          ? 'የ100ውን ጥያቄ ይፋዊ ፈተና ጀምር'
+                          : 'Start Official 100-Question Exam'),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: accentColor,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                ),
+              ),
+              OutlinedButton.icon(
                 onPressed: () {
                   if (isPhysics) {
                     context.push('/exam_builder?subjectId=physics_g12');
@@ -2104,21 +2188,20 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                     context.push('/exam_builder?subjectId=biology_g12');
                   }
                 },
-                icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
+                icon: const Icon(Icons.tune_rounded, size: 16),
                 label: Text(
-                  isPhysics
-                      ? (isAmharic
-                          ? 'የ32ቱን ጥያቄ ፈተና ጀምር'
-                          : 'Start 32-Question Exam')
-                      : (isAmharic
-                          ? 'የ100ውን ጥያቄ ፈተና ጀምር'
-                          : 'Start 100-Question Exam'),
+                  isAmharic ? 'ብጁ ልምምድ' : 'Custom Practice',
+                  style: const TextStyle(fontSize: 12),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: accentColor,
-                  foregroundColor: Colors.white,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor:
+                      isDark ? Colors.white70 : const Color(0xFF334155),
+                  side: BorderSide(
+                    color:
+                        isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1),
+                  ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 ),
               ),
               OutlinedButton.icon(

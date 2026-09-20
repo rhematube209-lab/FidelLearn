@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fidel_learn/features/exams/domain/models/exam_availability.dart';
 import 'package:fidel_learn/features/exams/domain/models/exam_models.dart';
 import 'package:fidel_learn/features/progress/domain/models/progress_models.dart';
 import 'package:fidel_learn/features/progress/domain/services/remedial_drill_service.dart';
@@ -76,6 +77,19 @@ class MockContentRepository implements ContentRepository {
     final list = availableQuestions.where((q) => q.id == id);
     return list.isNotEmpty ? list.first : null;
   }
+
+  @override
+  Future<List<int>> getAvailableExamYears(String subjectId) async => [];
+
+  @override
+  Future<List<ExamAvailability>> getExamAvailabilities(String subjectId) async => [];
+
+  @override
+  Future<Map<String, int>> getUnitQuestionCounts({
+    required String subjectId,
+    int? examYear,
+    int? grade,
+  }) async => {};
 }
 
 void main() {

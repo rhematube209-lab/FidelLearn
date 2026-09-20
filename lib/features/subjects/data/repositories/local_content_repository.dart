@@ -6,6 +6,7 @@ import '../../../question_bank/domain/models/question_models.dart';
 import '../../domain/models/subject_models.dart';
 import '../../domain/repositories/content_repository.dart';
 import '../../domain/services/delta_package_service.dart';
+import '../../../exams/domain/models/exam_availability.dart';
 
 class LocalContentRepository implements ContentRepository {
   final List<String> seedAssetPaths;
@@ -16,6 +17,7 @@ class LocalContentRepository implements ContentRepository {
   final List<Unit> _units = [];
   final List<Topic> _topics = [];
   final List<Question> _questions = [];
+  final Map<String, List<ExamAvailability>> _availabilityCache = {};
 
   LocalContentRepository({
     String? seedAssetPath,
@@ -41,6 +43,7 @@ class LocalContentRepository implements ContentRepository {
       _units.clear();
       _topics.clear();
       _questions.clear();
+      _availabilityCache.clear();
 
       final seenPackageIds = <String>{};
       final seenSubjectIds = <String>{};
@@ -132,7 +135,13 @@ class LocalContentRepository implements ContentRepository {
     _topics.addAll(topics);
     _questions.clear();
     _questions.addAll(questions);
+    _availabilityCache.clear();
     _isInitialized = true;
+  }
+
+  void addQuestions(List<Question> newQuestions) {
+    _questions.addAll(newQuestions);
+    _availabilityCache.clear();
   }
 
   @override
@@ -782,5 +791,92 @@ class LocalContentRepository implements ContentRepository {
     } catch (_) {
       return null;
     }
+  }
+
+  @override
+  Future<List<ExamAvailability>> getExamAvailabilities(String subjectId) async {
+    await initializeSeedData();
+    final cacheKey = baseSubjectCode(subjectId);
+    if (_availabilityCache.containsKey(cacheKey)) {
+      return _availabilityCache[cacheKey]!;
+    }
+
+    final matching = _questions.where((q) =>
+        matchesSubjectId(q.subjectId, subjectId) ||
+        matchesSubjectDiscipline(q.subjectId, subjectId));
+
+    final Map<int, List<Question>> byYear = {};
+    for (final q in matching) {
+      if (q.examYear != null &&
+          q.verificationStatus == VerificationStatus.published) {
+        byYear.putIfAbsent(q.examYear!, () => []).add(q);
+      }
+    }
+
+    final List<ExamAvailability> availabilities = [];
+    final sortedYears = byYear.keys.toList()..sort((a, b) => b.compareTo(a));
+
+    for (final year in sortedYears) {
+      final qs = byYear[year]!;
+      final Map<String, int> unitCounts = {};
+      String? sourceName;
+      for (final q in qs) {
+        if (q.sourceName.isNotEmpty) {
+          sourceName ??= q.sourceName;
+        }
+        unitCounts[q.unitId] = (unitCounts[q.unitId] ?? 0) + 1;
+        if (q.curriculumUnitId != null && q.curriculumUnitId != q.unitId) {
+          unitCounts[q.curriculumUnitId!] =
+              (unitCounts[q.curriculumUnitId!] ?? 0) + 1;
+        }
+      }
+      availabilities.add(ExamAvailability(
+        subjectId: subjectId,
+        year: year,
+        totalQuestions: qs.length,
+        unitCounts: unitCounts,
+        verified: true,
+        sourceName: sourceName,
+      ));
+    }
+
+    _availabilityCache[cacheKey] = availabilities;
+    return availabilities;
+  }
+
+  @override
+  Future<List<int>> getAvailableExamYears(String subjectId) async {
+    final avail = await getExamAvailabilities(subjectId);
+    return avail.map((a) => a.year).toList();
+  }
+
+  @override
+  Future<Map<String, int>> getUnitQuestionCounts({
+    required String subjectId,
+    int? examYear,
+    int? grade,
+  }) async {
+    await initializeSeedData();
+    final matching = _questions.where((q) {
+      if (grade != null && q.grade != grade && q.curriculumGrade != grade) {
+        return false;
+      }
+      if (!matchesSubjectId(q.subjectId, subjectId) &&
+          !matchesSubjectDiscipline(q.subjectId, subjectId)) {
+        return false;
+      }
+      if (q.verificationStatus != VerificationStatus.published) return false;
+      if (examYear != null && q.examYear != examYear) return false;
+      return true;
+    });
+
+    final Map<String, int> counts = {};
+    for (final q in matching) {
+      counts[q.unitId] = (counts[q.unitId] ?? 0) + 1;
+      if (q.curriculumUnitId != null && q.curriculumUnitId != q.unitId) {
+        counts[q.curriculumUnitId!] = (counts[q.curriculumUnitId!] ?? 0) + 1;
+      }
+    }
+    return counts;
   }
 }

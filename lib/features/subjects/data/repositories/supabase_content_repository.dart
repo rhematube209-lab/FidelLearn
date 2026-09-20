@@ -6,6 +6,7 @@ import '../../../question_bank/domain/models/question_models.dart';
 import '../../domain/models/subject_models.dart';
 import '../../domain/repositories/content_repository.dart';
 import '../../domain/services/delta_package_service.dart';
+import '../../../exams/domain/models/exam_availability.dart';
 import 'local_content_repository.dart';
 
 class SupabaseContentRepository implements ContentRepository {
@@ -283,5 +284,28 @@ class SupabaseContentRepository implements ContentRepository {
     }
 
     return _localFallback.getQuestionById(id);
+  }
+
+  @override
+  Future<List<ExamAvailability>> getExamAvailabilities(String subjectId) async {
+    return _localFallback.getExamAvailabilities(subjectId);
+  }
+
+  @override
+  Future<List<int>> getAvailableExamYears(String subjectId) async {
+    return _localFallback.getAvailableExamYears(subjectId);
+  }
+
+  @override
+  Future<Map<String, int>> getUnitQuestionCounts({
+    required String subjectId,
+    int? examYear,
+    int? grade,
+  }) async {
+    return _localFallback.getUnitQuestionCounts(
+      subjectId: subjectId,
+      examYear: examYear,
+      grade: grade,
+    );
   }
 }

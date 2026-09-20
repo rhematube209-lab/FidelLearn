@@ -1,6 +1,7 @@
 import '../models/subject_models.dart';
 import '../services/delta_package_service.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../exams/domain/models/exam_availability.dart';
 
 abstract class ContentRepository {
   Future<void> initializeSeedData();
@@ -31,4 +32,12 @@ abstract class ContentRepository {
     int? limit,
   });
   Future<Question?> getQuestionById(String id);
+  Future<List<int>> getAvailableExamYears(String subjectId);
+  Future<List<ExamAvailability>> getExamAvailabilities(String subjectId);
+  Future<Map<String, int>> getUnitQuestionCounts({
+    required String subjectId,
+    int? examYear,
+    int? grade,
+  });
 }
+
