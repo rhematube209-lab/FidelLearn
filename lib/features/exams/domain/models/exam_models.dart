@@ -7,7 +7,8 @@ enum ExamType {
   unitTest,
   mockFull,
   customBuilder,
-  teacherAssigned;
+  teacherAssigned,
+  mistakeRetry;
 
   static ExamType fromString(String val) {
     switch (val.toLowerCase()) {
@@ -19,6 +20,9 @@ enum ExamType {
         return ExamType.customBuilder;
       case 'teacher_assigned':
         return ExamType.teacherAssigned;
+      case 'mistake_retry':
+      case 'mistakeretry':
+        return ExamType.mistakeRetry;
       case 'practice':
       default:
         return ExamType.practice;
@@ -35,6 +39,8 @@ enum ExamType {
         return 'custom_builder';
       case ExamType.teacherAssigned:
         return 'teacher_assigned';
+      case ExamType.mistakeRetry:
+        return 'mistake_retry';
       case ExamType.practice:
         return 'practice';
     }

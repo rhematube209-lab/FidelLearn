@@ -424,7 +424,8 @@ class LocalContentRepository implements ContentRepository {
             id: 'phys_g10_u6',
             subjectId: 'physics_g12',
             unitNumber: 7,
-            titleEn: '[Grade 10] Unit 6: Electromagnetic Waves & Geometrical Optics',
+            titleEn:
+                '[Grade 10] Unit 6: Electromagnetic Waves & Geometrical Optics',
             titleAm: 'ኤሌክትሮማግኔቲክ ሞገድና ጂኦሜትሪያዊ ኦፕቲክስ'),
         Unit(
             id: 'phys_g11_u4',

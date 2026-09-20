@@ -399,9 +399,52 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
   }
 
   Widget _buildActionDeck(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (_attempt != null && _attempt!.incorrectCount > 0) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? AppTheme.brand.withValues(alpha: 0.12)
+                  : const Color(0xFFFDF2F8),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              border: Border.all(
+                color: AppTheme.pink.withValues(alpha: 0.35),
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.auto_stories_rounded,
+                    color: AppTheme.brand, size: 20),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    '${_attempt!.incorrectCount} questions added to Mistake Notebook for remediation',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => context.push('/mistakes'),
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    foregroundColor: AppTheme.brandStrong,
+                  ),
+                  child: const Text('Open Notebook',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
         FidelButton(
           label: 'Review Step-by-Step Solutions',
           icon: Icons.menu_book_rounded,

@@ -288,8 +288,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   List<int> get _dynamicQuestionCountPresets {
     if (_matchingQuestionCount <= 0) return [10];
     final standard = [5, 10, 20, 30, 50, 100];
-    final viable =
-        standard.where((n) => n < _matchingQuestionCount).toList();
+    final viable = standard.where((n) => n < _matchingQuestionCount).toList();
     viable.add(_matchingQuestionCount);
     return viable;
   }
@@ -485,9 +484,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     final user = ref.read(currentUserProvider).valueOrNull;
     final contentRepo = ref.read(contentRepositoryProvider);
     final previousSubjectId = _selectedSubjectId;
-    final currentSubject = _subjects
-        .where((s) => s.id == previousSubjectId)
-        .firstOrNull;
+    final currentSubject =
+        _subjects.where((s) => s.id == previousSubjectId).firstOrNull;
     final previousDiscipline = previousSubjectId != null
         ? LocalContentRepository.baseSubjectCode(previousSubjectId)
         : null;
@@ -533,8 +531,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
       // 2. Canonical match in subs
       matched ??= subs
-          .where((s) => LocalContentRepository.matchesSubjectId(
-              s.id, previousSubjectId))
+          .where((s) =>
+              LocalContentRepository.matchesSubjectId(s.id, previousSubjectId))
           .firstOrNull;
 
       // 3. Discipline match in subs (e.g. biology_g11 for biology_g12)
@@ -825,10 +823,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
       final gradeLabel =
           _selectedGrade != null ? 'Grade $_selectedGrade ' : 'Grades 9-12 ';
-      final unitObj =
-          _units.where((u) => u.id == _selectedUnitId).firstOrNull;
-      final unitLabel =
-          unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
+      final unitObj = _units.where((u) => u.id == _selectedUnitId).firstOrNull;
+      final unitLabel = unitObj != null ? ' (Unit ${unitObj.unitNumber})' : '';
       final yearLabel = _yearMode == ExamYearFilterMode.range
           ? ' [$_rangeStartYear-$_rangeEndYear E.C.]'
           : (_yearMode == ExamYearFilterMode.single
@@ -849,9 +845,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         grade: _selectedGrade ?? user.grade,
         stream: user.stream,
         subjectId: _selectedSubjectId,
-        timeLimitMinutes: _isTimed
-            ? _timeLimitMinutes
-            : (isFullPaperLaunch ? 120 : 0),
+        timeLimitMinutes:
+            _isTimed ? _timeLimitMinutes : (isFullPaperLaunch ? 120 : 0),
         totalQuestions: selectedQuestions.length,
         questions: selectedQuestions,
         createdAt: DateTime.now(),
@@ -1367,8 +1362,9 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                 'Chapters 1 to ${_units.length} included',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color:
-                                      isDark ? Colors.white60 : onSurfaceVariant,
+                                  color: isDark
+                                      ? Colors.white60
+                                      : onSurfaceVariant,
                                 ),
                               ),
                               trailing: _selectedUnitId == null
@@ -1454,59 +1450,60 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                                       ),
                                       const SizedBox(width: 8),
                                       Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
-                                      decoration: BoxDecoration(
-                                        color: hasQs
-                                            ? (isDark
-                                                ? const Color(0xFF065F46)
-                                                : const Color(0xFFD1FAE5))
-                                            : (isDark
-                                                ? const Color(0xFF334155)
-                                                : const Color(0xFFE2E8F0)),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        hasQs ? '$unitCount Qs' : '0 Qs',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w700,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 3),
+                                        decoration: BoxDecoration(
                                           color: hasQs
                                               ? (isDark
-                                                  ? const Color(0xFF34D399)
-                                                  : const Color(0xFF065F46))
+                                                  ? const Color(0xFF065F46)
+                                                  : const Color(0xFFD1FAE5))
                                               : (isDark
-                                                  ? Colors.white38
-                                                  : Colors.black45),
+                                                  ? const Color(0xFF334155)
+                                                  : const Color(0xFFE2E8F0)),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          hasQs ? '$unitCount Qs' : '0 Qs',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                            color: hasQs
+                                                ? (isDark
+                                                    ? const Color(0xFF34D399)
+                                                    : const Color(0xFF065F46))
+                                                : (isDark
+                                                    ? Colors.white38
+                                                    : Colors.black45),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Text(
-                                  u.titleAm,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: isDark
-                                        ? Colors.white60
-                                        : onSurfaceVariant,
+                                    ],
                                   ),
+                                  subtitle: Text(
+                                    u.titleAm,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: isDark
+                                          ? Colors.white60
+                                          : onSurfaceVariant,
+                                    ),
+                                  ),
+                                  trailing: isSelected
+                                      ? Icon(Icons.check_circle_rounded,
+                                          color: activePrimary)
+                                      : null,
+                                  onTap: hasQs
+                                      ? () {
+                                          Navigator.pop(ctx);
+                                          _onUnitChanged(u.id);
+                                        }
+                                      : null,
                                 ),
-                                trailing: isSelected
-                                    ? Icon(Icons.check_circle_rounded,
-                                        color: activePrimary)
-                                    : null,
-                                onTap: hasQs
-                                    ? () {
-                                        Navigator.pop(ctx);
-                                        _onUnitChanged(u.id);
-                                      }
-                                    : null,
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -1647,7 +1644,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         ),
                       ),
                       trailing: isSelected
-                          ? Icon(Icons.check_circle_rounded, color: activePrimary)
+                          ? Icon(Icons.check_circle_rounded,
+                              color: activePrimary)
                           : null,
                       onTap: () {
                         Navigator.pop(ctx);
@@ -3745,8 +3743,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           borderRadius: BorderRadius.circular(999),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 160),
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 7.5),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7.5),
             decoration: BoxDecoration(
               color: isSingleActive
                   ? (isDark
@@ -3777,8 +3774,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               '${a.year} E.C. · ${a.totalQuestions} Qs',
               style: TextStyle(
                 fontSize: 12,
-                fontWeight:
-                    isSingleActive ? FontWeight.w800 : FontWeight.w600,
+                fontWeight: isSingleActive ? FontWeight.w800 : FontWeight.w600,
                 color: isSingleActive
                     ? Colors.white
                     : (isDark ? Colors.white70 : onSurfaceLight),
@@ -4001,8 +3997,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       width: 38,
                       height: 38,
                       decoration: BoxDecoration(
-                        color:
-                            activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                        color: activePrimary.withValues(
+                            alpha: isDark ? 0.20 : 0.10),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: activePrimary.withValues(
@@ -4137,14 +4133,11 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                           label,
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: isSelected
-                                ? FontWeight.w800
-                                : FontWeight.w600,
+                            fontWeight:
+                                isSelected ? FontWeight.w800 : FontWeight.w600,
                             color: isSelected
                                 ? Colors.white
-                                : (isDark
-                                    ? Colors.white70
-                                    : onSurfaceVariant),
+                                : (isDark ? Colors.white70 : onSurfaceVariant),
                           ),
                         ),
                       ),
@@ -4159,9 +4152,8 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
             SliderTheme(
               data: SliderTheme.of(context).copyWith(
                 activeTrackColor: activePrimary,
-                inactiveTrackColor: isDark
-                    ? const Color(0xFF1E293B)
-                    : const Color(0xFFE2E8F0),
+                inactiveTrackColor:
+                    isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
                 thumbColor: activePrimary,
                 trackHeight: 5,
               ),

@@ -6,7 +6,8 @@ class ExamAvailability extends Equatable {
   final String subjectId;
   final int year;
   final int totalQuestions;
-  final Map<String, int> unitCounts; // unitId / curriculumUnitId -> question count
+  final Map<String, int>
+      unitCounts; // unitId / curriculumUnitId -> question count
   final bool verified;
   final String? sourceName;
 

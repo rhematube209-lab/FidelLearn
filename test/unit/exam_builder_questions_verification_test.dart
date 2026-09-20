@@ -83,7 +83,8 @@ void main() {
       expect(physG10U1Questions.length, 3);
     });
 
-    test('What happens when Grade 9, 10, or 11 is selected in Exam Builder?', () async {
+    test('What happens when Grade 9, 10, or 11 is selected in Exam Builder?',
+        () async {
       // Grade 11 mapping for Biology has 46 questions mapped to Grade 11 in curriculum
       final bioG11 = await repository.getQuestions(
         grade: 11,
@@ -138,4 +139,3 @@ void main() {
     });
   });
 }
-

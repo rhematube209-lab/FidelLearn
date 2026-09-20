@@ -21,7 +21,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -29,7 +29,41 @@ class AppDatabase extends _$AppDatabase {
           await m.createAll();
         },
         onUpgrade: (Migrator m, int from, int to) async {
-          // Schema upgrades will be specified here
+          if (from < 2) {
+            await m.addColumn(dbMistakes, dbMistakes.unitId);
+            await m.addColumn(dbMistakes, dbMistakes.topicId);
+            await m.addColumn(dbMistakes, dbMistakes.lastAttemptId);
+            await m.addColumn(dbMistakes, dbMistakes.lastSelectedChoiceId);
+            await m.addColumn(dbMistakes, dbMistakes.firstMissedAt);
+            await m.addColumn(dbMistakes, dbMistakes.lastMissedAt);
+            await m.addColumn(dbMistakes, dbMistakes.lastAttemptAt);
+            await m.addColumn(dbMistakes, dbMistakes.missCount);
+            await m.addColumn(dbMistakes, dbMistakes.retryCount);
+            await m.addColumn(dbMistakes, dbMistakes.correctRetryCount);
+            await m.addColumn(dbMistakes, dbMistakes.masteryStatus);
+            await m.addColumn(dbMistakes, dbMistakes.createdAt);
+            await m.addColumn(dbMistakes, dbMistakes.updatedAt);
+            await m.addColumn(dbMistakes, dbMistakes.syncStatus);
+
+            // Backfill existing records preserving historic timestamps
+            await customStatement('''
+              UPDATE db_mistakes SET
+                miss_count = mistake_count,
+                mastery_status = CASE WHEN is_mastered = 1 THEN 'mastered' ELSE 'needsReview' END,
+                first_missed_at = last_failed_at,
+                last_missed_at = last_failed_at,
+                created_at = last_failed_at,
+                updated_at = COALESCE(mastered_at, last_failed_at),
+                correct_retry_count = CASE WHEN is_mastered = 1 THEN 2 ELSE 0 END,
+                retry_count = CASE WHEN is_mastered = 1 THEN 2 ELSE 0 END,
+                sync_status = 'synced'
+              WHERE last_failed_at IS NOT NULL
+            ''');
+
+            await customStatement(
+              'CREATE UNIQUE INDEX IF NOT EXISTS idx_db_mistakes_user_question ON db_mistakes(user_id, question_id)',
+            );
+          }
         },
       );
 }

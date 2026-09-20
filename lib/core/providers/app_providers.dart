@@ -14,8 +14,9 @@ import '../../features/challenges/data/repositories/local_challenge_repository.d
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
 import '../../features/exams/data/repositories/supabase_exam_repository.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
-import '../../features/mistakes/data/repositories/supabase_mistake_repository.dart';
+import '../../features/mistakes/domain/models/mistake_model.dart';
 import '../../features/mistakes/domain/repositories/mistake_repository.dart';
+import '../../features/mistakes/domain/services/mistake_outcome_service.dart';
 import '../../features/rewards/domain/models/coin_ledger_entry.dart';
 import '../../features/rewards/domain/services/coin_ledger_service.dart';
 import '../../features/subjects/data/repositories/local_content_repository.dart';
@@ -146,14 +147,20 @@ final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
 });
 
 final mistakeRepositoryProvider = Provider<MistakeRepository>((ref) {
-  if (EnvConfig.isSupabaseConfigured) {
-    try {
-      return SupabaseMistakeRepository();
-    } catch (_) {}
-  }
   final db = ref.watch(appDatabaseProvider);
   final queue = ref.watch(syncQueueRepositoryProvider);
   return DriftMistakeRepository(db: db, syncQueue: queue);
+});
+
+final mistakeOutcomeServiceProvider = Provider<MistakeOutcomeService>((ref) {
+  final mistakeRepo = ref.watch(mistakeRepositoryProvider);
+  return MistakeOutcomeService(mistakeRepo);
+});
+
+final mistakeCountsStreamProvider =
+    StreamProvider.family<MistakeCounts, String>((ref, userId) {
+  final mistakeRepo = ref.watch(mistakeRepositoryProvider);
+  return mistakeRepo.watchMistakeCounts(userId);
 });
 
 final coinLedgerRepositoryProvider = Provider<DriftCoinLedgerRepository>((ref) {

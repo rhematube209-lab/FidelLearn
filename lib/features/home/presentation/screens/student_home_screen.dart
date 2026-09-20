@@ -321,8 +321,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       });
 
     final exam = Exam(
-      id:
-          'exam_${subjectId}_${examYear}_${DateTime.now().millisecondsSinceEpoch}',
+      id: 'exam_${subjectId}_${examYear}_${DateTime.now().millisecondsSinceEpoch}',
       title: title,
       examType: ExamType.practice,
       grade: 12,
@@ -478,7 +477,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 // Mobile: Quick Actions & Intelligence Cards
                                 _buildQuickActions(context, isDark),
                                 const SizedBox(height: 24),
-                                _buildFeaturedExamCard(context, isDark, isAmharic),
+                                _buildFeaturedExamCard(
+                                    context, isDark, isAmharic),
                                 const SizedBox(height: 24),
                                 _buildReadinessGaugeCard(context, isDark),
                                 const SizedBox(height: 28),

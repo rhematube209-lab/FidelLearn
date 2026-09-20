@@ -61,13 +61,41 @@ class DbMistakes extends Table {
   TextColumn get userId => text()();
   TextColumn get questionId => text()();
   TextColumn get subjectId => text()();
+  TextColumn get unitId => text().nullable()();
+  TextColumn get topicId => text().nullable()();
+
+  TextColumn get lastAttemptId => text().nullable()();
+  TextColumn get lastSelectedChoiceId => text().nullable()();
+
+  DateTimeColumn get firstMissedAt => dateTime().nullable()();
+  DateTimeColumn get lastMissedAt => dateTime().nullable()();
+  DateTimeColumn get lastAttemptAt => dateTime().nullable()();
+
+  IntColumn get missCount => integer().withDefault(const Constant(1))();
+  IntColumn get retryCount => integer().withDefault(const Constant(0))();
+  IntColumn get correctRetryCount => integer().withDefault(const Constant(0))();
+
+  TextColumn get masteryStatus => text().withDefault(const Constant(
+      'needsReview'))(); // 'needsReview' | 'improving' | 'mastered'
+
+  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
+  TextColumn get syncStatus => text().withDefault(
+      const Constant('synced'))(); // 'synced' | 'pending' | 'failed'
+
+  // Legacy columns kept for database backward compatibility
   IntColumn get mistakeCount => integer().withDefault(const Constant(1))();
   BoolColumn get isMastered => boolean().withDefault(const Constant(false))();
-  DateTimeColumn get lastFailedAt => dateTime()();
+  DateTimeColumn get lastFailedAt => dateTime().nullable()();
   DateTimeColumn get masteredAt => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {userId, questionId},
+      ];
 }
 
 /// SQLite append-only ledger for Study Coins

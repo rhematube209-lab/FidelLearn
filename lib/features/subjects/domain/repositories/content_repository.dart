@@ -40,4 +40,3 @@ abstract class ContentRepository {
     int? grade,
   });
 }
-

@@ -110,6 +110,28 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
     final examRepo = ref.read(examRepositoryProvider);
     await examRepo.saveActiveAttempt(_attempt);
+
+    // Immediate persistence for instant feedback practice or mistake retry
+    if (widget.showInstantFeedback ||
+        widget.exam.examType == ExamType.mistakeRetry) {
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final userId = user?.id ?? 'guest_student';
+      final isCorrect = currentQ.correctChoice.id == choiceId;
+      try {
+        final outcomeService = ref.read(mistakeOutcomeServiceProvider);
+        await outcomeService.processQuestionOutcome(
+          userId: userId,
+          questionId: currentQ.id,
+          subjectId: currentQ.subjectId,
+          unitId: currentQ.unitId,
+          topicId: currentQ.topicId,
+          attemptId: _attempt.id,
+          selectedChoiceId: choiceId,
+          isCorrect: isCorrect,
+          sessionType: widget.exam.examType,
+        );
+      } catch (_) {}
+    }
   }
 
   Future<void> _handleToggleFlag() async {
@@ -322,8 +344,33 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       final examRepo = ref.read(examRepositoryProvider);
       await examRepo.saveCompletedAttempt(finishedAttempt);
 
-      // Award Study Coins for completed exam
+      // Process question outcomes (automatic mistake capture & mastery updates)
       final user = ref.read(currentUserProvider).valueOrNull;
+      final userId = user?.id ?? 'guest_student';
+      final outcomeService = ref.read(mistakeOutcomeServiceProvider);
+      final qMap = {for (final q in widget.exam.questions) q.id: q};
+
+      for (final resp in finishedAttempt.responses.values) {
+        if (resp.selectedChoiceId == null) continue;
+        final q = qMap[resp.questionId];
+        if (q == null) continue;
+
+        try {
+          await outcomeService.processQuestionOutcome(
+            userId: userId,
+            questionId: q.id,
+            subjectId: q.subjectId,
+            unitId: q.unitId,
+            topicId: q.topicId,
+            attemptId: finishedAttempt.id,
+            selectedChoiceId: resp.selectedChoiceId,
+            isCorrect: resp.isCorrect,
+            sessionType: widget.exam.examType,
+          );
+        } catch (_) {}
+      }
+
+      // Award Study Coins for completed exam
       if (user != null) {
         final earnedCoins = (finishedAttempt.score * 2).clamp(5, 50);
         ref.read(coinLedgerProvider.notifier).awardCoins(
@@ -496,7 +543,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     );
   }
 
-  Widget _buildPaletteFilterTabs({void Function(void Function())? updateState}) {
+  Widget _buildPaletteFilterTabs(
+      {void Function(void Function())? updateState}) {
     final answeredCount = _attempt.responses.values
         .where((r) => r.selectedChoiceId != null)
         .length;
@@ -508,19 +556,23 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildPaletteTab('all', 'All (${widget.exam.totalQuestions})', updateState),
+          _buildPaletteTab(
+              'all', 'All (${widget.exam.totalQuestions})', updateState),
           const SizedBox(width: 6),
-          _buildPaletteTab('answered', 'Answered ($answeredCount)', updateState),
+          _buildPaletteTab(
+              'answered', 'Answered ($answeredCount)', updateState),
           const SizedBox(width: 6),
           _buildPaletteTab('flagged', 'Flagged ($flaggedCount)', updateState),
           const SizedBox(width: 6),
-          _buildPaletteTab('unanswered', 'Unanswered ($unansweredCount)', updateState),
+          _buildPaletteTab(
+              'unanswered', 'Unanswered ($unansweredCount)', updateState),
         ],
       ),
     );
   }
 
-  Widget _buildPaletteTab(String key, String label, [void Function(void Function())? updateState]) {
+  Widget _buildPaletteTab(String key, String label,
+      [void Function(void Function())? updateState]) {
     final isSelected = _paletteFilter == key;
     return ChoiceChip(
       label: Text(label, style: const TextStyle(fontSize: 11)),
@@ -641,8 +693,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 .length;
             final flaggedCount =
                 _attempt.responses.values.where((r) => r.isFlagged).length;
-            final unansweredCount =
-                widget.exam.totalQuestions - answeredCount;
+            final unansweredCount = widget.exam.totalQuestions - answeredCount;
 
             return SafeArea(
               child: Container(
@@ -784,9 +835,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                   width: 38,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? AppTheme.darkBorder
-                        : const Color(0xFFCBD5E1),
+                    color:
+                        isDark ? AppTheme.darkBorder : const Color(0xFFCBD5E1),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -900,8 +950,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF2563EB)
-                                .withValues(alpha: 0.08),
+                            color:
+                                const Color(0xFF2563EB).withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
                               color: const Color(0xFF2563EB)
@@ -1050,14 +1100,12 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             Builder(
               builder: (ctx) => IconButton(
                 padding: EdgeInsets.zero,
-                constraints:
-                    const BoxConstraints(minWidth: 36, minHeight: 36),
+                constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
                 icon: Icon(
                   Icons.grid_view_rounded,
                   size: 21,
-                  color: isDark
-                      ? AppTheme.darkTextSoft
-                      : const Color(0xFF1E293B),
+                  color:
+                      isDark ? AppTheme.darkTextSoft : const Color(0xFF1E293B),
                 ),
                 tooltip: 'Question palette drawer',
                 onPressed: () => Scaffold.of(ctx).openEndDrawer(),
@@ -1369,8 +1417,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 runSpacing: 6,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: isDark
                           ? const Color(0x336366F1)
@@ -1390,8 +1438,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: isDark
                           ? const Color(0x2664748B)

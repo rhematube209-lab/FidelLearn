@@ -415,7 +415,10 @@ void main() {
         contentVersion: 1,
         choices: [
           AnswerChoice(
-              id: 'c1', label: 'A', textEn: 'Protein synthesis', isCorrect: true),
+              id: 'c1',
+              label: 'A',
+              textEn: 'Protein synthesis',
+              isCorrect: true),
           AnswerChoice(id: 'c2', label: 'B', textEn: 'Lipid', isCorrect: false),
         ],
         explanation: Explanation(
@@ -466,7 +469,8 @@ void main() {
       // Now tap again and select All Grades (9-12)
       await tester.tap(find.textContaining('Grade 11 (Secondary'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('All Grades (9-12 Comprehensive Examination)'));
+      await tester
+          .tap(find.text('All Grades (9-12 Comprehensive Examination)'));
       await tester.pumpAndSettle();
 
       // Verify it is STILL Biology!

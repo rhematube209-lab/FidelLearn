@@ -187,8 +187,7 @@ void main() {
 
     // 4. Check Working Footer
     // Previous button should be disabled on Question 1
-    final prevButtonFinder =
-        find.widgetWithText(OutlinedButton, 'Previous');
+    final prevButtonFinder = find.widgetWithText(OutlinedButton, 'Previous');
     expect(prevButtonFinder, findsOneWidget);
     final OutlinedButton prevButton = tester.widget(prevButtonFinder);
     expect(prevButton.onPressed, isNull);
@@ -220,7 +219,8 @@ void main() {
     expect(find.text('2/2'), findsOneWidget);
 
     // On question 2 (last question), Next Question becomes Finish Exam
-    expect(find.widgetWithText(ElevatedButton, 'Finish Exam'), findsNWidgets(2));
+    expect(
+        find.widgetWithText(ElevatedButton, 'Finish Exam'), findsNWidgets(2));
 
     // Previous button should now be enabled
     final OutlinedButton prevButtonQ2 =

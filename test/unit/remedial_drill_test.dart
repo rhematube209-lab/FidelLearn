@@ -82,14 +82,17 @@ class MockContentRepository implements ContentRepository {
   Future<List<int>> getAvailableExamYears(String subjectId) async => [];
 
   @override
-  Future<List<ExamAvailability>> getExamAvailabilities(String subjectId) async => [];
+  Future<List<ExamAvailability>> getExamAvailabilities(
+          String subjectId) async =>
+      [];
 
   @override
   Future<Map<String, int>> getUnitQuestionCounts({
     required String subjectId,
     int? examYear,
     int? grade,
-  }) async => {};
+  }) async =>
+      {};
 }
 
 void main() {

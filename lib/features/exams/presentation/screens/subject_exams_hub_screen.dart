@@ -333,15 +333,13 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             subject.nameEn.toLowerCase().contains('bio');
 
     if (isPhys) {
-      final y2014 =
-          _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
+      final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
       final others =
           _availableYears.where((y) => y.ethiopianYear != 2014).toList();
       return [y2014, ...others];
     }
     if (isBio) {
-      final y2013 =
-          _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
+      final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
       final others =
           _availableYears.where((y) => y.ethiopianYear != 2013).toList();
       return [y2013, ...others];
@@ -1888,8 +1886,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: hubTheme.accentColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(4),
@@ -1932,8 +1929,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                       : constraints.maxWidth;
                   return Container(
                     width: itemWidth,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 4.5),
                     decoration: BoxDecoration(
                       color: isDark
                           ? const Color(0xFF0F172A).withValues(alpha: 0.6)
@@ -2448,8 +2445,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: hubTheme.accentColor
-                                  .withValues(alpha: 0.12),
+                              color:
+                                  hubTheme.accentColor.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(4),
                               border: Border.all(
                                 color: hubTheme.accentColor

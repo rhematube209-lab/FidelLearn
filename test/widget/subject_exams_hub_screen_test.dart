@@ -450,7 +450,8 @@ void main() {
     expect(find.text('Acceleration due to gravity'), findsOneWidget);
     expect(find.text('Mass of the Earth'), findsOneWidget);
     expect(find.text('Charge of electron'), findsOneWidget);
-    expect(find.textContaining('Trig: sin 30° = cos 60° = 0.5'), findsOneWidget);
+    expect(
+        find.textContaining('Trig: sin 30° = cos 60° = 0.5'), findsOneWidget);
 
     // 6. Verify Start Exam CTA
     expect(find.text('Start Exam Now'), findsOneWidget);

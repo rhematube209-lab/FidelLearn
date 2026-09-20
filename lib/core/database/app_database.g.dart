@@ -1504,6 +1504,99 @@ class $DbMistakesTable extends DbMistakes
   late final GeneratedColumn<String> subjectId = GeneratedColumn<String>(
       'subject_id', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
+  @override
+  late final GeneratedColumn<String> unitId = GeneratedColumn<String>(
+      'unit_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _topicIdMeta =
+      const VerificationMeta('topicId');
+  @override
+  late final GeneratedColumn<String> topicId = GeneratedColumn<String>(
+      'topic_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastAttemptIdMeta =
+      const VerificationMeta('lastAttemptId');
+  @override
+  late final GeneratedColumn<String> lastAttemptId = GeneratedColumn<String>(
+      'last_attempt_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastSelectedChoiceIdMeta =
+      const VerificationMeta('lastSelectedChoiceId');
+  @override
+  late final GeneratedColumn<String> lastSelectedChoiceId =
+      GeneratedColumn<String>('last_selected_choice_id', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _firstMissedAtMeta =
+      const VerificationMeta('firstMissedAt');
+  @override
+  late final GeneratedColumn<DateTime> firstMissedAt =
+      GeneratedColumn<DateTime>('first_missed_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _lastMissedAtMeta =
+      const VerificationMeta('lastMissedAt');
+  @override
+  late final GeneratedColumn<DateTime> lastMissedAt = GeneratedColumn<DateTime>(
+      'last_missed_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _lastAttemptAtMeta =
+      const VerificationMeta('lastAttemptAt');
+  @override
+  late final GeneratedColumn<DateTime> lastAttemptAt =
+      GeneratedColumn<DateTime>('last_attempt_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _missCountMeta =
+      const VerificationMeta('missCount');
+  @override
+  late final GeneratedColumn<int> missCount = GeneratedColumn<int>(
+      'miss_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1));
+  static const VerificationMeta _retryCountMeta =
+      const VerificationMeta('retryCount');
+  @override
+  late final GeneratedColumn<int> retryCount = GeneratedColumn<int>(
+      'retry_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _correctRetryCountMeta =
+      const VerificationMeta('correctRetryCount');
+  @override
+  late final GeneratedColumn<int> correctRetryCount = GeneratedColumn<int>(
+      'correct_retry_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _masteryStatusMeta =
+      const VerificationMeta('masteryStatus');
+  @override
+  late final GeneratedColumn<String> masteryStatus = GeneratedColumn<String>(
+      'mastery_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('needsReview'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _syncStatusMeta =
+      const VerificationMeta('syncStatus');
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+      'sync_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('synced'));
   static const VerificationMeta _mistakeCountMeta =
       const VerificationMeta('mistakeCount');
   @override
@@ -1526,8 +1619,8 @@ class $DbMistakesTable extends DbMistakes
       const VerificationMeta('lastFailedAt');
   @override
   late final GeneratedColumn<DateTime> lastFailedAt = GeneratedColumn<DateTime>(
-      'last_failed_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      'last_failed_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   static const VerificationMeta _masteredAtMeta =
       const VerificationMeta('masteredAt');
   @override
@@ -1540,6 +1633,20 @@ class $DbMistakesTable extends DbMistakes
         userId,
         questionId,
         subjectId,
+        unitId,
+        topicId,
+        lastAttemptId,
+        lastSelectedChoiceId,
+        firstMissedAt,
+        lastMissedAt,
+        lastAttemptAt,
+        missCount,
+        retryCount,
+        correctRetryCount,
+        masteryStatus,
+        createdAt,
+        updatedAt,
+        syncStatus,
         mistakeCount,
         isMastered,
         lastFailedAt,
@@ -1580,6 +1687,80 @@ class $DbMistakesTable extends DbMistakes
     } else if (isInserting) {
       context.missing(_subjectIdMeta);
     }
+    if (data.containsKey('unit_id')) {
+      context.handle(_unitIdMeta,
+          unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+    }
+    if (data.containsKey('topic_id')) {
+      context.handle(_topicIdMeta,
+          topicId.isAcceptableOrUnknown(data['topic_id']!, _topicIdMeta));
+    }
+    if (data.containsKey('last_attempt_id')) {
+      context.handle(
+          _lastAttemptIdMeta,
+          lastAttemptId.isAcceptableOrUnknown(
+              data['last_attempt_id']!, _lastAttemptIdMeta));
+    }
+    if (data.containsKey('last_selected_choice_id')) {
+      context.handle(
+          _lastSelectedChoiceIdMeta,
+          lastSelectedChoiceId.isAcceptableOrUnknown(
+              data['last_selected_choice_id']!, _lastSelectedChoiceIdMeta));
+    }
+    if (data.containsKey('first_missed_at')) {
+      context.handle(
+          _firstMissedAtMeta,
+          firstMissedAt.isAcceptableOrUnknown(
+              data['first_missed_at']!, _firstMissedAtMeta));
+    }
+    if (data.containsKey('last_missed_at')) {
+      context.handle(
+          _lastMissedAtMeta,
+          lastMissedAt.isAcceptableOrUnknown(
+              data['last_missed_at']!, _lastMissedAtMeta));
+    }
+    if (data.containsKey('last_attempt_at')) {
+      context.handle(
+          _lastAttemptAtMeta,
+          lastAttemptAt.isAcceptableOrUnknown(
+              data['last_attempt_at']!, _lastAttemptAtMeta));
+    }
+    if (data.containsKey('miss_count')) {
+      context.handle(_missCountMeta,
+          missCount.isAcceptableOrUnknown(data['miss_count']!, _missCountMeta));
+    }
+    if (data.containsKey('retry_count')) {
+      context.handle(
+          _retryCountMeta,
+          retryCount.isAcceptableOrUnknown(
+              data['retry_count']!, _retryCountMeta));
+    }
+    if (data.containsKey('correct_retry_count')) {
+      context.handle(
+          _correctRetryCountMeta,
+          correctRetryCount.isAcceptableOrUnknown(
+              data['correct_retry_count']!, _correctRetryCountMeta));
+    }
+    if (data.containsKey('mastery_status')) {
+      context.handle(
+          _masteryStatusMeta,
+          masteryStatus.isAcceptableOrUnknown(
+              data['mastery_status']!, _masteryStatusMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+          _syncStatusMeta,
+          syncStatus.isAcceptableOrUnknown(
+              data['sync_status']!, _syncStatusMeta));
+    }
     if (data.containsKey('mistake_count')) {
       context.handle(
           _mistakeCountMeta,
@@ -1597,8 +1778,6 @@ class $DbMistakesTable extends DbMistakes
           _lastFailedAtMeta,
           lastFailedAt.isAcceptableOrUnknown(
               data['last_failed_at']!, _lastFailedAtMeta));
-    } else if (isInserting) {
-      context.missing(_lastFailedAtMeta);
     }
     if (data.containsKey('mastered_at')) {
       context.handle(
@@ -1612,6 +1791,10 @@ class $DbMistakesTable extends DbMistakes
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, questionId},
+      ];
+  @override
   DbMistake map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DbMistake(
@@ -1623,12 +1806,41 @@ class $DbMistakesTable extends DbMistakes
           .read(DriftSqlType.string, data['${effectivePrefix}question_id'])!,
       subjectId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}subject_id'])!,
+      unitId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_id']),
+      topicId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic_id']),
+      lastAttemptId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_attempt_id']),
+      lastSelectedChoiceId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}last_selected_choice_id']),
+      firstMissedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}first_missed_at']),
+      lastMissedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_missed_at']),
+      lastAttemptAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_attempt_at']),
+      missCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}miss_count'])!,
+      retryCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}retry_count'])!,
+      correctRetryCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}correct_retry_count'])!,
+      masteryStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mastery_status'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+      syncStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sync_status'])!,
       mistakeCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}mistake_count'])!,
       isMastered: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_mastered'])!,
       lastFailedAt: attachedDatabase.typeMapping.read(
-          DriftSqlType.dateTime, data['${effectivePrefix}last_failed_at'])!,
+          DriftSqlType.dateTime, data['${effectivePrefix}last_failed_at']),
       masteredAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}mastered_at']),
     );
@@ -1645,18 +1857,46 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
   final String userId;
   final String questionId;
   final String subjectId;
+  final String? unitId;
+  final String? topicId;
+  final String? lastAttemptId;
+  final String? lastSelectedChoiceId;
+  final DateTime? firstMissedAt;
+  final DateTime? lastMissedAt;
+  final DateTime? lastAttemptAt;
+  final int missCount;
+  final int retryCount;
+  final int correctRetryCount;
+  final String masteryStatus;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String syncStatus;
   final int mistakeCount;
   final bool isMastered;
-  final DateTime lastFailedAt;
+  final DateTime? lastFailedAt;
   final DateTime? masteredAt;
   const DbMistake(
       {required this.id,
       required this.userId,
       required this.questionId,
       required this.subjectId,
+      this.unitId,
+      this.topicId,
+      this.lastAttemptId,
+      this.lastSelectedChoiceId,
+      this.firstMissedAt,
+      this.lastMissedAt,
+      this.lastAttemptAt,
+      required this.missCount,
+      required this.retryCount,
+      required this.correctRetryCount,
+      required this.masteryStatus,
+      this.createdAt,
+      this.updatedAt,
+      required this.syncStatus,
       required this.mistakeCount,
       required this.isMastered,
-      required this.lastFailedAt,
+      this.lastFailedAt,
       this.masteredAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1665,9 +1905,43 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
     map['user_id'] = Variable<String>(userId);
     map['question_id'] = Variable<String>(questionId);
     map['subject_id'] = Variable<String>(subjectId);
+    if (!nullToAbsent || unitId != null) {
+      map['unit_id'] = Variable<String>(unitId);
+    }
+    if (!nullToAbsent || topicId != null) {
+      map['topic_id'] = Variable<String>(topicId);
+    }
+    if (!nullToAbsent || lastAttemptId != null) {
+      map['last_attempt_id'] = Variable<String>(lastAttemptId);
+    }
+    if (!nullToAbsent || lastSelectedChoiceId != null) {
+      map['last_selected_choice_id'] = Variable<String>(lastSelectedChoiceId);
+    }
+    if (!nullToAbsent || firstMissedAt != null) {
+      map['first_missed_at'] = Variable<DateTime>(firstMissedAt);
+    }
+    if (!nullToAbsent || lastMissedAt != null) {
+      map['last_missed_at'] = Variable<DateTime>(lastMissedAt);
+    }
+    if (!nullToAbsent || lastAttemptAt != null) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt);
+    }
+    map['miss_count'] = Variable<int>(missCount);
+    map['retry_count'] = Variable<int>(retryCount);
+    map['correct_retry_count'] = Variable<int>(correctRetryCount);
+    map['mastery_status'] = Variable<String>(masteryStatus);
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    map['sync_status'] = Variable<String>(syncStatus);
     map['mistake_count'] = Variable<int>(mistakeCount);
     map['is_mastered'] = Variable<bool>(isMastered);
-    map['last_failed_at'] = Variable<DateTime>(lastFailedAt);
+    if (!nullToAbsent || lastFailedAt != null) {
+      map['last_failed_at'] = Variable<DateTime>(lastFailedAt);
+    }
     if (!nullToAbsent || masteredAt != null) {
       map['mastered_at'] = Variable<DateTime>(masteredAt);
     }
@@ -1680,9 +1954,42 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
       userId: Value(userId),
       questionId: Value(questionId),
       subjectId: Value(subjectId),
+      unitId:
+          unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      topicId: topicId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(topicId),
+      lastAttemptId: lastAttemptId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastAttemptId),
+      lastSelectedChoiceId: lastSelectedChoiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSelectedChoiceId),
+      firstMissedAt: firstMissedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(firstMissedAt),
+      lastMissedAt: lastMissedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMissedAt),
+      lastAttemptAt: lastAttemptAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastAttemptAt),
+      missCount: Value(missCount),
+      retryCount: Value(retryCount),
+      correctRetryCount: Value(correctRetryCount),
+      masteryStatus: Value(masteryStatus),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      syncStatus: Value(syncStatus),
       mistakeCount: Value(mistakeCount),
       isMastered: Value(isMastered),
-      lastFailedAt: Value(lastFailedAt),
+      lastFailedAt: lastFailedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastFailedAt),
       masteredAt: masteredAt == null && nullToAbsent
           ? const Value.absent()
           : Value(masteredAt),
@@ -1697,9 +2004,24 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
       userId: serializer.fromJson<String>(json['userId']),
       questionId: serializer.fromJson<String>(json['questionId']),
       subjectId: serializer.fromJson<String>(json['subjectId']),
+      unitId: serializer.fromJson<String?>(json['unitId']),
+      topicId: serializer.fromJson<String?>(json['topicId']),
+      lastAttemptId: serializer.fromJson<String?>(json['lastAttemptId']),
+      lastSelectedChoiceId:
+          serializer.fromJson<String?>(json['lastSelectedChoiceId']),
+      firstMissedAt: serializer.fromJson<DateTime?>(json['firstMissedAt']),
+      lastMissedAt: serializer.fromJson<DateTime?>(json['lastMissedAt']),
+      lastAttemptAt: serializer.fromJson<DateTime?>(json['lastAttemptAt']),
+      missCount: serializer.fromJson<int>(json['missCount']),
+      retryCount: serializer.fromJson<int>(json['retryCount']),
+      correctRetryCount: serializer.fromJson<int>(json['correctRetryCount']),
+      masteryStatus: serializer.fromJson<String>(json['masteryStatus']),
+      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
       mistakeCount: serializer.fromJson<int>(json['mistakeCount']),
       isMastered: serializer.fromJson<bool>(json['isMastered']),
-      lastFailedAt: serializer.fromJson<DateTime>(json['lastFailedAt']),
+      lastFailedAt: serializer.fromJson<DateTime?>(json['lastFailedAt']),
       masteredAt: serializer.fromJson<DateTime?>(json['masteredAt']),
     );
   }
@@ -1711,9 +2033,23 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
       'userId': serializer.toJson<String>(userId),
       'questionId': serializer.toJson<String>(questionId),
       'subjectId': serializer.toJson<String>(subjectId),
+      'unitId': serializer.toJson<String?>(unitId),
+      'topicId': serializer.toJson<String?>(topicId),
+      'lastAttemptId': serializer.toJson<String?>(lastAttemptId),
+      'lastSelectedChoiceId': serializer.toJson<String?>(lastSelectedChoiceId),
+      'firstMissedAt': serializer.toJson<DateTime?>(firstMissedAt),
+      'lastMissedAt': serializer.toJson<DateTime?>(lastMissedAt),
+      'lastAttemptAt': serializer.toJson<DateTime?>(lastAttemptAt),
+      'missCount': serializer.toJson<int>(missCount),
+      'retryCount': serializer.toJson<int>(retryCount),
+      'correctRetryCount': serializer.toJson<int>(correctRetryCount),
+      'masteryStatus': serializer.toJson<String>(masteryStatus),
+      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'syncStatus': serializer.toJson<String>(syncStatus),
       'mistakeCount': serializer.toJson<int>(mistakeCount),
       'isMastered': serializer.toJson<bool>(isMastered),
-      'lastFailedAt': serializer.toJson<DateTime>(lastFailedAt),
+      'lastFailedAt': serializer.toJson<DateTime?>(lastFailedAt),
       'masteredAt': serializer.toJson<DateTime?>(masteredAt),
     };
   }
@@ -1723,18 +2059,53 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
           String? userId,
           String? questionId,
           String? subjectId,
+          Value<String?> unitId = const Value.absent(),
+          Value<String?> topicId = const Value.absent(),
+          Value<String?> lastAttemptId = const Value.absent(),
+          Value<String?> lastSelectedChoiceId = const Value.absent(),
+          Value<DateTime?> firstMissedAt = const Value.absent(),
+          Value<DateTime?> lastMissedAt = const Value.absent(),
+          Value<DateTime?> lastAttemptAt = const Value.absent(),
+          int? missCount,
+          int? retryCount,
+          int? correctRetryCount,
+          String? masteryStatus,
+          Value<DateTime?> createdAt = const Value.absent(),
+          Value<DateTime?> updatedAt = const Value.absent(),
+          String? syncStatus,
           int? mistakeCount,
           bool? isMastered,
-          DateTime? lastFailedAt,
+          Value<DateTime?> lastFailedAt = const Value.absent(),
           Value<DateTime?> masteredAt = const Value.absent()}) =>
       DbMistake(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         questionId: questionId ?? this.questionId,
         subjectId: subjectId ?? this.subjectId,
+        unitId: unitId.present ? unitId.value : this.unitId,
+        topicId: topicId.present ? topicId.value : this.topicId,
+        lastAttemptId:
+            lastAttemptId.present ? lastAttemptId.value : this.lastAttemptId,
+        lastSelectedChoiceId: lastSelectedChoiceId.present
+            ? lastSelectedChoiceId.value
+            : this.lastSelectedChoiceId,
+        firstMissedAt:
+            firstMissedAt.present ? firstMissedAt.value : this.firstMissedAt,
+        lastMissedAt:
+            lastMissedAt.present ? lastMissedAt.value : this.lastMissedAt,
+        lastAttemptAt:
+            lastAttemptAt.present ? lastAttemptAt.value : this.lastAttemptAt,
+        missCount: missCount ?? this.missCount,
+        retryCount: retryCount ?? this.retryCount,
+        correctRetryCount: correctRetryCount ?? this.correctRetryCount,
+        masteryStatus: masteryStatus ?? this.masteryStatus,
+        createdAt: createdAt.present ? createdAt.value : this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+        syncStatus: syncStatus ?? this.syncStatus,
         mistakeCount: mistakeCount ?? this.mistakeCount,
         isMastered: isMastered ?? this.isMastered,
-        lastFailedAt: lastFailedAt ?? this.lastFailedAt,
+        lastFailedAt:
+            lastFailedAt.present ? lastFailedAt.value : this.lastFailedAt,
         masteredAt: masteredAt.present ? masteredAt.value : this.masteredAt,
       );
   DbMistake copyWithCompanion(DbMistakesCompanion data) {
@@ -1744,6 +2115,36 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
       questionId:
           data.questionId.present ? data.questionId.value : this.questionId,
       subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      unitId: data.unitId.present ? data.unitId.value : this.unitId,
+      topicId: data.topicId.present ? data.topicId.value : this.topicId,
+      lastAttemptId: data.lastAttemptId.present
+          ? data.lastAttemptId.value
+          : this.lastAttemptId,
+      lastSelectedChoiceId: data.lastSelectedChoiceId.present
+          ? data.lastSelectedChoiceId.value
+          : this.lastSelectedChoiceId,
+      firstMissedAt: data.firstMissedAt.present
+          ? data.firstMissedAt.value
+          : this.firstMissedAt,
+      lastMissedAt: data.lastMissedAt.present
+          ? data.lastMissedAt.value
+          : this.lastMissedAt,
+      lastAttemptAt: data.lastAttemptAt.present
+          ? data.lastAttemptAt.value
+          : this.lastAttemptAt,
+      missCount: data.missCount.present ? data.missCount.value : this.missCount,
+      retryCount:
+          data.retryCount.present ? data.retryCount.value : this.retryCount,
+      correctRetryCount: data.correctRetryCount.present
+          ? data.correctRetryCount.value
+          : this.correctRetryCount,
+      masteryStatus: data.masteryStatus.present
+          ? data.masteryStatus.value
+          : this.masteryStatus,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      syncStatus:
+          data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
       mistakeCount: data.mistakeCount.present
           ? data.mistakeCount.value
           : this.mistakeCount,
@@ -1764,6 +2165,20 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
           ..write('userId: $userId, ')
           ..write('questionId: $questionId, ')
           ..write('subjectId: $subjectId, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('lastAttemptId: $lastAttemptId, ')
+          ..write('lastSelectedChoiceId: $lastSelectedChoiceId, ')
+          ..write('firstMissedAt: $firstMissedAt, ')
+          ..write('lastMissedAt: $lastMissedAt, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('missCount: $missCount, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('correctRetryCount: $correctRetryCount, ')
+          ..write('masteryStatus: $masteryStatus, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
           ..write('mistakeCount: $mistakeCount, ')
           ..write('isMastered: $isMastered, ')
           ..write('lastFailedAt: $lastFailedAt, ')
@@ -1773,8 +2188,30 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
   }
 
   @override
-  int get hashCode => Object.hash(id, userId, questionId, subjectId,
-      mistakeCount, isMastered, lastFailedAt, masteredAt);
+  int get hashCode => Object.hashAll([
+        id,
+        userId,
+        questionId,
+        subjectId,
+        unitId,
+        topicId,
+        lastAttemptId,
+        lastSelectedChoiceId,
+        firstMissedAt,
+        lastMissedAt,
+        lastAttemptAt,
+        missCount,
+        retryCount,
+        correctRetryCount,
+        masteryStatus,
+        createdAt,
+        updatedAt,
+        syncStatus,
+        mistakeCount,
+        isMastered,
+        lastFailedAt,
+        masteredAt
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1783,6 +2220,20 @@ class DbMistake extends DataClass implements Insertable<DbMistake> {
           other.userId == this.userId &&
           other.questionId == this.questionId &&
           other.subjectId == this.subjectId &&
+          other.unitId == this.unitId &&
+          other.topicId == this.topicId &&
+          other.lastAttemptId == this.lastAttemptId &&
+          other.lastSelectedChoiceId == this.lastSelectedChoiceId &&
+          other.firstMissedAt == this.firstMissedAt &&
+          other.lastMissedAt == this.lastMissedAt &&
+          other.lastAttemptAt == this.lastAttemptAt &&
+          other.missCount == this.missCount &&
+          other.retryCount == this.retryCount &&
+          other.correctRetryCount == this.correctRetryCount &&
+          other.masteryStatus == this.masteryStatus &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.syncStatus == this.syncStatus &&
           other.mistakeCount == this.mistakeCount &&
           other.isMastered == this.isMastered &&
           other.lastFailedAt == this.lastFailedAt &&
@@ -1794,9 +2245,23 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
   final Value<String> userId;
   final Value<String> questionId;
   final Value<String> subjectId;
+  final Value<String?> unitId;
+  final Value<String?> topicId;
+  final Value<String?> lastAttemptId;
+  final Value<String?> lastSelectedChoiceId;
+  final Value<DateTime?> firstMissedAt;
+  final Value<DateTime?> lastMissedAt;
+  final Value<DateTime?> lastAttemptAt;
+  final Value<int> missCount;
+  final Value<int> retryCount;
+  final Value<int> correctRetryCount;
+  final Value<String> masteryStatus;
+  final Value<DateTime?> createdAt;
+  final Value<DateTime?> updatedAt;
+  final Value<String> syncStatus;
   final Value<int> mistakeCount;
   final Value<bool> isMastered;
-  final Value<DateTime> lastFailedAt;
+  final Value<DateTime?> lastFailedAt;
   final Value<DateTime?> masteredAt;
   final Value<int> rowid;
   const DbMistakesCompanion({
@@ -1804,6 +2269,20 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
     this.userId = const Value.absent(),
     this.questionId = const Value.absent(),
     this.subjectId = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.lastAttemptId = const Value.absent(),
+    this.lastSelectedChoiceId = const Value.absent(),
+    this.firstMissedAt = const Value.absent(),
+    this.lastMissedAt = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.missCount = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.correctRetryCount = const Value.absent(),
+    this.masteryStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
     this.mistakeCount = const Value.absent(),
     this.isMastered = const Value.absent(),
     this.lastFailedAt = const Value.absent(),
@@ -1815,21 +2294,48 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
     required String userId,
     required String questionId,
     required String subjectId,
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.lastAttemptId = const Value.absent(),
+    this.lastSelectedChoiceId = const Value.absent(),
+    this.firstMissedAt = const Value.absent(),
+    this.lastMissedAt = const Value.absent(),
+    this.lastAttemptAt = const Value.absent(),
+    this.missCount = const Value.absent(),
+    this.retryCount = const Value.absent(),
+    this.correctRetryCount = const Value.absent(),
+    this.masteryStatus = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.syncStatus = const Value.absent(),
     this.mistakeCount = const Value.absent(),
     this.isMastered = const Value.absent(),
-    required DateTime lastFailedAt,
+    this.lastFailedAt = const Value.absent(),
     this.masteredAt = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         userId = Value(userId),
         questionId = Value(questionId),
-        subjectId = Value(subjectId),
-        lastFailedAt = Value(lastFailedAt);
+        subjectId = Value(subjectId);
   static Insertable<DbMistake> custom({
     Expression<String>? id,
     Expression<String>? userId,
     Expression<String>? questionId,
     Expression<String>? subjectId,
+    Expression<String>? unitId,
+    Expression<String>? topicId,
+    Expression<String>? lastAttemptId,
+    Expression<String>? lastSelectedChoiceId,
+    Expression<DateTime>? firstMissedAt,
+    Expression<DateTime>? lastMissedAt,
+    Expression<DateTime>? lastAttemptAt,
+    Expression<int>? missCount,
+    Expression<int>? retryCount,
+    Expression<int>? correctRetryCount,
+    Expression<String>? masteryStatus,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? syncStatus,
     Expression<int>? mistakeCount,
     Expression<bool>? isMastered,
     Expression<DateTime>? lastFailedAt,
@@ -1841,6 +2347,21 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
       if (userId != null) 'user_id': userId,
       if (questionId != null) 'question_id': questionId,
       if (subjectId != null) 'subject_id': subjectId,
+      if (unitId != null) 'unit_id': unitId,
+      if (topicId != null) 'topic_id': topicId,
+      if (lastAttemptId != null) 'last_attempt_id': lastAttemptId,
+      if (lastSelectedChoiceId != null)
+        'last_selected_choice_id': lastSelectedChoiceId,
+      if (firstMissedAt != null) 'first_missed_at': firstMissedAt,
+      if (lastMissedAt != null) 'last_missed_at': lastMissedAt,
+      if (lastAttemptAt != null) 'last_attempt_at': lastAttemptAt,
+      if (missCount != null) 'miss_count': missCount,
+      if (retryCount != null) 'retry_count': retryCount,
+      if (correctRetryCount != null) 'correct_retry_count': correctRetryCount,
+      if (masteryStatus != null) 'mastery_status': masteryStatus,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (syncStatus != null) 'sync_status': syncStatus,
       if (mistakeCount != null) 'mistake_count': mistakeCount,
       if (isMastered != null) 'is_mastered': isMastered,
       if (lastFailedAt != null) 'last_failed_at': lastFailedAt,
@@ -1854,9 +2375,23 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
       Value<String>? userId,
       Value<String>? questionId,
       Value<String>? subjectId,
+      Value<String?>? unitId,
+      Value<String?>? topicId,
+      Value<String?>? lastAttemptId,
+      Value<String?>? lastSelectedChoiceId,
+      Value<DateTime?>? firstMissedAt,
+      Value<DateTime?>? lastMissedAt,
+      Value<DateTime?>? lastAttemptAt,
+      Value<int>? missCount,
+      Value<int>? retryCount,
+      Value<int>? correctRetryCount,
+      Value<String>? masteryStatus,
+      Value<DateTime?>? createdAt,
+      Value<DateTime?>? updatedAt,
+      Value<String>? syncStatus,
       Value<int>? mistakeCount,
       Value<bool>? isMastered,
-      Value<DateTime>? lastFailedAt,
+      Value<DateTime?>? lastFailedAt,
       Value<DateTime?>? masteredAt,
       Value<int>? rowid}) {
     return DbMistakesCompanion(
@@ -1864,6 +2399,20 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
       userId: userId ?? this.userId,
       questionId: questionId ?? this.questionId,
       subjectId: subjectId ?? this.subjectId,
+      unitId: unitId ?? this.unitId,
+      topicId: topicId ?? this.topicId,
+      lastAttemptId: lastAttemptId ?? this.lastAttemptId,
+      lastSelectedChoiceId: lastSelectedChoiceId ?? this.lastSelectedChoiceId,
+      firstMissedAt: firstMissedAt ?? this.firstMissedAt,
+      lastMissedAt: lastMissedAt ?? this.lastMissedAt,
+      lastAttemptAt: lastAttemptAt ?? this.lastAttemptAt,
+      missCount: missCount ?? this.missCount,
+      retryCount: retryCount ?? this.retryCount,
+      correctRetryCount: correctRetryCount ?? this.correctRetryCount,
+      masteryStatus: masteryStatus ?? this.masteryStatus,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      syncStatus: syncStatus ?? this.syncStatus,
       mistakeCount: mistakeCount ?? this.mistakeCount,
       isMastered: isMastered ?? this.isMastered,
       lastFailedAt: lastFailedAt ?? this.lastFailedAt,
@@ -1886,6 +2435,49 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
     }
     if (subjectId.present) {
       map['subject_id'] = Variable<String>(subjectId.value);
+    }
+    if (unitId.present) {
+      map['unit_id'] = Variable<String>(unitId.value);
+    }
+    if (topicId.present) {
+      map['topic_id'] = Variable<String>(topicId.value);
+    }
+    if (lastAttemptId.present) {
+      map['last_attempt_id'] = Variable<String>(lastAttemptId.value);
+    }
+    if (lastSelectedChoiceId.present) {
+      map['last_selected_choice_id'] =
+          Variable<String>(lastSelectedChoiceId.value);
+    }
+    if (firstMissedAt.present) {
+      map['first_missed_at'] = Variable<DateTime>(firstMissedAt.value);
+    }
+    if (lastMissedAt.present) {
+      map['last_missed_at'] = Variable<DateTime>(lastMissedAt.value);
+    }
+    if (lastAttemptAt.present) {
+      map['last_attempt_at'] = Variable<DateTime>(lastAttemptAt.value);
+    }
+    if (missCount.present) {
+      map['miss_count'] = Variable<int>(missCount.value);
+    }
+    if (retryCount.present) {
+      map['retry_count'] = Variable<int>(retryCount.value);
+    }
+    if (correctRetryCount.present) {
+      map['correct_retry_count'] = Variable<int>(correctRetryCount.value);
+    }
+    if (masteryStatus.present) {
+      map['mastery_status'] = Variable<String>(masteryStatus.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
     }
     if (mistakeCount.present) {
       map['mistake_count'] = Variable<int>(mistakeCount.value);
@@ -1912,6 +2504,20 @@ class DbMistakesCompanion extends UpdateCompanion<DbMistake> {
           ..write('userId: $userId, ')
           ..write('questionId: $questionId, ')
           ..write('subjectId: $subjectId, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('lastAttemptId: $lastAttemptId, ')
+          ..write('lastSelectedChoiceId: $lastSelectedChoiceId, ')
+          ..write('firstMissedAt: $firstMissedAt, ')
+          ..write('lastMissedAt: $lastMissedAt, ')
+          ..write('lastAttemptAt: $lastAttemptAt, ')
+          ..write('missCount: $missCount, ')
+          ..write('retryCount: $retryCount, ')
+          ..write('correctRetryCount: $correctRetryCount, ')
+          ..write('masteryStatus: $masteryStatus, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('syncStatus: $syncStatus, ')
           ..write('mistakeCount: $mistakeCount, ')
           ..write('isMastered: $isMastered, ')
           ..write('lastFailedAt: $lastFailedAt, ')
@@ -3617,9 +4223,23 @@ typedef $$DbMistakesTableCreateCompanionBuilder = DbMistakesCompanion Function({
   required String userId,
   required String questionId,
   required String subjectId,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> lastAttemptId,
+  Value<String?> lastSelectedChoiceId,
+  Value<DateTime?> firstMissedAt,
+  Value<DateTime?> lastMissedAt,
+  Value<DateTime?> lastAttemptAt,
+  Value<int> missCount,
+  Value<int> retryCount,
+  Value<int> correctRetryCount,
+  Value<String> masteryStatus,
+  Value<DateTime?> createdAt,
+  Value<DateTime?> updatedAt,
+  Value<String> syncStatus,
   Value<int> mistakeCount,
   Value<bool> isMastered,
-  required DateTime lastFailedAt,
+  Value<DateTime?> lastFailedAt,
   Value<DateTime?> masteredAt,
   Value<int> rowid,
 });
@@ -3628,9 +4248,23 @@ typedef $$DbMistakesTableUpdateCompanionBuilder = DbMistakesCompanion Function({
   Value<String> userId,
   Value<String> questionId,
   Value<String> subjectId,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> lastAttemptId,
+  Value<String?> lastSelectedChoiceId,
+  Value<DateTime?> firstMissedAt,
+  Value<DateTime?> lastMissedAt,
+  Value<DateTime?> lastAttemptAt,
+  Value<int> missCount,
+  Value<int> retryCount,
+  Value<int> correctRetryCount,
+  Value<String> masteryStatus,
+  Value<DateTime?> createdAt,
+  Value<DateTime?> updatedAt,
+  Value<String> syncStatus,
   Value<int> mistakeCount,
   Value<bool> isMastered,
-  Value<DateTime> lastFailedAt,
+  Value<DateTime?> lastFailedAt,
   Value<DateTime?> masteredAt,
   Value<int> rowid,
 });
@@ -3655,6 +4289,50 @@ class $$DbMistakesTableFilterComposer
 
   ColumnFilters<String> get subjectId => $composableBuilder(
       column: $table.subjectId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get lastAttemptId => $composableBuilder(
+      column: $table.lastAttemptId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get lastSelectedChoiceId => $composableBuilder(
+      column: $table.lastSelectedChoiceId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get firstMissedAt => $composableBuilder(
+      column: $table.firstMissedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastMissedAt => $composableBuilder(
+      column: $table.lastMissedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastAttemptAt => $composableBuilder(
+      column: $table.lastAttemptAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get missCount => $composableBuilder(
+      column: $table.missCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get retryCount => $composableBuilder(
+      column: $table.retryCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get correctRetryCount => $composableBuilder(
+      column: $table.correctRetryCount,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get masteryStatus => $composableBuilder(
+      column: $table.masteryStatus, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get mistakeCount => $composableBuilder(
       column: $table.mistakeCount, builder: (column) => ColumnFilters(column));
@@ -3689,6 +4367,55 @@ class $$DbMistakesTableOrderingComposer
 
   ColumnOrderings<String> get subjectId => $composableBuilder(
       column: $table.subjectId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get lastAttemptId => $composableBuilder(
+      column: $table.lastAttemptId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get lastSelectedChoiceId => $composableBuilder(
+      column: $table.lastSelectedChoiceId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get firstMissedAt => $composableBuilder(
+      column: $table.firstMissedAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastMissedAt => $composableBuilder(
+      column: $table.lastMissedAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastAttemptAt => $composableBuilder(
+      column: $table.lastAttemptAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get missCount => $composableBuilder(
+      column: $table.missCount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get retryCount => $composableBuilder(
+      column: $table.retryCount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get correctRetryCount => $composableBuilder(
+      column: $table.correctRetryCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get masteryStatus => $composableBuilder(
+      column: $table.masteryStatus,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get mistakeCount => $composableBuilder(
       column: $table.mistakeCount,
@@ -3725,6 +4452,48 @@ class $$DbMistakesTableAnnotationComposer
 
   GeneratedColumn<String> get subjectId =>
       $composableBuilder(column: $table.subjectId, builder: (column) => column);
+
+  GeneratedColumn<String> get unitId =>
+      $composableBuilder(column: $table.unitId, builder: (column) => column);
+
+  GeneratedColumn<String> get topicId =>
+      $composableBuilder(column: $table.topicId, builder: (column) => column);
+
+  GeneratedColumn<String> get lastAttemptId => $composableBuilder(
+      column: $table.lastAttemptId, builder: (column) => column);
+
+  GeneratedColumn<String> get lastSelectedChoiceId => $composableBuilder(
+      column: $table.lastSelectedChoiceId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get firstMissedAt => $composableBuilder(
+      column: $table.firstMissedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastMissedAt => $composableBuilder(
+      column: $table.lastMissedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastAttemptAt => $composableBuilder(
+      column: $table.lastAttemptAt, builder: (column) => column);
+
+  GeneratedColumn<int> get missCount =>
+      $composableBuilder(column: $table.missCount, builder: (column) => column);
+
+  GeneratedColumn<int> get retryCount => $composableBuilder(
+      column: $table.retryCount, builder: (column) => column);
+
+  GeneratedColumn<int> get correctRetryCount => $composableBuilder(
+      column: $table.correctRetryCount, builder: (column) => column);
+
+  GeneratedColumn<String> get masteryStatus => $composableBuilder(
+      column: $table.masteryStatus, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+      column: $table.syncStatus, builder: (column) => column);
 
   GeneratedColumn<int> get mistakeCount => $composableBuilder(
       column: $table.mistakeCount, builder: (column) => column);
@@ -3766,9 +4535,23 @@ class $$DbMistakesTableTableManager extends RootTableManager<
             Value<String> userId = const Value.absent(),
             Value<String> questionId = const Value.absent(),
             Value<String> subjectId = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> lastAttemptId = const Value.absent(),
+            Value<String?> lastSelectedChoiceId = const Value.absent(),
+            Value<DateTime?> firstMissedAt = const Value.absent(),
+            Value<DateTime?> lastMissedAt = const Value.absent(),
+            Value<DateTime?> lastAttemptAt = const Value.absent(),
+            Value<int> missCount = const Value.absent(),
+            Value<int> retryCount = const Value.absent(),
+            Value<int> correctRetryCount = const Value.absent(),
+            Value<String> masteryStatus = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
             Value<int> mistakeCount = const Value.absent(),
             Value<bool> isMastered = const Value.absent(),
-            Value<DateTime> lastFailedAt = const Value.absent(),
+            Value<DateTime?> lastFailedAt = const Value.absent(),
             Value<DateTime?> masteredAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
@@ -3777,6 +4560,20 @@ class $$DbMistakesTableTableManager extends RootTableManager<
             userId: userId,
             questionId: questionId,
             subjectId: subjectId,
+            unitId: unitId,
+            topicId: topicId,
+            lastAttemptId: lastAttemptId,
+            lastSelectedChoiceId: lastSelectedChoiceId,
+            firstMissedAt: firstMissedAt,
+            lastMissedAt: lastMissedAt,
+            lastAttemptAt: lastAttemptAt,
+            missCount: missCount,
+            retryCount: retryCount,
+            correctRetryCount: correctRetryCount,
+            masteryStatus: masteryStatus,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
             mistakeCount: mistakeCount,
             isMastered: isMastered,
             lastFailedAt: lastFailedAt,
@@ -3788,9 +4585,23 @@ class $$DbMistakesTableTableManager extends RootTableManager<
             required String userId,
             required String questionId,
             required String subjectId,
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> lastAttemptId = const Value.absent(),
+            Value<String?> lastSelectedChoiceId = const Value.absent(),
+            Value<DateTime?> firstMissedAt = const Value.absent(),
+            Value<DateTime?> lastMissedAt = const Value.absent(),
+            Value<DateTime?> lastAttemptAt = const Value.absent(),
+            Value<int> missCount = const Value.absent(),
+            Value<int> retryCount = const Value.absent(),
+            Value<int> correctRetryCount = const Value.absent(),
+            Value<String> masteryStatus = const Value.absent(),
+            Value<DateTime?> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            Value<String> syncStatus = const Value.absent(),
             Value<int> mistakeCount = const Value.absent(),
             Value<bool> isMastered = const Value.absent(),
-            required DateTime lastFailedAt,
+            Value<DateTime?> lastFailedAt = const Value.absent(),
             Value<DateTime?> masteredAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
@@ -3799,6 +4610,20 @@ class $$DbMistakesTableTableManager extends RootTableManager<
             userId: userId,
             questionId: questionId,
             subjectId: subjectId,
+            unitId: unitId,
+            topicId: topicId,
+            lastAttemptId: lastAttemptId,
+            lastSelectedChoiceId: lastSelectedChoiceId,
+            firstMissedAt: firstMissedAt,
+            lastMissedAt: lastMissedAt,
+            lastAttemptAt: lastAttemptAt,
+            missCount: missCount,
+            retryCount: retryCount,
+            correctRetryCount: correctRetryCount,
+            masteryStatus: masteryStatus,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            syncStatus: syncStatus,
             mistakeCount: mistakeCount,
             isMastered: isMastered,
             lastFailedAt: lastFailedAt,
