@@ -438,5 +438,66 @@ void main() {
           await contentRepo.getExamAvailabilities('biology_g12');
       expect(availabilities.map((a) => a.year), containsAll([2015, 2013]));
     });
+
+    testWidgets(
+        'Changing target grade level retains Biology and does not revert to Mathematics',
+        (tester) async {
+      await tester.pumpWidget(createTestApp(initialSubjectId: 'biology_g12'));
+      await tester.pumpAndSettle();
+
+      // Verify initial state is Biology
+      expect(find.text('Biology'), findsWidgets);
+      expect(find.text('Mathematics'), findsNothing);
+
+      // Tap on Target Grade Level selector card
+      await tester.tap(find.textContaining('Grade 12 (Secondary'));
+      await tester.pumpAndSettle();
+
+      // Bottom sheet appears with grade options: tap Grade 11
+      expect(find.text('Select Target Grade Level'), findsOneWidget);
+      await tester.tap(find.text('Grade 11 (Preparatory Scope)'));
+      await tester.pumpAndSettle();
+
+      // Verify that the subject is STILL Biology, NOT Mathematics
+      expect(find.text('Biology'), findsWidgets);
+      expect(find.text('Mathematics'), findsNothing);
+      expect(find.text('Grade 11 (Secondary / EUEE Scope)'), findsOneWidget);
+
+      // Now tap again and select All Grades (9-12)
+      await tester.tap(find.textContaining('Grade 11 (Secondary'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('All Grades (9-12 Comprehensive Examination)'));
+      await tester.pumpAndSettle();
+
+      // Verify it is STILL Biology!
+      expect(find.text('Biology'), findsWidgets);
+      expect(find.text('Mathematics'), findsNothing);
+      expect(find.text('All Grades (9-12 Scope)'), findsOneWidget);
+    });
+
+    testWidgets(
+        'Changing target grade level retains Physics and does not revert to Mathematics',
+        (tester) async {
+      await tester.pumpWidget(createTestApp(initialSubjectId: 'physics_g12'));
+      await tester.pumpAndSettle();
+
+      // Verify initial state is Physics
+      expect(find.text('Physics'), findsWidgets);
+      expect(find.text('Mathematics'), findsNothing);
+
+      // Tap on Target Grade Level selector card
+      await tester.tap(find.textContaining('Grade 12 (Secondary'));
+      await tester.pumpAndSettle();
+
+      // Bottom sheet appears: tap Grade 10
+      expect(find.text('Select Target Grade Level'), findsOneWidget);
+      await tester.tap(find.text('Grade 10 (Secondary Completion)'));
+      await tester.pumpAndSettle();
+
+      // Verify that the subject is STILL Physics, NOT Mathematics
+      expect(find.text('Physics'), findsWidgets);
+      expect(find.text('Mathematics'), findsNothing);
+      expect(find.text('Grade 10 (Secondary / EUEE Scope)'), findsOneWidget);
+    });
   });
 }

@@ -636,7 +636,9 @@ class LocalContentRepository implements ContentRepository {
   Future<List<Unit>> getUnits(String subjectId) async {
     await initializeSeedData();
     final matched = _units
-        .where((u) => matchesSubjectId(u.subjectId, subjectId))
+        .where((u) =>
+            matchesSubjectId(u.subjectId, subjectId) ||
+            matchesSubjectDiscipline(u.subjectId, subjectId))
         .toList()
       ..sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
     if (matched.isNotEmpty) return matched;

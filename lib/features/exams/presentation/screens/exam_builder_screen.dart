@@ -484,17 +484,23 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
   Future<void> _onGradeChanged(int? grade) async {
     final user = ref.read(currentUserProvider).valueOrNull;
     final contentRepo = ref.read(contentRepositoryProvider);
+    final previousSubjectId = _selectedSubjectId;
+    final currentSubject = _subjects
+        .where((s) => s.id == previousSubjectId)
+        .firstOrNull;
+    final previousDiscipline = previousSubjectId != null
+        ? LocalContentRepository.baseSubjectCode(previousSubjectId)
+        : null;
 
     setState(() {
       _selectedGrade = grade;
-      _selectedSubjectId = null;
       _selectedUnitId = null;
       _selectedTopicId = null;
       _units = [];
       _topics = [];
     });
 
-    final stream = user?.stream ?? 'natural';
+    final stream = currentSubject?.stream ?? user?.stream ?? 'natural';
     List<Subject> subs = [];
     try {
       subs = await contentRepo.getSubjects(
@@ -517,12 +523,86 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
     }
     subs.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
+    // Preserve the user's active subject/discipline across grade level changes
+    Subject? matched;
+    if (previousSubjectId != null && previousSubjectId.trim().isNotEmpty) {
+      // 1. Exact ID in subs
+      matched = subs
+          .where((s) => s.id.toLowerCase() == previousSubjectId.toLowerCase())
+          .firstOrNull;
+
+      // 2. Canonical match in subs
+      matched ??= subs
+          .where((s) => LocalContentRepository.matchesSubjectId(
+              s.id, previousSubjectId))
+          .firstOrNull;
+
+      // 3. Discipline match in subs (e.g. biology_g11 for biology_g12)
+      matched ??= subs
+          .where((s) => LocalContentRepository.matchesSubjectDiscipline(
+              s.id, previousSubjectId))
+          .firstOrNull;
+
+      // 4. Base discipline code match
+      if (matched == null &&
+          previousDiscipline != null &&
+          previousDiscipline.isNotEmpty) {
+        matched = subs
+            .where((s) =>
+                LocalContentRepository.baseSubjectCode(s.id) ==
+                previousDiscipline)
+            .firstOrNull;
+      }
+
+      // 5. Name match
+      if (matched == null && currentSubject != null) {
+        matched = subs
+            .where((s) =>
+                s.nameEn.toLowerCase() == currentSubject.nameEn.toLowerCase())
+            .firstOrNull;
+      }
+
+      // 6. Check default subjects if not found in subs
+      matched ??= defaultSubs
+          .where((s) =>
+              s.id.toLowerCase() == previousSubjectId.toLowerCase() ||
+              LocalContentRepository.matchesSubjectId(
+                  s.id, previousSubjectId) ||
+              LocalContentRepository.matchesSubjectDiscipline(
+                  s.id, previousSubjectId) ||
+              (previousDiscipline != null &&
+                  LocalContentRepository.baseSubjectCode(s.id) ==
+                      previousDiscipline))
+          .firstOrNull;
+
+      if (matched != null && !subs.any((s) => s.id == matched!.id)) {
+        subs.insert(0, matched);
+      }
+
+      // 7. If still not matched, synthesize from previousSubjectId with new grade
+      if (matched == null) {
+        final resolved = LocalContentRepository.resolveDefaultSubject(
+          previousSubjectId,
+          grade: grade ?? 12,
+          stream: stream,
+        );
+        matched = resolved;
+        if (!subs.any((s) => s.id == matched!.id)) {
+          subs.insert(0, matched);
+        }
+      }
+    }
+
+    if (matched == null && subs.isNotEmpty) {
+      matched = subs.first;
+    }
+
+    final chosenSubjectId = matched?.id;
+
     if (mounted) {
       setState(() {
         _subjects = subs;
-        if (subs.isNotEmpty) {
-          _selectedSubjectId = subs.first.id;
-        }
+        _selectedSubjectId = chosenSubjectId;
       });
     }
 
@@ -942,52 +1022,55 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                         width: 1.5,
                       ),
                     ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      leading: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? activePrimary
-                              : (isDark
-                                  ? const Color(0xFF334155)
-                                  : surfaceVariant),
-                          borderRadius: BorderRadius.circular(10),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        leading: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? activePrimary
+                                : (isDark
+                                    ? const Color(0xFF334155)
+                                    : surfaceVariant),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.school_rounded,
+                            color: isSelected
+                                ? Colors.white
+                                : (isDark ? Colors.white70 : activePrimary),
+                            size: 20,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.school_rounded,
-                          color: isSelected
-                              ? Colors.white
-                              : (isDark ? Colors.white70 : activePrimary),
-                          size: 20,
+                        title: Text(
+                          label,
+                          style: TextStyle(
+                            fontSize: 14.5,
+                            fontWeight:
+                                isSelected ? FontWeight.w700 : FontWeight.w600,
+                            color: isDark ? Colors.white : onSurfaceLight,
+                          ),
                         ),
+                        subtitle: Text(
+                          desc,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? Colors.white60 : onSurfaceVariant,
+                          ),
+                        ),
+                        trailing: isSelected
+                            ? Icon(Icons.check_circle_rounded,
+                                color: activePrimary)
+                            : null,
+                        onTap: () {
+                          Navigator.pop(ctx);
+                          _onGradeChanged(val);
+                        },
                       ),
-                      title: Text(
-                        label,
-                        style: TextStyle(
-                          fontSize: 14.5,
-                          fontWeight:
-                              isSelected ? FontWeight.w700 : FontWeight.w600,
-                          color: isDark ? Colors.white : onSurfaceLight,
-                        ),
-                      ),
-                      subtitle: Text(
-                        desc,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isDark ? Colors.white60 : onSurfaceVariant,
-                        ),
-                      ),
-                      trailing: isSelected
-                          ? Icon(Icons.check_circle_rounded,
-                              color: activePrimary)
-                          : null,
-                      onTap: () {
-                        Navigator.pop(ctx);
-                        _onGradeChanged(val);
-                      },
                     ),
                   );
                 }),
@@ -2581,35 +2664,41 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 34,
-                        height: 34,
-                        decoration: BoxDecoration(
-                          color: activePrimary.withValues(
-                              alpha: isDark ? 0.20 : 0.10),
-                          borderRadius: BorderRadius.circular(10),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 34,
+                          height: 34,
+                          decoration: BoxDecoration(
+                            color: activePrimary.withValues(
+                                alpha: isDark ? 0.20 : 0.10),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.school_rounded,
+                            color: isDark ? activeAccent : activePrimary,
+                            size: 19,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.school_rounded,
-                          color: isDark ? activeAccent : activePrimary,
-                          size: 19,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            _selectedGrade != null
+                                ? 'Grade $_selectedGrade (Secondary / EUEE Scope)'
+                                : 'All Grades (9-12 Scope)',
+                            style: TextStyle(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? Colors.white : onSurfaceLight,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        _selectedGrade != null
-                            ? 'Grade $_selectedGrade (Secondary / EUEE Scope)'
-                            : 'All Grades (9-12 Scope)',
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: isDark ? Colors.white : onSurfaceLight,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     width: 28,
                     height: 28,
@@ -2619,7 +2708,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
                       border: Border.all(
                         color: isDark
                             ? const Color(0xFF334155)
-                            : const Color(0xFFE2E8F0),
+                            : const Color(0xFFCBD5E1),
                       ),
                     ),
                     child: Icon(
@@ -3905,47 +3994,53 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color:
-                          activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: activePrimary.withValues(
-                            alpha: isDark ? 0.40 : 0.20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: activePrimary.withValues(alpha: 0.12),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color:
+                            activePrimary.withValues(alpha: isDark ? 0.20 : 0.10),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: activePrimary.withValues(
+                              alpha: isDark ? 0.40 : 0.20),
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.tune_rounded,
-                        color: isDark ? activeAccent : activePrimary,
-                        size: 20,
+                        boxShadow: [
+                          BoxShadow(
+                            color: activePrimary.withValues(alpha: 0.12),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.tune_rounded,
+                          color: isDark ? activeAccent : activePrimary,
+                          size: 20,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    'Exam Parameters',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.3,
-                      color: isDark ? Colors.white : onSurfaceLight,
+                    const SizedBox(width: 12),
+                    Flexible(
+                      child: Text(
+                        'Exam Parameters',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.3,
+                          color: isDark ? Colors.white : onSurfaceLight,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
