@@ -1,0 +1,4588 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_chemistry_2013",
+      "subject_id": "chemistry_g12",
+      "name_en": "Grade 12 Chemistry (ESSLCE 2013 E.C. National Exam)",
+      "name_am": "የ12ኛ ክፍል ኬሚስትሪ (የ2013 ዓ.ም. ብሔራዊ ፈተና)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 1048576,
+      "publisher": "National Educational Assessment and Examinations Agency (NEAEA)",
+      "license": "official_archive",
+      "attribution": "ESSLCE Chemistry 2013 E.C. / November 2021 G.C. Subject Code 05",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "chemistry_g12",
+      "code": "CHEM12",
+      "name_en": "Chemistry",
+      "name_am": "ኬሚስትሪ",
+      "grade": 12,
+      "stream": "natural",
+      "icon_asset": "assets/images/chemistry_icon.png",
+      "sort_order": 4
+    }
+  ],
+  "units": [
+    {
+      "id": "chem_g9_u1",
+      "subject_id": "chemistry_g12",
+      "unit_number": 1,
+      "title_en": "[Grade 9] Unit 1: Chemistry and Its Importance",
+      "title_am": "ኬሚስትሪና ጠቀሜታው"
+    },
+    {
+      "id": "chem_g9_u2",
+      "subject_id": "chemistry_g12",
+      "unit_number": 2,
+      "title_en": "[Grade 9] Unit 2: Measurements and Scientific Methods",
+      "title_am": "መለኪያዎችና ሳይንሳዊ ዘዴዎች"
+    },
+    {
+      "id": "chem_g9_u3",
+      "subject_id": "chemistry_g12",
+      "unit_number": 3,
+      "title_en": "[Grade 9] Unit 3: Structure of the Atom",
+      "title_am": "የአተም መዋቅር"
+    },
+    {
+      "id": "chem_g9_u4",
+      "subject_id": "chemistry_g12",
+      "unit_number": 4,
+      "title_en": "[Grade 9] Unit 4: Periodic Classification of Elements",
+      "title_am": "የንጥረ ነገሮች ወቅታዊ ምደባ"
+    },
+    {
+      "id": "chem_g9_u5",
+      "subject_id": "chemistry_g12",
+      "unit_number": 5,
+      "title_en": "[Grade 9] Unit 5: Chemical Bonding",
+      "title_am": "ኬሚካላዊ ትስስር"
+    },
+    {
+      "id": "chem_g10_u1",
+      "subject_id": "chemistry_g12",
+      "unit_number": 6,
+      "title_en": "[Grade 10] Unit 1: Chemical Reactions and Stoichiometry",
+      "title_am": "ኬሚካላዊ ግብረ-መልስና ስቶይኪዮሜትሪ"
+    },
+    {
+      "id": "chem_g10_u2",
+      "subject_id": "chemistry_g12",
+      "unit_number": 7,
+      "title_en": "[Grade 10] Unit 2: Solutions",
+      "title_am": "መፍትሔዎችና የመሟሟት ባህሪ"
+    },
+    {
+      "id": "chem_g10_u3",
+      "subject_id": "chemistry_g12",
+      "unit_number": 8,
+      "title_en": "[Grade 10] Unit 3: Important Inorganic Compounds",
+      "title_am": "ጠቃሚ ኢ-ኦርጋኒክ ውህዶች"
+    },
+    {
+      "id": "chem_g10_u4",
+      "subject_id": "chemistry_g12",
+      "unit_number": 9,
+      "title_en": "[Grade 10] Unit 4: Energy Changes and Electrochemistry",
+      "title_am": "የሃይል ለውጥና ኤሌክትሮኬሚስትሪ"
+    },
+    {
+      "id": "chem_g10_u5",
+      "subject_id": "chemistry_g12",
+      "unit_number": 10,
+      "title_en": "[Grade 10] Unit 5: Metals and Nonmetals",
+      "title_am": "ብረቶችና ኢ-ብረቶች"
+    },
+    {
+      "id": "chem_g10_u6",
+      "subject_id": "chemistry_g12",
+      "unit_number": 11,
+      "title_en": "[Grade 10] Unit 6: Hydrocarbons and Their Natural Sources",
+      "title_am": "ሃይድሮካርቦኖችና የተፈጥሮ ምንጮቻቸው"
+    },
+    {
+      "id": "chem_g11_u1",
+      "subject_id": "chemistry_g12",
+      "unit_number": 12,
+      "title_en": "[Grade 11] Unit 1: Atomic Structure and Periodic Properties",
+      "title_am": "የአተም መዋቅርና ወቅታዊ ባህሪያት"
+    },
+    {
+      "id": "chem_g11_u2",
+      "subject_id": "chemistry_g12",
+      "unit_number": 13,
+      "title_en": "[Grade 11] Unit 2: Chemical Bonding",
+      "title_am": "ኬሚካላዊ ትስስርና ሞለኪዩላር መዋቅር"
+    },
+    {
+      "id": "chem_g11_u3",
+      "subject_id": "chemistry_g12",
+      "unit_number": 14,
+      "title_en": "[Grade 11] Unit 3: Physical States of Matter",
+      "title_am": "የቁስ አካላዊ ሁኔታዎች"
+    },
+    {
+      "id": "chem_g11_u4",
+      "subject_id": "chemistry_g12",
+      "unit_number": 15,
+      "title_en": "[Grade 11] Unit 4: Chemical Kinetics",
+      "title_am": "ኬሚካላዊ ኪነቲክስና የግብረ-መልስ ፍጥነት"
+    },
+    {
+      "id": "chem_g11_u5",
+      "subject_id": "chemistry_g12",
+      "unit_number": 16,
+      "title_en": "[Grade 11] Unit 5: Chemical Equilibrium",
+      "title_am": "ኬሚካላዊ ሚዛን"
+    },
+    {
+      "id": "chem_g11_u6",
+      "subject_id": "chemistry_g12",
+      "unit_number": 17,
+      "title_en": "[Grade 11] Unit 6: Some Important Oxygen-containing Organic Compounds",
+      "title_am": "ኦክስጅን የያዙ ኦርጋኒክ ውህዶች"
+    },
+    {
+      "id": "chem_g12_u1",
+      "subject_id": "chemistry_g12",
+      "unit_number": 18,
+      "title_en": "[Grade 12] Unit 1: Acid-Base Concepts",
+      "title_am": "የአሲድና ቤዝ ጽንሰ-ሃሳቦች"
+    },
+    {
+      "id": "chem_g12_u2",
+      "subject_id": "chemistry_g12",
+      "unit_number": 19,
+      "title_en": "[Grade 12] Unit 2: Electrochemistry",
+      "title_am": "ኤሌክትሮኬሚስትሪ"
+    },
+    {
+      "id": "chem_g12_u3",
+      "subject_id": "chemistry_g12",
+      "unit_number": 20,
+      "title_en": "[Grade 12] Unit 3: Industrial Chemistry",
+      "title_am": "ኢንዱስትሪያል ኬሚስትሪ"
+    },
+    {
+      "id": "chem_g12_u4",
+      "subject_id": "chemistry_g12",
+      "unit_number": 21,
+      "title_en": "[Grade 12] Unit 4: Polymers",
+      "title_am": "ፖሊመሮች"
+    },
+    {
+      "id": "chem_g12_u5",
+      "subject_id": "chemistry_g12",
+      "unit_number": 22,
+      "title_en": "[Grade 12] Unit 5: Introduction to Environmental Chemistry",
+      "title_am": "የአካባቢ ኬሚስትሪ"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_chem_2013_001",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 1,
+      "question_text_en": "From the magnitude of the equilibrium constant, Keq one can deduce that",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_001_a",
+          "label": "A",
+          "text_en": "large Keq value indicates that the reaction reaches equilibrium with very little reactants remaining.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_001_b",
+          "label": "B",
+          "text_en": "Small Keq values indicate the reaction yields very higher amounts of products near equilibrium.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_001_c",
+          "label": "C",
+          "text_en": "Keq will be larger when we have higher amounts of reactants over products.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_001_d",
+          "label": "D",
+          "text_en": "Intermediate Keq value indicates that the reaction does proceed in the forward direction.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A large equilibrium constant means products are strongly favored, so only a relatively small amount of reactant \nremains at equilibrium.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium"
+      }
+    },
+    {
+      "id": "q_chem_2013_002",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 2,
+      "question_text_en": "The statement 'If a system at equilibrium is subjected to a stress, the system will readjust itself to reduce the effects of the \nstress' is known as",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_002_a",
+          "label": "A",
+          "text_en": "Avogadro's principle.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_002_b",
+          "label": "B",
+          "text_en": "Faradays law.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_002_c",
+          "label": "C",
+          "text_en": "Le-Chatelier's principle.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_002_d",
+          "label": "D",
+          "text_en": "Boyle's law.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Le Chatelier’s principle states that an equilibrium system shifts in the direction that counteracts an imposed change \nin concentration, pressure, or temperature.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium"
+      }
+    },
+    {
+      "id": "q_chem_2013_003",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 3,
+      "question_text_en": "The law of mass action states that",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_003_a",
+          "label": "A",
+          "text_en": "The Keq expression is the ratio of the concentrations of reactants to the products raised to their coefficients.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_003_b",
+          "label": "B",
+          "text_en": "The rate of a reaction is directly proportional to the product of the concentration of reactants raised to the power of their \nrespective coefficients in the balanced equation.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_003_c",
+          "label": "C",
+          "text_en": "For a reaction at equilibrium, the reaction quotient, Q is always less than the equilibrium constant, Keq.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_003_d",
+          "label": "D",
+          "text_en": "A chemical equilibrium is attained only when the reaction is started with reactants.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The law of mass action relates reaction rate to the product of reactant concentrations, each raised to the appropriate \nstoichiometric power.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium"
+      }
+    },
+    {
+      "id": "q_chem_2013_004",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 4,
+      "question_text_en": "For the reaction between gaseous NO and O₂ to for NO₂ (g), what will be the equilibrium constant expression, 2NO(g) + O₂ \n(g)↔ 2NO₂ (g)",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_004_a",
+          "label": "A",
+          "text_en": "K p =(P NO2)/(P NO)(P O2)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_004_b",
+          "label": "B",
+          "text_en": "K c =(NO₂)² / (NO)² (O₂)",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_004_c",
+          "label": "C",
+          "text_en": "K p =(P NO2)² (P O2) / (P NO2)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_004_d",
+          "label": "D",
+          "text_en": "K p =(P NO2)² /(NO)² (O₂)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For 2NO + O₂ ⇌ 2NO₂, the concentration expression is Kc = [NO₂]² / ([NO]²[O₂]), which corresponds to option B.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium"
+      }
+    },
+    {
+      "id": "q_chem_2013_005",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 5,
+      "question_text_en": "The equilibrium constant K p for the reaction 2SO₂ (g) ⇌ 2SO₃ (g) + O₂ (g) is 3.8 × 10⁻³ K p at 227 °C. What is the value of K \nc for the reaction at the same temperature?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "Defective calculation item: the equation/options do not produce a listed Kc value.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_005_a",
+          "label": "A",
+          "text_en": "4.6 × 10⁻⁴ mol m⁻³",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_005_b",
+          "label": "B",
+          "text_en": "1.8 × 10⁻³ mol m⁻³",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_005_c",
+          "label": "C",
+          "text_en": "2.3 × 10⁻⁴ mol m⁻³",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_005_d",
+          "label": "D",
+          "text_en": "9.1 × 10⁻⁴ mol m⁻³",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "As printed, Δn(gas) = 3 − 2 = +1, so Kp = Kc(RT). At 500 K, Kc ≈ 9.3 × 10⁻⁵, which is not among the choices. The \nitem is defective as supplied.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium"
+      }
+    },
+    {
+      "id": "q_chem_2013_006",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 6,
+      "question_text_en": "In the Galvanic cell given in the diagram below Identify the component parts correctly labelled for the letters a, b, c, d and \nchoose the correct one among the following a, b, c, and d, respectively",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_006_a",
+          "label": "A",
+          "text_en": "Copper anode; Zinc cathode; voltmeter; salt bridge",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_006_b",
+          "label": "B",
+          "text_en": "Zinc anode; Copper cathode; salt bridge; voltmeter",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_006_c",
+          "label": "C",
+          "text_en": "Copper anode; Zinc anode; CuSO₄(aq); voltmeter",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_006_d",
+          "label": "D",
+          "text_en": "Zinc anode; Copper cathode; ZnSO₄(aq); salt bridge",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In a Daniell-type Zn/Cu galvanic cell, Zn is the anode where oxidation occurs, Cu is the cathode where reduction \noccurs, the salt bridge maintains charge balance, and the voltmeter measures cell potential. The same-exam scan identifies this \nsequence as option B.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_007",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u3",
+      "topic_id": "chem_t_g12_u3_industrial",
+      "exam_year": 2013,
+      "question_number": 7,
+      "question_text_en": "The conversion of nitrogen gas into useful nitrogen compounds is known as",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u3",
+      "curriculum_topic_id": "chem_t_g12_u3_industrial",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_007_a",
+          "label": "A",
+          "text_en": "Photosynthesis",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_007_b",
+          "label": "B",
+          "text_en": "Respiration",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_007_c",
+          "label": "C",
+          "text_en": "Oxidation",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_007_d",
+          "label": "D",
+          "text_en": "Fixation",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Nitrogen fixation converts atmospheric N₂ into chemically usable nitrogen compounds such as ammonia or related \nspecies.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 3: Industrial Chemistry (nitrogen/ammonia context)"
+      }
+    },
+    {
+      "id": "q_chem_2013_008",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u5",
+      "topic_id": "chem_t_g12_u5_environmental",
+      "exam_year": 2013,
+      "question_number": 8,
+      "question_text_en": "CO₂ is released into the atmosphere by one of the following processes",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u5",
+      "curriculum_topic_id": "chem_t_g12_u5_environmental",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_008_a",
+          "label": "A",
+          "text_en": "Animals eat plants and release CO₂ by photosynthesis",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_008_b",
+          "label": "B",
+          "text_en": "Plants consume atmospheric carbon dioxide during photosynthesis",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_008_c",
+          "label": "C",
+          "text_en": "Utilization of electrical energy as energy sources",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_008_d",
+          "label": "D",
+          "text_en": "Natural fires and volcanoes release CO₂ into the air",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Natural fires and volcanic activity release CO₂. Photosynthesis instead removes CO₂ from the atmosphere.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 5: Introduction to Environmental Chemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_009",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals",
+      "exam_year": 2013,
+      "question_number": 9,
+      "question_text_en": "One of the following is NOT a common application of silicon",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_009_a",
+          "label": "A",
+          "text_en": "in the control of the frequency of television transmissions",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_009_b",
+          "label": "B",
+          "text_en": "in the construction of transistors and microprocessors",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_009_c",
+          "label": "C",
+          "text_en": "in coating iron to prevent it from rusting",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_009_d",
+          "label": "D",
+          "text_en": "in the production of polish body parts cars",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Silicon is central to semiconductors and electronics, but coating iron to prevent rusting is not a common application \nof elemental silicon.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 5: Metals and Nonmetals"
+      }
+    },
+    {
+      "id": "q_chem_2013_010",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals",
+      "exam_year": 2013,
+      "question_number": 10,
+      "question_text_en": "One of the following is NOT among the chemical properties of silicon",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_010_a",
+          "label": "A",
+          "text_en": "Silica is resistant to attack by all acids except HF, which it reacts to give SiF₄ and H₂ O₂",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_010_b",
+          "label": "B",
+          "text_en": "Silicon reacts with CH₃ Cl at 300 °C in the Cu as a catalyst by further reactions with H₂ O yields the polymer [(CH₃)₂ SiO₂ ] n",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_010_c",
+          "label": "C",
+          "text_en": "Silicon occurs as silica (SiO₂) and silicate compounds containing the silicate ion (SiO₄⁴⁻)",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_010_d",
+          "label": "D",
+          "text_en": "Silica dissolves in hot molten Na₂ CO₃ to give Na₄ SiO₄ and CO₂",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "“Silicon occurs as silica and silicates” describes occurrence, not a chemical property or reaction of silicon; therefore \nC is the NOT item.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 5: Metals and Nonmetals"
+      }
+    },
+    {
+      "id": "q_chem_2013_011",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_importance",
+      "exam_year": 2013,
+      "question_number": 11,
+      "question_text_en": "The branch of chemistry that is involved in separation, identifying and determining the relative amounts of components in a \nsample of material is known as",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_importance",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_011_a",
+          "label": "A",
+          "text_en": "analytical chemistry",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_011_b",
+          "label": "B",
+          "text_en": "biochemistry",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_011_c",
+          "label": "C",
+          "text_en": "inorganic chemistry",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_011_d",
+          "label": "D",
+          "text_en": "physical chemistry",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Analytical chemistry focuses on separating, identifying, and quantitatively determining components of a sample.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 1: Chemistry and Its Importance"
+      }
+    },
+    {
+      "id": "q_chem_2013_012",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u2",
+      "topic_id": "chem_t_g9_u2_measurements",
+      "exam_year": 2013,
+      "question_number": 12,
+      "question_text_en": "Significant figures are figures with",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u2",
+      "curriculum_topic_id": "chem_t_g9_u2_measurements",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_012_a",
+          "label": "A",
+          "text_en": "measured values with the highest accuracy",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_012_b",
+          "label": "B",
+          "text_en": "measured values with the highest precision",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_012_c",
+          "label": "C",
+          "text_en": "exactly known digits with the last digit uncertain",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_012_d",
+          "label": "D",
+          "text_en": "measured values with the highest uncertainty",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "All certain digits plus the first uncertain estimated digit are counted as significant figures.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 2: Measurements and Scientific Methods"
+      }
+    },
+    {
+      "id": "q_chem_2013_013",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u2",
+      "topic_id": "chem_t_g9_u2_measurements",
+      "exam_year": 2013,
+      "question_number": 13,
+      "question_text_en": "For the determination of the density of a new ceramic, a student measured the mass of a piece on an analytical balance and \nobtained 3.8056 gram and its volume 2.5 mL by displacement of water in a graduated cylinder. The correct reported density \nof the ceramic should be",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u2",
+      "curriculum_topic_id": "chem_t_g9_u2_measurements",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_013_a",
+          "label": "A",
+          "text_en": "1.5224 g/mL",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_013_b",
+          "label": "B",
+          "text_en": "1.5222 g/mL",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_013_c",
+          "label": "C",
+          "text_en": "3.5 g/mL",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_013_d",
+          "label": "D",
+          "text_en": "1.5 g/mL",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Density = 3.8056 g / 2.5 mL = 1.52224 g/mL. The volume has two significant figures, so the result is 1.5 g/mL.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 2: Measurements and Scientific Methods"
+      }
+    },
+    {
+      "id": "q_chem_2013_014",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u2",
+      "topic_id": "chem_t_g9_u2_measurements",
+      "exam_year": 2013,
+      "question_number": 14,
+      "question_text_en": "The scientific method is",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u2",
+      "curriculum_topic_id": "chem_t_g9_u2_measurements",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_014_a",
+          "label": "A",
+          "text_en": "a method of arriving at an organized body of knowledge based on reproducible experiments and observations",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_014_b",
+          "label": "B",
+          "text_en": "a collection of scientific guesses and hypotheses by seeking patterns in the observations",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_014_c",
+          "label": "C",
+          "text_en": "the result of fortunate, accidental discovery in the development of science",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_014_d",
+          "label": "D",
+          "text_en": "the sum total of unique guidelines for the practice of science in the world",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The scientific method builds organized, testable knowledge through reproducible observation and experiment.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 2: Measurements and Scientific Methods"
+      }
+    },
+    {
+      "id": "q_chem_2013_015",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u2",
+      "topic_id": "chem_t_g9_u2_measurements",
+      "exam_year": 2013,
+      "question_number": 15,
+      "question_text_en": "One of the following is NOT a cause of uncertainty in measurement?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u2",
+      "curriculum_topic_id": "chem_t_g9_u2_measurements",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_015_a",
+          "label": "A",
+          "text_en": "The person doing the experiment",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_015_b",
+          "label": "B",
+          "text_en": "The type of material measured",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_015_c",
+          "label": "C",
+          "text_en": "The environment where the measurement is made",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_015_d",
+          "label": "D",
+          "text_en": "The measuring device",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Common measurement uncertainty arises from the measuring instrument, observer, and environment. The “type of \nmaterial” itself is not normally listed as a source of measurement uncertainty.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 2: Measurements and Scientific Methods"
+      }
+    },
+    {
+      "id": "q_chem_2013_016",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 16,
+      "question_text_en": "Hydrogen bonding occurs in compounds that contain H-N, H-O and H-F bonds. These bonds are stronger than the ordinary \ndipole-dipole interactions because",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_016_a",
+          "label": "A",
+          "text_en": "the H-N, H-O and H-F bonds are less polar than ordinary covalent bonds",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_016_b",
+          "label": "B",
+          "text_en": "the partially positive H of one molecule is attracted to the partially negative lone pairs on the N, O or F of another molecule",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_016_c",
+          "label": "C",
+          "text_en": "the H-N, H-O and H-F bonds are non-polar and thus do not interact with neighboring molecules",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_016_d",
+          "label": "D",
+          "text_en": "the small sizes of N, O and F makes these atoms so electropositive that their covalently bonded H is highly negative",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hydrogen bonding is the attraction between a δ⁺ H bonded to N/O/F and a lone pair on N/O/F of another molecule.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_017",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 17,
+      "question_text_en": "Which of the following is an example of exception to the octet rule?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_017_a",
+          "label": "A",
+          "text_en": "CCl₄",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_017_b",
+          "label": "B",
+          "text_en": "NH₃",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_017_c",
+          "label": "C",
+          "text_en": "PCl₅",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_017_d",
+          "label": "D",
+          "text_en": "H₂ O",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "PCl₅ is an expanded-octet molecule: phosphorus has more than eight electrons around it in the Lewis description.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_018",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 18,
+      "question_text_en": "Which of the following pair is true about the general properties of the different types of crystalline solids Type of solid \nHardness Melting point Conduction of heat and electricity I. Ionic Hard High Good II. Covalent Hard High Poor III. Molecular \nSoft Low Good IV. Metallic Soft to hard Low to high Good",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": "The conductivity row for ionic solids is oversimplified; ionic substances conduct well when molten or aqueous, not \nas ordinary solids.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_018_a",
+          "label": "A",
+          "text_en": "II and III",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_018_b",
+          "label": "B",
+          "text_en": "I and III",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_018_c",
+          "label": "C",
+          "text_en": "I and IV",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_018_d",
+          "label": "D",
+          "text_en": "I and II",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The table is oversimplified because ionic solids conduct when molten or in solution, not well as solids. Under the \nintended classification, ionic and metallic entries are treated as the correct pair, option C.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_019",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 19,
+      "question_text_en": "When the boiling point of hydrides of group VIA elements, H₂ O, H₂ S, H₂ Se and H₂ Te are arranged in the order of \nincreasing boiling point. The trend is H₂ Te< H₂ Se< H₂ S< H₂ O, water having the highest boiling point, this is due to",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_019_a",
+          "label": "A",
+          "text_en": "the basic different structures of each hydride",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_019_b",
+          "label": "B",
+          "text_en": "the small size of O compared to the other group VIA elements",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_019_c",
+          "label": "C",
+          "text_en": "hydrogen bonding present in H₂ O molecules",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_019_d",
+          "label": "D",
+          "text_en": "increasing boiling points with increasing molecular mass",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "H₂O has unusually strong intermolecular hydrogen bonding, raising its boiling point far above the trend expected from \nmolar mass alone.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_020",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 20,
+      "question_text_en": "Given the following catalyzed reactions2SO₂ (s) + O₂ (g) → 2SO₃ (g); V₂ O₅ (s) as a catalystOCl (aq) + I⁻ (aq) → Ol⁻ (aq) + Cl \n(aq); OH⁻ (aq) as inhibitorCO (s) + H₂ (g) → CH₄ (g) + H₂ O (g); Ni (s) as a catalystCO (s) + H₂ (g) → HCHO (g); Cu (s) as a \ncatalyst Which reaction(s) is/ are examples for homogeneous catalysis?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_020_a",
+          "label": "A",
+          "text_en": "II only",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_020_b",
+          "label": "B",
+          "text_en": "I and II",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_020_c",
+          "label": "C",
+          "text_en": "IV only",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_020_d",
+          "label": "D",
+          "text_en": "II and III",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A homogeneous catalyst or inhibitor is in the same phase as the reacting species. Reaction II has all relevant \nspecies in aqueous solution, whereas the solid catalysts in I, III and IV are heterogeneous.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_021",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals",
+      "exam_year": 2013,
+      "question_number": 21,
+      "question_text_en": "Which one of the following is a common reaction of tin?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_021_a",
+          "label": "A",
+          "text_en": "Sn (s) + H₂ O (g) → SnO₂ (s)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_021_b",
+          "label": "B",
+          "text_en": "Sn (s) + dil. 2HCl (aq) → SnCl₂ (aq) +H₂ (g)",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_021_c",
+          "label": "C",
+          "text_en": "Sn (s) + 2Cl₂ (g) → SnCl₂ (s) in cold media",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_021_d",
+          "label": "D",
+          "text_en": "Sn (s) + 2H₂ O (g) → Sn(OH)₄ (s)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Tin reacts with dilute HCl to form SnCl₂ and H₂: Sn + 2HCl → SnCl₂ + H₂.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 5: Metals and Nonmetals"
+      }
+    },
+    {
+      "id": "q_chem_2013_022",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2013,
+      "question_number": 22,
+      "question_text_en": "The monomer of natural rubber is",
+      "diagram_asset": "assets/images/exams/chem_2013/q22_choice_c.png",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_022_a",
+          "label": "A",
+          "text_en": "2-methyl-1,3-butadiene (isoprene)CH₂ =C(CH₃)-CH=CH₂",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_022_b",
+          "label": "B",
+          "text_en": "2-chloro-1,3-butadiene (chloroprene)​\nH2C=C(Cl)-CH=CH2",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_022_c",
+          "label": "C",
+          "text_en": "Styrene (C₆H₅-CH=CH₂)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_022_d",
+          "label": "D",
+          "text_en": "1,3-butadiene​\nH2C=CH-CH=CH2",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Natural rubber is polyisoprene, so its monomer is 2-methyl-1,3-butadiene (isoprene).",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 4: Polymers"
+      }
+    },
+    {
+      "id": "q_chem_2013_023",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2013,
+      "question_number": 23,
+      "question_text_en": "All of the following are examples of addition polymers EXCEPT",
+      "diagram_asset": "assets/images/exams/chem_2013/q23_choice_d.png",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "No unambiguous EXCEPT option is preserved in the source.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_023_a",
+          "label": "A",
+          "text_en": "-[CH₂ -CHCl] n -",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_023_b",
+          "label": "B",
+          "text_en": "-[CH₂ -CH₂ ] n -",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_023_c",
+          "label": "C",
+          "text_en": "-[CH₂ CH₂ ] n -[CH₂ -CH(CH₃)] n -",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_023_d",
+          "label": "D",
+          "text_en": "Polystyrene -[CH₂-CH(C₆H₅)]ₙ-",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The visible formulas correspond to addition polymers, including PVC, polyethylene/copolymer structures and \npolystyrene. No unambiguous “EXCEPT” choice remains in the source, so the item is defective.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 4: Polymers"
+      }
+    },
+    {
+      "id": "q_chem_2013_024",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2013,
+      "question_number": 24,
+      "question_text_en": "One of the following examples of polymers is correctly matched with its uses",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "multiple_valid_answers",
+      "review_note": "Non-unique item: both polyethylene food containers and PVC pipes are standard uses.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_024_a",
+          "label": "A",
+          "text_en": "Polypropylene; electrical insulation",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_024_b",
+          "label": "B",
+          "text_en": "Polyethylene; food containers",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_024_c",
+          "label": "C",
+          "text_en": "Polytetrafluoroethylene; making shoes",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_024_d",
+          "label": "D",
+          "text_en": "Polyvinyl chloride; making pipes",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Polyethylene is widely used for food containers, and PVC is widely used for pipes. Both B and D are chemically \nreasonable, making the item non-unique.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 4: Polymers"
+      }
+    },
+    {
+      "id": "q_chem_2013_025",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2013,
+      "question_number": 25,
+      "question_text_en": "Natural polymers are",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_025_a",
+          "label": "A",
+          "text_en": "polymers produced by condensation reaction of monomer units",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_025_b",
+          "label": "B",
+          "text_en": "polymers produced by the addition reaction of monomer units.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_025_c",
+          "label": "C",
+          "text_en": "polymers produced by the substitution of one or more atoms in the monomer units.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_025_d",
+          "label": "D",
+          "text_en": "polymers found in some substances like rubber in nature.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Natural polymers are macromolecules occurring in nature, such as natural rubber, cellulose and proteins.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 4: Polymers"
+      }
+    },
+    {
+      "id": "q_chem_2013_026",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2013,
+      "question_number": 26,
+      "question_text_en": "Oils are unsaturated fatty acids. The process of converting oils to solid fats involves",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_026_a",
+          "label": "A",
+          "text_en": "saponification with NaOH.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_026_b",
+          "label": "B",
+          "text_en": "esterification of the acids.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_026_c",
+          "label": "C",
+          "text_en": "halogenations of the C-C double bonds.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_026_d",
+          "label": "D",
+          "text_en": "hydrogenation of the C-C double bonds.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hydrogenation adds H₂ across C=C double bonds in unsaturated oils, increasing saturation and converting them \ntoward more solid fats.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 4: Polymers"
+      }
+    },
+    {
+      "id": "q_chem_2013_027",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_oxygen_organic",
+      "exam_year": 2013,
+      "question_number": 27,
+      "question_text_en": "A chemistry teacher has added different reactants and reagents in three different test tubes as described below: I. Into the \ntest tube A, he added ethanol, sodium dichromate, sulphuric acid. II. Into the test tube B, he added acetaldehyde, sodium \nborohydride and water. III. Into the tube C, he added methyl acetate and ethanol and sodium hydroxide.​\nIn which test tube would a reaction take place that provide acetic acid?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_oxygen_organic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_027_a",
+          "label": "A",
+          "text_en": "I and II",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_027_b",
+          "label": "B",
+          "text_en": "III",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_027_c",
+          "label": "C",
+          "text_en": "I",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_027_d",
+          "label": "D",
+          "text_en": "II and III",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Acidified dichromate oxidizes ethanol through ethanal to ethanoic (acetic) acid. NaBH₄ reduces acetaldehyde, and \nbase hydrolysis of methyl acetate gives acetate unless acidified.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 6: Some Important Oxygen-containing Organic Compounds"
+      }
+    },
+    {
+      "id": "q_chem_2013_028",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 28,
+      "question_text_en": "The difference between colloids and suspension is that",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_028_a",
+          "label": "A",
+          "text_en": "most colloids and suspensions appear cloudy.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_028_b",
+          "label": "B",
+          "text_en": "colloidal particles are small enough and do not settle down unlike in a suspension.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_028_c",
+          "label": "C",
+          "text_en": "colloids are as transparent as solutions.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_028_d",
+          "label": "D",
+          "text_en": "both colloids and suspensions are heterogeneous mixtures.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Colloidal particles are small enough to remain dispersed and generally do not settle under gravity, unlike suspension \nparticles.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_029",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 29,
+      "question_text_en": "The solubility of a substance is the amount of a substance that",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_029_a",
+          "label": "A",
+          "text_en": "dissolves more amount of solute than it can normally dissolve.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_029_b",
+          "label": "B",
+          "text_en": "gives an unsaturated solution of substance at given temperature.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_029_c",
+          "label": "C",
+          "text_en": "dissolves double the amount of solute than it can normally dissolve.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_029_d",
+          "label": "D",
+          "text_en": "gives a saturated solution of the substance at a given temperature.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Solubility is the maximum amount of solute that forms a saturated solution under specified conditions, especially \ntemperature.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_030",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 30,
+      "question_text_en": "50 mL of the supernatant saturated solution of NaCl was taken in an evaporating dish (weight=w₀) and evaporated over a \nBunsen burner until all the water has evaporated and dry sodium chloride is left in the evaporating dish. The evaporating \ndish with the dry sodium chloride is weighed (weight=w₁). Given the following information, w₀=47.5 g and w₁=66.2. Calculate \nthe solubility of NaCl in water assuming 50 mL of the solution is equal to 50 mL of the solvent",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_030_a",
+          "label": "A",
+          "text_en": "113.7 g/100 g of water",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_030_b",
+          "label": "B",
+          "text_en": "37.4 g/100 g of water",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_030_c",
+          "label": "C",
+          "text_en": "187 g/100 g of water",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_030_d",
+          "label": "D",
+          "text_en": "18.7g/100 g of water",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Mass of NaCl = 66.2 − 47.5 = 18.7 g. Using the stated approximation of 50 g water, solubility = 18.7/50 ×100 = 37.4 g \nper 100 g water.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_031",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 31,
+      "question_text_en": "One of the following given pairs represents examples of buffer systems",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_031_a",
+          "label": "A",
+          "text_en": "NH₄Cl/H₂O and H₂O/CH₃COONa",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_031_b",
+          "label": "B",
+          "text_en": "NaOH/HCl and HNO₃/KOH",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_031_c",
+          "label": "C",
+          "text_en": "NH₄OH/NH₄Cl and CH₃COOH/CH₃COONa",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_031_d",
+          "label": "D",
+          "text_en": "NH₄OH/CH₃COOH and NH₄Cl/CH₃COONa",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A buffer contains a weak acid/base together with its conjugate salt. NH₄OH/NH₄Cl and CH₃COOH/CH₃COONa are \nstandard buffer pairs.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_032",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 32,
+      "question_text_en": "The reaction between a weak acid and strong base as represented by the reaction between acetic acid and NaOH gives a \nbasic solution because",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_032_a",
+          "label": "A",
+          "text_en": "CH₃OO⁻ as a strong base picks up H+ and causes excess OH⁻ ions.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_032_b",
+          "label": "B",
+          "text_en": "Na+ is a strong acid and causes high concentration of H+.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_032_c",
+          "label": "C",
+          "text_en": "CH₃COOH does not produce sufficient amount of H+ ions.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_032_d",
+          "label": "D",
+          "text_en": "The OH⁻ ions from NaOH are not completely neutralized.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "After neutralization of a weak acid by a strong base, acetate hydrolyzes water to produce OH⁻, so the solution is \nbasic. Option A expresses this intended idea.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_033",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 33,
+      "question_text_en": "An acid is a substance that",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_033_a",
+          "label": "A",
+          "text_en": "produces more OH ions in water than H+ ions.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_033_b",
+          "label": "B",
+          "text_en": "has a bitter taste.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_033_c",
+          "label": "C",
+          "text_en": "donates a pair of electrons to a chemical species.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_033_d",
+          "label": "D",
+          "text_en": "donates a proton in a chemical reaction.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In Brønsted–Lowry theory, an acid is a proton donor.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_034",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 34,
+      "question_text_en": "One of the following given mass of acids constitutes the corresponding equivalent of the acid",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_034_a",
+          "label": "A",
+          "text_en": "HCl = 36.5 g=2 equivalents",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_034_b",
+          "label": "B",
+          "text_en": "H₂SO₄=98 g=2 equivalent",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_034_c",
+          "label": "C",
+          "text_en": "H₃PO₄= 98 g=2 equivalents",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_034_d",
+          "label": "D",
+          "text_en": "H₂SO₄= 49 g= 4 equivalents",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "One mole (98 g) of H₂SO₄ can supply two moles of H⁺, so 98 g corresponds to two acid equivalents.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_035",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 35,
+      "question_text_en": "One of the following pairs shows Brønsted-Lowry acids behavior in water?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_035_a",
+          "label": "A",
+          "text_en": "H₃ O⁺ and NH₃",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_035_b",
+          "label": "B",
+          "text_en": "HNO₃ and NO₃⁻",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_035_c",
+          "label": "C",
+          "text_en": "HCl and NH₄⁺",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_035_d",
+          "label": "D",
+          "text_en": "HPO₄²⁻ and PO₄³⁻",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "HCl and NH₄⁺ can each donate a proton to water, so both behave as Brønsted–Lowry acids.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_036",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 36,
+      "question_text_en": "Covalent compounds are liquids or gases at room temperature and have statements low melting and boiling points. Which of \nthe following statements explains these properties of covalent compounds?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_036_a",
+          "label": "A",
+          "text_en": "The unit of particles in covalent compounds are ions.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_036_b",
+          "label": "B",
+          "text_en": "The intermolecular forces of attraction in covalent compounds are strong.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_036_c",
+          "label": "C",
+          "text_en": "Covalent compounds exist as separate molecules.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_036_d",
+          "label": "D",
+          "text_en": "There are no forces of attraction between the molecules in covalent compounds.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Many molecular covalent substances have low melting/boiling points because the molecules are held together by \nrelatively weak intermolecular forces; option C is the closest statement.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_037",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 37,
+      "question_text_en": "Both carbonyl sulphide, COS (SCO), S=C=O and carbon dioxide (CO₂) O=C=O are linear molecules. COS is polar whereas \nCO₂ is non-polar. This is because",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_037_a",
+          "label": "A",
+          "text_en": "the C=O bonds in both COS and CO2 are polar.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_037_b",
+          "label": "B",
+          "text_en": "CO2 has a net dipole moment of zero.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_037_c",
+          "label": "C",
+          "text_en": "sulphur is more electronegative than oxygen.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_037_d",
+          "label": "D",
+          "text_en": "regions of high negative charge is distributed equally around the central atom in COS.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Linear CO₂ has two equal C=O bond dipoles that cancel, giving zero net dipole moment. COS has different terminal \natoms, so its bond dipoles do not cancel.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_038",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 38,
+      "question_text_en": "Which of the following statements is true about the formation of CH4 according to valence bond theory?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_038_a",
+          "label": "A",
+          "text_en": "The 2s and three 2p orbitals in carbon hybridize to form four sp³ orbitals.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_038_b",
+          "label": "B",
+          "text_en": "The 2s and two 2p orbitals in carbon hybridize to form three sp² orbitals.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_038_c",
+          "label": "C",
+          "text_en": "Carbon can form two hybrid orbitals as it has got only two half-filled orbitals.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_038_d",
+          "label": "D",
+          "text_en": "The 2s and one 2p orbitals in carbon hybridize to form two sp orbitals.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Methane is described by four equivalent sp³ hybrid orbitals formed from one 2s and three 2p orbitals on carbon.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_039",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 39,
+      "question_text_en": "Phosphorus (Z=15) has the electronic configuration 1s²2s²2p⁶3s²3p³, what kind of hybridization does phosphorus undergo in \nthe formation of phosphorus pentachloride (PCl5)?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_039_a",
+          "label": "A",
+          "text_en": "sp³d",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_039_b",
+          "label": "B",
+          "text_en": "sp³",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_039_c",
+          "label": "C",
+          "text_en": "sp",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_039_d",
+          "label": "D",
+          "text_en": "sp²",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "PCl₅ has five electron domains around P and is described by sp³d hybridization in the conventional valence-bond \nmodel used at this level.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_040",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_bonding",
+      "exam_year": 2013,
+      "question_number": 40,
+      "question_text_en": "One of the following reactions illustrates the formation of coordinate covalent bond?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_bonding",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_040_a",
+          "label": "A",
+          "text_en": "Be + 2F2 → BeF2",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_040_b",
+          "label": "B",
+          "text_en": "NaOH + HCl → NaCl+H2O",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_040_c",
+          "label": "C",
+          "text_en": "CaCO3+ HCl → CaCl2 +H2O +CO2",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_040_d",
+          "label": "D",
+          "text_en": "NH3 + HCl → NH4+ + Cl-",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "NH₃ donates its lone pair to H⁺ from HCl, forming NH₄⁺; that new N–H bond is a coordinate covalent bond.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 2: Chemical Bonding"
+      }
+    },
+    {
+      "id": "q_chem_2013_041",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_equilibrium",
+      "exam_year": 2013,
+      "question_number": 41,
+      "question_text_en": "In the production of NH3 by the Haber process according to the equation​\nN2(g)+3H2(g) ⇌ 2NH3(g) ΔH=-92KJ mol-1​\nWhat are the favorable conditions for the production of high yield of NH3?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_equilibrium",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_041_a",
+          "label": "A",
+          "text_en": "High pressure and low temperature",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_041_b",
+          "label": "B",
+          "text_en": "Low pressure and low temperature",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_041_c",
+          "label": "C",
+          "text_en": "Low pressure and high temperature",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_041_d",
+          "label": "D",
+          "text_en": "High pressure and high temperature",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The Haber equilibrium is exothermic and decreases gas moles from 4 to 2. High pressure and lower temperature \nfavor NH₃ yield, although industry uses a compromise temperature for rate.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 5: Chemical Equilibrium (Haber equilibrium) \nESSLCE Chemistry 2013 E.C. | Questions, Answers & Explanations"
+      }
+    },
+    {
+      "id": "q_chem_2013_042",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_oxygen_organic",
+      "exam_year": 2013,
+      "question_number": 42,
+      "question_text_en": "Which one of the following statements describes laboratory and industrial preparation of acetic respectively?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_oxygen_organic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_042_a",
+          "label": "A",
+          "text_en": "Reduction of ethanol by NaBH4 and fermentation of propanol.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_042_b",
+          "label": "B",
+          "text_en": "Reduction of toluene by KMnO4 and reduction of ethanol by sodium dichromate.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_042_c",
+          "label": "C",
+          "text_en": "The oxidation of ethanol by sodium dichromate and fermentation of ethanol.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_042_d",
+          "label": "D",
+          "text_en": "Oxidation of toluene by KMnO4 and fermentation of ethanol.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ethanoic acid can be prepared in the laboratory by oxidizing ethanol; industrial/biochemical production can involve \noxidation/fermentation of ethanol. Option C is the intended pair.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 6: Some Important Oxygen-containing Organic Compounds"
+      }
+    },
+    {
+      "id": "q_chem_2013_043",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_oxygen_organic",
+      "exam_year": 2013,
+      "question_number": 43,
+      "question_text_en": "Which of the following is true about carboxylic acids?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_oxygen_organic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_043_a",
+          "label": "A",
+          "text_en": "Methanoic, Ethanoic and Citric acids are monocarboxylic acids.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_043_b",
+          "label": "B",
+          "text_en": "Carboxylic acid with the formation RCOOH.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_043_c",
+          "label": "C",
+          "text_en": "Citric acid is a typical dicarboxylic acid.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_043_d",
+          "label": "D",
+          "text_en": "Propanedioic acid is the simplest dicarboxylic acid.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The functional group of a monocarboxylic acid is RCOOH, which is the general structural description in option B.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 6: Some Important Oxygen-containing Organic Compounds"
+      }
+    },
+    {
+      "id": "q_chem_2013_044",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_oxygen_organic",
+      "exam_year": 2013,
+      "question_number": 44,
+      "question_text_en": "What is the IUPAC name for the branched carboxylic acid: CH₃ -CH(Cl)-CH(CH₃)-CH(CH₃)-COOH",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_oxygen_organic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_044_a",
+          "label": "A",
+          "text_en": "4-chloro-2, methyl 1-pentanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_044_b",
+          "label": "B",
+          "text_en": "1, 2-dimethyl-4-chloro 1-pentanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_044_c",
+          "label": "C",
+          "text_en": "4-chloro-1-methyl-1-pentanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_044_d",
+          "label": "D",
+          "text_en": "4-chloro-2, 3-dimethyl-1-pentanoic acid",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Numbering from the carboxyl carbon gives 4-chloro-2,3-dimethylpentanoic acid, corresponding to D.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 6: Some Important Oxygen-containing Organic Compounds"
+      }
+    },
+    {
+      "id": "q_chem_2013_045",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_oxygen_organic",
+      "exam_year": 2013,
+      "question_number": 45,
+      "question_text_en": "Esters are characterized by the following properties EXCEPT",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_oxygen_organic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "intended_answer",
+      "review_note": "The intended answer is C, but option D is also an overgeneralized/false statement as written.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_045_a",
+          "label": "A",
+          "text_en": "esters have lower boiling point compared to the carboxylic acid alcohols",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_045_b",
+          "label": "B",
+          "text_en": "esters have pleasant odors of perfumes and food flavoring",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_045_c",
+          "label": "C",
+          "text_en": "esters have higher boiling point than carboxylic acid and alcohol",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_045_d",
+          "label": "D",
+          "text_en": "all esters are soluble in inorganic solvents and organic",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Esters generally have lower boiling points than comparable carboxylic acids/alcohols and many have pleasant odors. \nThe intended EXCEPT is C; note that D is also overgeneralized because not all esters are soluble in all solvents.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 6: Some Important Oxygen-containing Organic Compounds"
+      }
+    },
+    {
+      "id": "q_chem_2013_046",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u2",
+      "topic_id": "chem_t_g9_u2_measurements",
+      "exam_year": 2013,
+      "question_number": 46,
+      "question_text_en": "The sanitizer in wide use for protection against Covid-19 is labelled 83% alcohol. How can one scientifically check the \nconcentration?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u2",
+      "curriculum_topic_id": "chem_t_g9_u2_measurements",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_046_a",
+          "label": "A",
+          "text_en": "experimentation",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_046_b",
+          "label": "B",
+          "text_en": "forming hypothesis",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_046_c",
+          "label": "C",
+          "text_en": "making observation",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_046_d",
+          "label": "D",
+          "text_en": "collection of data",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A labeled concentration is scientifically checked by measurement/experiment, not by hypothesis alone.",
+        "key_concept": "Curriculum link: Grade 9 Chemistry — Unit 2: Measurements and Scientific Methods"
+      }
+    },
+    {
+      "id": "q_chem_2013_047",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 47,
+      "question_text_en": "The correct electronic configuration for chromium (Cr, Z=24) is",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_047_a",
+          "label": "A",
+          "text_en": "1s²2s²2p⁶3s²3p⁶4s⁰3d⁶",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_047_b",
+          "label": "B",
+          "text_en": "1s²2s²2p⁶3s²3p⁶3d⁴4d²",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_047_c",
+          "label": "C",
+          "text_en": "1s²2s²2p⁶3s²3p⁶4s²3d⁴",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_047_d",
+          "label": "D",
+          "text_en": "1s²2s²2p⁶3s²3p⁶4s¹3d⁵",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Chromium has the exceptional ground-state configuration [Ar] 3d⁵4s¹, giving a particularly stable half-filled d subshell.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_048",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 48,
+      "question_text_en": "According to Hund's rule equal energy (degenerate) orbitals are filled with",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_048_a",
+          "label": "A",
+          "text_en": "maximum number of unpaired electrons with parallel spins",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_048_b",
+          "label": "B",
+          "text_en": "two electrons of opposite spins placed in the first orbitals",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_048_c",
+          "label": "C",
+          "text_en": "maximum number of unpaired electrons with opposite spins",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_048_d",
+          "label": "D",
+          "text_en": "two electrons of parallel spins placed in the first orbital",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hund’s rule fills degenerate orbitals singly with parallel spins before electron pairing begins.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_049",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 49,
+      "question_text_en": "In the modern periodic table",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_049_a",
+          "label": "A",
+          "text_en": "elements with similar properties are placed in the same period",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_049_b",
+          "label": "B",
+          "text_en": "non-metals are placed on the right side of the periodic table",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_049_c",
+          "label": "C",
+          "text_en": "transition and inner-transition elements are placed in the middle of the periodic table",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_049_d",
+          "label": "D",
+          "text_en": "metals are placed on the right hand side of the periodic table",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Nonmetals are primarily on the right side of the modern periodic table; similar chemical properties occur mainly within \ngroups, not periods.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_050",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 50,
+      "question_text_en": "The electrolysis of liquid (molten) NaCl in the set-up for the electrochemical cell is given in the following figure below. Which \nof the following statements is true about the electrolysis of molten sodium chloride? \n[Source image unavailable/corrupted in archive]",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_050_a",
+          "label": "A",
+          "text_en": "Na is oxidized at the anode",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_050_b",
+          "label": "B",
+          "text_en": "Cl₂ is formed at the cathode",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_050_c",
+          "label": "C",
+          "text_en": "O₂ is produced at the anode due to the oxidation of water",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_050_d",
+          "label": "D",
+          "text_en": "The net reaction produces Cl₂ at the anode and Na at the cathode.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Molten NaCl contains only Na⁺ and Cl⁻: Na⁺ is reduced to Na at the cathode, while Cl⁻ is oxidized to Cl₂ at the anode.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_051",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 51,
+      "question_text_en": "In the reaction mixture of two species NH₄ OH and NH₄ Cl, which one of the following is true about the reaction mixture?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_051_a",
+          "label": "A",
+          "text_en": "The presence of NH₄⁺ ion suppresses the dissociation of the weak based NH₄ OH.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_051_b",
+          "label": "B",
+          "text_en": "The NH₄⁺ ion is a spectator ion in the reaction mixture.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_051_c",
+          "label": "C",
+          "text_en": "The reaction equilibrium is shifted towards the right due to the presence of NH₄⁺ ions.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_051_d",
+          "label": "D",
+          "text_en": "The presence of NH₄⁺ in the reaction mixture makes the solution more basic.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Adding NH₄⁺ from NH₄Cl shifts NH₄OH/NH₃ ionization toward the un-ionized weak base, illustrating the common-ion \neffect.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_052",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 52,
+      "question_text_en": "Which one of the following is correct about K w at different temperature? The ionic product of water K w equals K w \n=1.0x10⁻¹⁴ at 25 °C K w =2.92x10⁻¹⁴ at 40 °C √K w =1x10⁻⁷ √K w =1x10⁻⁷",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_052_a",
+          "label": "A",
+          "text_en": "At 40 ^o C pure water is no more neutral",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_052_b",
+          "label": "B",
+          "text_en": "Water dissociates to a higher extent at 40 ^o C than at 25 ^o C.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_052_c",
+          "label": "C",
+          "text_en": "Hydroxyl ion concentration is higher at 40 ^o than hydrogen ion concentration",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_052_d",
+          "label": "D",
+          "text_en": "Hydrogen ion concentration at 25 ^o C is higher than at 40 ^o C.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Because Kw increases with temperature in the data given, water autoionizes to a greater extent at 40°C. Pure water \nis still neutral because [H⁺] = [OH⁻].",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_053",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 53,
+      "question_text_en": "What is reduction? Reduction is",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_053_a",
+          "label": "A",
+          "text_en": "loss of electrons and decrease in oxidation number",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_053_b",
+          "label": "B",
+          "text_en": "gain of electrons and increase in oxidation number",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_053_c",
+          "label": "C",
+          "text_en": "gain of electrons and no change in oxidation number",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_053_d",
+          "label": "D",
+          "text_en": "gain of electrons and decrease in oxidation number",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Reduction is gain of electrons and therefore a decrease in oxidation number.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_054",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 54,
+      "question_text_en": "During the electrolysis of dilute aqueous sulphuric acid, the ions present in solution are H⁺, OH⁻ and SO₄²⁻. Which ions are \npreferentially discharged at the cathode and anode, respectively?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_054_a",
+          "label": "A",
+          "text_en": "Anode = SO₄²⁻ (aq) + 4H⁺ (aq) +2e⁻ → SO₂ (g) + 2H₂ O, Cathode=2H⁺ (aq) + 2e⁻ → H₂ (g)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_054_b",
+          "label": "B",
+          "text_en": "Anode=4OH(aq) → H₂ O(l) + O₂ (g) +4e⁻, Cathode=2H⁺ (aq) +2e⁻ → H₂ (g)",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_054_c",
+          "label": "C",
+          "text_en": "Anode= 2H₂ O(l) → O₂ (g) + 4H⁺ (aq) +4e⁻, Cathode=2H⁺ (aq) +2e⁻ → H₂ (g)",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_054_d",
+          "label": "D",
+          "text_en": "Anode=4OH(aq) → H₂ O(l) + O₂ (g) +4e⁻, Cathode=2H₂ O (l) +2e⁻ → H₂ (g) + 2OH⁻ (aq)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In dilute sulfuric acid, H⁺ is reduced to H₂ at the cathode and water is oxidized to O₂ at the anode. Option C gives the \nappropriate acidic half-reactions.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_055",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 55,
+      "question_text_en": "Which one of the following is NOT correct about electrodes and electrochemical cells?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_055_a",
+          "label": "A",
+          "text_en": "The overall cell potential is calculated by the formula E° cell =E Cathode − E Anode",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_055_b",
+          "label": "B",
+          "text_en": "Electrons flow spontaneously from negative to positive electrodes",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_055_c",
+          "label": "C",
+          "text_en": "The difference in the electrical potential of the electrode is positive that is positive cell",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_055_d",
+          "label": "D",
+          "text_en": "E° cell is greater than zero for non-spontaneous process",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For a spontaneous galvanic cell E°cell must be positive. Therefore the statement that E°cell > 0 for a \nnon-spontaneous process is false.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_056",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 56,
+      "question_text_en": "The \"like dissolves like\" rule accounts for one of the following observation",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "multiple_valid_answers",
+      "review_note": "Non-unique item: B and C both follow the polarity principle “like dissolves like.”",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_056_a",
+          "label": "A",
+          "text_en": "The solubility of C₂ H₆ in H₂ O.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_056_b",
+          "label": "B",
+          "text_en": "The solubility of C₆ H₆ in CCl₄.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_056_c",
+          "label": "C",
+          "text_en": "The insolubility of I₂ in H₂ O.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_056_d",
+          "label": "D",
+          "text_en": "The solubility of KBr in C₇ H₈.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "“Like dissolves like” predicts nonpolar benzene dissolves in nonpolar CCl₄, and it also explains why nonpolar I₂ is \npoorly soluble in polar water. The item therefore admits B and C as consistent observations.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_057",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 57,
+      "question_text_en": "Which of the following concentration units is correctly defined?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "Source formulas are incomplete/corrupted; no listed definition is fully correct.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_057_a",
+          "label": "A",
+          "text_en": "ppm (parts per million) = (mass of solute/ mass of solvent) x 10⁶",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_057_b",
+          "label": "B",
+          "text_en": "mass percentage= mass of solute x 100",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_057_c",
+          "label": "C",
+          "text_en": "mass percentage= mass of solute x 100",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_057_d",
+          "label": "D",
+          "text_en": "ppb (parts per billion)= (mass of solute/mass of solution) x 10⁶",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The standard definitions are mass % = (mass solute/mass solution)×100, ppm ≈ (mass solute/mass solution)×10⁶, \nand ppb ≈ ×10⁹. The supplied formulas are incomplete/incorrect, so no option is fully valid.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_058",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 58,
+      "question_text_en": "The concentrated sulphuric acid H₂ SO₄ we use in the laboratory is 98% H₂ SO₄ by mass and has a density of 1.83 g/mL. \nBelow are given the concentrations of the acid in various units, which of the given alternatives correctly describes the \nconcentration of the acid?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_058_a",
+          "label": "A",
+          "text_en": "Molarity 36.6 M, Normality 18.3 N, Mole fraction 0.1",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_058_b",
+          "label": "B",
+          "text_en": "Molarity 18.3 M, Normality 36.6 N, Mole fraction 0.9",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_058_c",
+          "label": "C",
+          "text_en": "Molarity 1.83 M, Normality 3.66 N, Mole fraction 0.9",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_058_d",
+          "label": "D",
+          "text_en": "Molarity 18.3 M, Normality 3.66 N, Mole fraction 0.9",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In 1.00 L, solution mass is 1830 g and H₂SO₄ mass is 1793.4 g, about 18.3 mol. Thus molarity ≈18.3 M, normality \n≈36.6 N for a diprotic acid, and mole fraction is about 0.9.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_059",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 59,
+      "question_text_en": "How do you prepare 500mL of 1N Ca(OH)₂ solution?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "Correct preparation requires 18.5 g Ca(OH)₂ in 500 mL; no option states this.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_059_a",
+          "label": "A",
+          "text_en": "By dissolving 74 g of Ca(OH)₂ in 500 mL of solution.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_059_b",
+          "label": "B",
+          "text_en": "By dissolving 37 g of Ca(OH)₂ in 1 liter of solution.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_059_c",
+          "label": "C",
+          "text_en": "By dissolving 37 g of Ca(OH)₂ in 500 mL of solution.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_059_d",
+          "label": "D",
+          "text_en": "By dissolving 74 g of Ca(OH)₂ in 1 liter of solution.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ca(OH)₂ has equivalent mass 74/2 = 37 g per equivalent. A 1 N, 0.500 L solution needs 18.5 g, which is absent from \nthe options.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_060",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2013,
+      "question_number": 60,
+      "question_text_en": "The K a of acetic acid CH₃ COOH is 1.8 x 10⁻⁵. What is the percent ionization of 1M of CH₃ COOH?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "Calculated percent ionization is about 0.424%; no listed option matches.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_060_a",
+          "label": "A",
+          "text_en": "1.42",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_060_b",
+          "label": "B",
+          "text_en": "3.6",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_060_c",
+          "label": "C",
+          "text_en": "4.2",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_060_d",
+          "label": "D",
+          "text_en": "1.34",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For 1.0 M CH₃COOH with Ka = 1.8×10⁻⁵, [H⁺] ≈ √KaC = 4.24×10⁻³ M, giving about 0.424% ionization. None of the \nlisted percentages matches.",
+        "key_concept": "Curriculum link: Grade 10 Chemistry — Unit 2: Solutions"
+      }
+    },
+    {
+      "id": "q_chem_2013_061",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 61,
+      "question_text_en": "The mathematical expressions for Faraday's first law is summarized as",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_061_a",
+          "label": "A",
+          "text_en": "m= ^Mt / nF",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_061_b",
+          "label": "B",
+          "text_en": "n= ^mlt / MF",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_061_c",
+          "label": "C",
+          "text_en": "m= ^mt / F",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_061_d",
+          "label": "D",
+          "text_en": "M= ^mlt / nF",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Faraday’s law gives m = MIt/(nF), where M is molar mass, I current, t time, n electrons per ion, and F Faraday \nconstant.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_062",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 62,
+      "question_text_en": "In the electrolysis of copper sulphate solution using graphite electrodes, O₂ is liberated at the anode and copper metal is \ndeposited at the cathode. If the electrolysis of CuSO₄ is performed using copper electrode, what happens at the anode and \ncathode?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_062_a",
+          "label": "A",
+          "text_en": "At the anode H₂ is liberated, whereas copper is deposited at the cathode.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_062_b",
+          "label": "B",
+          "text_en": "At the anode the copper electrode dissolves and copper metal is deposited at the cathode.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_062_c",
+          "label": "C",
+          "text_en": "No electrochemical reaction takes place involving copper.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_062_d",
+          "label": "D",
+          "text_en": "At the anode copper is reduced, whereas copper is oxidized at the cathode.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "With copper electrodes, the anode dissolves: Cu → Cu²⁺ + 2e⁻, while Cu²⁺ is reduced and plated at the cathode.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_063",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 63,
+      "question_text_en": "The statement 'the amount of a substance consumed or of produced in an electrolytic cell is directly proportional to the \namount of electricity that passes through the cell' is known as",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_063_a",
+          "label": "A",
+          "text_en": "Raoult's law.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_063_b",
+          "label": "B",
+          "text_en": "Dalton's law.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_063_c",
+          "label": "C",
+          "text_en": "Henry's law.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_063_d",
+          "label": "D",
+          "text_en": "Faraday's law.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "That proportionality between amount electrolyzed and electric charge is Faraday’s first law of electrolysis.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_064",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 64,
+      "question_text_en": "Given the standard reduction potentials: Cu +0.34 V, Pb −0.13 V, Ni −0.25 V, Cd −0.40 V, Zn −0.76 V, Al −1.66 V, Ca −2.87 \nV, K −2.93 V. Which statement is correct about the reactivity of the metals?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_064_a",
+          "label": "A",
+          "text_en": "K is the strongest reducing agent among the listed metals.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_064_b",
+          "label": "B",
+          "text_en": "Cu is the strongest reducing agent in the group.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_064_c",
+          "label": "C",
+          "text_en": "Pb is more easily oxidized than Al.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_064_d",
+          "label": "D",
+          "text_en": "The reaction Cu + Zn²⁺ ⇌ Cu²⁺ + Zn is spontaneous.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A more negative standard reduction potential corresponds to a metal that is more readily oxidized and therefore a \nstronger reducing agent. K is strongest among the listed metals.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_065",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochem",
+      "exam_year": 2013,
+      "question_number": 65,
+      "question_text_en": "One of the following is NOT true about the effects of corrosion?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochem",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_065_a",
+          "label": "A",
+          "text_en": "It causes enormous damage to buildings, bridges, ships and cars.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_065_b",
+          "label": "B",
+          "text_en": "It causes deterioration of metals by spontaneous chemical process.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_065_c",
+          "label": "C",
+          "text_en": "Corrosion forms protection oxide layers to prevent damage.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_065_d",
+          "label": "D",
+          "text_en": "Damage from corrosion costs billions of dollars annually.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Corrosion is damaging oxidation of metals. Although some oxide films can be protective (passivation), that is not an \n“effect of corrosion” in the intended damaging sense.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 2: Electrochemistry"
+      }
+    },
+    {
+      "id": "q_chem_2013_066",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 66,
+      "question_text_en": "Which statement is true about catalysts?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_066_a",
+          "label": "A",
+          "text_en": "A positive catalyst decreases the rate of a reaction by increasing the activation energy.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_066_b",
+          "label": "B",
+          "text_en": "A catalyst slows down or speeds up a reaction, itself being consumed.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_066_c",
+          "label": "C",
+          "text_en": "The role of a catalyst is to increase or decrease the rate of a reaction by lowering or increasing the activation energy.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_066_d",
+          "label": "D",
+          "text_en": "A negative catalyst increases the rate of a reaction by decreasing the value of activation energy.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Catalysts modify reaction rate by providing an alternative pathway with different activation energy. The wording in C \nbest captures the intended distinction between positive and negative catalysts.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_067",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 67,
+      "question_text_en": "According to the transition state theory",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_067_a",
+          "label": "A",
+          "text_en": "in the activated complex, the original bonds are weakened and the new bonds are partially formed.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_067_b",
+          "label": "B",
+          "text_en": "the collision between two reacting species results in the formation of an activated complex, which has less energy than both \nthe reactants and products.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_067_c",
+          "label": "C",
+          "text_en": "the standard reaction enthalpy (ΔH°) depends on the magnitude of the activation energy (Ea).",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_067_d",
+          "label": "D",
+          "text_en": "the activation energy is the energy that must be absorbed or released by reactants to reach the activated complex.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "At the transition state, old bonds are partly broken and new bonds are partly formed; this high-energy arrangement is \nthe activated complex.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_068",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 68,
+      "question_text_en": "Which of the following is true about the rate reactant?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_068_a",
+          "label": "A",
+          "text_en": "The value of a rate constant tells us how fast or slow a reaction is.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_068_b",
+          "label": "B",
+          "text_en": "It expresses the relationship between the rate of a chemical reaction and the volume of reacting species.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_068_c",
+          "label": "C",
+          "text_en": "A small rate constant indicates a faster reaction and a larger rate indicates a slower reaction.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_068_d",
+          "label": "D",
+          "text_en": "The value of a rate constant is independent of reaction conditions.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For a specified reaction and temperature, the magnitude of the rate constant k indicates how fast the reaction \nproceeds.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_069",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 69,
+      "question_text_en": "For a first order reaction, the concentration versus time of the reaction mixture is given by the following graph If a is the initial \nconcentration of the reactant and if the half-life is the 1hr, after how many hours would be the concentration of reactant \nproduced to a/32?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_069_a",
+          "label": "A",
+          "text_en": "4hr",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_069_b",
+          "label": "B",
+          "text_en": "1hr",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_069_c",
+          "label": "C",
+          "text_en": "3hr",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_069_d",
+          "label": "D",
+          "text_en": "5hr",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "a/32 = a/(2⁵), so five half-lives are required. At 1 hour per half-life, the time is 5 hours.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_070",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_kinetics",
+      "exam_year": 2013,
+      "question_number": 70,
+      "question_text_en": "The mathematical expression log k=(-E a /2.303R)1/T + log A derived from the Arrhenius equation is of important as it \nshows",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_kinetics",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_070_a",
+          "label": "A",
+          "text_en": "for a given value of activation energy the value of the rate constant increases as the temperature increases.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_070_b",
+          "label": "B",
+          "text_en": "reactions with larger activation energies have higher values of k and are therefore faster.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_070_c",
+          "label": "C",
+          "text_en": "for a given value of activation energy, the value of the rate constant decreases as the temperature increases.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_070_d",
+          "label": "D",
+          "text_en": "reactions with larger activation energies, the value of the rate constant decreases as the temperature increases.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Arrhenius behavior shows that, for fixed activation energy, k increases as temperature increases.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 4: Chemical Kinetics"
+      }
+    },
+    {
+      "id": "q_chem_2013_071",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 71,
+      "question_text_en": "Which of the following is true about isotopes? Isotopes of an element have",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_071_a",
+          "label": "A",
+          "text_en": "different number of neutrons and same number of protons.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_071_b",
+          "label": "B",
+          "text_en": "the same number of electrons and neutrons.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_071_c",
+          "label": "C",
+          "text_en": "the same atomic mass but different atomic numbers.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_071_d",
+          "label": "D",
+          "text_en": "different physical and chemical properties.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Isotopes have the same proton number (same element) but different neutron numbers, so their mass numbers differ.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_072",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 72,
+      "question_text_en": "The following diagrammatic representations show the shape for various orbitals. Which one represents the dᶻ² orbital?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "image_dependent",
+      "review_note": "The four orbital diagrams were not preserved in the supplied ZIP. The concept is explained, but an answer letter \nis not fabricated.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_072_a",
+          "label": "A",
+          "text_en": "[Diagram option unavailable in supplied archive]",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_072_b",
+          "label": "B",
+          "text_en": "[Diagram option unavailable in supplied archive]",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_072_c",
+          "label": "C",
+          "text_en": "[Diagram option unavailable in supplied archive]",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_072_d",
+          "label": "D",
+          "text_en": "[Diagram option unavailable in supplied archive]",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The dᶻ² orbital has two lobes along the z-axis and a doughnut-shaped torus around the nucleus in the xy-plane. The \nsupplied ZIP does not preserve the four diagram options, so the option letter cannot be verified.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_073",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 73,
+      "question_text_en": "Silver (Z = 47) has two naturally occurring isotopes. Given ¹⁰⁷Ag: mass 106.90509 amu, abundance 51.84%; and ¹⁰⁹Ag: mass \n108.90476 amu, abundance 48.16%, calculate the atomic mass of Ag.",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_073_a",
+          "label": "A",
+          "text_en": "107.94 amu",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_073_b",
+          "label": "B",
+          "text_en": "108.9 amu",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_073_c",
+          "label": "C",
+          "text_en": "107.86 amu",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_073_d",
+          "label": "D",
+          "text_en": "107.4 amu",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Weighted average = 106.90509(0.5184) + 108.90476(0.4816) ≈ 107.868 amu, matching 107.86 amu.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_074",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 74,
+      "question_text_en": "Which statement correctly describes Heisenberg's uncertainty principle?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_074_a",
+          "label": "A",
+          "text_en": "A particle with a mass moving at a given speed can be described by the wave characteristic of material particles.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_074_b",
+          "label": "B",
+          "text_en": "If we measure the momentum of a particle precisely then its position will be correspondingly precise.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_074_c",
+          "label": "C",
+          "text_en": "Both the location and the momentum of a subatomic particle like the electron cannot be precisely known.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_074_d",
+          "label": "D",
+          "text_en": "A small particle like the reaction can behave both as a particle and a wave.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Heisenberg’s uncertainty principle states that position and momentum cannot both be known with arbitrary precision \nat the same time.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_075",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic",
+      "exam_year": 2013,
+      "question_number": 75,
+      "question_text_en": "Which of the following statements is correct about energy changes when an electron changes its energy level?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "multiple_valid_answers",
+      "review_note": "Non-unique item: A and D are both correct descriptions for downward and upward electronic transitions, \nrespectively.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_075_a",
+          "label": "A",
+          "text_en": "When an electron falls from a higher energy level to a lower energy level, energy equal to the difference between the two \nenergy levels is emitted.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_075_b",
+          "label": "B",
+          "text_en": "When an electron jumps from a lower energy level to a higher level, a photon is emitted with energy equal to the difference \nbetween the two energy levels.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_075_c",
+          "label": "C",
+          "text_en": "When an electron falls from a higher energy level to a lower energy level, the energy emitted is greater than the difference \nbetween the two energy levels.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_075_d",
+          "label": "D",
+          "text_en": "When an electron jumps from a lower energy level to a higher energy level, energy equal to the difference between the two \nenergy levels is absorbed.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For an upward transition, the atom absorbs ΔE; for a downward transition, it emits ΔE. Thus A and D state the two \ncomplementary correct cases, making the item non-unique.",
+        "key_concept": "Curriculum link: Grade 11 Chemistry — Unit 1: Atomic Structure and Periodic Properties of the Elements"
+      }
+    },
+    {
+      "id": "q_chem_2013_076",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 76,
+      "question_text_en": "According to the Lewis definition of an acid, an acid is a substance that",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_076_a",
+          "label": "A",
+          "text_en": "accepts a H+ ion.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_076_b",
+          "label": "B",
+          "text_en": "dissociates in water to yield H3O+.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_076_c",
+          "label": "C",
+          "text_en": "accepts a pair of electrons.",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_076_d",
+          "label": "D",
+          "text_en": "donates an OH- ion.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A Lewis acid accepts an electron pair.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_077",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 77,
+      "question_text_en": "Water is a weak electrolyte because",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_077_a",
+          "label": "A",
+          "text_en": "it can accept a proton from an acid and donate a proton to a base.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_077_b",
+          "label": "B",
+          "text_en": "it has a very high ionic product, Kw.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_077_c",
+          "label": "C",
+          "text_en": "it acts both as Bronsted-Lowry and base.",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_077_d",
+          "label": "D",
+          "text_en": "it undergoes a reversible dissociation with a very low ionic product, Kw.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Pure water ionizes only very slightly and reversibly, so the concentration of ions is extremely small and water is a \nweak electrolyte.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_078",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 78,
+      "question_text_en": "Which of the following reactions represent the amphiprotic behavior of water?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_078_a",
+          "label": "A",
+          "text_en": "HCl + H₂O ⇌ H₃O⁺ + Cl⁻ and NH₃ + H₂O ⇌ NH₄⁺ + OH⁻",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_078_b",
+          "label": "B",
+          "text_en": "HCl + H₂O → H⁺ + Cl⁻ and NaOH + H₂O → Na⁺ + OH⁻",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_078_c",
+          "label": "C",
+          "text_en": "H₂O + H⁺ ⇌ H₃O⁺ and NH₃ + H⁺ ⇌ NH₄⁺",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_078_d",
+          "label": "D",
+          "text_en": "H₃O⁺ + OH⁻ → 2H₂O and H⁺ + OH⁻ → H₂O",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In the HCl reaction water accepts H⁺ (acts as a base); in the NH₃ reaction water donates H⁺ (acts as an acid). \nTogether these show amphiprotic behavior.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_079",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 79,
+      "question_text_en": "For an acidic solution, which of the following is correct?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 22,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_079_a",
+          "label": "A",
+          "text_en": "pH > pOH and pKw − pH < 7",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_079_b",
+          "label": "B",
+          "text_en": "pH = pOH and pH = ½pKw = 7",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_079_c",
+          "label": "C",
+          "text_en": "pH < 7 and [H⁺] < 1 × 10⁻⁷ M",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_079_d",
+          "label": "D",
+          "text_en": "pH < pOH and pKw − pH > 7",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "At 25°C an acidic solution has pH < 7, pOH > 7, and therefore pH < pOH. Since pOH = pKw − pH, D is correct.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts"
+      }
+    },
+    {
+      "id": "q_chem_2013_080",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid_base",
+      "exam_year": 2013,
+      "question_number": 80,
+      "question_text_en": "What is the pH of 0.25 M HF solution at 25°C? HF(aq) + H₂O(l) ⇌ H₃O⁺(aq) + F⁻(aq), Kₐ = 6.8 × 10⁻⁴.",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid_base",
+      "curriculum_framework": "new_curriculum_2023",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2013 E.C. Booklet 05",
+      "source_page": 23,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_chem_2013_080_a",
+          "label": "A",
+          "text_en": "1.89",
+          "is_correct": true
+        },
+        {
+          "id": "c_chem_2013_080_b",
+          "label": "B",
+          "text_en": "12.1",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_080_c",
+          "label": "C",
+          "text_en": "1.741",
+          "is_correct": false
+        },
+        {
+          "id": "c_chem_2013_080_d",
+          "label": "D",
+          "text_en": "12.3",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For HF, Ka = x²/(0.25−x). Solving gives x ≈ 0.0127 M H₃O⁺ and pH ≈ 1.90, so 1.89 is the closest option.",
+        "key_concept": "Curriculum link: Grade 12 Chemistry — Unit 1: Acid-Base Concepts \n \nPage 23"
+      }
+    }
+  ]
+}

@@ -28,6 +28,8 @@ class LocalContentRepository implements ContentRepository {
                 : const [
                     'assets/seed/content_seed_g12.json',
                     'assets/seed/biology_2013_seed.json',
+                    'assets/seed/chemistry_2013_seed.json',
+                    'assets/seed/chemistry_2014_seed.json',
                     'assets/seed/math_2014_seed.json',
                     'assets/seed/physics_2014_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
@@ -467,35 +469,138 @@ class LocalContentRepository implements ContentRepository {
     } else if (lower.contains('chem')) {
       return const [
         Unit(
-            id: 'chem_u1',
+            id: 'chem_g9_u1',
             subjectId: 'chemistry_g12',
             unitNumber: 1,
-            titleEn: 'Solutions and Solubility',
-            titleAm: 'መፍትሔዎችና የመሟሟት ባህሪ'),
+            titleEn: '[Grade 9] Unit 1: Chemistry and Its Importance',
+            titleAm: 'ኬሚስትሪና ጠቀሜታው'),
         Unit(
-            id: 'chem_u2',
+            id: 'chem_g9_u2',
             subjectId: 'chemistry_g12',
             unitNumber: 2,
-            titleEn: 'Acid-Base Equilibria',
-            titleAm: 'የአሲድና ቤዝ ሚዛን'),
+            titleEn: '[Grade 9] Unit 2: Measurements and Scientific Methods',
+            titleAm: 'መለኪያዎችና ሳይንሳዊ ዘዴዎች'),
         Unit(
-            id: 'chem_u3',
+            id: 'chem_g9_u3',
             subjectId: 'chemistry_g12',
             unitNumber: 3,
-            titleEn: 'Electrochemistry & Redox Reactions',
-            titleAm: 'ኤሌክትሮኬሚስትሪ'),
+            titleEn: '[Grade 9] Unit 3: Structure of the Atom',
+            titleAm: 'የአተም መዋቅር'),
         Unit(
-            id: 'chem_u4',
+            id: 'chem_g9_u4',
             subjectId: 'chemistry_g12',
             unitNumber: 4,
-            titleEn: 'Chemistry in Industry & Elements',
-            titleAm: 'ኬሚስትሪ በኢንዱስትሪ'),
+            titleEn: '[Grade 9] Unit 4: Periodic Classification of Elements',
+            titleAm: 'የንጥረ ነገሮች ወቅታዊ ምደባ'),
         Unit(
-            id: 'chem_u5',
+            id: 'chem_g9_u5',
             subjectId: 'chemistry_g12',
             unitNumber: 5,
-            titleEn: 'Polymers and Biomolecules',
-            titleAm: 'ፖሊመሮችና ባዮሞለኪዩሎች'),
+            titleEn: '[Grade 9] Unit 5: Chemical Bonding',
+            titleAm: 'ኬሚካላዊ ትስስር'),
+        Unit(
+            id: 'chem_g10_u1',
+            subjectId: 'chemistry_g12',
+            unitNumber: 6,
+            titleEn: '[Grade 10] Unit 1: Chemical Reactions and Stoichiometry',
+            titleAm: 'ኬሚካላዊ ግብረ-መልስና ስቶይኪዮሜትሪ'),
+        Unit(
+            id: 'chem_g10_u2',
+            subjectId: 'chemistry_g12',
+            unitNumber: 7,
+            titleEn: '[Grade 10] Unit 2: Solutions',
+            titleAm: 'መፍትሔዎችና የመሟሟት ባህሪ'),
+        Unit(
+            id: 'chem_g10_u3',
+            subjectId: 'chemistry_g12',
+            unitNumber: 8,
+            titleEn: '[Grade 10] Unit 3: Important Inorganic Compounds',
+            titleAm: 'ጠቃሚ ኢ-ኦርጋኒክ ውህዶች'),
+        Unit(
+            id: 'chem_g10_u4',
+            subjectId: 'chemistry_g12',
+            unitNumber: 9,
+            titleEn: '[Grade 10] Unit 4: Energy Changes and Electrochemistry',
+            titleAm: 'የሃይል ለውጥና ኤሌክትሮኬሚስትሪ'),
+        Unit(
+            id: 'chem_g10_u5',
+            subjectId: 'chemistry_g12',
+            unitNumber: 10,
+            titleEn: '[Grade 10] Unit 5: Metals and Nonmetals',
+            titleAm: 'ብረቶችና ኢ-ብረቶች'),
+        Unit(
+            id: 'chem_g10_u6',
+            subjectId: 'chemistry_g12',
+            unitNumber: 11,
+            titleEn: '[Grade 10] Unit 6: Hydrocarbons and Their Natural Sources',
+            titleAm: 'ሃይድሮካርቦኖችና የተፈጥሮ ምንጮቻቸው'),
+        Unit(
+            id: 'chem_g11_u1',
+            subjectId: 'chemistry_g12',
+            unitNumber: 12,
+            titleEn: '[Grade 11] Unit 1: Atomic Structure and Periodic Properties',
+            titleAm: 'የአተም መዋቅርና ወቅታዊ ባህሪያት'),
+        Unit(
+            id: 'chem_g11_u2',
+            subjectId: 'chemistry_g12',
+            unitNumber: 13,
+            titleEn: '[Grade 11] Unit 2: Chemical Bonding',
+            titleAm: 'ኬሚካላዊ ትስስርና ሞለኪዩላር መዋቅር'),
+        Unit(
+            id: 'chem_g11_u3',
+            subjectId: 'chemistry_g12',
+            unitNumber: 14,
+            titleEn: '[Grade 11] Unit 3: Physical States of Matter',
+            titleAm: 'የቁስ አካላዊ ሁኔታዎች'),
+        Unit(
+            id: 'chem_g11_u4',
+            subjectId: 'chemistry_g12',
+            unitNumber: 15,
+            titleEn: '[Grade 11] Unit 4: Chemical Kinetics',
+            titleAm: 'ኬሚካላዊ ኪነቲክስና የግብረ-መልስ ፍጥነት'),
+        Unit(
+            id: 'chem_g11_u5',
+            subjectId: 'chemistry_g12',
+            unitNumber: 16,
+            titleEn: '[Grade 11] Unit 5: Chemical Equilibrium',
+            titleAm: 'ኬሚካላዊ ሚዛን'),
+        Unit(
+            id: 'chem_g11_u6',
+            subjectId: 'chemistry_g12',
+            unitNumber: 17,
+            titleEn:
+                '[Grade 11] Unit 6: Some Important Oxygen-containing Organic Compounds',
+            titleAm: 'ኦክስጅን የያዙ ኦርጋኒክ ውህዶች'),
+        Unit(
+            id: 'chem_g12_u1',
+            subjectId: 'chemistry_g12',
+            unitNumber: 18,
+            titleEn: '[Grade 12] Unit 1: Acid-Base Concepts',
+            titleAm: 'የአሲድና ቤዝ ጽንሰ-ሃሳቦች'),
+        Unit(
+            id: 'chem_g12_u2',
+            subjectId: 'chemistry_g12',
+            unitNumber: 19,
+            titleEn: '[Grade 12] Unit 2: Electrochemistry',
+            titleAm: 'ኤሌክትሮኬሚስትሪ'),
+        Unit(
+            id: 'chem_g12_u3',
+            subjectId: 'chemistry_g12',
+            unitNumber: 20,
+            titleEn: '[Grade 12] Unit 3: Industrial Chemistry',
+            titleAm: 'ኢንዱስትሪያል ኬሚስትሪ'),
+        Unit(
+            id: 'chem_g12_u4',
+            subjectId: 'chemistry_g12',
+            unitNumber: 21,
+            titleEn: '[Grade 12] Unit 4: Polymers',
+            titleAm: 'ፖሊመሮች'),
+        Unit(
+            id: 'chem_g12_u5',
+            subjectId: 'chemistry_g12',
+            unitNumber: 22,
+            titleEn: '[Grade 12] Unit 5: Introduction to Environmental Chemistry',
+            titleAm: 'የአካባቢ ኬሚስትሪ'),
       ];
     } else if (lower.contains('eng')) {
       return const [
@@ -740,6 +845,7 @@ class LocalContentRepository implements ContentRepository {
     int? endYear,
     List<int>? examYears,
     int? limit,
+    bool practiceEligibleOnly = false,
   }) async {
     await initializeSeedData();
 
@@ -751,7 +857,13 @@ class LocalContentRepository implements ContentRepository {
           !matchesSubjectDiscipline(q.subjectId, subjectId)) {
         return false;
       }
-      if (q.verificationStatus != VerificationStatus.published) return false;
+      if (q.verificationStatus == VerificationStatus.archived ||
+          q.verificationStatus == VerificationStatus.draft) {
+        return false;
+      }
+      if (practiceEligibleOnly && !q.isPracticeEligible) {
+        return false;
+      }
       if (unitId != null &&
           q.unitId != unitId &&
           q.curriculumUnitId != unitId) {
@@ -811,7 +923,8 @@ class LocalContentRepository implements ContentRepository {
     final Map<int, List<Question>> byYear = {};
     for (final q in matching) {
       if (q.examYear != null &&
-          q.verificationStatus == VerificationStatus.published) {
+          q.verificationStatus != VerificationStatus.archived &&
+          q.verificationStatus != VerificationStatus.draft) {
         byYear.putIfAbsent(q.examYear!, () => []).add(q);
       }
     }
@@ -868,7 +981,10 @@ class LocalContentRepository implements ContentRepository {
           !matchesSubjectDiscipline(q.subjectId, subjectId)) {
         return false;
       }
-      if (q.verificationStatus != VerificationStatus.published) return false;
+      if (q.verificationStatus == VerificationStatus.archived ||
+          q.verificationStatus == VerificationStatus.draft) {
+        return false;
+      }
       if (examYear != null && q.examYear != examYear) return false;
       return true;
     });

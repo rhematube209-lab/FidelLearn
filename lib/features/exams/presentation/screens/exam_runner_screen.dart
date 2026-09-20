@@ -116,21 +116,27 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         widget.exam.examType == ExamType.mistakeRetry) {
       final user = ref.read(currentUserProvider).valueOrNull;
       final userId = user?.id ?? 'guest_student';
-      final isCorrect = currentQ.correctChoice.id == choiceId;
-      try {
-        final outcomeService = ref.read(mistakeOutcomeServiceProvider);
-        await outcomeService.processQuestionOutcome(
-          userId: userId,
-          questionId: currentQ.id,
-          subjectId: currentQ.subjectId,
-          unitId: currentQ.unitId,
-          topicId: currentQ.topicId,
-          attemptId: _attempt.id,
-          selectedChoiceId: choiceId,
-          isCorrect: isCorrect,
-          sessionType: widget.exam.examType,
-        );
-      } catch (_) {}
+      final selectedChoice = currentQ.choices.firstWhere(
+        (c) => c.id == choiceId,
+        orElse: () => currentQ.choices.first,
+      );
+      final isCorrect = currentQ.isScorable && selectedChoice.isCorrect;
+      if (currentQ.isScorable) {
+        try {
+          final outcomeService = ref.read(mistakeOutcomeServiceProvider);
+          await outcomeService.processQuestionOutcome(
+            userId: userId,
+            questionId: currentQ.id,
+            subjectId: currentQ.subjectId,
+            unitId: currentQ.unitId,
+            topicId: currentQ.topicId,
+            attemptId: _attempt.id,
+            selectedChoiceId: choiceId,
+            isCorrect: isCorrect,
+            sessionType: widget.exam.examType,
+          );
+        } catch (_) {}
+      }
     }
   }
 
@@ -353,7 +359,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
       for (final resp in finishedAttempt.responses.values) {
         if (resp.selectedChoiceId == null) continue;
         final q = qMap[resp.questionId];
-        if (q == null) continue;
+        if (q == null || !q.isScorable) continue;
 
         try {
           await outcomeService.processQuestionOutcome(
@@ -1548,18 +1554,26 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     bool isDark,
   ) {
     final isCorrect = response.isCorrect;
-    final correctChoice = question.correctChoice;
+    final correctLabels = question.choices
+        .where((c) => c.isCorrect)
+        .map((c) => c.label)
+        .join(' / ');
+    final isDefective = !question.isScorable;
 
     return Container(
       decoration: BoxDecoration(
-        color: isCorrect
-            ? (isDark ? const Color(0x1F10B981) : const Color(0xFFF0FDF4))
-            : (isDark ? const Color(0x1FEF4444) : const Color(0xFFFEF2F2)),
+        color: isDefective
+            ? (isDark ? const Color(0x1FF59E0B) : const Color(0xFFFFFBEB))
+            : (isCorrect
+                ? (isDark ? const Color(0x1F10B981) : const Color(0xFFF0FDF4))
+                : (isDark ? const Color(0x1FEF4444) : const Color(0xFFFEF2F2))),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isCorrect
-              ? const Color(0xFF10B981).withValues(alpha: 0.5)
-              : const Color(0xFFEF4444).withValues(alpha: 0.5),
+          color: isDefective
+              ? const Color(0xFFF59E0B).withValues(alpha: 0.5)
+              : (isCorrect
+                  ? const Color(0xFF10B981).withValues(alpha: 0.5)
+                  : const Color(0xFFEF4444).withValues(alpha: 0.5)),
           width: 1.5,
         ),
       ),
@@ -1570,21 +1584,31 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           Row(
             children: [
               Icon(
-                isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                color: isCorrect
-                    ? const Color(0xFF059669)
-                    : const Color(0xFFDC2626),
+                isDefective
+                    ? Icons.info_outline_rounded
+                    : (isCorrect
+                        ? Icons.check_circle_rounded
+                        : Icons.cancel_rounded),
+                color: isDefective
+                    ? const Color(0xFFD97706)
+                    : (isCorrect
+                        ? const Color(0xFF059669)
+                        : const Color(0xFFDC2626)),
                 size: 22,
               ),
               const SizedBox(width: 8),
               Text(
-                isCorrect ? 'Correct! Well done.' : 'Incorrect Choice',
+                isDefective
+                    ? 'Source Item Notice'
+                    : (isCorrect ? 'Correct! Well done.' : 'Incorrect Choice'),
                 style: TextStyle(
                   fontSize: 14.5,
                   fontWeight: FontWeight.w800,
-                  color: isCorrect
-                      ? const Color(0xFF059669)
-                      : const Color(0xFFDC2626),
+                  color: isDefective
+                      ? const Color(0xFFD97706)
+                      : (isCorrect
+                          ? const Color(0xFF059669)
+                          : const Color(0xFFDC2626)),
                 ),
               ),
               const Spacer(),
@@ -1592,25 +1616,68 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
                 decoration: BoxDecoration(
-                  color: (isCorrect
-                          ? const Color(0xFF059669)
-                          : const Color(0xFFDC2626))
+                  color: (isDefective
+                          ? const Color(0xFFD97706)
+                          : (isCorrect
+                              ? const Color(0xFF059669)
+                              : const Color(0xFFDC2626)))
                       .withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  'Correct: Choice ${correctChoice.label}',
+                  isDefective
+                      ? (correctLabels.isNotEmpty
+                          ? 'Valid: $correctLabels'
+                          : 'No valid option')
+                      : 'Correct: Choice $correctLabels',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    color: isCorrect
-                        ? const Color(0xFF059669)
-                        : const Color(0xFFDC2626),
+                    color: isDefective
+                        ? const Color(0xFFD97706)
+                        : (isCorrect
+                            ? const Color(0xFF059669)
+                            : const Color(0xFFDC2626)),
                   ),
                 ),
               ),
             ],
           ),
+          if (question.reviewNote != null &&
+              question.reviewNote!.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color:
+                    isDark ? const Color(0x33B45309) : const Color(0xFFFEF3C7),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isDark
+                      ? const Color(0x55F59E0B)
+                      : const Color(0xFFFDE68A),
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.rate_review_outlined,
+                      size: 16, color: Color(0xFFD97706)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Review Note: ${question.reviewNote}',
+                      style: const TextStyle(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFFB45309),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           Text(
             question.explanation.solutionTextEn,

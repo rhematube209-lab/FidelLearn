@@ -30,6 +30,7 @@ abstract class ContentRepository {
     int? endYear,
     List<int>? examYears,
     int? limit,
+    bool practiceEligibleOnly = false,
   });
   Future<Question?> getQuestionById(String id);
   Future<List<int>> getAvailableExamYears(String subjectId);

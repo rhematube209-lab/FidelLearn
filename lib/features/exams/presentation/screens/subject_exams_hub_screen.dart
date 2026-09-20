@@ -124,6 +124,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       defaultDownloaded.add(2014);
     } else if (cleanId.contains('bio')) {
       defaultDownloaded.add(2013);
+    } else if (cleanId.contains('chem')) {
+      defaultDownloaded.add(2013);
+      defaultDownloaded.add(2014);
     }
 
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
@@ -321,6 +324,35 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ፊዚክስ ማጠቃለያ ፈተና (የተፈጥሮ ሳይንስ - 32 ጥያቄዎች፣ ጥራዝ 11 ከተሟላ ማብራሪያ ጋር)።',
       );
     }
+    final isChem =
+        LocalContentRepository.matchesSubjectId(subject.id, 'chemistry_g12') ||
+            subject.nameEn.toLowerCase().contains('chem');
+    if (isChem && base.ethiopianYear == 2013) {
+      return base.copyWith(
+        standardQuestionCount: 80,
+        bookletCode: 'Booklet Code 05',
+        standardTimeMinutes: 150,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL 80 Qs',
+        descriptionEn:
+            'Official 2013/14 E.C. (Nov 2021 G.C.) National Exam (80 Questions, Subject Code 05, Time Allowed 2h 30m) administered by NEAEA.',
+        descriptionAm:
+            'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2013 ዓ.ም. ባለ 80 ጥያቄ ኬሚስትሪ ፈተና (የትምህርት ኮድ 05፣ የተፈቀደው ጊዜ 2 ሰዓት ከ30 ደቂቃ)።',
+      );
+    }
+    if (isChem && base.ethiopianYear == 2014) {
+      return base.copyWith(
+        standardQuestionCount: 70,
+        bookletCode: 'N/A',
+        standardTimeMinutes: 0,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL 70 Qs',
+        descriptionEn:
+            'Official 2014 E.C. (2022 G.C.) National Exam. Archive metadata states 80 questions; only Questions 1–70 are recoverable in archive.',
+        descriptionAm:
+            'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና። በማህደሩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 70 ጥያቄዎች (ጥያቄ 1-70) ብቻ ናቸው።',
+      );
+    }
     return base;
   }
 
@@ -331,6 +363,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     final isBio =
         LocalContentRepository.matchesSubjectId(subject.id, 'biology_g12') ||
             subject.nameEn.toLowerCase().contains('bio');
+    final isChem =
+        LocalContentRepository.matchesSubjectId(subject.id, 'chemistry_g12') ||
+            subject.nameEn.toLowerCase().contains('chem');
 
     if (isPhys) {
       final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
@@ -343,6 +378,14 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       final others =
           _availableYears.where((y) => y.ethiopianYear != 2013).toList();
       return [y2013, ...others];
+    }
+    if (isChem) {
+      final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
+      final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
+      final others = _availableYears
+          .where((y) => y.ethiopianYear != 2014 && y.ethiopianYear != 2013)
+          .toList();
+      return [y2014, y2013, ...others];
     }
     return _availableYears;
   }
@@ -535,16 +578,23 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       builder: (dialogCtx) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
-            final bookletCode =
-                yearInfo.bookletCode.replaceAll('Booklet', '').trim();
-            final subjectCode = _getOfficialSubjectCode(subject);
+            final isChem = LocalContentRepository.matchesSubjectId(
+                    subject.id, 'chemistry_g12') ||
+                subject.nameEn.toLowerCase().contains('chem');
+            final isChem2014 = isChem && yearInfo.ethiopianYear == 2014;
+            final bookletCode = isChem2014
+                ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
+                : yearInfo.bookletCode.replaceAll('Booklet', '').trim();
+            final subjectCode = isChem2014
+                ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
+                : _getOfficialSubjectCode(subject);
             final streamName = _getStreamDisplayName(subject, isAmharic);
             final subjectName = isAmharic && subject.nameAm.isNotEmpty
                 ? subject.nameAm
                 : subject.nameEn;
             final hours = yearInfo.standardTimeMinutes ~/ 60;
             final mins = yearInfo.standardTimeMinutes % 60;
-            final timeAllowed = isTimed
+            final timeAllowed = (yearInfo.standardTimeMinutes > 0 && isTimed)
                 ? (isAmharic
                     ? (hours > 0 && mins > 0
                         ? '$hours ሰዓት ከ $mins ደቂቃ'
@@ -554,7 +604,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         : (hours > 0
                             ? (hours == 1 ? '1 Hour' : '$hours Hours')
                             : '$mins Min')))
-                : (isAmharic ? 'ያልተገደበ' : 'Untimed');
+                : (isChem2014
+                    ? (isAmharic ? 'በምንጩ አልተጠቀሰም' : 'Not provided in source')
+                    : (isAmharic ? 'ያልተገደበ' : 'Untimed'));
 
             return Dialog(
               backgroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
@@ -777,6 +829,48 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           ),
                         ),
                       ),
+                      if (isChem2014) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0x26F59E0B)
+                                : const Color(0xFFFFFBEB),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0x66F59E0B)
+                                  : const Color(0xFFFDE68A),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.info_outline_rounded,
+                                size: 18,
+                                color: Color(0xFFD97706),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  isAmharic
+                                      ? 'በምንጩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 70 ጥያቄዎች (ጥያቄ 1-70) ብቻ ናቸው። ጥያቄ 71-80 ሆን ተብሎ አልተፈጠረም።'
+                                      : 'Available in FidelLearn: 70 questions. Source note: Archive metadata references 80 questions, but only Questions 1–70 were recoverable in archive.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFFFDE68A)
+                                        : const Color(0xFF92400E),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
 
                       // =======================================================
                       // 📐 REFERENCE CONSTANTS (Page 1 Official Exam Document)

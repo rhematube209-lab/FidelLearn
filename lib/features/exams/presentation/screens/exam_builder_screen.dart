@@ -720,6 +720,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         startYear:
             _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
         endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
+        practiceEligibleOnly: true,
       );
 
       final unitCounts = await contentRepo.getUnitQuestionCounts(
@@ -774,6 +775,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
         startYear:
             _yearMode == ExamYearFilterMode.range ? _rangeStartYear : null,
         endYear: _yearMode == ExamYearFilterMode.range ? _rangeEndYear : null,
+        practiceEligibleOnly: true,
       );
 
       if (questions.isEmpty) {

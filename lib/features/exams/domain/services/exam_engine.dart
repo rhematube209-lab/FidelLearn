@@ -59,7 +59,7 @@ class ExamEngine {
 
     final updatedResp = existingResp.copyWith(
       selectedChoiceId: choiceId,
-      isCorrect: selectedChoice.isCorrect,
+      isCorrect: question.isScorable && selectedChoice.isCorrect,
       timeSpentSeconds: existingResp.timeSpentSeconds + timeSpentDeltaSeconds,
     );
 
@@ -97,10 +97,12 @@ class ExamEngine {
     int correct = 0;
     int incorrect = 0;
     int skipped = 0;
+    int scorableCount = 0;
 
     final Map<String, UserResponse> validatedResponses = {};
 
     for (final q in questions) {
+      if (q.isScorable) scorableCount++;
       final resp = currentAttempt.responses[q.id];
       if (resp == null || resp.selectedChoiceId == null) {
         skipped++;
@@ -112,18 +114,25 @@ class ExamEngine {
           isFlagged: resp?.isFlagged ?? false,
         );
       } else {
-        final isCorrect = q.correctChoice.id == resp.selectedChoiceId;
+        final selectedChoice = q.choices.firstWhere(
+          (c) => c.id == resp.selectedChoiceId,
+          orElse: () => q.choices.first,
+        );
+        final isCorrect = q.isScorable && selectedChoice.isCorrect;
         if (isCorrect) {
           correct++;
         } else {
-          incorrect++;
+          if (q.isScorable) {
+            incorrect++;
+          }
         }
         validatedResponses[q.id] = resp.copyWith(isCorrect: isCorrect);
       }
     }
 
-    final total =
-        questions.isNotEmpty ? questions.length : currentAttempt.totalQuestions;
+    final total = scorableCount > 0
+        ? scorableCount
+        : (questions.isNotEmpty ? questions.length : currentAttempt.totalQuestions);
     final percentage = total > 0 ? (correct / total) * 100.0 : 0.0;
 
     return currentAttempt.copyWith(

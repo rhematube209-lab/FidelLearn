@@ -8,11 +8,19 @@ enum VerificationStatus {
   approved,
   published,
   corrected,
-  archived;
+  archived,
+  verified,
+  correctedSource,
+  intendedAnswer,
+  multipleValidAnswers,
+  noValidOption,
+  imageDependent,
+  incompleteSource;
 
   static VerificationStatus fromString(String val) {
-    switch (val.toLowerCase()) {
+    switch (val.toLowerCase().replaceAll('-', '_')) {
       case 'review_required':
+      case 'reviewrequired':
         return VerificationStatus.reviewRequired;
       case 'approved':
         return VerificationStatus.approved;
@@ -22,6 +30,26 @@ enum VerificationStatus {
         return VerificationStatus.corrected;
       case 'archived':
         return VerificationStatus.archived;
+      case 'verified':
+        return VerificationStatus.verified;
+      case 'corrected_source':
+      case 'correctedsource':
+        return VerificationStatus.correctedSource;
+      case 'intended_answer':
+      case 'intendedanswer':
+        return VerificationStatus.intendedAnswer;
+      case 'multiple_valid_answers':
+      case 'multiplevalidanswers':
+        return VerificationStatus.multipleValidAnswers;
+      case 'no_valid_option':
+      case 'novalidoption':
+        return VerificationStatus.noValidOption;
+      case 'image_dependent':
+      case 'imagedependent':
+        return VerificationStatus.imageDependent;
+      case 'incomplete_source':
+      case 'incompletesource':
+        return VerificationStatus.incompleteSource;
       case 'draft':
       default:
         return VerificationStatus.draft;
@@ -40,6 +68,20 @@ enum VerificationStatus {
         return 'corrected';
       case VerificationStatus.archived:
         return 'archived';
+      case VerificationStatus.verified:
+        return 'verified';
+      case VerificationStatus.correctedSource:
+        return 'corrected_source';
+      case VerificationStatus.intendedAnswer:
+        return 'intended_answer';
+      case VerificationStatus.multipleValidAnswers:
+        return 'multiple_valid_answers';
+      case VerificationStatus.noValidOption:
+        return 'no_valid_option';
+      case VerificationStatus.imageDependent:
+        return 'image_dependent';
+      case VerificationStatus.incompleteSource:
+        return 'incomplete_source';
       case VerificationStatus.draft:
         return 'draft';
     }
@@ -156,6 +198,11 @@ class Question extends Equatable {
   final String sourceName;
   final int? sourcePage;
   final int contentVersion;
+  final int? questionNumber;
+  final String? reviewNote;
+  final String difficultySource; // 'source_provided' | 'fidel_learn_assigned' | 'educator_verified'
+  final bool isScorable;
+  final bool isPracticeEligible;
   final List<AnswerChoice> choices;
   final Explanation explanation;
 
@@ -167,6 +214,7 @@ class Question extends Equatable {
     required this.unitId,
     required this.topicId,
     this.examYear,
+    this.questionNumber,
     required this.questionTextEn,
     this.questionTextAm,
     this.diagramAsset,
@@ -176,7 +224,11 @@ class Question extends Equatable {
     this.curriculumTopicId,
     this.curriculumFramework,
     required this.difficulty,
+    this.difficultySource = 'fidel_learn_assigned',
     required this.verificationStatus,
+    this.reviewNote,
+    this.isScorable = true,
+    this.isPracticeEligible = true,
     required this.sourceName,
     this.sourcePage,
     required this.contentVersion,
@@ -191,6 +243,7 @@ class Question extends Equatable {
     String? unitId,
     String? topicId,
     int? examYear,
+    int? questionNumber,
     String? questionTextEn,
     String? questionTextAm,
     String? diagramAsset,
@@ -200,7 +253,11 @@ class Question extends Equatable {
     String? curriculumTopicId,
     String? curriculumFramework,
     String? difficulty,
+    String? difficultySource,
     VerificationStatus? verificationStatus,
+    String? reviewNote,
+    bool? isScorable,
+    bool? isPracticeEligible,
     String? sourceName,
     int? sourcePage,
     int? contentVersion,
@@ -215,6 +272,7 @@ class Question extends Equatable {
       unitId: unitId ?? this.unitId,
       topicId: topicId ?? this.topicId,
       examYear: examYear ?? this.examYear,
+      questionNumber: questionNumber ?? this.questionNumber,
       questionTextEn: questionTextEn ?? this.questionTextEn,
       questionTextAm: questionTextAm ?? this.questionTextAm,
       diagramAsset: diagramAsset ?? this.diagramAsset,
@@ -224,7 +282,11 @@ class Question extends Equatable {
       curriculumTopicId: curriculumTopicId ?? this.curriculumTopicId,
       curriculumFramework: curriculumFramework ?? this.curriculumFramework,
       difficulty: difficulty ?? this.difficulty,
+      difficultySource: difficultySource ?? this.difficultySource,
       verificationStatus: verificationStatus ?? this.verificationStatus,
+      reviewNote: reviewNote ?? this.reviewNote,
+      isScorable: isScorable ?? this.isScorable,
+      isPracticeEligible: isPracticeEligible ?? this.isPracticeEligible,
       sourceName: sourceName ?? this.sourceName,
       sourcePage: sourcePage ?? this.sourcePage,
       contentVersion: contentVersion ?? this.contentVersion,
@@ -263,6 +325,7 @@ class Question extends Equatable {
       unitId: json['unit_id']?.toString() ?? '',
       topicId: json['topic_id']?.toString() ?? '',
       examYear: (json['exam_year'] as num?)?.toInt(),
+      questionNumber: (json['question_number'] as num?)?.toInt(),
       questionTextEn: json['question_text_en']?.toString() ?? '',
       questionTextAm: json['question_text_am']?.toString(),
       diagramAsset:
@@ -278,9 +341,14 @@ class Question extends Equatable {
       curriculumTopicId: json['curriculum_topic_id']?.toString(),
       curriculumFramework: json['curriculum_framework']?.toString(),
       difficulty: json['difficulty']?.toString() ?? 'medium',
+      difficultySource:
+          json['difficulty_source']?.toString() ?? 'fidel_learn_assigned',
       verificationStatus: VerificationStatus.fromString(
         json['verification_status']?.toString() ?? 'published',
       ),
+      reviewNote: json['review_note']?.toString(),
+      isScorable: json['is_scorable'] as bool? ?? true,
+      isPracticeEligible: json['is_practice_eligible'] as bool? ?? true,
       sourceName: json['source_name']?.toString() ??
           'FidelLearn original demonstration content',
       sourcePage: (json['source_page'] as num?)?.toInt(),
@@ -305,6 +373,7 @@ class Question extends Equatable {
       'unit_id': unitId,
       'topic_id': topicId,
       'exam_year': examYear,
+      if (questionNumber != null) 'question_number': questionNumber,
       'question_text_en': questionTextEn,
       'question_text_am': questionTextAm,
       'diagram_asset': diagramAsset,
@@ -315,7 +384,11 @@ class Question extends Equatable {
       if (curriculumFramework != null)
         'curriculum_framework': curriculumFramework,
       'difficulty': difficulty,
+      'difficulty_source': difficultySource,
       'verification_status': verificationStatus.toDbString(),
+      if (reviewNote != null) 'review_note': reviewNote,
+      'is_scorable': isScorable,
+      'is_practice_eligible': isPracticeEligible,
       'source_name': sourceName,
       'source_page': sourcePage,
       'content_version': contentVersion,
@@ -333,6 +406,7 @@ class Question extends Equatable {
         unitId,
         topicId,
         examYear,
+        questionNumber,
         questionTextEn,
         questionTextAm,
         diagramAsset,
@@ -342,7 +416,11 @@ class Question extends Equatable {
         curriculumTopicId,
         curriculumFramework,
         difficulty,
+        difficultySource,
         verificationStatus,
+        reviewNote,
+        isScorable,
+        isPracticeEligible,
         sourceName,
         sourcePage,
         contentVersion,
