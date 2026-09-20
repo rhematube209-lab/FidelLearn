@@ -171,12 +171,16 @@ class LocalMistakeRepository implements MistakeRepository {
   Future<List<MistakeRecord>> getMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) async {
     return _filterMistakes(
       userId,
       subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
       status: status,
       onlyUnmastered: onlyUnmastered,
     );
@@ -186,12 +190,16 @@ class LocalMistakeRepository implements MistakeRepository {
   Stream<List<MistakeRecord>> watchMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) async* {
     yield _filterMistakes(
       userId,
       subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
       status: status,
       onlyUnmastered: onlyUnmastered,
     );
@@ -199,6 +207,8 @@ class LocalMistakeRepository implements MistakeRepository {
       yield _filterMistakes(
         userId,
         subjectId: subjectId,
+        unitId: unitId,
+        topicId: topicId,
         status: status,
         onlyUnmastered: onlyUnmastered,
       );
@@ -208,12 +218,16 @@ class LocalMistakeRepository implements MistakeRepository {
   List<MistakeRecord> _filterMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) {
     return _mistakes.values.where((m) {
       if (m.userId != userId) return false;
       if (subjectId != null && m.subjectId != subjectId) return false;
+      if (unitId != null && m.unitId != unitId) return false;
+      if (topicId != null && m.topicId != topicId) return false;
       if (status != null && m.masteryStatus != status) return false;
       if (onlyUnmastered && m.masteryStatus == MasteryStatus.mastered) {
         return false;
@@ -227,8 +241,15 @@ class LocalMistakeRepository implements MistakeRepository {
   Future<MistakeCounts> getMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) async {
-    final all = _filterMistakes(userId, subjectId: subjectId);
+    final all = _filterMistakes(
+      userId,
+      subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
+    );
     return _calculateCounts(all);
   }
 
@@ -236,10 +257,22 @@ class LocalMistakeRepository implements MistakeRepository {
   Stream<MistakeCounts> watchMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) async* {
-    yield await getMistakeCounts(userId, subjectId: subjectId);
+    yield await getMistakeCounts(
+      userId,
+      subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
+    );
     await for (final _ in _changeController.stream) {
-      yield await getMistakeCounts(userId, subjectId: subjectId);
+      yield await getMistakeCounts(
+        userId,
+        subjectId: subjectId,
+        unitId: unitId,
+        topicId: topicId,
+      );
     }
   }
 

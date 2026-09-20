@@ -10,6 +10,7 @@ import '../../../../core/widgets/fidel_badge.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/mistake_model.dart';
 
 class MistakesScreen extends ConsumerStatefulWidget {
@@ -22,11 +23,19 @@ class MistakesScreen extends ConsumerStatefulWidget {
 class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   List<MistakeRecord> _allMistakes = [];
   Map<String, Question> _questions = {};
+  Map<String, Subject> _subjectsMap = {};
+  Map<String, Unit> _unitsMap = {};
   MistakeCounts _counts = const MistakeCounts.empty();
   bool _isLoading = true;
 
-  MasteryStatus? _selectedStatusFilter; // null = All
-  String? _selectedSubjectFilter; // null = All Subjects
+  // Navigation hierarchy state:
+  // _selectedSubjectId: null = Main Subjects Overview, 'ALL' = All Mistakes List, or specific subjectId
+  String? _selectedSubjectId;
+  // _selectedUnitId: null = Subject Detail (Units List), or specific unitId for Question List
+  String? _selectedUnitId;
+
+  // Secondary status filter: All (null), needsReview, improving, mastered
+  MasteryStatus? _selectedStatusFilter;
 
   @override
   void initState() {
@@ -38,16 +47,38 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     final user = ref.read(currentUserProvider).valueOrNull;
     final userId = user?.id ?? 'guest_student';
     final mistakeRepo = ref.read(mistakeRepositoryProvider);
+    final contentRepo = ref.read(contentRepositoryProvider);
 
     try {
       final list = await mistakeRepo.getMistakes(userId);
       final counts = await mistakeRepo.getMistakeCounts(userId);
       await _cacheQuestions(list);
 
+      // Cache subjects metadata
+      final subjects = await contentRepo.getSubjects(
+        grade: user?.grade,
+        stream: user?.stream ?? 'natural',
+      );
+      final Map<String, Subject> subjectsMap = {
+        for (final s in subjects) s.id: s,
+      };
+
+      // Cache units metadata for available subjects
+      final Map<String, Unit> unitsMap = {};
+      final uniqueSubjectIds = list.map((m) => m.subjectId).toSet();
+      for (final sId in uniqueSubjectIds) {
+        final units = await contentRepo.getUnits(sId);
+        for (final u in units) {
+          unitsMap[u.id] = u;
+        }
+      }
+
       if (mounted) {
         setState(() {
           _allMistakes = list;
           _counts = counts;
+          _subjectsMap = subjectsMap;
+          _unitsMap = unitsMap;
           _isLoading = false;
         });
       }
@@ -69,37 +100,229 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     _questions = newMap;
   }
 
-  List<MistakeRecord> get _filteredMistakes {
-    return _allMistakes.where((m) {
-      if (_selectedStatusFilter != null &&
-          m.masteryStatus != _selectedStatusFilter) {
-        return false;
-      }
-      if (_selectedSubjectFilter != null &&
-          m.subjectId != _selectedSubjectFilter) {
-        return false;
-      }
-      return true;
-    }).toList();
-  }
-
-  List<String> get _availableSubjects {
-    final set = <String>{};
-    for (final m in _allMistakes) {
-      set.add(m.subjectId);
+  String _resolveSubjectName(String subjectId) {
+    final subj = _subjectsMap[subjectId];
+    if (subj != null) return subj.nameEn;
+    final clean = subjectId
+        .replaceAll('_g12', '')
+        .replaceAll('_g11', '')
+        .replaceAll('_', ' ');
+    if (clean.isNotEmpty) {
+      return clean[0].toUpperCase() + clean.substring(1);
     }
-    return set.toList()..sort();
+    return subjectId;
   }
 
-  Future<void> _startMistakeRetryExam() async {
+  String? _resolveSubjectAmharic(String subjectId) {
+    return _subjectsMap[subjectId]?.nameAm;
+  }
+
+  String _resolveUnitTitle(String? unitId, String? topicId) {
+    if (unitId != null && _unitsMap.containsKey(unitId)) {
+      return _unitsMap[unitId]!.titleEn;
+    }
+    if (unitId != null && unitId.isNotEmpty) {
+      final parts = unitId.split('_');
+      if (parts.isNotEmpty && parts.last.startsWith('u')) {
+        final numPart = parts.last.substring(1);
+        return 'Unit $numPart: ${topicId ?? unitId}';
+      }
+      return 'Unit: $unitId';
+    }
+    if (topicId != null && topicId.isNotEmpty) {
+      return 'Topic: $topicId';
+    }
+    return 'General Practice';
+  }
+
+  String? _resolveUnitAmharic(String? unitId) {
+    if (unitId != null && _unitsMap.containsKey(unitId)) {
+      return _unitsMap[unitId]!.titleAm;
+    }
+    return null;
+  }
+
+  List<SubjectMistakeSummary> get _subjectSummaries {
+    final Map<String, List<MistakeRecord>> grouped = {};
+    for (final m in _allMistakes) {
+      grouped.putIfAbsent(m.subjectId, () => []).add(m);
+    }
+
+    final List<SubjectMistakeSummary> summaries = [];
+    for (final entry in grouped.entries) {
+      final sId = entry.key;
+      final recs = entry.value;
+
+      int needsReview = 0;
+      int improving = 0;
+      int mastered = 0;
+      for (final r in recs) {
+        switch (r.masteryStatus) {
+          case MasteryStatus.needsReview:
+            needsReview++;
+            break;
+          case MasteryStatus.improving:
+            improving++;
+            break;
+          case MasteryStatus.mastered:
+            mastered++;
+            break;
+        }
+      }
+
+      summaries.add(
+        SubjectMistakeSummary(
+          subjectId: sId,
+          nameEn: _resolveSubjectName(sId),
+          nameAm: _resolveSubjectAmharic(sId) ?? '',
+          counts: MistakeCounts(
+            total: recs.length,
+            needsReview: needsReview,
+            improving: improving,
+            mastered: mastered,
+          ),
+        ),
+      );
+    }
+
+    summaries.sort((a, b) => b.counts.total.compareTo(a.counts.total));
+    return summaries;
+  }
+
+  List<UnitMistakeSummary> get _unitSummariesForSelectedSubject {
+    if (_selectedSubjectId == null || _selectedSubjectId == 'ALL') return [];
+
+    final subjectMistakes =
+        _allMistakes.where((m) => m.subjectId == _selectedSubjectId).toList();
+    final Map<String, List<MistakeRecord>> grouped = {};
+    for (final m in subjectMistakes) {
+      final uKey = m.unitId ?? (m.topicId ?? 'general');
+      grouped.putIfAbsent(uKey, () => []).add(m);
+    }
+
+    final List<UnitMistakeSummary> summaries = [];
+    for (final entry in grouped.entries) {
+      final uId = entry.key;
+      final recs = entry.value;
+
+      int needsReview = 0;
+      int improving = 0;
+      int mastered = 0;
+      for (final r in recs) {
+        switch (r.masteryStatus) {
+          case MasteryStatus.needsReview:
+            needsReview++;
+            break;
+          case MasteryStatus.improving:
+            improving++;
+            break;
+          case MasteryStatus.mastered:
+            mastered++;
+            break;
+        }
+      }
+
+      summaries.add(
+        UnitMistakeSummary(
+          unitId: uId,
+          subjectId: _selectedSubjectId!,
+          titleEn: _resolveUnitTitle(uId, recs.first.topicId),
+          titleAm: _resolveUnitAmharic(uId) ?? '',
+          counts: MistakeCounts(
+            total: recs.length,
+            needsReview: needsReview,
+            improving: improving,
+            mastered: mastered,
+          ),
+        ),
+      );
+    }
+
+    summaries.sort((a, b) => b.counts.total.compareTo(a.counts.total));
+    return summaries;
+  }
+
+  List<MistakeRecord> get _activeQuestions {
+    var list = _allMistakes;
+    if (_selectedSubjectId != null && _selectedSubjectId != 'ALL') {
+      list = list.where((m) => m.subjectId == _selectedSubjectId).toList();
+    }
+    if (_selectedUnitId != null) {
+      list = list
+          .where((m) => (m.unitId ?? m.topicId ?? 'general') == _selectedUnitId)
+          .toList();
+    }
+    if (_selectedStatusFilter != null) {
+      list =
+          list.where((m) => m.masteryStatus == _selectedStatusFilter).toList();
+    }
+    return list;
+  }
+
+  MistakeCounts get _activeScopeCounts {
+    if (_selectedSubjectId == null || _selectedSubjectId == 'ALL') {
+      return _counts;
+    }
+    var list =
+        _allMistakes.where((m) => m.subjectId == _selectedSubjectId).toList();
+    if (_selectedUnitId != null) {
+      list = list
+          .where((m) => (m.unitId ?? m.topicId ?? 'general') == _selectedUnitId)
+          .toList();
+    }
+
+    int nr = 0;
+    int imp = 0;
+    int mst = 0;
+    for (final m in list) {
+      switch (m.masteryStatus) {
+        case MasteryStatus.needsReview:
+          nr++;
+          break;
+        case MasteryStatus.improving:
+          imp++;
+          break;
+        case MasteryStatus.mastered:
+          mst++;
+          break;
+      }
+    }
+    return MistakeCounts(
+      total: list.length,
+      needsReview: nr,
+      improving: imp,
+      mastered: mst,
+    );
+  }
+
+  void _navigateBack() {
+    if (_selectedUnitId != null) {
+      setState(() => _selectedUnitId = null);
+    } else if (_selectedSubjectId != null) {
+      setState(() {
+        _selectedSubjectId = null;
+        _selectedStatusFilter = null;
+      });
+    } else {
+      context.pop();
+    }
+  }
+
+  Future<void> _startMistakeRetryExam({
+    String? subjectId,
+    String? unitId,
+  }) async {
     final user = ref.read(currentUserProvider).valueOrNull;
     final userId = user?.id ?? 'guest_student';
     final mistakeRepo = ref.read(mistakeRepositoryProvider);
     final examRepo = ref.read(examRepositoryProvider);
 
-    // Section 28 & 45: Fetch unmastered mistakes, needsReview first, then improving
-    final unmastered =
-        await mistakeRepo.getMistakes(userId, onlyUnmastered: true);
+    final unmastered = await mistakeRepo.getMistakes(
+      userId,
+      subjectId: subjectId,
+      unitId: unitId,
+      onlyUnmastered: true,
+    );
 
     unmastered.sort((a, b) {
       if (a.masteryStatus == MasteryStatus.needsReview &&
@@ -124,20 +347,30 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-                'No unmastered mistakes to practice! All questions mastered.'),
+                'No unmastered mistakes to practice in this scope! All questions mastered.'),
           ),
         );
       }
       return;
     }
 
+    final targetSubject = subjectId ??
+        (retryQuestions.isNotEmpty
+            ? retryQuestions.first.subjectId
+            : 'general');
+    final subjectTitle = _resolveSubjectName(targetSubject);
+
     final exam = Exam(
       id: 'mistake_retry_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Mistake Notebook Remediation Drill',
+      title: unitId != null
+          ? 'Remediation Drill: ${_resolveUnitTitle(unitId, null)}'
+          : subjectId != null
+              ? '$subjectTitle Mistake Drill'
+              : 'Mistake Notebook Remediation Drill',
       examType: ExamType.mistakeRetry,
       grade: user?.grade ?? 12,
       stream: user?.stream ?? 'natural',
-      subjectId: retryQuestions.first.subjectId,
+      subjectId: targetSubject,
       timeLimitMinutes: 0,
       totalQuestions: retryQuestions.length,
       questions: retryQuestions,
@@ -168,7 +401,6 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     final user = ref.read(currentUserProvider).valueOrNull;
     final userId = user?.id ?? 'guest_student';
 
-    // Section 37: In-memory synthetic adapter; do NOT persist or contaminate analytics
     final syntheticAttempt = ExamAttempt(
       id: 'synthetic_review_${m.id}',
       userId: userId,
@@ -209,207 +441,326 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 900;
-    final filtered = _filteredMistakes;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mistake Notebook & Mastery Engine',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
+    return PopScope(
+      canPop: _selectedSubjectId == null,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _navigateBack();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _selectedUnitId != null
+                ? _resolveUnitTitle(_selectedUnitId, null)
+                : _selectedSubjectId == 'ALL'
+                    ? 'All Mistakes'
+                    : _selectedSubjectId != null
+                        ? '${_resolveSubjectName(_selectedSubjectId!)} Mistakes'
+                        : 'Mistake Notebook & Mastery Engine',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: _navigateBack,
+          ),
         ),
-      ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(color: AppTheme.brand))
-          : _counts.total == 0
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(28),
-                          decoration: BoxDecoration(
-                            color: AppTheme.green.withValues(alpha: 0.12),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.verified_rounded,
-                            size: 64,
-                            color: AppTheme.green,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        const Text(
-                          'No mistakes yet',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 420),
-                          child: Text(
-                            'Questions you answer incorrectly during mock exams, untimed practice, or custom builder sessions will automatically appear here for review and targeted drills.',
-                            style: TextStyle(
-                              color: isDark
-                                  ? AppTheme.darkMuted
-                                  : AppTheme.lightMuted,
-                              fontSize: 14,
-                              height: 1.45,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: AppTheme.brand))
+            : _counts.total == 0
+                ? _buildEmptyOverallState(isDark)
+                : SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isDesktop ? 48.0 : 16.0,
+                      vertical: 24.0,
                     ),
-                  ),
-                )
-              : SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isDesktop ? 48.0 : 16.0,
-                    vertical: 24.0,
-                  ),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1100),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Top Banner & Remediation Drill Action
-                          _buildHeaderBanner(isDark),
-                          const SizedBox(height: 20),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Breadcrumbs Navigation
+                            if (_selectedSubjectId != null) ...[
+                              _buildBreadcrumbs(isDark),
+                              const SizedBox(height: 16),
+                            ],
 
-                          // Summary Metrics Cards (Total, Needs Review, Improving, Mastered)
-                          _buildMetricsRow(context, isDark),
-                          const SizedBox(height: 20),
+                            // Top Header Banner & Remediation Drill Action
+                            _buildHeaderBanner(isDark),
+                            const SizedBox(height: 20),
 
-                          // Filter Bar
-                          _buildFilterBar(isDark),
-                          const SizedBox(height: 18),
+                            // Summary Metrics Row
+                            _buildMetricsRow(context, isDark),
+                            const SizedBox(height: 20),
 
-                          // Empty filtered results state
-                          if (filtered.isEmpty)
-                            Container(
-                              padding: const EdgeInsets.all(40),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardTheme.color,
-                                borderRadius:
-                                    BorderRadius.circular(AppTheme.radiusMd),
-                                border: Border.all(
-                                    color: AppTheme.adaptiveBorder(context)),
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(Icons.filter_alt_off_rounded,
-                                      size: 48,
-                                      color: isDark
-                                          ? AppTheme.darkMuted
-                                          : AppTheme.lightMuted),
-                                  const SizedBox(height: 12),
-                                  const Text(
-                                    'No questions match this filter',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    'Try selecting "All" or a different status filter.',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: isDark
-                                          ? AppTheme.darkMuted
-                                          : AppTheme.lightMuted,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          else
-                            // Mistakes Grid
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: isDesktop ? 520 : 600,
-                                mainAxisExtent: 220,
-                                mainAxisSpacing: 16,
-                                crossAxisSpacing: 16,
-                              ),
-                              itemCount: filtered.length,
-                              itemBuilder: (context, index) {
-                                final m = filtered[index];
-                                final q = _questions[m.questionId];
-                                return _buildMistakeCard(m, q, isDark);
-                              },
-                            ),
-                        ],
+                            // Main View: Subjects List + "All Mistakes" tile
+                            if (_selectedSubjectId == null) ...[
+                              _buildMainSubjectListView(context, isDark),
+                            ]
+                            // Subject View: Curriculum Units / Topics list
+                            else if (_selectedSubjectId != 'ALL' &&
+                                _selectedUnitId == null) ...[
+                              _buildSubjectUnitsView(context, isDark),
+                            ]
+                            // Question List: Unit Detail or All Mistakes
+                            else ...[
+                              _buildQuestionListView(context, isDark),
+                            ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
+      ),
+    );
+  }
+
+  Widget _buildBreadcrumbs(bool isDark) {
+    final subjectTitle = _selectedSubjectId == 'ALL'
+        ? 'All Mistakes'
+        : _selectedSubjectId != null
+            ? _resolveSubjectName(_selectedSubjectId!)
+            : '';
+    final unitTitle =
+        _selectedUnitId != null ? _resolveUnitTitle(_selectedUnitId, null) : '';
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              setState(() {
+                _selectedSubjectId = null;
+                _selectedUnitId = null;
+                _selectedStatusFilter = null;
+              });
+            },
+            borderRadius: BorderRadius.circular(6),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              child: Row(
+                children: [
+                  Icon(Icons.menu_book_rounded,
+                      size: 16, color: AppTheme.brand),
+                  SizedBox(width: 6),
+                  Text(
+                    'Mistake Notebook',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.brand,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (subjectTitle.isNotEmpty) ...[
+            const Icon(Icons.chevron_right_rounded,
+                size: 16, color: Colors.grey),
+            InkWell(
+              onTap: _selectedUnitId != null
+                  ? () {
+                      setState(() {
+                        _selectedUnitId = null;
+                      });
+                    }
+                  : null,
+              borderRadius: BorderRadius.circular(6),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Text(
+                  subjectTitle,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: _selectedUnitId != null
+                        ? AppTheme.brand
+                        : (isDark ? AppTheme.darkText : AppTheme.lightText),
+                  ),
                 ),
+              ),
+            ),
+          ],
+          if (unitTitle.isNotEmpty) ...[
+            const Icon(Icons.chevron_right_rounded,
+                size: 16, color: Colors.grey),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Text(
+                  unitTitle,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyOverallState(bool isDark) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                color: AppTheme.green.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.verified_rounded,
+                size: 64,
+                color: AppTheme.green,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'No mistakes yet',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Text(
+                'Questions you answer incorrectly during mock exams, untimed practice, or custom builder sessions will automatically appear here for review and targeted drills.',
+                style: TextStyle(
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                  fontSize: 14,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildHeaderBanner(bool isDark) {
-    final unmasteredCount = _counts.needsReview + _counts.improving;
+    final scopeCounts = _activeScopeCounts;
+    final unmasteredCount = scopeCounts.needsReview + scopeCounts.improving;
+
+    String bannerTitle = 'Mistake Remediation Drill';
+    String bannerSubtitle =
+        'Mastery requires 2 consecutive correct retries on separate attempts.';
+    String actionLabel = 'Practice My Mistakes ($unmasteredCount)';
+
+    if (_selectedUnitId != null) {
+      final unitTitle = _resolveUnitTitle(_selectedUnitId, null);
+      bannerTitle = 'Drill: $unitTitle';
+      actionLabel = 'Practice Unit Mistakes ($unmasteredCount)';
+    } else if (_selectedSubjectId == 'ALL') {
+      bannerTitle = 'All Subjects Remediation Drill';
+      actionLabel = 'Practice All Mistakes ($unmasteredCount)';
+    } else if (_selectedSubjectId != null) {
+      final subjTitle = _resolveSubjectName(_selectedSubjectId!);
+      bannerTitle = '$subjTitle Mistakes Drill';
+      actionLabel = 'Practice $subjTitle Mistakes ($unmasteredCount)';
+    }
 
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: isDark
-              ? const [Color(0xFF831843), AppTheme.darkSurfaceStrong]
-              : const [Color(0xFFBE185D), Color(0xFF9D174D)],
+              ? [const Color(0xFF1E1B4B), const Color(0xFF312E81)]
+              : [const Color(0xFFEEF2FF), const Color(0xFFE0E7FF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: AppTheme.pink.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? const Color(0xFF4338CA) : const Color(0xFFC7D2FE),
+        ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '$unmasteredCount Questions Needing Drill',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppTheme.brand.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Deterministic mastery: answer correctly across 2 distinct attempts to fully master each question.',
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    color: Color(0xFFFCE7F3),
-                    height: 1.35,
-                  ),
+                child: const Icon(Icons.psychology_rounded,
+                    color: AppTheme.brand, size: 28),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bannerTitle,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      bannerSubtitle,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color:
+                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(width: 14),
-          ElevatedButton.icon(
-            onPressed: unmasteredCount > 0 ? _startMistakeRetryExam : null,
-            icon: const Icon(Icons.play_arrow_rounded, size: 18),
-            label: const Text('Practice My Mistakes'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.brandStrong,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              elevation: 3,
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton.icon(
+              onPressed: unmasteredCount > 0
+                  ? () => _startMistakeRetryExam(
+                        subjectId: _selectedSubjectId == 'ALL'
+                            ? null
+                            : _selectedSubjectId,
+                        unitId: _selectedUnitId,
+                      )
+                  : null,
+              icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
+              label: Text(actionLabel),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.brand,
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
             ),
           ),
         ],
@@ -418,114 +769,335 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   }
 
   Widget _buildMetricsRow(BuildContext context, bool isDark) {
-    return Row(
+    final counts = _activeScopeCounts;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth = (constraints.maxWidth - 36) / 4;
+        final useGrid = itemWidth < 120;
+
+        if (useGrid) {
+          return GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: 1.8,
+            children: [
+              _buildCountCard(
+                  'Total Mistakes', counts.total, AppTheme.brand, isDark),
+              _buildCountCard(
+                  'Needs Review', counts.needsReview, AppTheme.accent, isDark),
+              _buildCountCard(
+                  'Improving', counts.improving, AppTheme.info, isDark),
+              _buildCountCard(
+                  'Mastered', counts.mastered, AppTheme.green, isDark),
+            ],
+          );
+        }
+
+        return Row(
+          children: [
+            Expanded(
+                child: _buildCountCard(
+                    'Total Mistakes', counts.total, AppTheme.brand, isDark)),
+            const SizedBox(width: 12),
+            Expanded(
+                child: _buildCountCard('Needs Review', counts.needsReview,
+                    AppTheme.accent, isDark)),
+            const SizedBox(width: 12),
+            Expanded(
+                child: _buildCountCard(
+                    'Improving', counts.improving, AppTheme.info, isDark)),
+            const SizedBox(width: 12),
+            Expanded(
+                child: _buildCountCard(
+                    'Mastered', counts.mastered, AppTheme.green, isDark)),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCountCard(String label, int count, Color color, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '$count',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusFilterChips(bool isDark) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildFilterChip('All', null, isDark),
+          const SizedBox(width: 8),
+          _buildFilterChip('Needs Review', MasteryStatus.needsReview, isDark,
+              accentColor: AppTheme.accent),
+          const SizedBox(width: 8),
+          _buildFilterChip('Improving', MasteryStatus.improving, isDark,
+              accentColor: AppTheme.info),
+          const SizedBox(width: 8),
+          _buildFilterChip('Mastered', MasteryStatus.mastered, isDark,
+              accentColor: AppTheme.green),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, MasteryStatus? status, bool isDark,
+      {Color? accentColor}) {
+    final isSelected = _selectedStatusFilter == status;
+    final color = accentColor ?? AppTheme.brand;
+
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) {
+        setState(() {
+          _selectedStatusFilter = status;
+        });
+      },
+      selectedColor: color.withValues(alpha: 0.18),
+      checkmarkColor: color,
+      labelStyle: TextStyle(
+        fontSize: 13,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        color: isSelected
+            ? color
+            : (isDark ? AppTheme.darkText : AppTheme.lightText),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+          color: isSelected
+              ? color
+              : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMainSubjectListView(BuildContext context, bool isDark) {
+    final summaries = _subjectSummaries;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: _buildMetricBadgeCard(
-            label: 'Total Mistakes',
-            count: _counts.total,
-            color: AppTheme.brand,
-            icon: Icons.auto_stories_rounded,
-            isSelected: _selectedStatusFilter == null,
-            onTap: () => setState(() => _selectedStatusFilter = null),
-            isDark: isDark,
+        // "All Mistakes" Master Tile
+        InkWell(
+          onTap: () {
+            setState(() {
+              _selectedSubjectId = 'ALL';
+              _selectedUnitId = null;
+              _selectedStatusFilter = null;
+            });
+          },
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: AppTheme.brand.withValues(alpha: 0.35),
+                width: 1.5,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.brand.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.auto_stories_rounded,
+                      color: AppTheme.brand, size: 26),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'All Mistakes',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Browse and filter all ${_counts.total} mistakes across every subject',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color:
+                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                FidelBadge(
+                  text: '${_counts.total} Qs',
+                  variant: FidelBadgeVariant.primary,
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_ios_rounded,
+                    size: 16, color: Colors.grey),
+              ],
+            ),
           ),
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _buildMetricBadgeCard(
-            label: 'Needs Review',
-            count: _counts.needsReview,
-            color: AppTheme.danger,
-            icon: Icons.warning_amber_rounded,
-            isSelected: _selectedStatusFilter == MasteryStatus.needsReview,
-            onTap: () => setState(
-                () => _selectedStatusFilter = MasteryStatus.needsReview),
-            isDark: isDark,
-          ),
+        const SizedBox(height: 24),
+
+        // Section Title: Subjects
+        Row(
+          children: [
+            const Icon(Icons.category_rounded, size: 20, color: AppTheme.brand),
+            const SizedBox(width: 8),
+            Text(
+              'Subjects with Mistakes (${summaries.length})',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _buildMetricBadgeCard(
-            label: 'Improving',
-            count: _counts.improving,
-            color: AppTheme.accent,
-            icon: Icons.trending_up_rounded,
-            isSelected: _selectedStatusFilter == MasteryStatus.improving,
-            onTap: () =>
-                setState(() => _selectedStatusFilter = MasteryStatus.improving),
-            isDark: isDark,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _buildMetricBadgeCard(
-            label: 'Mastered',
-            count: _counts.mastered,
-            color: AppTheme.green,
-            icon: Icons.verified_rounded,
-            isSelected: _selectedStatusFilter == MasteryStatus.mastered,
-            onTap: () =>
-                setState(() => _selectedStatusFilter = MasteryStatus.mastered),
-            isDark: isDark,
-          ),
+        const SizedBox(height: 12),
+
+        // Subject Cards List
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: summaries.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final s = summaries[index];
+            return _buildSubjectCard(s, isDark);
+          },
         ),
       ],
     );
   }
 
-  Widget _buildMetricBadgeCard({
-    required String label,
-    required int count,
-    required Color color,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-    required bool isDark,
-  }) {
+  Widget _buildSubjectCard(SubjectMistakeSummary s, bool isDark) {
     return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+      onTap: () {
+        setState(() {
+          _selectedSubjectId = s.subjectId;
+          _selectedUnitId = null;
+          _selectedStatusFilter = null;
+        });
+      },
+      borderRadius: BorderRadius.circular(14),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: isSelected
-              ? color.withValues(alpha: 0.15)
-              : (isDark ? AppTheme.darkSurface : Colors.white),
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? color : AppTheme.adaptiveBorder(context),
-            width: isSelected ? 2 : 1,
+            color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 16, color: color),
-                const SizedBox(width: 6),
-                Text(
-                  '$count',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: color,
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppTheme.brand.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.school_rounded,
+                      color: AppTheme.brand, size: 22),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        s.nameEn,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (s.nameAm.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          s.nameAm,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
+                FidelBadge(
+                  text: '${s.counts.total} mistakes',
+                  variant: FidelBadgeVariant.primary,
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_ios_rounded,
+                    size: 14, color: Colors.grey),
               ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 14),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: [
+                _buildMiniBadge(
+                    '${s.counts.needsReview} Needs Review', AppTheme.accent),
+                _buildMiniBadge(
+                    '${s.counts.improving} Improving', AppTheme.info),
+                _buildMiniBadge(
+                    '${s.counts.mastered} Mastered', AppTheme.green),
+              ],
             ),
           ],
         ),
@@ -533,217 +1105,392 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
-  Widget _buildFilterBar(bool isDark) {
-    final availableSubjects = _availableSubjects;
+  Widget _buildSubjectUnitsView(BuildContext context, bool isDark) {
+    final units = _unitSummariesForSelectedSubject;
+    final subjectTitle = _resolveSubjectName(_selectedSubjectId!);
 
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Filter by:',
-            style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.bold)),
-        ChoiceChip(
-          label: const Text('All Statuses'),
-          selected: _selectedStatusFilter == null,
-          onSelected: (_) => setState(() => _selectedStatusFilter = null),
+        // Filter Bar for Subject
+        _buildStatusFilterChips(isDark),
+        const SizedBox(height: 18),
+
+        // Section Title
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.account_tree_rounded,
+                    size: 20, color: AppTheme.brand),
+                const SizedBox(width: 8),
+                Text(
+                  'Curriculum Units & Topics (${units.length})',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  _selectedUnitId = null;
+                  // Switch to viewing all questions for this subject
+                  _selectedSubjectId = 'ALL';
+                });
+              },
+              icon: const Icon(Icons.list_alt_rounded, size: 16),
+              label: const Text('View Flat List'),
+            ),
+          ],
         ),
-        ChoiceChip(
-          label: const Text('Needs Review'),
-          selected: _selectedStatusFilter == MasteryStatus.needsReview,
-          onSelected: (_) =>
-              setState(() => _selectedStatusFilter = MasteryStatus.needsReview),
-        ),
-        ChoiceChip(
-          label: const Text('Improving'),
-          selected: _selectedStatusFilter == MasteryStatus.improving,
-          onSelected: (_) =>
-              setState(() => _selectedStatusFilter = MasteryStatus.improving),
-        ),
-        ChoiceChip(
-          label: const Text('Mastered'),
-          selected: _selectedStatusFilter == MasteryStatus.mastered,
-          onSelected: (_) =>
-              setState(() => _selectedStatusFilter = MasteryStatus.mastered),
-        ),
-        if (availableSubjects.length > 1) ...[
-          const SizedBox(width: 12),
-          DropdownButton<String?>(
-            value: _selectedSubjectFilter,
-            hint: const Text('All Subjects', style: TextStyle(fontSize: 12.5)),
-            underline: const SizedBox.shrink(),
-            items: [
-              const DropdownMenuItem<String?>(
-                value: null,
-                child: Text('All Subjects', style: TextStyle(fontSize: 12.5)),
-              ),
-              ...availableSubjects.map((s) => DropdownMenuItem<String?>(
-                    value: s,
-                    child: Text(s.toUpperCase(),
-                        style: const TextStyle(fontSize: 12.5)),
-                  )),
-            ],
-            onChanged: (val) => setState(() => _selectedSubjectFilter = val),
+        const SizedBox(height: 12),
+
+        if (units.isEmpty)
+          _buildEmptyFilteredCard(
+              'No units matching the selected status filter in $subjectTitle.',
+              isDark)
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: units.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final u = units[index];
+              return _buildUnitCard(u, isDark);
+            },
           ),
-        ],
       ],
     );
   }
 
-  Widget _buildMistakeCard(MistakeRecord m, Question? q, bool isDark) {
-    final FidelBadgeVariant badgeVariant;
-    switch (m.masteryStatus) {
-      case MasteryStatus.mastered:
-        badgeVariant = FidelBadgeVariant.success;
-        break;
-      case MasteryStatus.improving:
-        badgeVariant = FidelBadgeVariant.primary;
-        break;
-      case MasteryStatus.needsReview:
-        badgeVariant = FidelBadgeVariant.danger;
-        break;
-    }
-
-    final String subjectLabel = q?.subjectId.toUpperCase() ??
-        m.subjectId.replaceAll('_', ' ').toUpperCase();
-
-    final String unitTopicLabel = (m.unitId != null && m.unitId!.isNotEmpty)
-        ? m.unitId!.replaceAll('_', ' ')
-        : (q != null ? q.unitId.replaceAll('_', ' ') : 'Unit Drill');
-
+  Widget _buildUnitCard(UnitMistakeSummary u, bool isDark) {
     return InkWell(
-      onTap: () => _openMistakeSolutionReview(m),
-      borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+      onTap: () {
+        setState(() {
+          _selectedUnitId = u.unitId;
+        });
+      },
+      borderRadius: BorderRadius.circular(14),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          border: Border.all(color: AppTheme.adaptiveBorder(context)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Top Row: Failure Pill & Subject/Unit Badges
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppTheme.danger.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: AppTheme.danger.withValues(alpha: 0.3),
-                    ),
+                    color: AppTheme.brand.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    'MISSED ${m.missCount}X',
-                    style: const TextStyle(
-                      color: AppTheme.danger,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: const Icon(Icons.folder_special_rounded,
+                      color: AppTheme.brand, size: 20),
                 ),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    '$subjectLabel • $unitTopicLabel',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                    ),
-                    textAlign: TextAlign.right,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-
-            // Question Statement Preview
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                q?.questionTextEn ?? 'Question content unavailable offline...',
-                style: const TextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w700,
-                  height: 1.35,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-
-            // Bottom Status & Review Prompt
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: FidelBadge(
-                        text: m.masteryStatus.displayNameEn.toUpperCase(),
-                        variant: badgeVariant,
-                        isSmall: true,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        u.titleEn,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      'Retry: ${m.correctRetryCount}/2',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color:
-                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Diff: ${(q?.difficulty ?? "MED").toUpperCase()}',
-                      style: TextStyle(
-                        fontSize: 10.5,
-                        color:
-                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                      ),
-                    ),
-                    const Row(
-                      children: [
+                      if (u.titleAm.isNotEmpty) ...[
+                        const SizedBox(height: 2),
                         Text(
-                          'Review Solution',
+                          u.titleAm,
                           style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.brandStrong,
+                            fontSize: 12,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted,
                           ),
                         ),
-                        SizedBox(width: 4),
-                        Icon(Icons.arrow_forward_ios_rounded,
-                            size: 10, color: AppTheme.brandStrong),
                       ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                FidelBadge(
+                  text: '${u.counts.total} mistakes',
+                  variant: FidelBadgeVariant.primary,
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_ios_rounded,
+                    size: 14, color: Colors.grey),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: [
+                _buildMiniBadge(
+                    '${u.counts.needsReview} Needs Review', AppTheme.accent),
+                _buildMiniBadge(
+                    '${u.counts.improving} Improving', AppTheme.info),
+                _buildMiniBadge(
+                    '${u.counts.mastered} Mastered', AppTheme.green),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionListView(BuildContext context, bool isDark) {
+    final questions = _activeQuestions;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Filter Bar
+        _buildStatusFilterChips(isDark),
+        const SizedBox(height: 18),
+
+        // Section Title
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Questions (${questions.length})',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (_selectedUnitId != null)
+              TextButton.icon(
+                onPressed: () {
+                  setState(() => _selectedUnitId = null);
+                },
+                icon: const Icon(Icons.arrow_upward_rounded, size: 16),
+                label: const Text('Back to Units'),
+              ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        if (questions.isEmpty)
+          _buildEmptyFilteredCard(
+              'No mistake questions match the current filters.', isDark)
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: questions.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final m = questions[index];
+              return _buildMistakeCard(m, isDark);
+            },
+          ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyFilteredCard(String message, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            const Icon(Icons.filter_list_off_rounded,
+                size: 40, color: Colors.grey),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: TextStyle(
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMistakeCard(MistakeRecord m, bool isDark) {
+    final q = _questions[m.questionId];
+    final previewText = q?.questionTextEn ?? 'Question ${m.questionId}';
+    final subjectTitle = _resolveSubjectName(m.subjectId);
+    final unitTitle = _resolveUnitTitle(m.unitId, m.topicId);
+
+    FidelBadgeVariant badgeVariant;
+    switch (m.masteryStatus) {
+      case MasteryStatus.needsReview:
+        badgeVariant = FidelBadgeVariant.warning;
+        break;
+      case MasteryStatus.improving:
+        badgeVariant = FidelBadgeVariant.info;
+        break;
+      case MasteryStatus.mastered:
+        badgeVariant = FidelBadgeVariant.success;
+        break;
+    }
+
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+      ),
+      child: InkWell(
+        onTap: () => _openMistakeSolutionReview(m),
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header: Subject/Unit pills & Mastery badge
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [
+                        _buildTag(subjectTitle, AppTheme.brand),
+                        _buildTag(unitTitle, Colors.grey),
+                        if (q?.difficulty != null)
+                          _buildTag(q!.difficulty.toUpperCase(), Colors.purple),
+                        if (q?.examYear != null)
+                          _buildTag('${q!.examYear} E.C.', Colors.teal),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  FidelBadge(
+                    text: m.masteryStatus.displayNameEn,
+                    variant: badgeVariant,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Question Preview Text
+              Text(
+                previewText,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 12),
+
+              // Footer: Miss count, Retry progress, and Tap action
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        Text(
+                          'Missed ${m.missCount} times',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : AppTheme.lightMuted,
+                          ),
+                        ),
+                        FidelBadge(
+                          text: 'Retry: ${m.correctRetryCount}/2',
+                          variant: FidelBadgeVariant.primary,
+                          isSmall: true,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Row(
+                    children: [
+                      Text(
+                        'Review Solution',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.brand,
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Icon(Icons.arrow_forward_rounded,
+                          size: 14, color: AppTheme.brand),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMiniBadge(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          color: color,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTag(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          color: color,
         ),
       ),
     );

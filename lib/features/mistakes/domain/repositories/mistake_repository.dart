@@ -24,10 +24,12 @@ abstract class MistakeRepository {
     String? subjectId,
   });
 
-  /// Fetches mistake records filtered by user, optional subject, and optional status.
+  /// Fetches mistake records filtered by user, optional subject, unit, topic, and status.
   Future<List<MistakeRecord>> getMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   });
@@ -36,6 +38,8 @@ abstract class MistakeRepository {
   Stream<List<MistakeRecord>> watchMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   });
@@ -44,12 +48,16 @@ abstract class MistakeRepository {
   Future<MistakeCounts> getMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   });
 
   /// Watches mistake counts reactively.
   Stream<MistakeCounts> watchMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   });
 
   /// Gets a single mistake record by user and question id.

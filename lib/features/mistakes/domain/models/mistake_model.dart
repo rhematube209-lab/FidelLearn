@@ -266,3 +266,39 @@ class MistakeRecord extends Equatable {
         syncStatus,
       ];
 }
+
+class SubjectMistakeSummary extends Equatable {
+  final String subjectId;
+  final String nameEn;
+  final String nameAm;
+  final MistakeCounts counts;
+
+  const SubjectMistakeSummary({
+    required this.subjectId,
+    required this.nameEn,
+    required this.nameAm,
+    required this.counts,
+  });
+
+  @override
+  List<Object?> get props => [subjectId, nameEn, nameAm, counts];
+}
+
+class UnitMistakeSummary extends Equatable {
+  final String unitId;
+  final String subjectId;
+  final String titleEn;
+  final String titleAm;
+  final MistakeCounts counts;
+
+  const UnitMistakeSummary({
+    required this.unitId,
+    required this.subjectId,
+    required this.titleEn,
+    required this.titleAm,
+    required this.counts,
+  });
+
+  @override
+  List<Object?> get props => [unitId, subjectId, titleEn, titleAm, counts];
+}

@@ -338,6 +338,8 @@ class DriftMistakeRepository implements MistakeRepository {
   SimpleSelectStatement<$DbMistakesTable, DbMistake> _buildQuery(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) {
@@ -350,6 +352,14 @@ class DriftMistakeRepository implements MistakeRepository {
 
     if (subjectId != null) {
       query = query..where((tbl) => tbl.subjectId.equals(subjectId));
+    }
+
+    if (unitId != null) {
+      query = query..where((tbl) => tbl.unitId.equals(unitId));
+    }
+
+    if (topicId != null) {
+      query = query..where((tbl) => tbl.topicId.equals(topicId));
     }
 
     if (status != null) {
@@ -366,12 +376,16 @@ class DriftMistakeRepository implements MistakeRepository {
   Future<List<MistakeRecord>> getMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) async {
     final rows = await _buildQuery(
       userId,
       subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
       status: status,
       onlyUnmastered: onlyUnmastered,
     ).get();
@@ -382,12 +396,16 @@ class DriftMistakeRepository implements MistakeRepository {
   Stream<List<MistakeRecord>> watchMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) {
     return _buildQuery(
       userId,
       subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
       status: status,
       onlyUnmastered: onlyUnmastered,
     ).watch().map((rows) => rows.map(_toDomain).toList());
@@ -397,11 +415,19 @@ class DriftMistakeRepository implements MistakeRepository {
   Future<MistakeCounts> getMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) async {
     var query = _db.select(_db.dbMistakes)
       ..where((tbl) => tbl.userId.equals(userId));
     if (subjectId != null) {
       query = query..where((tbl) => tbl.subjectId.equals(subjectId));
+    }
+    if (unitId != null) {
+      query = query..where((tbl) => tbl.unitId.equals(unitId));
+    }
+    if (topicId != null) {
+      query = query..where((tbl) => tbl.topicId.equals(topicId));
     }
     final rows = await query.get();
     return _aggregateCounts(rows);
@@ -411,11 +437,19 @@ class DriftMistakeRepository implements MistakeRepository {
   Stream<MistakeCounts> watchMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) {
     var query = _db.select(_db.dbMistakes)
       ..where((tbl) => tbl.userId.equals(userId));
     if (subjectId != null) {
       query = query..where((tbl) => tbl.subjectId.equals(subjectId));
+    }
+    if (unitId != null) {
+      query = query..where((tbl) => tbl.unitId.equals(unitId));
+    }
+    if (topicId != null) {
+      query = query..where((tbl) => tbl.topicId.equals(topicId));
     }
     return query.watch().map(_aggregateCounts);
   }

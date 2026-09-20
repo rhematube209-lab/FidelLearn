@@ -180,13 +180,13 @@ void main() {
   });
 
   testWidgets(
-      'Displays real mistake records, live counts, and status filter chips',
+      'Displays Subject cards, allows All Mistakes flat view, and supports status filtering',
       (WidgetTester tester) async {
     tester.view.physicalSize = const Size(1200, 900);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
 
-    // Populate mistake records
+    // Populate mistake records across 2 subjects
     await mistakeRepo.recordMistake(
       userId: testUser.id,
       questionId: testQuestion1.id,
@@ -215,29 +215,80 @@ void main() {
     await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
-    // Verify questions displayed
+    // 1. Level 1: Main screen shows All Mistakes tile and Subject cards
+    expect(find.text('All Mistakes'), findsOneWidget);
+    expect(find.text('Total Mistakes'), findsOneWidget);
+    expect(find.text('Mathematics'), findsOneWidget);
+    expect(find.text('Bio'), findsOneWidget);
+
+    // 2. Tap "All Mistakes" to view questions flat list
+    await tester.tap(find.text('All Mistakes'));
+    await tester.pumpAndSettle();
+
     expect(find.text('What is the derivative of sin(x)?'), findsOneWidget);
     expect(find.text('Which base pairs with Adenine in DNA?'), findsOneWidget);
 
-    // Verify summary metric numbers: Total: 2, Needs Review: 1, Improving: 1
-    expect(find.text('Total Mistakes'), findsOneWidget);
-    expect(find.text('Needs Review'), findsAtLeastNWidgets(1));
-    expect(find.text('Improving'), findsAtLeastNWidgets(1));
-    expect(find.text('Practice My Mistakes'), findsOneWidget);
-
-    // Test filter: tap "Needs Review"
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Needs Review'));
+    // 3. Test filter: tap "Needs Review"
+    await tester.tap(find.widgetWithText(FilterChip, 'Needs Review'));
     await tester.pumpAndSettle();
 
     expect(find.text('What is the derivative of sin(x)?'), findsOneWidget);
     expect(find.text('Which base pairs with Adenine in DNA?'), findsNothing);
 
-    // Test filter: tap "Improving"
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Improving'));
+    // 4. Test filter: tap "Improving"
+    await tester.tap(find.widgetWithText(FilterChip, 'Improving'));
     await tester.pumpAndSettle();
 
     expect(find.text('What is the derivative of sin(x)?'), findsNothing);
     expect(find.text('Which base pairs with Adenine in DNA?'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Academic Hierarchy Drill-Down: Subject -> Unit -> Question with back navigation',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+
+    await mistakeRepo.recordMistake(
+      userId: testUser.id,
+      questionId: testQuestion1.id,
+      subjectId: testQuestion1.subjectId,
+      unitId: testQuestion1.unitId,
+      attemptId: 'att_1',
+      selectedChoiceId: 'c2',
+    );
+
+    await tester.pumpWidget(buildTestApp());
+    await tester.pumpAndSettle();
+
+    // Level 1: Tap Mathematics subject
+    expect(find.text('Mathematics'), findsOneWidget);
+    await tester.tap(find.text('Mathematics'));
+    await tester.pumpAndSettle();
+
+    // Level 2: In Mathematics Subject view, see curriculum units
+    expect(find.text('Mathematics Mistakes'), findsOneWidget);
+    expect(find.textContaining('unit_calculus'), findsOneWidget);
+
+    // Level 3: Tap unit to drill down into questions
+    await tester.tap(find.textContaining('unit_calculus'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('What is the derivative of sin(x)?'), findsOneWidget);
+
+    // Navigate back to Units list
+    await tester.tap(find.byIcon(Icons.arrow_back_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Mathematics Mistakes'), findsOneWidget);
+
+    // Navigate back to Subjects list
+    await tester.tap(find.byIcon(Icons.arrow_back_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('All Mistakes'), findsOneWidget);
+    expect(find.text('Mathematics'), findsOneWidget);
   });
 
   testWidgets(
@@ -259,7 +310,7 @@ void main() {
     await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
-    final practiceBtn = find.text('Practice My Mistakes');
+    final practiceBtn = find.textContaining('Practice My Mistakes');
     expect(practiceBtn, findsOneWidget);
 
     await tester.tap(practiceBtn);

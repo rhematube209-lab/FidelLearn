@@ -242,6 +242,8 @@ class SupabaseMistakeRepository implements MistakeRepository {
   Future<List<MistakeRecord>> getMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) async {
@@ -260,6 +262,12 @@ class SupabaseMistakeRepository implements MistakeRepository {
       filteredLocal =
           filteredLocal.where((m) => m.subjectId == subjectId).toList();
     }
+    if (unitId != null) {
+      filteredLocal = filteredLocal.where((m) => m.unitId == unitId).toList();
+    }
+    if (topicId != null) {
+      filteredLocal = filteredLocal.where((m) => m.topicId == topicId).toList();
+    }
 
     final client = _client;
     if (client == null || !_isValidUuid(userId)) {
@@ -273,6 +281,15 @@ class SupabaseMistakeRepository implements MistakeRepository {
       }
       if (status != null) {
         query = query.eq('mastery_status', status.toDbString());
+      }
+      if (subjectId != null) {
+        query = query.eq('subject_id', subjectId);
+      }
+      if (unitId != null) {
+        query = query.eq('unit_id', unitId);
+      }
+      if (topicId != null) {
+        query = query.eq('topic_id', topicId);
       }
       final response = await query
           .order('last_missed_at', ascending: false)
@@ -294,12 +311,16 @@ class SupabaseMistakeRepository implements MistakeRepository {
   Stream<List<MistakeRecord>> watchMistakes(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
     MasteryStatus? status,
     bool onlyUnmastered = false,
   }) {
     return Stream.fromFuture(getMistakes(
       userId,
       subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
       status: status,
       onlyUnmastered: onlyUnmastered,
     ));
@@ -309,8 +330,15 @@ class SupabaseMistakeRepository implements MistakeRepository {
   Future<MistakeCounts> getMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) async {
-    final list = await getMistakes(userId, subjectId: subjectId);
+    final list = await getMistakes(
+      userId,
+      subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
+    );
     int needsReview = 0;
     int improving = 0;
     int mastered = 0;
@@ -341,8 +369,15 @@ class SupabaseMistakeRepository implements MistakeRepository {
   Stream<MistakeCounts> watchMistakeCounts(
     String userId, {
     String? subjectId,
+    String? unitId,
+    String? topicId,
   }) {
-    return Stream.fromFuture(getMistakeCounts(userId, subjectId: subjectId));
+    return Stream.fromFuture(getMistakeCounts(
+      userId,
+      subjectId: subjectId,
+      unitId: unitId,
+      topicId: topicId,
+    ));
   }
 
   @override
