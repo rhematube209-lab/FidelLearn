@@ -1,0 +1,4241 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_chemistry_2017",
+      "subject_id": "chemistry_g12",
+      "name_en": "Grade 12 Chemistry (ESSLCE 2017 E.C. National Exam)",
+      "name_am": "የ12ኛ ክፍል ኬሚስትሪ (የ2017 ዓ.ም. ብሔራዊ ፈተና)",
+      "grade": 12,
+      "stream": "natural",
+      "version": 1,
+      "size_bytes": 1048576,
+      "publisher": "Educational Assessment and Examination Service (EAES)",
+      "license": "official_archive",
+      "attribution": "ESSLCE Chemistry 2017 E.C. (78 Available Questions)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [],
+  "questions": [
+    {
+      "id": "q_chem_2017_001",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "exam_year": 2017,
+      "question_number": 1,
+      "question_text_en": "Which type of glass is made by heating a mixture of silica, sodium carbonate and limestone?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_001_c1",
+          "label": "A",
+          "text_en": "Pyrex glass",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_001_c2",
+          "label": "B",
+          "text_en": "Soda-lime",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_001_c3",
+          "label": "C",
+          "text_en": "Borosilicate",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_001_c4",
+          "label": "D",
+          "text_en": "Quartz",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Soda-lime Metal chemistry is governed by reactivity, oxidation/reduction, extraction and characteristic physical and chemical properties."
+      }
+    },
+    {
+      "id": "q_chem_2017_002",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 2,
+      "question_text_en": "Consider the following galvanic cell: When the Zn strip was connected to metal 'B' at 25°C, the voltmeter shows 0.51 V. Which of the following is the standard reduction potential of metal 'B'? (E^°{\\mathrm{Zn²⁺/\\mathrm{Zn = -0.76 V)",
+      "diagram_asset": "assets/images/exams/chem_2017/q02_galvanic_cell.png",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_002_c1",
+          "label": "A",
+          "text_en": "E^°{\\mathrm{B²⁺/\\mathrm{B = 1.27 V",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_002_c2",
+          "label": "B",
+          "text_en": "E^°{\\mathrm{B²⁺/\\mathrm{B = 0.25 V",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_002_c3",
+          "label": "C",
+          "text_en": "E^°{\\mathrm{B²⁺/\\mathrm{B = -1.27 V",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_002_c4",
+          "label": "D",
+          "text_en": "E^°{\\mathrm{B²⁺/\\mathrm{B = -0.25 V",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The diagram shows electrons flowing from Zn to metal B, so Zn is the anode. E°cell = E°cathode − E°anode = 0.51 V, hence E°B = 0.51 + (−0.76) = −0.25 V, option D."
+      }
+    },
+    {
+      "id": "q_chem_2017_003",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2017,
+      "question_number": 3,
+      "question_text_en": "Which of the following polymer is used to make ropes, clothes, hair combs and stockings?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_003_c1",
+          "label": "A",
+          "text_en": "Bakelite",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_003_c2",
+          "label": "B",
+          "text_en": "Teflon",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_003_c3",
+          "label": "C",
+          "text_en": "Nylon",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_003_c4",
+          "label": "D",
+          "text_en": "Perspex",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Nylon Polymer properties depend on their repeating units, polymerization type and chain structure/cross-linking."
+      }
+    },
+    {
+      "id": "q_chem_2017_004",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u3",
+      "topic_id": "chem_t_g10_u3_important_inorganic_compounds",
+      "exam_year": 2017,
+      "question_number": 4,
+      "question_text_en": "Which of the following catalyst is used in the Ostwald process for the production of HNO₃?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u3",
+      "curriculum_topic_id": "chem_t_g10_u3_important_inorganic_compounds",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 2,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_004_c1",
+          "label": "A",
+          "text_en": "CuO",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_004_c2",
+          "label": "B",
+          "text_en": "Fe",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_004_c3",
+          "label": "C",
+          "text_en": "V₂O₅",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_004_c4",
+          "label": "D",
+          "text_en": "Pt",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Pt Acids, bases, salts and oxides are identified by their characteristic composition and reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_005",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 5,
+      "question_text_en": "Which of the following factors does NOT affect the rate of a chemical reaction having solid reactants?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_005_c1",
+          "label": "A",
+          "text_en": "Volume of reaction vessel",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_005_c2",
+          "label": "B",
+          "text_en": "Physical state of reactants",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_005_c3",
+          "label": "C",
+          "text_en": "Temperature of reaction",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_005_c4",
+          "label": "D",
+          "text_en": "Concentration of reactants",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Volume of reaction vessel The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_006",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 6,
+      "question_text_en": "What is the electron configuration of O₂⁻ molecule as per the molecular orbital model? (Atomic number of O = 8)",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "corrected_source",
+      "review_note": "The archive’s embedded answer marker for this item is inconsistent with electron counting. The curriculum-based MO configuration for O₂⁻ corresponds to D.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_006_c1",
+          "label": "A",
+          "text_en": "σ₁s² σ₁s*² σ₂s² σ₂s*² σ₂px² (π₂py² = π₂pz²) (π*₂py¹ = π*₂pz¹)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_006_c2",
+          "label": "B",
+          "text_en": "σ₁s² σ₁s*² σ₂s² σ₂s*² σ₂px² (π₂py² = π₂pz²) (π*₂pz²)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_006_c3",
+          "label": "C",
+          "text_en": "σ₁s² σ₁s*² σ₂s² σ₂s*² σ₂px² (π₂py² = π₂pz²) (π*₂py² = π*₂pz²)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_006_c4",
+          "label": "D",
+          "text_en": "σ₁s² σ₁s*² σ₂s² σ₂s*² σ₂px² (π₂py² = π₂pz²) (π*₂py² = π*₂pz¹)",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "O₂⁻ has 17 electrons. Relative to O₂, one extra electron enters a π*2p orbital, giving three electrons across the two degenerate π* orbitals. Option D shows this occupancy."
+      }
+    },
+    {
+      "id": "q_chem_2017_007",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "exam_year": 2017,
+      "question_number": 7,
+      "question_text_en": "At a particular temperature, the equilibrium constant, Kc = 0.36 for the reaction SO₃ (g) ⇌ SO₂ (g) + O₂ (g). Which of the following predictions can be drawn from the given data?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_007_c1",
+          "label": "A",
+          "text_en": "It is not possible to predict the direction of the reaction.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_007_c2",
+          "label": "B",
+          "text_en": "The reaction will proceed to the right.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_007_c3",
+          "label": "C",
+          "text_en": "The reaction will proceed to the left.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_007_c4",
+          "label": "D",
+          "text_en": "The reaction is at equilibrium.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "It is not possible to predict the direction of the reaction. At equilibrium the forward and reverse rates are equal; K and Q or Le Chatelier’s principle determine equilibrium composition and shift."
+      }
+    },
+    {
+      "id": "q_chem_2017_008",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 8,
+      "question_text_en": "A mineral absorbs purple light of frequency 7.11 × 10¹⁴\\ Hz. What is the wavelength (in nm) of the absorbed light? (c = 3.00 × 10⁸\\ m/s)",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 3,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_008_c1",
+          "label": "A",
+          "text_en": "314.5 nm",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_008_c2",
+          "label": "B",
+          "text_en": "421.9 nm",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_008_c3",
+          "label": "C",
+          "text_en": "237.5 nm",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_008_c4",
+          "label": "D",
+          "text_en": "184.4 nm",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "λ=c/ν=(3.00×10⁸)/(7.11×10¹⁴)=4.219×10⁻⁷ m=421.9 nm, so B is correct."
+      }
+    },
+    {
+      "id": "q_chem_2017_009",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 9,
+      "question_text_en": "Why do atoms absorb energy when their electrons undergo transitions from a lower energy to a higher energy level? This is because",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_009_c1",
+          "label": "A",
+          "text_en": "The electrons of the atoms absorb energy when they go from higher to lower energy.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_009_c2",
+          "label": "B",
+          "text_en": "The electrons of the atoms do not have allowable energy levels.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_009_c3",
+          "label": "C",
+          "text_en": "The electrons of the atoms move from one orbit of higher radius to another one having lower radius.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_009_c4",
+          "label": "D",
+          "text_en": "The electrons of the atoms move from one orbit of lower radius to another one having larger radius.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The electrons of the atoms move from one orbit of lower radius to another one having larger radius. The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_010",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 10,
+      "question_text_en": "What are the quantum numbers for the 5s orbital?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_010_c1",
+          "label": "A",
+          "text_en": "n=5,\\ l=0,\\ ml=0,\\ ms=±½",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_010_c2",
+          "label": "B",
+          "text_en": "n=5,\\ l=2,\\ ml=-2,\\ ms=±½",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_010_c3",
+          "label": "C",
+          "text_en": "n=5,\\ l=1,\\ ml=-2,\\ ms=±½",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_010_c4",
+          "label": "D",
+          "text_en": "n=5,\\ l=0,\\ ml=-1,\\ ms=±½",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "n=5,\\ l=0,\\ ml=0,\\ ms=±½ The modern atomic model uses quantized energy levels, quantum numbers, electron configurations and electromagnetic radiation relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_011",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 11,
+      "question_text_en": "Which of the following is CORRECT about the set of quantum numbers assigned to the two electrons of the helium atom?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_011_c1",
+          "label": "A",
+          "text_en": "The magnetic quantum numbers of both electrons are different.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_011_c2",
+          "label": "B",
+          "text_en": "The second electron occupies the same orbital as the first with the opposite spin quantum number.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_011_c3",
+          "label": "C",
+          "text_en": "The second electron occupies the same orbital as the first with the same spin quantum number.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_011_c4",
+          "label": "D",
+          "text_en": "Both electrons have the same four quantum numbers.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The second electron occupies the same orbital as the first with the opposite spin quantum number. The modern atomic model uses quantized energy levels, quantum numbers, electron configurations and electromagnetic radiation relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_012",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 12,
+      "question_text_en": "What is the bond formed between two or more atoms by sharing of electrons?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 4,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_012_c1",
+          "label": "A",
+          "text_en": "Valence bond",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_012_c2",
+          "label": "B",
+          "text_en": "Covalent bond",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_012_c3",
+          "label": "C",
+          "text_en": "Metallic bond",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_012_c4",
+          "label": "D",
+          "text_en": "Ionic bond",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Covalent bond Molecular structure follows orbital overlap/hybridization, electron-pair repulsions, polarity and intermolecular-force principles."
+      }
+    },
+    {
+      "id": "q_chem_2017_013",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 13,
+      "question_text_en": "Which statement below CORRECTLY describes dipole-dipole forces? It is the force that exists",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_013_c1",
+          "label": "A",
+          "text_en": "between polar and non-polar molecules.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_013_c2",
+          "label": "B",
+          "text_en": "between non-polar molecules.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_013_c3",
+          "label": "C",
+          "text_en": "between polar molecules.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_013_c4",
+          "label": "D",
+          "text_en": "in all",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "between polar molecules. Molecular structure follows orbital overlap/hybridization, electron-pair repulsions, polarity and intermolecular-force principles."
+      }
+    },
+    {
+      "id": "q_chem_2017_014",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 14,
+      "question_text_en": "Comparing the forces between molecules of similar molar masses, which one of the following produces the weakest force?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_014_c1",
+          "label": "A",
+          "text_en": "Van der Waals forces.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_014_c2",
+          "label": "B",
+          "text_en": "Ionic forces.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_014_c3",
+          "label": "C",
+          "text_en": "Hydrogen bonding.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_014_c4",
+          "label": "D",
+          "text_en": "Covalent bonds",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Van der Waals forces. The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_015",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u5",
+      "topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "exam_year": 2017,
+      "question_number": 15,
+      "question_text_en": "Which of the following is NOT true about greenhouse effect and greenhouse gases?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u5",
+      "curriculum_topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_015_c1",
+          "label": "A",
+          "text_en": "The greater the percentage of greenhouse gases in the atmosphere, the cooler the earth should be.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_015_c2",
+          "label": "B",
+          "text_en": "Oxygen (O₂) and nitrogen (N₂) are transparent to infrared radiation.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_015_c3",
+          "label": "C",
+          "text_en": "Carbon dioxide and water vapor are greenhouse gases.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_015_c4",
+          "label": "D",
+          "text_en": "Greenhouse effect is the trapping of the infrared radiation by certain gases in the atmosphere",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The greater the percentage of greenhouse gases in the atmosphere, the cooler the earth should be. Environmental chemistry examines pollutants, atmospheric effects, resources and chemical cycles in the environment."
+      }
+    },
+    {
+      "id": "q_chem_2017_016",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u5",
+      "topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "exam_year": 2017,
+      "question_number": 16,
+      "question_text_en": "In which of the following is the type of natural resource and the given example CORRECTLY paired?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u5",
+      "curriculum_topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 5,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_016_c1",
+          "label": "A",
+          "text_en": "Non-Renewable Resources; water",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_016_c2",
+          "label": "B",
+          "text_en": "Non-Renewable Resources; animal wool",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_016_c3",
+          "label": "C",
+          "text_en": "Renewable resources; crops",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_016_c4",
+          "label": "D",
+          "text_en": "Renewable resources; copper",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Renewable resources; crops Environmental chemistry examines pollutants, atmospheric effects, resources and chemical cycles in the environment."
+      }
+    },
+    {
+      "id": "q_chem_2017_017",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 17,
+      "question_text_en": "Which of the following compound is a Bronsted-Lowry base?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_017_c1",
+          "label": "A",
+          "text_en": "H2S",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_017_c2",
+          "label": "B",
+          "text_en": "HCl",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_017_c3",
+          "label": "C",
+          "text_en": "NH3",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_017_c4",
+          "label": "D",
+          "text_en": "BF3",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "NH3 Acid–base equilibria use proton/electron-pair concepts together with pH, pOH, Ka/Kb and titration relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_018",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 18,
+      "question_text_en": "In an activity during laboratory session a small amount of lead bromide (PbBr2) crystals were placed in a beaker. Two electrodes are inserted until they are in contact with the PbBr2 crystals. When the PbBr2 crystals in the beaker are gently heated, which of the following will be observed?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_018_c1",
+          "label": "A",
+          "text_en": "Lead (II) ion is oxidized at the cathode",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_018_c2",
+          "label": "B",
+          "text_en": "Lead (II) ion is reduced at the anode",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_018_c3",
+          "label": "C",
+          "text_en": "Bromide ion is oxidized at the cathode",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_018_c4",
+          "label": "D",
+          "text_en": "Bromine gas is evolved at the anode",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Bromine gas is evolved at the anode Electrochemistry couples oxidation at the anode with reduction at the cathode and relates electrical charge to chemical change."
+      }
+    },
+    {
+      "id": "q_chem_2017_019",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u5",
+      "topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "exam_year": 2017,
+      "question_number": 19,
+      "question_text_en": "What is the name given to the pollution caused by the dumping of non-biodegradable wastes into the environment?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u5",
+      "curriculum_topic_id": "chem_t_g12_u5_introduction_to_environmental_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_019_c1",
+          "label": "A",
+          "text_en": "Water pollution",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_019_c2",
+          "label": "B",
+          "text_en": "Sound pollution",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_019_c3",
+          "label": "C",
+          "text_en": "Land pollution",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_019_c4",
+          "label": "D",
+          "text_en": "Air pollution",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Land pollution Environmental chemistry examines pollutants, atmospheric effects, resources and chemical cycles in the environment."
+      }
+    },
+    {
+      "id": "q_chem_2017_020",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "exam_year": 2017,
+      "question_number": 20,
+      "question_text_en": "What is the purpose of the conversion of pig iron to steel?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 6,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_020_c1",
+          "label": "A",
+          "text_en": "To decrease the concentration of iron in the pig iron",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_020_c2",
+          "label": "B",
+          "text_en": "To increase the concentration of iron in the pig iron",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_020_c3",
+          "label": "C",
+          "text_en": "To remove impurities by reduction",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_020_c4",
+          "label": "D",
+          "text_en": "To remove impurities by oxidation",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "To remove impurities by oxidation Metal chemistry is governed by reactivity, oxidation/reduction, extraction and characteristic physical and chemical properties."
+      }
+    },
+    {
+      "id": "q_chem_2017_021",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u1",
+      "topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "exam_year": 2017,
+      "question_number": 21,
+      "question_text_en": "Which of the following statements CORRECTLY describes the law of conservation of mass?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u1",
+      "curriculum_topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_021_c1",
+          "label": "A",
+          "text_en": "Pure compounds always contain the elements in the same percentage by mass.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_021_c2",
+          "label": "B",
+          "text_en": "A particular compound is composed of the same elements in the same parts by mass.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_021_c3",
+          "label": "C",
+          "text_en": "Mass is neither created nor destroyed during a chemical reaction.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_021_c4",
+          "label": "D",
+          "text_en": "The total mass of substances varies during a chemical reaction.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Mass is neither created nor destroyed during a chemical reaction. Chemical equations must conserve atoms and charge; stoichiometric coefficients give the mole relationships, while redox is tracked by electron transfer or oxidation numbers."
+      }
+    },
+    {
+      "id": "q_chem_2017_022",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 22,
+      "question_text_en": "What is the density of methane (CH₄) at a pressure of 900 torr and a temperature of 25°C? (R=0.082 atm. L/mol. K, 1 atm = 760 torr)",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_022_c1",
+          "label": "A",
+          "text_en": "9.2",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_022_c2",
+          "label": "B",
+          "text_en": "1.25",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_022_c3",
+          "label": "C",
+          "text_en": "0.92",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_022_c4",
+          "label": "D",
+          "text_en": "0.78",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Use d=PM/RT. With P=900/760 atm, M(CH₄)=16 g mol⁻¹, T=298 K and R=0.082, d≈0.78 g L⁻¹; option D."
+      }
+    },
+    {
+      "id": "q_chem_2017_023",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 23,
+      "question_text_en": "It takes 2.25 minutes for 0.02 mol of He to diffuse. How long will it take to diffuse for the same amount of methane gas, CH₄? (M.wt of He = 4 g/mol, CH₄ = 16 g/mol)",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_023_c1",
+          "label": "A",
+          "text_en": "6 min",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_023_c2",
+          "label": "B",
+          "text_en": "4.5 minutes",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_023_c3",
+          "label": "C",
+          "text_en": "2.25 min",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_023_c4",
+          "label": "D",
+          "text_en": "1.25 min",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "By Graham’s law, diffusion time for equal amounts varies as √M. CH₄ is four times as massive as He, so its diffusion time is twice as long: 2(2.25)=4.5 min, option B."
+      }
+    },
+    {
+      "id": "q_chem_2017_024",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u4",
+      "topic_id": "chem_t_g11_u4_chemical_kinetics",
+      "exam_year": 2017,
+      "question_number": 24,
+      "question_text_en": "Which one of the following statement CORRECTLY defines rate of reaction? The rate of a reaction is",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u4",
+      "curriculum_topic_id": "chem_t_g11_u4_chemical_kinetics",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 7,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_024_c1",
+          "label": "A",
+          "text_en": "the measure of the rate of diffusion of different gases inside a tube.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_024_c2",
+          "label": "B",
+          "text_en": "the study of necessary mechanisms occurred in a chemical reaction.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_024_c3",
+          "label": "C",
+          "text_en": "the measure of the amount of energy change in a chemical reaction.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_024_c4",
+          "label": "D",
+          "text_en": "the changes in concentration of reactants or products per unit time.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "the changes in concentration of reactants or products per unit time. Reaction rate depends on effective collisions and the slowest elementary step controls a multistep mechanism."
+      }
+    },
+    {
+      "id": "q_chem_2017_025",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "exam_year": 2017,
+      "question_number": 25,
+      "question_text_en": "Consider the following equilibrium: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) Δ H = -198.2 kJ. Which of the following changes will shift the equilibrium to the left?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "corrected_source",
+      "review_note": "The archive’s embedded answer marker says B, but Le Chatelier’s principle gives A. This guide uses the curriculum-based chemistry answer.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_025_c1",
+          "label": "A",
+          "text_en": "Decreasing the concentrations of the reactants and increasing the concentration of the product.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_025_c2",
+          "label": "B",
+          "text_en": "Increasing the concentrations of the reactants and decreasing the concentration of the product.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_025_c3",
+          "label": "C",
+          "text_en": "Increasing the concentration of the reactants and products equivalently.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_025_c4",
+          "label": "D",
+          "text_en": "Decreasing the concentrations of the reactants and products equivalently.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For 2SO₂+O₂⇌2SO₃, decreasing reactants and increasing product drives the equilibrium toward reactants (left). Therefore A is the chemistry-based answer; the source archive’s encoded key for this item is not used."
+      }
+    },
+    {
+      "id": "q_chem_2017_026",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u1",
+      "topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "exam_year": 2017,
+      "question_number": 26,
+      "question_text_en": "Aluminum reacts with oxygen to form aluminum oxide. What is the coefficient of aluminum after balancing the reaction?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u1",
+      "curriculum_topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_026_c1",
+          "label": "A",
+          "text_en": "8",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_026_c2",
+          "label": "B",
+          "text_en": "6",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_026_c3",
+          "label": "C",
+          "text_en": "4",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_026_c4",
+          "label": "D",
+          "text_en": "2",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "4 Chemical equations must conserve atoms and charge; stoichiometric coefficients give the mole relationships, while redox is tracked by electron transfer or oxidation numbers."
+      }
+    },
+    {
+      "id": "q_chem_2017_027",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 27,
+      "question_text_en": "What property of an ionic compound can be investigated by heating it in a crucible?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_027_c1",
+          "label": "A",
+          "text_en": "Crystallization point",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_027_c2",
+          "label": "B",
+          "text_en": "Malleability",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_027_c3",
+          "label": "C",
+          "text_en": "Solubility",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_027_c4",
+          "label": "D",
+          "text_en": "Melting point",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Melting point Molecular structure follows orbital overlap/hybridization, electron-pair repulsions, polarity and intermolecular-force principles."
+      }
+    },
+    {
+      "id": "q_chem_2017_028",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 28,
+      "question_text_en": "Silver has two known isotopes,¹⁰⁷ Ag and¹⁰⁸ Ag with their percent abundance of 52% and 48%, respectively. What is the average atomic mass of silver?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 8,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_028_c1",
+          "label": "A",
+          "text_en": "108.86",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_028_c2",
+          "label": "B",
+          "text_en": "107.48",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_028_c3",
+          "label": "C",
+          "text_en": "108.06",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_028_c4",
+          "label": "D",
+          "text_en": "107.89",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Weighted average mass = 107(0.52)+108(0.48)=107.48 amu, matching option B."
+      }
+    },
+    {
+      "id": "q_chem_2017_029",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 29,
+      "question_text_en": "Which reaction scheme below illustrates the formation of a cation?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_029_c1",
+          "label": "A",
+          "text_en": "Mg²⁺ + 2e⁻ → Mg",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_029_c2",
+          "label": "B",
+          "text_en": "S + 2e⁻ → S²⁻",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_029_c3",
+          "label": "C",
+          "text_en": "2Cl⁻ → Cl₂ + 2e⁻",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_029_c4",
+          "label": "D",
+          "text_en": "Na → Na⁺ + e⁻",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Na → Na⁺ + e⁻ The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_030",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 30,
+      "question_text_en": "Which statement distinguishes equilibrium point from end point in acid-base titration?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_030_c1",
+          "label": "A",
+          "text_en": "End point is a point at which the indicator changes color whereas equivalence point is the point where an acid has completely reacted with a base.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_030_c2",
+          "label": "B",
+          "text_en": "Equivalence point is a point at which the indicator changes color whereas end point is the point where an acid has completely reacted with a base.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_030_c3",
+          "label": "C",
+          "text_en": "Equivalence point is a point at which reactants start to melt whereas end point is the point where products start to freeze.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_030_c4",
+          "label": "D",
+          "text_en": "Equivalence point is a point at which reactants start to evaporate whereas end point is the point where a product starts to condense",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "End point is a point at which the indicator changes color whereas equivalence point is the point where an acid has completely reacted with a base. Acid–base equilibria use proton/electron-pair concepts together with pH, pOH, Ka/Kb and titration relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_031",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 31,
+      "question_text_en": "Which one is the mathematical expression for Faraday's first law of electrolysis?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_031_c1",
+          "label": "A",
+          "text_en": "m = (MIt)/(nF)",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_031_c2",
+          "label": "B",
+          "text_en": "m = (MPV)/(RT)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_031_c3",
+          "label": "C",
+          "text_en": "M = (n)/(V(liter))",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_031_c4",
+          "label": "D",
+          "text_en": "(m₁)/(m₂) = (E₁)/(E₂)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "m = (MIt)/(nF) Electrochemistry couples oxidation at the anode with reduction at the cathode and relates electrical charge to chemical change."
+      }
+    },
+    {
+      "id": "q_chem_2017_032",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u3",
+      "topic_id": "chem_t_g12_u3_industrial_chemistry",
+      "exam_year": 2017,
+      "question_number": 32,
+      "question_text_en": "Which of the following describes the process of manufacturing valuable products in industries?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u3",
+      "curriculum_topic_id": "chem_t_g12_u3_industrial_chemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 9,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_032_c1",
+          "label": "A",
+          "text_en": "Manufacturing industry uses only inorganic chemicals in the production of valuable products.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_032_c2",
+          "label": "B",
+          "text_en": "Carry out unwanted reaction of a material that result in the dissolution or consumption of the material.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_032_c3",
+          "label": "C",
+          "text_en": "Discharging of a solid, liquid or gaseous substance into an environment that causes unwanted changes.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_032_c4",
+          "label": "D",
+          "text_en": "Designing to produce a desired output from raw materials using energy through different steps.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Designing to produce a desired output from raw materials using energy through different steps. Industrial chemistry converts raw materials into useful products through controlled chemical processes and catalysts."
+      }
+    },
+    {
+      "id": "q_chem_2017_033",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 33,
+      "question_text_en": "For the dissociation of HNO₂: HNO₂(aq) ⇌ NO₂⁻(aq) + H⁺(aq) What is the percent ionization of a 0.5 M solution of HNO₂? (Ka of HNO₂ = 7.1 × 10⁻⁴)",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_033_c1",
+          "label": "A",
+          "text_en": "9.1%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_033_c2",
+          "label": "B",
+          "text_en": "3.8%",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_033_c3",
+          "label": "C",
+          "text_en": "1.8%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_033_c4",
+          "label": "D",
+          "text_en": "0.2%",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "For HNO₂, Ka=x²/(0.50−x). Solving gives x≈0.0185 M, so percent ionization ≈(0.0185/0.50)×100≈3.7%, closest to 3.8% (B)."
+      }
+    },
+    {
+      "id": "q_chem_2017_034",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u1",
+      "topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "exam_year": 2017,
+      "question_number": 34,
+      "question_text_en": "Which of the following reaction shows the action of H₂SO₄ as oxidizing agent?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u1",
+      "curriculum_topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_034_c1",
+          "label": "A",
+          "text_en": "Mg(s) + 2H₂SO₄(aq) → 3MgSO₄(aq) + (NH₂)₂SO₄(aq)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_034_c2",
+          "label": "B",
+          "text_en": "Cu(s) + 2H₂SO₄(aq) → CuSO₄(aq) + SO₂(g) + 2H₂O(l)",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_034_c3",
+          "label": "C",
+          "text_en": "2KOH(aq) + H₂SO₄(aq) → K₂SO₄(aq) + 2H₂O(l)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_034_c4",
+          "label": "D",
+          "text_en": "SO₃(g) + H₂O(l) → H₂SO₄(aq)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Cu(s) + 2H₂SO₄(aq) → CuSO₄(aq) + SO₂(g) + 2H₂O(l) Chemical equations must conserve atoms and charge; stoichiometric coefficients give the mole relationships, while redox is tracked by electron transfer or oxidation numbers."
+      }
+    },
+    {
+      "id": "q_chem_2017_035",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 35,
+      "question_text_en": "A 0.47 M aqueous solution of a weak base has a pOH of 2. What is Kb for the weak base?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_035_c1",
+          "label": "A",
+          "text_en": "4.4 × 10⁻¹",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_035_c2",
+          "label": "B",
+          "text_en": "1.0 × 10⁻²",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_035_c3",
+          "label": "C",
+          "text_en": "3.14 × 10⁻³",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_035_c4",
+          "label": "D",
+          "text_en": "2.17 × 10⁻⁴",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "pOH=2 gives [OH⁻]=0.010 M. Kb=x²/(0.47−x)=0.0001/0.46≈2.17×10⁻⁴, option D."
+      }
+    },
+    {
+      "id": "q_chem_2017_036",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 36,
+      "question_text_en": "A student was given a standard Zn(s)| Zn²⁺ (aq) half-cell and another half-cell containing copper immersed in 1.00 M CuSO₄ (aq). When the Zn was connected as the anode at 25°C, the cell potential reading on the voltmeter shows 1.1 V. Which of the following is NOT correct regarding the cell potential measurement?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 10,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_036_c1",
+          "label": "A",
+          "text_en": "Electrons travel through the external circuit from copper cathode to the zinc anode.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_036_c2",
+          "label": "B",
+          "text_en": "The zinc electrode was dissolved and the blue color CuSO₄ solution would fade.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_036_c3",
+          "label": "C",
+          "text_en": "The circuit is completed inside the cell by migration of ions through the salt bridge.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_036_c4",
+          "label": "D",
+          "text_en": "The mass of copper was increased during the cell potential measurement.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Electrons travel through the external circuit from copper cathode to the zinc anode. Electrochemistry couples oxidation at the anode with reduction at the cathode and relates electrical charge to chemical change."
+      }
+    },
+    {
+      "id": "q_chem_2017_037",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u4",
+      "topic_id": "chem_t_g12_u4_polymers",
+      "exam_year": 2017,
+      "question_number": 37,
+      "question_text_en": "Which of the following polymer structure represent polypropylene?",
+      "diagram_asset": "assets/images/exams/chem_2017/q37_polypropylene_structures.png",
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u4",
+      "curriculum_topic_id": "chem_t_g12_u4_polymers",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_037_c1",
+          "label": "A",
+          "text_en": "Polymer Structure A",
+          "image_asset": "assets/images/exams/chem_2017/q37_poly_a.png",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_037_c2",
+          "label": "B",
+          "text_en": "Polymer Structure B",
+          "image_asset": "assets/images/exams/chem_2017/q37_poly_b.png",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_037_c3",
+          "label": "C",
+          "text_en": "Polymer Structure C",
+          "image_asset": "assets/images/exams/chem_2017/q37_poly_c.png",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_037_c4",
+          "label": "D",
+          "text_en": "Polymer Structure D",
+          "image_asset": "assets/images/exams/chem_2017/q37_poly_d.png",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Polypropylene is formed from propene, so its repeat unit is –CH₂–CH(CH₃)–. The structure showing a CH₃ substituent on every second carbon is option C."
+      }
+    },
+    {
+      "id": "q_chem_2017_038",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 38,
+      "question_text_en": "Which one of the following CORRECTLY illustrates the hybridization of orbitals of Be in the molecule BeCl2?",
+      "diagram_asset": "assets/images/exams/chem_2017/q38_becl2_hybridization_schemes.png",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_038_c1",
+          "label": "A",
+          "text_en": "Hybridization Scheme A",
+          "image_asset": "assets/images/exams/chem_2017/q38_becl2_a.png",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_038_c2",
+          "label": "B",
+          "text_en": "Hybridization Scheme B",
+          "image_asset": "assets/images/exams/chem_2017/q38_becl2_b.png",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_038_c3",
+          "label": "C",
+          "text_en": "Hybridization Scheme C",
+          "image_asset": "assets/images/exams/chem_2017/q38_becl2_c.png",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_038_c4",
+          "label": "D",
+          "text_en": "Hybridization Scheme D",
+          "image_asset": "assets/images/exams/chem_2017/q38_becl2_d.png",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Be in BeCl₂ promotes one electron and forms two equivalent sp hybrid orbitals, each singly occupied for two Be–Cl σ bonds. The diagram in option A represents this sp hybridization."
+      }
+    },
+    {
+      "id": "q_chem_2017_039",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u3",
+      "topic_id": "chem_t_g10_u3_important_inorganic_compounds",
+      "exam_year": 2017,
+      "question_number": 39,
+      "question_text_en": "Which of the following properties is the property of an acidic oxide? An acidic oxide reacts with",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u3",
+      "curriculum_topic_id": "chem_t_g10_u3_important_inorganic_compounds",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_039_c1",
+          "label": "A",
+          "text_en": "Water to form acids.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_039_c2",
+          "label": "B",
+          "text_en": "Salts to form acids.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_039_c3",
+          "label": "C",
+          "text_en": "Basic oxides to form hydroxides and water.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_039_c4",
+          "label": "D",
+          "text_en": "Bases to form basic hydroxide and water.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water to form acids. Acids, bases, salts and oxides are identified by their characteristic composition and reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_040",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2017,
+      "question_number": 40,
+      "question_text_en": "What is the name given to an acid that dissociates (ionizes) only to a slight extent in aqueous solution?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 11,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_040_c1",
+          "label": "A",
+          "text_en": "Strong acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_040_c2",
+          "label": "B",
+          "text_en": "Dilute acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_040_c3",
+          "label": "C",
+          "text_en": "Concentrated acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_040_c4",
+          "label": "D",
+          "text_en": "Weak acid",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Weak acid Solution calculations use concentration definitions and quantitative relations such as dilution, solubility and particle effects."
+      }
+    },
+    {
+      "id": "q_chem_2017_041",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u2",
+      "topic_id": "chem_t_g10_u2_solutions",
+      "exam_year": 2017,
+      "question_number": 41,
+      "question_text_en": "Solutions can be classified based upon their pH values. What is a solution whose pH value is 13?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u2",
+      "curriculum_topic_id": "chem_t_g10_u2_solutions",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_041_c1",
+          "label": "A",
+          "text_en": "Acidic solution",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_041_c2",
+          "label": "B",
+          "text_en": "Amphoteric solution",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_041_c3",
+          "label": "C",
+          "text_en": "Basic solution",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_041_c4",
+          "label": "D",
+          "text_en": "Neutral solution",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Basic solution Solution calculations use concentration definitions and quantitative relations such as dilution, solubility and particle effects."
+      }
+    },
+    {
+      "id": "q_chem_2017_042",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "exam_year": 2017,
+      "question_number": 42,
+      "question_text_en": "During laboratory class, a student placed clean water in a beaker and added pieces of calcium metal using tongs. After the reaction is completed, he/she tested the solution using red litmus paper. Which of the following will be observed?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_042_c1",
+          "label": "A",
+          "text_en": "The litmus paper turns to red.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_042_c2",
+          "label": "B",
+          "text_en": "The litmus paper turns to blue.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_042_c3",
+          "label": "C",
+          "text_en": "The litmus paper turns to colorless.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_042_c4",
+          "label": "D",
+          "text_en": "The litmus paper maintains its color.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The litmus paper turns to blue. Metal chemistry is governed by reactivity, oxidation/reduction, extraction and characteristic physical and chemical properties."
+      }
+    },
+    {
+      "id": "q_chem_2017_043",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 43,
+      "question_text_en": "Which of the following statements CORRECTLY describes the relationship among wavelength, frequency and speed in electromagnetic radiation?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_043_c1",
+          "label": "A",
+          "text_en": "As the wavelength decreases, the frequency increases.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_043_c2",
+          "label": "B",
+          "text_en": "As the wavelength increases, the frequency increases.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_043_c3",
+          "label": "C",
+          "text_en": "As the frequency increases, the speed of light decreases.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_043_c4",
+          "label": "D",
+          "text_en": "As the wavelength decreases, the speed of light increases.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "As the wavelength decreases, the frequency increases. The modern atomic model uses quantized energy levels, quantum numbers, electron configurations and electromagnetic radiation relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_044",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 44,
+      "question_text_en": "Which of the following organic compounds has the highest boiling point?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 12,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_044_c1",
+          "label": "A",
+          "text_en": "Ethene",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_044_c2",
+          "label": "B",
+          "text_en": "Ethanol",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_044_c3",
+          "label": "C",
+          "text_en": "Ethane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_044_c4",
+          "label": "D",
+          "text_en": "Ethanal",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ethanol Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_045",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 45,
+      "question_text_en": "What is a Lewis base? It is",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_045_c1",
+          "label": "A",
+          "text_en": "Proton acceptor",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_045_c2",
+          "label": "B",
+          "text_en": "Proton donor",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_045_c3",
+          "label": "C",
+          "text_en": "Electron pair donor",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_045_c4",
+          "label": "D",
+          "text_en": "Electron pair acceptor",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Electron pair donor Acid–base equilibria use proton/electron-pair concepts together with pH, pOH, Ka/Kb and titration relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_046",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u1",
+      "topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "exam_year": 2017,
+      "question_number": 46,
+      "question_text_en": "Given the following information: CH₃COOH (aq) ⇌ CH₃COO⁻ (aq) + H⁺ (aq) CH₃COOH CH₃COO⁻ H⁺ Initial concentration (mol/L) 0.2 0 0 Change -X +X +X Equilibrium concentration 0.2 - X X X Which of the following expressions represents the percent ionization of CH₃COOH?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u1",
+      "curriculum_topic_id": "chem_t_g12_u1_acid–base_equilibria",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_046_c1",
+          "label": "A",
+          "text_en": "(x/0.2)100%",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_046_c2",
+          "label": "B",
+          "text_en": "((0.2-x)/0.2)100%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_046_c3",
+          "label": "C",
+          "text_en": "(x/(0.2-x))100%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_046_c4",
+          "label": "D",
+          "text_en": "((0.2)/x)100%",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Percent ionization = (amount ionized / initial concentration)×100 = (x/0.20)×100%, which is option A."
+      }
+    },
+    {
+      "id": "q_chem_2017_047",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 47,
+      "question_text_en": "Scandium (Sc) has the electron configuration [Ar] 4s² 3d¹. To which group of elements does it belong to?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_047_c1",
+          "label": "A",
+          "text_en": "Transition elements",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_047_c2",
+          "label": "B",
+          "text_en": "Representative elements",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_047_c3",
+          "label": "C",
+          "text_en": "Nonmetals",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_047_c4",
+          "label": "D",
+          "text_en": "Inner transition elements",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Transition elements The modern atomic model uses quantized energy levels, quantum numbers, electron configurations and electromagnetic radiation relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_048",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 48,
+      "question_text_en": "A student carried out an experiment to determine the melting points of NaCl and CuCl₂. He/she added 0.2 g of NaCl and CuCl₂ into two different test tubes and heated both tubes simultaneously using a Bunsen burner. Which of the following statements is CORRECT regarding the melting point of NaCl and CuCl₂?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 13,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_048_c1",
+          "label": "A",
+          "text_en": "The melting point of NaCl is higher than that of CuCl₂.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_048_c2",
+          "label": "B",
+          "text_en": "The melting point of NaCl is lower than that of CuCl₂.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_048_c3",
+          "label": "C",
+          "text_en": "Both NaCl and CuCl₂ will not melt.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_048_c4",
+          "label": "D",
+          "text_en": "Both NaCl and CuCl₂ will melt at the same time.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The melting point of NaCl is higher than that of CuCl₂. Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_049",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 49,
+      "question_text_en": "What is the cause of unusual high boiling points of HF, H₂ O and NH₃?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_049_c1",
+          "label": "A",
+          "text_en": "Induced dipole forces",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_049_c2",
+          "label": "B",
+          "text_en": "Dipole-Dipole forces",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_049_c3",
+          "label": "C",
+          "text_en": "Ion-dipole forces",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_049_c4",
+          "label": "D",
+          "text_en": "Hydrogen bonding",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Hydrogen bonding Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_050",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 50,
+      "question_text_en": "Which statement below describes CORRECTLY the assumptions in the kinetic theory of gases?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "multiple_valid_answers",
+      "review_note": "Non-unique item: both A and C are valid kinetic-molecular statements.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_050_c1",
+          "label": "A",
+          "text_en": "Gas molecules are in random motion with no interactions.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_050_c2",
+          "label": "B",
+          "text_en": "Gas molecules occupy a finite volume and have indefinite shape.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_050_c3",
+          "label": "C",
+          "text_en": "The average kinetic energies of gas molecules are independent of the amount of gas.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_050_c4",
+          "label": "D",
+          "text_en": "The average kinetic energies of gas molecules are independent of temperature.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Kinetic-molecular theory assumes gas particles move randomly with negligible intermolecular attractions (A), and average kinetic energy at a fixed temperature does not depend on the amount of gas (C). Both statements are valid, so the item is non-unique."
+      }
+    },
+    {
+      "id": "q_chem_2017_051",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 51,
+      "question_text_en": "If the rate of diffusion of a certain unknown gas is half times the rate of diffusion of helium, what will be the molar mass of the unknown gas? (Atomic mass of He= 4.0 g/mole)",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "hard",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_051_c1",
+          "label": "A",
+          "text_en": "8.0 g/mole",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_051_c2",
+          "label": "B",
+          "text_en": "2.0 g/mole",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_051_c3",
+          "label": "C",
+          "text_en": "32.0 g/mole",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_051_c4",
+          "label": "D",
+          "text_en": "16.0 g/mole",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Graham’s law gives ru/rHe=√(MHe/Mu)=1/2. Squaring gives 1/4=4/Mu, so Mu=16 g mol⁻¹; option D."
+      }
+    },
+    {
+      "id": "q_chem_2017_052",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 52,
+      "question_text_en": "A student added boiling chips into a beaker of water while carrying out an activity to determine the boiling point of water. Why do you think the boiling chips are necessary?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 14,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_052_c1",
+          "label": "A",
+          "text_en": "To speed up the rate of evaporation",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_052_c2",
+          "label": "B",
+          "text_en": "To ensure smooth rate of evaporation",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_052_c3",
+          "label": "C",
+          "text_en": "To reach the boiling point with less consumption of heat",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_052_c4",
+          "label": "D",
+          "text_en": "To maintain constant temperature and pressure",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "To ensure smooth rate of evaporation Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_053",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u1",
+      "topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "exam_year": 2017,
+      "question_number": 53,
+      "question_text_en": "What is the oxidation number of manganese in KMnO₄?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u1",
+      "curriculum_topic_id": "chem_t_g10_u1_chemical_reactions_and_stoichi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_053_c1",
+          "label": "A",
+          "text_en": "+6",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_053_c2",
+          "label": "B",
+          "text_en": "+5",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_053_c3",
+          "label": "C",
+          "text_en": "+8",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_053_c4",
+          "label": "D",
+          "text_en": "+7",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "+7 Chemical equations must conserve atoms and charge; stoichiometric coefficients give the mole relationships, while redox is tracked by electron transfer or oxidation numbers."
+      }
+    },
+    {
+      "id": "q_chem_2017_054",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u6",
+      "topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "exam_year": 2017,
+      "question_number": 54,
+      "question_text_en": "2-methyl-1-butene is one of the isomers of C₅ H₁₀. Which of the following is the CORRECT structural formula of this isomer?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u6",
+      "curriculum_topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_054_c1",
+          "label": "A",
+          "text_en": "CH₃ -CH₂ -C(CH₃)=CH₂",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_054_c2",
+          "label": "B",
+          "text_en": "CH₃ -CH(CH₃)-CH=CH₂",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_054_c3",
+          "label": "C",
+          "text_en": "CH₃ -CH=CH-CH₂ -CH₃",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_054_c4",
+          "label": "D",
+          "text_en": "CH₃ -C(CH₃)=CH-CH₃",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "2-methyl-1-butene is CH₂=C(CH₃)–CH₂–CH₃. Written from the opposite end, this is the structure in option A."
+      }
+    },
+    {
+      "id": "q_chem_2017_055",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "exam_year": 2017,
+      "question_number": 55,
+      "question_text_en": "Which of the following organic compounds is used for the production of 1, 2-ethanediol?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_055_c1",
+          "label": "A",
+          "text_en": "Ethane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_055_c2",
+          "label": "B",
+          "text_en": "Ethene",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_055_c3",
+          "label": "C",
+          "text_en": "Ethanol",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_055_c4",
+          "label": "D",
+          "text_en": "Ethyne",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ethene Oxygen-containing organic compounds are identified by functional groups and undergo characteristic oxidation, esterification and related reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_056",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u6",
+      "topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "exam_year": 2017,
+      "question_number": 56,
+      "question_text_en": "Which of the following is the main constituent of natural gas?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u6",
+      "curriculum_topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 15,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_056_c1",
+          "label": "A",
+          "text_en": "Butane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_056_c2",
+          "label": "B",
+          "text_en": "Ethane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_056_c3",
+          "label": "C",
+          "text_en": "Methane",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_056_c4",
+          "label": "D",
+          "text_en": "Propane",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Methane Hydrocarbons are classified and named from carbon skeletons, saturation and characteristic reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_057",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "exam_year": 2017,
+      "question_number": 57,
+      "question_text_en": "Consider the following equilibrium reaction at 298 K: 2NO₂(g) ⇌ N₂O₄(g) + O₂(g) P(NO₂) = 0.75 atm, P(N₂O₄) = 2.5 × 10⁻³ atm, P(O₂) = 3.5 × 10⁻⁵ atm Calculate the actual equilibrium constant, K\u0000, for this reaction. (Correct value: K\u0000 = 1.56 × 10⁻⁷) Which of the following choices matches the value?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "Defective item: the stated Kp value is 1.56×10⁻⁷ but no choice matches it, and the reaction as printed is not balanced.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_057_c1",
+          "label": "A",
+          "text_en": "1.16 × 10⁻⁹",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_057_c2",
+          "label": "B",
+          "text_en": "5.2 × 10⁻¹⁵",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_057_c3",
+          "label": "C",
+          "text_en": "3.9 × 10⁻¹⁴",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_057_c4",
+          "label": "D",
+          "text_en": "2.9 × 10⁻¹⁴",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Using the values printed in the stem, Kp = (PN₂O₄·PO₂)/(PNO₂)² = (2.5×10⁻³)(3.5×10⁻⁵)/(0.75)² ≈1.56×10⁻⁷. None of the listed choices matches this value; the written reaction is also not atom-balanced as shown."
+      }
+    },
+    {
+      "id": "q_chem_2017_058",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u6",
+      "topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "exam_year": 2017,
+      "question_number": 58,
+      "question_text_en": "In order to avoid the decrease in quality of some clothes after washing with water, which of the following chemicals is used for dry cleaning?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u6",
+      "curriculum_topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_058_c1",
+          "label": "A",
+          "text_en": "CH₂ Cl₂",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_058_c2",
+          "label": "B",
+          "text_en": "CH₄",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_058_c3",
+          "label": "C",
+          "text_en": "C₂ Cl₄",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_058_c4",
+          "label": "D",
+          "text_en": "C₂ H₄",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "C₂ Cl₄ Hydrocarbons are classified and named from carbon skeletons, saturation and characteristic reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_059",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 59,
+      "question_text_en": "The molecule of BF₃ has both bonding and lone pair of electrons. Based upon these electrons, which one is the CORRECT molecular geometry of the molecule of BF₃?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "corrected_source",
+      "review_note": "Stem defect: BF₃ has no lone pair on the central boron atom; its geometry is nevertheless unambiguously trigonal planar.",
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_059_c1",
+          "label": "A",
+          "text_en": "Square pyramidal",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_059_c2",
+          "label": "B",
+          "text_en": "Square planar",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_059_c3",
+          "label": "C",
+          "text_en": "Trigonal bipyramidal",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_059_c4",
+          "label": "D",
+          "text_en": "Trigonal planar",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "BF₃ has three bonding regions and no lone pair on the central boron, giving trigonal-planar geometry with approximately 120° angles. Thus D is correct, although the stem incorrectly says BF₃ has a central lone pair."
+      }
+    },
+    {
+      "id": "q_chem_2017_060",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 60,
+      "question_text_en": "Which law governs the fact that the ratio of the amount of hydrogen to oxygen by weight will be the same in a drop of water and a lake of water?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 16,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_060_c1",
+          "label": "A",
+          "text_en": "Law of conservation of mass",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_060_c2",
+          "label": "B",
+          "text_en": "Law of relative composition",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_060_c3",
+          "label": "C",
+          "text_en": "Law of definite proportion",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_060_c4",
+          "label": "D",
+          "text_en": "Law of multiple proportions",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Law of definite proportion The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_061",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "exam_year": 2017,
+      "question_number": 61,
+      "question_text_en": "Which statement below CORRECTLY describes the characteristics of chemical equilibrium?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_061_c1",
+          "label": "A",
+          "text_en": "A reaction stops if sufficient amount of time is given.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_061_c2",
+          "label": "B",
+          "text_en": "A reaction stops when it reaches equilibrium.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_061_c3",
+          "label": "C",
+          "text_en": "A new substance or substances are formed when equilibrium is attained.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_061_c4",
+          "label": "D",
+          "text_en": "The rates of the forward and reverse reactions are equal.",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The rates of the forward and reverse reactions are equal. At equilibrium the forward and reverse rates are equal; K and Q or Le Chatelier’s principle determine equilibrium composition and shift."
+      }
+    },
+    {
+      "id": "q_chem_2017_062",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 62,
+      "question_text_en": "What is the name given to compounds of carbon and hydrogen containing multiple bonds?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_062_c1",
+          "label": "A",
+          "text_en": "Aromatic hydrocarbons",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_062_c2",
+          "label": "B",
+          "text_en": "Aliphatic hydrocarbons",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_062_c3",
+          "label": "C",
+          "text_en": "Unsaturated hydrocarbons",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_062_c4",
+          "label": "D",
+          "text_en": "Saturated hydrocarbons",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Unsaturated hydrocarbons The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_063",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 63,
+      "question_text_en": "The following reaction can be used for the synthesis of CH₃ CH₂ CH₂ CH₃ as a desired product: CH₃ CH₂ CHBrCH₃ + CH₃ S⁻ → CH₃ CH₂ CH₂ CH₃ + CH₃ SH + Br⁻ Which of the following is the atom economy for the above reaction? (Atomic masses: H=1; C=12; S=32 and Br=80)",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "The printed organic reaction is not balanced, so its atom economy is not well-defined and no choice is justified exactly.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_063_c1",
+          "label": "A",
+          "text_en": "48%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_063_c2",
+          "label": "B",
+          "text_en": "30.43%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_063_c3",
+          "label": "C",
+          "text_en": "80%",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_063_c4",
+          "label": "D",
+          "text_en": "56%",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The reaction printed in the source is not atom-balanced, so a valid atom-economy calculation cannot be made from it. Using the listed formulas also does not reproduce any option exactly; therefore no valid option is assigned."
+      }
+    },
+    {
+      "id": "q_chem_2017_064",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "exam_year": 2017,
+      "question_number": 64,
+      "question_text_en": "Which of the following process involves preventing the growth of bacteria, fungi and reducing the oxidation of fats?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 17,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_064_c1",
+          "label": "A",
+          "text_en": "Tanning",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_064_c2",
+          "label": "B",
+          "text_en": "Haber-Bosch",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_064_c3",
+          "label": "C",
+          "text_en": "Contact",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_064_c4",
+          "label": "D",
+          "text_en": "Food preservation",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Food preservation Oxygen-containing organic compounds are identified by functional groups and undergo characteristic oxidation, esterification and related reactions."
+      }
+    },
+    {
+      "id": "q_chem_2017_065",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 65,
+      "question_text_en": "Which of the following is the overall reaction for electrolysis of molten NaCl?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_065_c1",
+          "label": "A",
+          "text_en": "Na⁺ (l) + Cl⁻ (l) → Na(l) + ½ Cl₂ (g)",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_065_c2",
+          "label": "B",
+          "text_en": "Na⁺ (l) + ½ Cl₂ (g) → Na⁺ (l) + Cl⁻ (l)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_065_c3",
+          "label": "C",
+          "text_en": "H₂ (g) + ½ O₂ (g) → H₂ O(g)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_065_c4",
+          "label": "D",
+          "text_en": "H₂ O(g) → H₂ (g) + ½ O₂ (g)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Na⁺ (l) + Cl⁻ (l) → Na(l) + ½ Cl₂ (g) Electrochemistry couples oxidation at the anode with reduction at the cathode and relates electrical charge to chemical change."
+      }
+    },
+    {
+      "id": "q_chem_2017_066",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g12_u2",
+      "topic_id": "chem_t_g12_u2_electrochemistry",
+      "exam_year": 2017,
+      "question_number": 66,
+      "question_text_en": "Which of the following occur during the electrolysis of dilute H₂ SO₄?",
+      "diagram_asset": null,
+      "curriculum_grade": 12,
+      "curriculum_unit_id": "chem_g12_u2",
+      "curriculum_topic_id": "chem_t_g12_u2_electrochemistry",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_066_c1",
+          "label": "A",
+          "text_en": "The overall reaction is: H₂ (g) + ½ O₂ (g) → H₂ O(g)",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_066_c2",
+          "label": "B",
+          "text_en": "SO₄²⁻ is discharged at the anode.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_066_c3",
+          "label": "C",
+          "text_en": "A basic solution is formed",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_066_c4",
+          "label": "D",
+          "text_en": "H⁺ is discharged at the negative electrode",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "H⁺ is discharged at the negative electrode Electrochemistry couples oxidation at the anode with reduction at the cathode and relates electrical charge to chemical change."
+      }
+    },
+    {
+      "id": "q_chem_2017_067",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u5",
+      "topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "exam_year": 2017,
+      "question_number": 67,
+      "question_text_en": "Which statement below CORRECTLY distinguishes redox and non-redox reactions?",
+      "diagram_asset": null,
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u5",
+      "curriculum_topic_id": "chem_t_g10_u5_metals_and_nonmetals",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_067_c1",
+          "label": "A",
+          "text_en": "Reduction occurs in redox reactions and oxidation takes place in non-redox reactions.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_067_c2",
+          "label": "B",
+          "text_en": "Electrons are transferred in redox reactions but not in non-redox reactions.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_067_c3",
+          "label": "C",
+          "text_en": "Acid-base reactions can be considered as both redox and non-redox reactions.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_067_c4",
+          "label": "D",
+          "text_en": "Oxidation number remains the same in both redox and non-redox reactions",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Electrons are transferred in redox reactions but not in non-redox reactions. Metal chemistry is governed by reactivity, oxidation/reduction, extraction and characteristic physical and chemical properties."
+      }
+    },
+    {
+      "id": "q_chem_2017_068",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u5",
+      "topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "exam_year": 2017,
+      "question_number": 68,
+      "question_text_en": "Given the reaction: C(s) + CO₂ (g) ⇌ 2CO(g) What is the equilibrium constant expression for the reaction?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u5",
+      "curriculum_topic_id": "chem_t_g11_u5_chemical_equilibrium",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "medium",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 18,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_068_c1",
+          "label": "A",
+          "text_en": "[CO]² /[CO₂ ]",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_068_c2",
+          "label": "B",
+          "text_en": "[CO]² /[C][CO₂ ]",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_068_c3",
+          "label": "C",
+          "text_en": "[C][CO₂ ]/[CO]²",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_068_c4",
+          "label": "D",
+          "text_en": "[CO₂ ]² /[C]",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Pure solids are omitted from equilibrium-constant expressions. For C(s)+CO₂(g)⇌2CO(g), Kc=[CO]²/[CO₂], option A."
+      }
+    },
+    {
+      "id": "q_chem_2017_069",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 69,
+      "question_text_en": "Which of the following pair of substances can be considered as examples of the liquid state of matter at room temperature and 1 atm pressure?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_069_c1",
+          "label": "A",
+          "text_en": "Water and carbon dioxide",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_069_c2",
+          "label": "B",
+          "text_en": "Carbon and mercury",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_069_c3",
+          "label": "C",
+          "text_en": "Carbon and carbon monoxide",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_069_c4",
+          "label": "D",
+          "text_en": "Water and mercury",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Water and mercury Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_070",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u3",
+      "topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "exam_year": 2017,
+      "question_number": 70,
+      "question_text_en": "Which gas law describes the behavior of gases using the variables: temperature, volume, pressure and number of moles?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u3",
+      "curriculum_topic_id": "chem_t_g11_u3_physical_states_of_matter",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_070_c1",
+          "label": "A",
+          "text_en": "Boyle's law",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_070_c2",
+          "label": "B",
+          "text_en": "Ideal gas law",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_070_c3",
+          "label": "C",
+          "text_en": "Combined gas law",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_070_c4",
+          "label": "D",
+          "text_en": "Avogadro's law",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ideal gas law Gas and phase behavior follows kinetic-molecular ideas and pressure–volume–temperature relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_071",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 71,
+      "question_text_en": "Which one of the following CORRECTLY shows the relative charges of an electron, proton and neutron, respectively?",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_071_c1",
+          "label": "A",
+          "text_en": "0, -1, +1",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_071_c2",
+          "label": "B",
+          "text_en": "0, +1, -1",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_071_c3",
+          "label": "C",
+          "text_en": "-1, 0, +1",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_071_c4",
+          "label": "D",
+          "text_en": "-1, +1, 0",
+          "is_correct": true
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "-1, +1, 0 The Chemistry curriculum connects chemical knowledge with laboratory work, materials and industrial applications."
+      }
+    },
+    {
+      "id": "q_chem_2017_072",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u1",
+      "topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "exam_year": 2017,
+      "question_number": 72,
+      "question_text_en": "Which statement below CORRECTLY describes the Bohr's model of an atom?",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u1",
+      "curriculum_topic_id": "chem_t_g11_u1_atomic_structure_and_periodic_",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 19,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_072_c1",
+          "label": "A",
+          "text_en": "Electrons and neutrons are found in the nucleus.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_072_c2",
+          "label": "B",
+          "text_en": "Protons and electrons are found in the nucleus.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_072_c3",
+          "label": "C",
+          "text_en": "Electrons move in circular orbits around the nucleus.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_072_c4",
+          "label": "D",
+          "text_en": "Protons move in circular orbits around the nucleus.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Electrons move in circular orbits around the nucleus. The modern atomic model uses quantized energy levels, quantum numbers, electron configurations and electromagnetic radiation relationships."
+      }
+    },
+    {
+      "id": "q_chem_2017_073",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u4",
+      "topic_id": "chem_t_g9_u4_periodic_classification_of_ele",
+      "exam_year": 2017,
+      "question_number": 73,
+      "question_text_en": "Which statement below CORRECTLY describes periodicity? Periodicity is",
+      "diagram_asset": null,
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u4",
+      "curriculum_topic_id": "chem_t_g9_u4_periodic_classification_of_ele",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_073_c1",
+          "label": "A",
+          "text_en": "a row in the Periodic Table which contains elements with same number of shells.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_073_c2",
+          "label": "B",
+          "text_en": "a regular repetition of chemical and physical properties in the Periodic Table.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_073_c3",
+          "label": "C",
+          "text_en": "a column in the Periodic Table which contains elements with similar chemical properties.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_073_c4",
+          "label": "D",
+          "text_en": "a measure of electronegativity which runs from least electronegative to most electronegative elements.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "a regular repetition of chemical and physical properties in the Periodic Table. Periodic properties repeat systematically with atomic number and show characteristic group and period trends."
+      }
+    },
+    {
+      "id": "q_chem_2017_074",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u2",
+      "topic_id": "chem_t_g11_u2_chemical_bonding",
+      "exam_year": 2017,
+      "question_number": 74,
+      "question_text_en": "Which statement below CORRECTLY expresses hydrogen bonding? It is formed by bonding",
+      "diagram_asset": null,
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u2",
+      "curriculum_topic_id": "chem_t_g11_u2_chemical_bonding",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_074_c1",
+          "label": "A",
+          "text_en": "a hydrogen atom to an element such as oxygen.",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_074_c2",
+          "label": "B",
+          "text_en": "a hydrogen atom to an element such as sodium.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_074_c3",
+          "label": "C",
+          "text_en": "two hydrogen atoms with unequal sharing of electrons.",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_074_c4",
+          "label": "D",
+          "text_en": "two hydrogen atoms with equal sharing of electrons.",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "a hydrogen atom to an element such as oxygen. Molecular structure follows orbital overlap/hybridization, electron-pair repulsions, polarity and intermolecular-force principles."
+      }
+    },
+    {
+      "id": "q_chem_2017_075",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g10_u6",
+      "topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "exam_year": 2017,
+      "question_number": 75,
+      "question_text_en": "What is the CORRECT IUPAC nomenclature of the following alkane?",
+      "diagram_asset": "assets/images/exams/chem_2017/q75_alkane_structure.png",
+      "curriculum_grade": 10,
+      "curriculum_unit_id": "chem_g10_u6",
+      "curriculum_topic_id": "chem_t_g10_u6_hydrocarbons_and_their_natural",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_075_c1",
+          "label": "A",
+          "text_en": "4,6-dichloro-2,8-dimethyldecane",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_075_c2",
+          "label": "B",
+          "text_en": "5,7-dichloro-3,9-dimethyldecane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_075_c3",
+          "label": "C",
+          "text_en": "4,6-dichloro-8-ethyl-2-methylnonane",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_075_c4",
+          "label": "D",
+          "text_en": "4,6-dichloro-2-ethyl-8-methylnonane",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The longest continuous chain contains ten carbons. Numbering for the lowest locants gives chloro substituents at 4 and 6 and methyl groups at 2 and 8: 4,6-dichloro-2,8-dimethyldecane, option A."
+      }
+    },
+    {
+      "id": "q_chem_2017_076",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "exam_year": 2017,
+      "question_number": 76,
+      "question_text_en": "What is the IUPAC name of the following carboxylic acid?",
+      "diagram_asset": "assets/images/exams/chem_2017/q76_carboxylic_acid_structure.png",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "no_valid_option",
+      "review_note": "The displayed structure is a dicarboxylic acid, but all four choices are monocarboxylic-acid names; no option is valid.",
+      "is_scorable": false,
+      "is_practice_eligible": false,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 20,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_076_c1",
+          "label": "A",
+          "text_en": "3-chlorobutanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_076_c2",
+          "label": "B",
+          "text_en": "5-chloropentanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_076_c3",
+          "label": "C",
+          "text_en": "3-chloropentanoic acid",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_076_c4",
+          "label": "D",
+          "text_en": "2-chloroethanedioic acid",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The displayed molecule is a dicarboxylic acid, HOOC–CH₂–CH(Cl)–CH₂–CH₂–CH₂–CH₂–COOH, whose name is 3-chlorooctanedioic acid. None of the listed monocarboxylic-acid names matches the structure."
+      }
+    },
+    {
+      "id": "q_chem_2017_077",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g11_u6",
+      "topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "exam_year": 2017,
+      "question_number": 77,
+      "question_text_en": "Consider the structure of an alcohol shown below. What type of an alcohol is it?",
+      "diagram_asset": "assets/images/exams/chem_2017/q77_alcohol_structure.png",
+      "curriculum_grade": 11,
+      "curriculum_unit_id": "chem_g11_u6",
+      "curriculum_topic_id": "chem_t_g11_u6_some_important_oxygen-containi",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_077_c1",
+          "label": "A",
+          "text_en": "Polyhydric alcohol",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_077_c2",
+          "label": "B",
+          "text_en": "Tertiary alcohol",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_077_c3",
+          "label": "C",
+          "text_en": "Dihydric alcohol",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_077_c4",
+          "label": "D",
+          "text_en": "Primary alcohol",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The structure contains two hydroxyl (–OH) groups, so it is specifically a dihydric alcohol; option C."
+      }
+    },
+    {
+      "id": "q_chem_2017_078",
+      "grade": 12,
+      "stream": "natural",
+      "subject_id": "chemistry_g12",
+      "unit_id": "chem_g9_u1",
+      "topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "exam_year": 2017,
+      "question_number": 78,
+      "question_text_en": "Consider the molecular structure of COCl₂ shown below. What are the predicted bond angles Cl-C-O and Cl-C-Cl?",
+      "diagram_asset": "assets/images/exams/chem_2017/q78_cocl2_structure.png",
+      "curriculum_grade": 9,
+      "curriculum_unit_id": "chem_g9_u1",
+      "curriculum_topic_id": "chem_t_g9_u1_chemistry_and_its_importance",
+      "curriculum_framework": "ethiopian_national_curriculum",
+      "difficulty": "easy",
+      "difficulty_source": "fidel_learn_assigned",
+      "verification_status": "verified",
+      "review_note": null,
+      "is_scorable": true,
+      "is_practice_eligible": true,
+      "source_name": "ESSLCE Chemistry 2017 E.C. (June–July 2025 G.C.)",
+      "source_page": 21,
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "q_chem_2017_078_c1",
+          "label": "A",
+          "text_en": "Cl-C-O < 120° and Cl-C-Cl = 120°",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_078_c2",
+          "label": "B",
+          "text_en": "Cl-C-O and Cl-C-Cl = 120°",
+          "is_correct": false
+        },
+        {
+          "id": "q_chem_2017_078_c3",
+          "label": "C",
+          "text_en": "Cl-C-O > 120° and Cl-C-Cl < 120°",
+          "is_correct": true
+        },
+        {
+          "id": "q_chem_2017_078_c4",
+          "label": "D",
+          "text_en": "Cl-C-O = 120° and Cl-C-Cl > 120°",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "COCl₂ is trigonal planar at carbon, but the C=O double bond repels more strongly than each C–Cl bond. Therefore O–C–Cl angles are slightly greater than 120° and Cl–C–Cl is less than 120°, option C."
+      }
+    }
+  ]
+}

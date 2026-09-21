@@ -43,12 +43,24 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
   // Official Ethiopian National Examination (ESSLCE) years
   static const List<_OfficialExamYearInfo> _availableYears = [
     _OfficialExamYearInfo(
+      ethiopianYear: 2017,
+      gregorianYear: 2025,
+      bookletCode: null,
+      standardQuestionCount: 78,
+      standardTimeMinutes: 0,
+      isLatest: true,
+      descriptionEn:
+          'Official 2017 E.C. (June–July 2025 G.C.) National Exam (78 questions available; original archive header states 80 questions, but Questions 79–80 were not present in archive).',
+      descriptionAm:
+          'የ2017 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና። በማህደሩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 78 ጥያቄዎች (ጥያቄ 1-78) ብቻ ናቸው።',
+    ),
+    _OfficialExamYearInfo(
       ethiopianYear: 2016,
       gregorianYear: 2024,
       bookletCode: 'Booklet 12',
       standardQuestionCount: 60,
       standardTimeMinutes: 120,
-      isLatest: true,
+      isLatest: false,
       descriptionEn:
           'Official 2016 E.C. National Exam paper administered by NEAEA.',
       descriptionAm: 'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2016 ዓ.ም. ፈተና።',
@@ -129,6 +141,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       defaultDownloaded.add(2014);
       defaultDownloaded.add(2015);
       defaultDownloaded.add(2016);
+      defaultDownloaded.add(2017);
     }
 
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
@@ -342,10 +355,23 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2013 ዓ.ም. ባለ 80 ጥያቄ ኬሚስትሪ ፈተና (የትምህርት ኮድ 05፣ የተፈቀደው ጊዜ 2 ሰዓት ከ30 ደቂቃ)።',
       );
     }
+    if (isChem && base.ethiopianYear == 2017) {
+      return base.copyWith(
+        standardQuestionCount: 78,
+        bookletCode: null,
+        standardTimeMinutes: 0,
+        isVerifiedArchive: true,
+        specialBadge: '78 AVAILABLE',
+        descriptionEn:
+            'Official 2017 E.C. (June–July 2025 G.C.) National Exam (78 questions available; original archive header states 80 questions, but Questions 79–80 were not present in archive).',
+        descriptionAm:
+            'የ2017 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና። በማህደሩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 78 ጥያቄዎች (ጥያቄ 1-78) ብቻ ናቸው።',
+      );
+    }
     if (isChem && base.ethiopianYear == 2016) {
       return base.copyWith(
         standardQuestionCount: 80,
-        bookletCode: 'N/A',
+        bookletCode: null,
         standardTimeMinutes: 0,
         isVerifiedArchive: true,
         specialBadge: '80 RECOVERABLE',
@@ -408,18 +434,20 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       return [y2013, ...others];
     }
     if (isChem) {
+      final y2017 = _availableYears.firstWhere((y) => y.ethiopianYear == 2017);
       final y2016 = _availableYears.firstWhere((y) => y.ethiopianYear == 2016);
       final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
       final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
       final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
       final others = _availableYears
           .where((y) =>
+              y.ethiopianYear != 2017 &&
               y.ethiopianYear != 2016 &&
               y.ethiopianYear != 2015 &&
               y.ethiopianYear != 2014 &&
               y.ethiopianYear != 2013)
           .toList();
-      return [y2016, y2015, y2014, y2013, ...others];
+      return [y2017, y2016, y2015, y2014, y2013, ...others];
     }
     return _availableYears;
   }
@@ -618,13 +646,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             final isChemUntimed = isChem &&
                 (yearInfo.ethiopianYear == 2014 ||
                     yearInfo.ethiopianYear == 2015 ||
-                    yearInfo.ethiopianYear == 2016);
+                    yearInfo.ethiopianYear == 2016 ||
+                    yearInfo.ethiopianYear == 2017);
             final isChem2014 = isChem && yearInfo.ethiopianYear == 2014;
-            final bookletCode = isChemUntimed
-                ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
-                : yearInfo.bookletCode.replaceAll('Booklet', '').trim();
+            final bookletCode = isChemUntimed || yearInfo.bookletCode == null
+                ? (isAmharic
+                    ? 'በምንጩ አልተጠቀሰም'
+                    : 'Not provided in supplied source')
+                : yearInfo.bookletCode!.replaceAll('Booklet', '').trim();
             final subjectCode = isChemUntimed
-                ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
+                ? (isAmharic
+                    ? 'በምንጩ አልተጠቀሰም'
+                    : 'Not provided in supplied source')
                 : _getOfficialSubjectCode(subject);
             final streamName = _getStreamDisplayName(subject, isAmharic);
             final subjectName = isAmharic && subject.nameAm.isNotEmpty
@@ -988,6 +1021,48 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                     color: isDark
                                         ? const Color(0xFFBAE6FD)
                                         : const Color(0xFF0369A1),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      if (isChem && yearInfo.ethiopianYear == 2017) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0x26F59E0B)
+                                : const Color(0xFFFFFBEB),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0x66F59E0B)
+                                  : const Color(0xFFFDE68A),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.info_outline_rounded,
+                                size: 18,
+                                color: Color(0xFFD97706),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  isAmharic
+                                      ? '78 ጥያቄዎች ይገኛሉ። በዋናው ምንጭ ርዕስ 80 ጥያቄዎች ቢጠቀሱም ጥያቄ 79–80 በተላከው ማህደር ውስጥ አልተገኙም። ጥያቄ 79 እና 80 ሆን ተብለው አልተፈጠሩም።'
+                                      : '78 questions available. The supplied source header states 80 questions, but Questions 79–80 were not present in the archive and have not been invented.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFFFDE68A)
+                                        : const Color(0xFF92400E),
                                   ),
                                 ),
                               ),
@@ -2872,7 +2947,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
 class _OfficialExamYearInfo {
   final int ethiopianYear;
   final int gregorianYear;
-  final String bookletCode;
+  final String? bookletCode;
   final int standardQuestionCount;
   final int standardTimeMinutes;
   final bool isLatest;
@@ -2884,7 +2959,7 @@ class _OfficialExamYearInfo {
   const _OfficialExamYearInfo({
     required this.ethiopianYear,
     required this.gregorianYear,
-    required this.bookletCode,
+    this.bookletCode,
     required this.standardQuestionCount,
     required this.standardTimeMinutes,
     required this.isLatest,

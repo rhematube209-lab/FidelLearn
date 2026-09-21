@@ -92,13 +92,14 @@ void main() {
       find.text('Practice complete official exams by selecting a year.'),
       findsOneWidget,
     );
+    expect(find.text('2017 E.C.'), findsOneWidget);
     expect(find.text('2016 E.C.'), findsOneWidget);
     expect(find.text('2015 E.C.'), findsOneWidget);
     expect(find.text('2014 E.C.'), findsOneWidget);
     expect(find.text('LATEST'), findsOneWidget);
 
-    // Each exam starts with separate Download button
-    expect(find.text('Download'), findsNWidgets(6));
+    // Each exam starts with separate Download button (2017, 2016, 2015, 2014, 2013, 2012, 2011 = 7 years)
+    expect(find.text('Download'), findsNWidgets(7));
     expect(find.text('Start Exam'), findsNothing);
 
     // 4. Check Timer Toggle
@@ -169,12 +170,12 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Chemistry 2013, 2014, 2015, and 2016 are bundled as pre-downloaded verified offline archives.
+    // Chemistry 2013, 2014, 2015, 2016, and 2017 are bundled as pre-downloaded verified offline archives.
     // Verified archives show 'Start (N Qs)' labels, not 'Start Exam'.
     // So 2 years remain as 'Download' (2012, 2011)
-    // and 4 years show 'Start (80 Qs)' / 'Start (78 Qs)' / 'Start (70 Qs)' (2016, 2015, 2014, 2013 verified archives).
+    // and 5 years show 'Start (80 Qs)' / 'Start (78 Qs)' / 'Start (70 Qs)' (2017, 2016, 2015, 2014, 2013 verified archives).
     expect(find.text('Download'), findsNWidgets(2));
-    expect(find.textContaining('Start ('), findsNWidgets(4));
+    expect(find.textContaining('Start ('), findsNWidgets(5));
     expect(find.text('Start Exam'), findsNothing);
 
     // Tap the first download button (for 2012 E.C.)
@@ -187,8 +188,8 @@ void main() {
 
     // 2012 is a generic (non-verified-archive) year: shows 'Start Exam'
     expect(find.text('Start Exam'), findsOneWidget);
-    // Still 4 verified archives showing 'Start (N Qs)'
-    expect(find.textContaining('Start ('), findsNWidgets(4));
+    // Still 5 verified archives showing 'Start (N Qs)'
+    expect(find.textContaining('Start ('), findsNWidgets(5));
     expect(find.text('Download'), findsNWidgets(1));
 
     // Verify success snackbar notification

@@ -102,6 +102,25 @@ void main() {
       expect(questions.last.questionNumber, equals(80));
     });
 
+    test(
+        'Chemistry 2017 E.C. has exactly 78 recoverable questions (No fabricated Q79-Q80)',
+        () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+      );
+
+      // Header states 80, but archive has 78; Q79 and Q80 must NOT be created
+      expect(questions.length, equals(78));
+      expect(questions.first.questionNumber, equals(1));
+      expect(questions.last.questionNumber, equals(78));
+
+      final qNumbers = questions.map((q) => q.questionNumber).toList();
+      expect(qNumbers.contains(78), isTrue);
+      expect(qNumbers.contains(79), isFalse);
+      expect(qNumbers.contains(80), isFalse);
+    });
+
     test('Chemistry 2013 handles defective and special questions correctly',
         () async {
       final questions = await repository.getQuestions(
@@ -351,7 +370,200 @@ void main() {
     });
 
     test(
-        'Visual and diagram items are properly linked in 2013, 2014, 2015, and 2016',
+        'Chemistry 2017 handles defective and special questions with scoring safety',
+        () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+      );
+
+      final qMap = {for (var q in questions) q.questionNumber!: q};
+
+      // Q1: Verified B
+      final q1 = qMap[1]!;
+      expect(q1.verificationStatus, equals(VerificationStatus.verified));
+      expect(q1.correctChoice.label, equals('B'));
+      expect(q1.isScorable, isTrue);
+
+      // Q6: Corrected source D with MO review note
+      final q6 = qMap[6]!;
+      expect(q6.verificationStatus, equals(VerificationStatus.correctedSource));
+      expect(q6.correctChoice.label, equals('D'));
+      expect(q6.isScorable, isTrue);
+      expect(q6.isPracticeEligible, isTrue);
+      expect(q6.reviewNote, contains('electron counting'));
+
+      // Q25: Corrected source A with Le Chatelier review note
+      final q25 = qMap[25]!;
+      expect(
+          q25.verificationStatus, equals(VerificationStatus.correctedSource));
+      expect(q25.correctChoice.label, equals('A'));
+      expect(q25.isScorable, isTrue);
+      expect(q25.isPracticeEligible, isTrue);
+      expect(q25.reviewNote, contains('Le Chatelier'));
+
+      // Q50: Multiple valid answers (A / C)
+      final q50 = qMap[50]!;
+      expect(q50.verificationStatus,
+          equals(VerificationStatus.multipleValidAnswers));
+      expect(q50.isScorable, isTrue);
+      expect(q50.isPracticeEligible, isTrue);
+      final q50Correct =
+          q50.choices.where((c) => c.isCorrect).map((c) => c.label).toSet();
+      expect(q50Correct, equals({'A', 'C'}));
+      expect(q50.reviewNote, contains('Non-unique item'));
+
+      // Q57: No valid option (unbalanced Kp calculation)
+      final q57 = qMap[57]!;
+      expect(q57.verificationStatus, equals(VerificationStatus.noValidOption));
+      expect(q57.isScorable, isFalse);
+      expect(q57.isPracticeEligible, isFalse);
+      expect(q57.choices.any((c) => c.isCorrect), isFalse);
+      expect(q57.reviewNote, contains('stated Kp value is 1.56'));
+
+      // Q59: Corrected source D with stem defect note
+      final q59 = qMap[59]!;
+      expect(
+          q59.verificationStatus, equals(VerificationStatus.correctedSource));
+      expect(q59.correctChoice.label, equals('D'));
+      expect(q59.isScorable, isTrue);
+      expect(q59.isPracticeEligible, isTrue);
+      expect(q59.reviewNote, contains('Stem defect'));
+
+      // Q63: No valid option (unbalanced organic reaction atom economy)
+      final q63 = qMap[63]!;
+      expect(q63.verificationStatus, equals(VerificationStatus.noValidOption));
+      expect(q63.isScorable, isFalse);
+      expect(q63.isPracticeEligible, isFalse);
+      expect(q63.choices.any((c) => c.isCorrect), isFalse);
+      expect(
+          q63.reviewNote, contains('printed organic reaction is not balanced'));
+
+      // Q76: No valid option (dicarboxylic acid structure vs monocarboxylic choices)
+      final q76 = qMap[76]!;
+      expect(q76.verificationStatus, equals(VerificationStatus.noValidOption));
+      expect(q76.isScorable, isFalse);
+      expect(q76.isPracticeEligible, isFalse);
+      expect(q76.choices.any((c) => c.isCorrect), isFalse);
+      expect(q76.reviewNote, contains('dicarboxylic acid'));
+
+      // Q78: Verified C
+      final q78 = qMap[78]!;
+      expect(q78.verificationStatus, equals(VerificationStatus.verified));
+      expect(q78.correctChoice.label, equals('C'));
+      expect(q78.isScorable, isTrue);
+      expect(q78.isPracticeEligible, isTrue);
+    });
+
+    test('Chemistry 2017 complete answer key verification against official key',
+        () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+      );
+
+      const expectedKey = {
+        1: 'B',
+        2: 'D',
+        3: 'C',
+        4: 'D',
+        5: 'A',
+        6: 'D',
+        7: 'A',
+        8: 'B',
+        9: 'D',
+        10: 'A',
+        11: 'B',
+        12: 'B',
+        13: 'C',
+        14: 'A',
+        15: 'A',
+        16: 'C',
+        17: 'C',
+        18: 'D',
+        19: 'C',
+        20: 'D',
+        21: 'C',
+        22: 'D',
+        23: 'B',
+        24: 'D',
+        25: 'A',
+        26: 'C',
+        27: 'D',
+        28: 'B',
+        29: 'D',
+        30: 'A',
+        31: 'A',
+        32: 'D',
+        33: 'B',
+        34: 'B',
+        35: 'D',
+        36: 'A',
+        37: 'C',
+        38: 'A',
+        39: 'A',
+        40: 'D',
+        41: 'C',
+        42: 'B',
+        43: 'A',
+        44: 'B',
+        45: 'C',
+        46: 'A',
+        47: 'A',
+        48: 'A',
+        49: 'D',
+        50: 'A/C',
+        51: 'D',
+        52: 'B',
+        53: 'D',
+        54: 'A',
+        55: 'B',
+        56: 'C',
+        57: 'NONE',
+        58: 'C',
+        59: 'D',
+        60: 'C',
+        61: 'D',
+        62: 'C',
+        63: 'NONE',
+        64: 'D',
+        65: 'A',
+        66: 'D',
+        67: 'B',
+        68: 'A',
+        69: 'D',
+        70: 'B',
+        71: 'D',
+        72: 'C',
+        73: 'B',
+        74: 'A',
+        75: 'A',
+        76: 'NONE',
+        77: 'C',
+        78: 'C'
+      };
+
+      for (final q in questions) {
+        final qn = q.questionNumber!;
+        final exp = expectedKey[qn]!;
+        final correctLabels =
+            q.choices.where((c) => c.isCorrect).map((c) => c.label).toList();
+
+        if (exp == 'NONE') {
+          expect(correctLabels, isEmpty,
+              reason: 'Q$qn is defective and has no valid option');
+        } else if (exp == 'A/C') {
+          expect(correctLabels.toSet(), equals({'A', 'C'}),
+              reason: 'Q$qn has multiple valid answers A and C');
+        } else {
+          expect(correctLabels, equals([exp]),
+              reason: 'Q$qn expected correct answer $exp');
+        }
+      }
+    });
+
+    test(
+        'Visual and diagram items are properly linked in 2013, 2014, 2015, 2016, and 2017',
         () async {
       final q13 = await repository.getQuestions(
         subjectId: 'chemistry_g12',
@@ -369,11 +581,16 @@ void main() {
         subjectId: 'chemistry_g12',
         examYear: 2016,
       );
+      final q17 = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+      );
 
       final qMap13 = {for (var q in q13) q.questionNumber!: q};
       final qMap14 = {for (var q in q14) q.questionNumber!: q};
       final qMap15 = {for (var q in q15) q.questionNumber!: q};
       final qMap16 = {for (var q in q16) q.questionNumber!: q};
+      final qMap17 = {for (var q in q17) q.questionNumber!: q};
 
       // 2013
       expect(qMap13[22]!.diagramAsset, isNotNull);
@@ -428,10 +645,32 @@ void main() {
               'assets/images/exams/chem_2016/q57_electrolytic_cell_diagram.png'));
       // 2016 Q8 intentionally has NO invented diagram
       expect(qMap16[8]!.diagramAsset, isNull);
+
+      // 2017
+      expect(qMap17[2]!.diagramAsset,
+          equals('assets/images/exams/chem_2017/q02_galvanic_cell.png'));
+      expect(
+          qMap17[37]!.diagramAsset,
+          equals(
+              'assets/images/exams/chem_2017/q37_polypropylene_structures.png'));
+      expect(
+          qMap17[38]!.diagramAsset,
+          equals(
+              'assets/images/exams/chem_2017/q38_becl2_hybridization_schemes.png'));
+      expect(qMap17[75]!.diagramAsset,
+          equals('assets/images/exams/chem_2017/q75_alkane_structure.png'));
+      expect(
+          qMap17[76]!.diagramAsset,
+          equals(
+              'assets/images/exams/chem_2017/q76_carboxylic_acid_structure.png'));
+      expect(qMap17[77]!.diagramAsset,
+          equals('assets/images/exams/chem_2017/q77_alcohol_structure.png'));
+      expect(qMap17[78]!.diagramAsset,
+          equals('assets/images/exams/chem_2017/q78_cocl2_structure.png'));
     });
 
     test('Curriculum distribution spans Grades 9, 10, 11, and 12', () async {
-      for (final yr in [2013, 2014, 2015, 2016]) {
+      for (final yr in [2013, 2014, 2015, 2016, 2017]) {
         final yearQuestions = await repository.getQuestions(
           subjectId: 'chemistry_g12',
           examYear: yr,
@@ -440,6 +679,38 @@ void main() {
         expect(grades, containsAll([9, 10, 11, 12]),
             reason: 'Year $yr should have questions from Grades 9-12');
       }
+    });
+
+    test(
+        'Chemistry 2017 exact curriculum grade and pedagogical difficulty distributions',
+        () async {
+      final q17 = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+      );
+
+      final gradeCounts = <int, int>{};
+      final diffCounts = <String, int>{};
+
+      for (final q in q17) {
+        expect(q.curriculumGrade, isNotNull);
+        gradeCounts[q.curriculumGrade!] =
+            (gradeCounts[q.curriculumGrade!] ?? 0) + 1;
+        diffCounts[q.difficulty] = (diffCounts[q.difficulty] ?? 0) + 1;
+        expect(q.difficultySource, equals('fidel_learn_assigned'));
+      }
+
+      // Approved Grade distribution: Grade 9 = 11, Grade 10 = 16, Grade 11 = 33, Grade 12 = 18
+      expect(gradeCounts[9], equals(11));
+      expect(gradeCounts[10], equals(16));
+      expect(gradeCounts[11], equals(33));
+      expect(gradeCounts[12], equals(18));
+      expect(q17.length, equals(78));
+
+      // Approved Difficulty distribution: Easy = 44, Medium = 26, Hard = 8
+      expect(diffCounts['easy'], equals(44));
+      expect(diffCounts['medium'], equals(26));
+      expect(diffCounts['hard'], equals(8));
     });
 
     test(
@@ -524,14 +795,74 @@ void main() {
           practiceQuestions2016.map((q) => q.questionNumber).toSet();
       for (final defNum in [8, 19, 42, 47, 53, 55, 78]) {
         expect(p16Nums.contains(defNum), isFalse,
-            reason: 'Defective Q$defNum must be excluded from practice');
+            reason: 'Defective 2016 Q$defNum must be excluded from practice');
       }
 
-      // 5. Total counts across all 4 years: 80 + 70 + 78 + 80 = 308 questions
+      final practiceQuestions2017 = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        examYear: 2017,
+        practiceEligibleOnly: true,
+      );
+      final p17Nums =
+          practiceQuestions2017.map((q) => q.questionNumber).toSet();
+      for (final defNum in [57, 63, 76]) {
+        expect(p17Nums.contains(defNum), isFalse,
+            reason: 'Defective 2017 Q$defNum must be excluded from practice');
+      }
+
+      // 5. Chemistry + Grade 11 + Chemical Equilibrium + 2017 + Medium
+      final comb2017Equil = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        grade: 11,
+        unitId: 'chem_g11_u5',
+        examYear: 2017,
+        difficulty: 'medium',
+        practiceEligibleOnly: true,
+      );
+      expect(comb2017Equil.isNotEmpty, isTrue);
+      for (final q in comb2017Equil) {
+        expect(q.curriculumGrade, equals(11));
+        expect(q.curriculumUnitId, equals('chem_g11_u5'));
+        expect(q.examYear, equals(2017));
+        expect(q.difficulty, equals('medium'));
+        expect(q.isPracticeEligible, isTrue);
+      }
+
+      // 6. Chemistry + Grade 12 + Electrochemistry + 2017 + Hard
+      final comb2017Electro = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        grade: 12,
+        unitId: 'chem_g12_u2',
+        examYear: 2017,
+        difficulty: 'medium',
+        practiceEligibleOnly: true,
+      );
+      expect(comb2017Electro.isNotEmpty, isTrue);
+      for (final q in comb2017Electro) {
+        expect(q.curriculumGrade, equals(12));
+        expect(q.curriculumUnitId, equals('chem_g12_u2'));
+        expect(q.examYear, equals(2017));
+        expect(q.isPracticeEligible, isTrue);
+      }
+
+      // 7. Exam Level (12) vs Curriculum Grade (10) for 2017
+      final g10Questions2017 = await repository.getQuestions(
+        subjectId: 'chemistry_g12',
+        grade: 10,
+        examYear: 2017,
+        practiceEligibleOnly: true,
+      );
+      expect(g10Questions2017.isNotEmpty, isTrue);
+      for (final q in g10Questions2017) {
+        expect(q.curriculumGrade, equals(10));
+        expect(q.grade, equals(12)); // examLevel is 12
+      }
+
+      // 8. Total counts across all 5 years: 80 + 70 + 78 + 80 + 78 = 386 questions
       final allQuestions = await repository.getQuestions(
         subjectId: 'chemistry_g12',
       );
-      expect(allQuestions.length, equals(308));
+      expect(allQuestions.length, equals(386));
     });
 
     test('Every practice-eligible question has a valid pedagogical difficulty',
@@ -675,6 +1006,76 @@ void main() {
       expect(finalAttempt.correctCount, equals(2));
       expect(finalAttempt.incorrectCount, equals(0));
       expect(finalAttempt.percentage, equals(100.0));
+    });
+
+    test(
+        'Chemistry 2017 Q50 accepts either A or C as correct and rejects B or D',
+        () async {
+      final q50 = await repository.getQuestionById('q_chem_2017_050');
+      expect(q50, isNotNull);
+      expect(q50!.verificationStatus,
+          equals(VerificationStatus.multipleValidAnswers));
+
+      final choiceA = q50.choices.firstWhere((c) => c.label == 'A');
+      final choiceB = q50.choices.firstWhere((c) => c.label == 'B');
+      final choiceC = q50.choices.firstWhere((c) => c.label == 'C');
+      final choiceD = q50.choices.firstWhere((c) => c.label == 'D');
+
+      expect(choiceA.isCorrect, isTrue);
+      expect(choiceB.isCorrect, isFalse);
+      expect(choiceC.isCorrect, isTrue);
+      expect(choiceD.isCorrect, isFalse);
+
+      final exam = Exam(
+        id: 'exam_q50_test',
+        title: 'Q50 Test',
+        examType: ExamType.practice,
+        grade: 12,
+        stream: 'natural',
+        subjectId: 'chemistry_g12',
+        timeLimitMinutes: 0,
+        totalQuestions: 1,
+        questions: [q50],
+        createdAt: DateTime.now(),
+      );
+
+      final attempt = ExamEngine.startAttempt(
+        attemptId: 'att_q50',
+        userId: 'user_test',
+        exam: exam,
+      );
+
+      // 1. Selecting A is correct
+      final attemptWithA = ExamEngine.answerQuestion(
+        currentAttempt: attempt,
+        question: q50,
+        choiceId: choiceA.id,
+      );
+      expect(attemptWithA.responses[q50.id]!.isCorrect, isTrue);
+
+      // 2. Selecting C is correct
+      final attemptWithC = ExamEngine.answerQuestion(
+        currentAttempt: attempt,
+        question: q50,
+        choiceId: choiceC.id,
+      );
+      expect(attemptWithC.responses[q50.id]!.isCorrect, isTrue);
+
+      // 3. Selecting B is incorrect
+      final attemptWithB = ExamEngine.answerQuestion(
+        currentAttempt: attempt,
+        question: q50,
+        choiceId: choiceB.id,
+      );
+      expect(attemptWithB.responses[q50.id]!.isCorrect, isFalse);
+
+      // 4. Selecting D is incorrect
+      final attemptWithD = ExamEngine.answerQuestion(
+        currentAttempt: attempt,
+        question: q50,
+        choiceId: choiceD.id,
+      );
+      expect(attemptWithD.responses[q50.id]!.isCorrect, isFalse);
     });
   });
 }

@@ -32,6 +32,7 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/chemistry_2014_seed.json',
                     'assets/seed/chemistry_2015_seed.json',
                     'assets/seed/chemistry_2016_seed.json',
+                    'assets/seed/chemistry_2017_seed.json',
                     'assets/seed/math_2014_seed.json',
                     'assets/seed/physics_2014_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
