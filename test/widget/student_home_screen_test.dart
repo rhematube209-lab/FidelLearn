@@ -98,5 +98,69 @@ void main() {
           tester.getTopLeft(find.text('Quick Actions')).dy;
       expect(subjectsOffset, lessThan(quickActionsOffset));
     });
+
+    testWidgets(
+        'renders Civics card under National Exam Subjects on desktop and tablet',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1200, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final user = UserProfile(
+        id: 'test-student-2',
+        phoneNumber: '+251911223344',
+        displayName: 'Derartu Tulu',
+        role: UserRole.student,
+        grade: 12,
+        stream: 'natural',
+        preferredLanguage: 'en',
+        createdAt: DateTime.now(),
+      );
+
+      final authRepo = MockAuthRepository(
+        sessionStorage: storage,
+        initialUser: user,
+      );
+
+      final contentRepo = LocalContentRepository();
+      contentRepo.initializeWithData(
+        packages: const [],
+        units: const [],
+        topics: const [],
+        questions: const [],
+        subjects: [],
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider.overrideWithValue(contentRepo),
+          ],
+          child: const MaterialApp(
+            home: StudentHomeScreen(),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify all 6 subjects are present under National Exam Subjects
+      expect(find.text('National Exam Subjects'), findsOneWidget);
+      expect(find.text('Mathematics'), findsOneWidget);
+      expect(find.text('Biology'), findsOneWidget);
+      expect(find.text('Physics'), findsOneWidget);
+      expect(find.text('Chemistry'), findsOneWidget);
+      expect(find.text('English'), findsOneWidget);
+      expect(find.text('Civics'), findsOneWidget);
+
+      // Verify exam badges for Biology, Physics, Chemistry, and Civics
+      expect(find.text('2013 Exam (100 Qs)'), findsOneWidget);
+      expect(find.text('2014 Exam (32 Qs)'), findsOneWidget);
+      expect(find.text('2013-17 Exam (386 Qs)'), findsOneWidget);
+      expect(find.text('2013-14 Exam (100 Qs)'), findsOneWidget);
+    });
   });
 }

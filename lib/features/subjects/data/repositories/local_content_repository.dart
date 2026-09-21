@@ -314,7 +314,7 @@ class LocalContentRepository implements ContentRepository {
         grade: grade,
         stream: 'common',
         iconAsset: 'assets/images/aptitude_icon.png',
-        sortOrder: 6,
+        sortOrder: 7,
       );
     } else if (lower.contains('hist')) {
       return Subject(
@@ -357,7 +357,7 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ስነ-ዜጋና ስነ-ምግባር',
         grade: grade,
         stream: 'common',
-        sortOrder: 7,
+        sortOrder: 6,
       );
     } else {
       return Subject(

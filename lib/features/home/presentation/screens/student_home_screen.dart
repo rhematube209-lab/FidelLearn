@@ -82,6 +82,15 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           stream: 'common',
           sortOrder: 5,
         ),
+        Subject(
+          id: 'civics_g$grade',
+          code: 'CIV$grade',
+          nameEn: 'Civics',
+          nameAm: 'ስነ-ዜጋ',
+          grade: grade,
+          stream: 'common',
+          sortOrder: 6,
+        ),
       ];
     } else {
       return [
@@ -130,6 +139,15 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
           stream: 'common',
           sortOrder: 5,
         ),
+        Subject(
+          id: 'civics_g$grade',
+          code: 'CIV$grade',
+          nameEn: 'Civics',
+          nameAm: 'ስነ-ዜጋ',
+          grade: grade,
+          stream: 'common',
+          sortOrder: 6,
+        ),
       ];
     }
   }
@@ -160,7 +178,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             _getDefaultNationalSubjects(user.grade, user.stream);
         if (subs.isEmpty) {
           subs = defaultSubjects;
-        } else if (subs.length < 5) {
+        } else {
           final existingIds = subs.map((s) => s.id.toLowerCase()).toSet();
           final existingNames = subs.map((s) => s.nameEn.toLowerCase()).toSet();
           for (final def in defaultSubjects) {
@@ -1219,13 +1237,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         ? '${user.grade}ኛ ክፍል $streamLabel'
         : 'Grade ${user.grade} $streamLabel';
 
-    // Ensure all 5 national exam subjects are always present
+    // Ensure all national exam subjects are always present
     final defaultSubjects =
         _getDefaultNationalSubjects(user.grade, user.stream);
     List<Subject> effectiveSubjects = List<Subject>.from(_subjects);
     if (effectiveSubjects.isEmpty) {
       effectiveSubjects = defaultSubjects;
-    } else if (effectiveSubjects.length < 5) {
+    } else {
       final existingIds =
           effectiveSubjects.map((s) => s.id.toLowerCase()).toSet();
       final existingNames =
@@ -1238,7 +1256,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       }
     }
 
-    // Sort subjects by curriculum sequence (Math 1, Biology 2, Physics 3, Chemistry 4, English 5)
+    // Sort subjects by curriculum sequence (Math 1, Biology 2, Physics 3, Chemistry 4, English 5, Civics 6)
     effectiveSubjects.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
     final topSubjects = effectiveSubjects.take(2).toList();
@@ -1316,18 +1334,17 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
 
         const SizedBox(height: 12),
 
-        // Layout: Responsive 5-card row on desktop vs 2-Row Grid + Carousel on mobile
+        // Layout: Responsive cards layout across wide desktop, tablet/medium, and mobile
         LayoutBuilder(
           builder: (context, constraints) {
             final screenWidth = constraints.maxWidth;
-            final isDesktopWidth = screenWidth >= 800;
+            final isWideDesktop = screenWidth >= 1050;
+            final isMediumWidth = screenWidth >= 640 && screenWidth < 1050;
 
-            if (isDesktopWidth) {
+            if (isWideDesktop) {
               return Row(
                 children: [
-                  for (int i = 0;
-                      i < effectiveSubjects.take(5).length;
-                      i++) ...[
+                  for (int i = 0; i < effectiveSubjects.length; i++) ...[
                     if (i > 0) const SizedBox(width: 12),
                     Expanded(
                       child: _buildRedesignedSubjectCard(
@@ -1342,12 +1359,60 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
               );
             }
 
+            if (isMediumWidth) {
+              final row1 = effectiveSubjects.take(3).toList();
+              final row2 = effectiveSubjects.skip(3).toList();
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      for (int i = 0; i < row1.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 12),
+                        Expanded(
+                          child: _buildRedesignedSubjectCard(
+                            context: context,
+                            subject: row1[i],
+                            isAmharic: isAmharic,
+                            isDark: isDark,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  if (row2.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        for (int i = 0; i < row2.length; i++) ...[
+                          if (i > 0) const SizedBox(width: 12),
+                          Expanded(
+                            child: _buildRedesignedSubjectCard(
+                              context: context,
+                              subject: row2[i],
+                              isAmharic: isAmharic,
+                              isDark: isDark,
+                            ),
+                          ),
+                        ],
+                        for (int i = 0;
+                            i < (row1.length - row2.length);
+                            i++) ...[
+                          const SizedBox(width: 12),
+                          const Spacer(),
+                        ],
+                      ],
+                    ),
+                  ],
+                ],
+              );
+            }
+
             final carouselCardWidth = (screenWidth * 0.46).clamp(152.0, 185.0);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Top 2-Column Grid Row (Mathematics, Biology)
+                // Top 2-Column Grid Row (Mathematics, Biology / History)
                 Row(
                   children: [
                     for (int i = 0; i < topSubjects.length; i++) ...[
@@ -1364,7 +1429,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   ],
                 ),
 
-                // Carousel Row for Remaining Subjects (Physics, Chemistry, English, ...)
+                // Carousel Row for Remaining Subjects (Physics, Chemistry, English, Civics, ...)
                 if (carouselSubjects.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   ScrollConfiguration(
@@ -1412,9 +1477,12 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     double? width,
   }) {
     final theme = _getSubjectDesignTheme(subject);
-    final subjectTitle = isAmharic && subject.nameAm.isNotEmpty
+    final rawTitle = isAmharic && subject.nameAm.isNotEmpty
         ? subject.nameAm
         : subject.nameEn;
+    final subjectTitle = rawTitle.toLowerCase().contains('civic')
+        ? (isAmharic ? 'ስነ-ዜጋ' : 'Civics')
+        : rawTitle;
 
     return Container(
       width: width,
@@ -1629,20 +1697,80 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     )
-                                  : Text(
-                                      isAmharic
-                                          ? '${subject.grade}ኛ ክፍል'
-                                          : 'Grade ${subject.grade}',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w500,
-                                        color: isDark
-                                            ? AppTheme.darkMuted
-                                            : const Color(0xFF64748B),
-                                        height: 1.0,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  : (subject.id.contains('chemistry') ||
+                                          subject.code.contains('CHEM'))
+                                      ? Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF9333EA)
+                                                .withValues(alpha: 0.15),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: const Color(0xFF9333EA)
+                                                  .withValues(alpha: 0.45),
+                                              width: 0.8,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            isAmharic
+                                                ? '2013-17 ፈተና (386 Qs)'
+                                                : '2013-17 Exam (386 Qs)',
+                                            style: const TextStyle(
+                                              fontSize: 9.5,
+                                              fontWeight: FontWeight.w800,
+                                              color: Color(0xFF7E22CE),
+                                              height: 1.0,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      : (subject.id.contains('civic') ||
+                                              subject.code.contains('CIV'))
+                                          ? Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 2),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF0D9488)
+                                                    .withValues(alpha: 0.15),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                  color: const Color(0xFF0D9488)
+                                                      .withValues(alpha: 0.45),
+                                                  width: 0.8,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                isAmharic
+                                                    ? '2013-14 ፈተና (100 Qs)'
+                                                    : '2013-14 Exam (100 Qs)',
+                                                style: const TextStyle(
+                                                  fontSize: 9.5,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Color(0xFF0D9488),
+                                                  height: 1.0,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            )
+                                          : Text(
+                                              isAmharic
+                                                  ? '${subject.grade}ኛ ክፍል'
+                                                  : 'Grade ${subject.grade}',
+                                              style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w500,
+                                                color: isDark
+                                                    ? AppTheme.darkMuted
+                                                    : const Color(0xFF64748B),
+                                                height: 1.0,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                         ),
                         const SizedBox(width: 4),
                         Container(
@@ -1827,7 +1955,26 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
         arrowBorderColor: Color(0xFF99F6E4),
         arrowTextColor: Color(0xFF0F766E),
       );
-    } else if (key.contains('civ') || key.contains('econ')) {
+    } else if (key.contains('civ')) {
+      return const _SubjectDesignTheme(
+        iconWidget: Icon(
+          Icons.balance_rounded,
+          size: 18,
+          color: Color(0xFF0D9488),
+        ),
+        primaryColor: Color(0xFF0D9488),
+        lightBgStart: Color(0xFFFFFFFF),
+        lightBgEnd: Color(0xFFF0FDFA),
+        lightBorder: Color(0xFF99F6E4),
+        darkBgStart: Color(0xFF0D2523),
+        darkBgEnd: Color(0xFF134E4A),
+        darkBorder: Color(0xFF115E59),
+        iconBgLight: Color(0xFFCCFBF1),
+        iconBgDark: Color(0x330D9488),
+        arrowBorderColor: Color(0xFF99F6E4),
+        arrowTextColor: Color(0xFF0D9488),
+      );
+    } else if (key.contains('econ')) {
       return const _SubjectDesignTheme(
         iconWidget: Icon(
           Icons.balance,

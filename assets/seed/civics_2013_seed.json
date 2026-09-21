@@ -15,7 +15,17 @@
       "is_downloaded": true
     }
   ],
-  "subjects": [],
+  "subjects": [
+    {
+      "id": "civics_g12",
+      "code": "CIV12",
+      "name_en": "Civics and Ethical Education",
+      "name_am": "ስነ-ዜጋና ስነ-ምግባር",
+      "grade": 12,
+      "stream": "common",
+      "sort_order": 6
+    }
+  ],
   "questions": [
     {
       "id": "q_civics_2013_001",
