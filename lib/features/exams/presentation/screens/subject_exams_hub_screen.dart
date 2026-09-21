@@ -142,6 +142,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       defaultDownloaded.add(2015);
       defaultDownloaded.add(2016);
       defaultDownloaded.add(2017);
+    } else if (cleanId.contains('civ')) {
+      defaultDownloaded.add(2014);
+      defaultDownloaded.add(2013);
     }
 
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
@@ -407,6 +410,35 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና። በማህደሩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 70 ጥያቄዎች (ጥያቄ 1-70) ብቻ ናቸው።',
       );
     }
+    final isCivics =
+        LocalContentRepository.matchesSubjectId(subject.id, 'civics_g12') ||
+            subject.nameEn.toLowerCase().contains('civ');
+    if (isCivics && base.ethiopianYear == 2014) {
+      return base.copyWith(
+        standardQuestionCount: 100,
+        bookletCode: 'Booklet 271',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: '100 Qs · STUDY GUIDE',
+        descriptionEn:
+            'EUEE Civics and Ethical Education (Natural Science, 2014/15 E.C. - October 2022 G.C., Booklet 271, 100 Questions) with curriculum-aligned study answers and explanations.',
+        descriptionAm:
+            'የ2014/15 ዓ.ም. የዩኒቨርሲቲ መግቢያ የስነ-ዜጋና ስነ-ምግባር ትምህርት ፈተና (የተፈጥሮ ሳይንስ - 100 ጥያቄዎች፣ ጥራዝ 271 ከስርዓተ-ትምህርት ጥናት ማብራሪያ ጋር)።',
+      );
+    }
+    if (isCivics && base.ethiopianYear == 2013) {
+      return base.copyWith(
+        standardQuestionCount: 100,
+        bookletCode: 'Booklet 054',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: '100 Qs · STUDY GUIDE',
+        descriptionEn:
+            'EUEE Civics and Ethical Education (Natural Science, 2013/14 E.C. - 2021 G.C., Booklet 054, 100 Questions) with curriculum-aligned study answers and explanations.',
+        descriptionAm:
+            'የ2013/14 ዓ.ም. የዩኒቨርሲቲ መግቢያ የስነ-ዜጋና ስነ-ምግባር ትምህርት ፈተና (የተፈጥሮ ሳይንስ - 100 ጥያቄዎች፣ ጥራዝ 054 ከስርዓተ-ትምህርት ጥናት ማብራሪያ ጋር)።',
+      );
+    }
     return base;
   }
 
@@ -448,6 +480,17 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
               y.ethiopianYear != 2013)
           .toList();
       return [y2017, y2016, y2015, y2014, y2013, ...others];
+    }
+    final isCivics =
+        LocalContentRepository.matchesSubjectId(subject.id, 'civics_g12') ||
+            subject.nameEn.toLowerCase().contains('civ');
+    if (isCivics) {
+      final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
+      final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
+      final others = _availableYears
+          .where((y) => y.ethiopianYear != 2014 && y.ethiopianYear != 2013)
+          .toList();
+      return [y2014, y2013, ...others];
     }
     return _availableYears;
   }
@@ -643,6 +686,9 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             final isChem = LocalContentRepository.matchesSubjectId(
                     subject.id, 'chemistry_g12') ||
                 subject.nameEn.toLowerCase().contains('chem');
+            final isCivics = LocalContentRepository.matchesSubjectId(
+                    subject.id, 'civics_g12') ||
+                subject.nameEn.toLowerCase().contains('civ');
             final isChemUntimed = isChem &&
                 (yearInfo.ethiopianYear == 2014 ||
                     yearInfo.ethiopianYear == 2015 ||
@@ -1063,6 +1109,50 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                                     color: isDark
                                         ? const Color(0xFFFDE68A)
                                         : const Color(0xFF92400E),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      if (isCivics &&
+                          (yearInfo.ethiopianYear == 2013 ||
+                              yearInfo.ethiopianYear == 2014)) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0x260D9488)
+                                : const Color(0xFFF0FDFA),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0x660D9488)
+                                  : const Color(0xFF99F6E4),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.school_outlined,
+                                size: 18,
+                                color: Color(0xFF0D9488),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  isAmharic
+                                      ? '100 ጥያቄዎች ይገኛሉ። የቀረቡት መልሶችና ማብራሪያዎች በአዲሱ የኢትዮጵያ ስርዓተ-ትምህርት (ከ9ኛ-12ኛ ክፍል) ላይ የተመሰረቱ የጥናት መልሶች ናቸው። ኦፊሴላዊ የፈተና መመለሻ አይደሉም።'
+                                      : '100 questions available. The answers and explanations in this guide are curriculum-aligned study answers based on the current Ethiopian high-school curriculum (Grades 9–12), not an official examination marking key.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFF99F6E4)
+                                        : const Color(0xFF115E59),
                                   ),
                                 ),
                               ),
@@ -1585,6 +1675,14 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         gradientStart: Color(0xFFD97706),
         gradientEnd: Color(0xFF78350F),
         surfaceTint: Color(0xFFFEF3C7),
+      );
+    } else if (key.contains('civ')) {
+      return const _SubjectHubTheme(
+        icon: Icons.account_balance_rounded,
+        accentColor: Color(0xFF0D9488),
+        gradientStart: Color(0xFF0D9488),
+        gradientEnd: Color(0xFF115E59),
+        surfaceTint: Color(0xFFCCFBF1),
       );
     } else {
       return const _SubjectHubTheme(

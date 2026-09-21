@@ -217,6 +217,9 @@ class Question extends Equatable {
   final bool isPracticeEligible;
   final List<AnswerChoice> choices;
   final Explanation explanation;
+  final List<String>? secondaryCurriculumLinks;
+  final String? answerKeySource;
+  final bool? officialAnswerKeyAvailable;
 
   const Question({
     required this.id,
@@ -246,6 +249,9 @@ class Question extends Equatable {
     required this.contentVersion,
     required this.choices,
     required this.explanation,
+    this.secondaryCurriculumLinks,
+    this.answerKeySource,
+    this.officialAnswerKeyAvailable,
   });
 
   Question copyWith({
@@ -275,6 +281,9 @@ class Question extends Equatable {
     int? contentVersion,
     List<AnswerChoice>? choices,
     Explanation? explanation,
+    List<String>? secondaryCurriculumLinks,
+    String? answerKeySource,
+    bool? officialAnswerKeyAvailable,
   }) {
     return Question(
       id: id,
@@ -304,6 +313,11 @@ class Question extends Equatable {
       contentVersion: contentVersion ?? this.contentVersion,
       choices: choices ?? this.choices,
       explanation: explanation ?? this.explanation,
+      secondaryCurriculumLinks:
+          secondaryCurriculumLinks ?? this.secondaryCurriculumLinks,
+      answerKeySource: answerKeySource ?? this.answerKeySource,
+      officialAnswerKeyAvailable:
+          officialAnswerKeyAvailable ?? this.officialAnswerKeyAvailable,
     );
   }
 
@@ -373,6 +387,13 @@ class Question extends Equatable {
                   .toList() ??
               []),
       explanation: explanationObj,
+      secondaryCurriculumLinks:
+          (json['secondary_curriculum_links'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList(),
+      answerKeySource: json['answer_key_source']?.toString(),
+      officialAnswerKeyAvailable:
+          json['official_answer_key_available'] as bool?,
     );
   }
 
@@ -406,6 +427,11 @@ class Question extends Equatable {
       'content_version': contentVersion,
       'choices': choices.map((c) => c.toJson()).toList(),
       'explanation': explanation.toJson(),
+      if (secondaryCurriculumLinks != null)
+        'secondary_curriculum_links': secondaryCurriculumLinks,
+      if (answerKeySource != null) 'answer_key_source': answerKeySource,
+      if (officialAnswerKeyAvailable != null)
+        'official_answer_key_available': officialAnswerKeyAvailable,
     };
   }
 
@@ -438,6 +464,9 @@ class Question extends Equatable {
         contentVersion,
         choices,
         explanation,
+        secondaryCurriculumLinks,
+        answerKeySource,
+        officialAnswerKeyAvailable,
       ];
 }
 

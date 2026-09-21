@@ -35,6 +35,8 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/chemistry_2017_seed.json',
                     'assets/seed/math_2014_seed.json',
                     'assets/seed/physics_2014_seed.json',
+                    'assets/seed/civics_2013_seed.json',
+                    'assets/seed/civics_2014_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
                   ]);
 
@@ -209,6 +211,7 @@ class LocalContentRepository implements ContentRepository {
     if (lower.contains('econ')) return 'economics';
     if (lower.contains('apt')) return 'aptitude';
     if (lower.contains('sci')) return 'science';
+    if (lower.contains('civ')) return 'civics';
     return lower;
   }
 
@@ -231,6 +234,7 @@ class LocalContentRepository implements ContentRepository {
     if (lower.contains('econ')) return 'economics_$gradeSuffix';
     if (lower.contains('apt')) return 'aptitude_$gradeSuffix';
     if (lower.contains('sci')) return 'science_$gradeSuffix';
+    if (lower.contains('civ')) return 'civics_$gradeSuffix';
 
     return lower;
   }
@@ -349,8 +353,8 @@ class LocalContentRepository implements ContentRepository {
       return Subject(
         id: canonId,
         code: 'CIV$grade',
-        nameEn: 'Civics',
-        nameAm: 'ስነ-ዜጋ',
+        nameEn: 'Civics and Ethical Education',
+        nameAm: 'ስነ-ዜጋና ስነ-ምግባር',
         grade: grade,
         stream: 'common',
         sortOrder: 7,
@@ -377,6 +381,7 @@ class LocalContentRepository implements ContentRepository {
           grade: grade, stream: 'natural'),
       resolveDefaultSubject('english_g$grade', grade: grade, stream: 'common'),
       resolveDefaultSubject('aptitude_g$grade', grade: grade, stream: 'common'),
+      resolveDefaultSubject('civics_g$grade', grade: grade, stream: 'common'),
       resolveDefaultSubject('history_g$grade', grade: grade, stream: 'social'),
       resolveDefaultSubject('geography_g$grade',
           grade: grade, stream: 'social'),
@@ -739,6 +744,204 @@ class LocalContentRepository implements ContentRepository {
             unitNumber: 5,
             titleEn: 'International Trade & Economic Growth',
             titleAm: 'ዓለም አቀፍ ንግድና የኢኮኖሚ እድገት'),
+      ];
+    } else if (lower.contains('civ')) {
+      return const [
+        Unit(
+          id: 'civ_g9_u1',
+          subjectId: 'civics_g12',
+          unitNumber: 1,
+          titleEn: '[Grade 9] Unit 1: Ethical Values',
+          titleAm: 'የስነ-ምግባር እሴቶች',
+        ),
+        Unit(
+          id: 'civ_g9_u2',
+          subjectId: 'civics_g12',
+          unitNumber: 2,
+          titleEn: '[Grade 9] Unit 2: Culture of Using Digital Technology',
+          titleAm: 'የዲጂታል ቴክኖሎጂ አጠቃቀም ባህል',
+        ),
+        Unit(
+          id: 'civ_g9_u3',
+          subjectId: 'civics_g12',
+          unitNumber: 3,
+          titleEn: '[Grade 9] Unit 3: Constitution and Constitutionalism',
+          titleAm: 'ህገ-መንግስትና ህገ-መንግስታዊነት',
+        ),
+        Unit(
+          id: 'civ_g9_u4',
+          subjectId: 'civics_g12',
+          unitNumber: 4,
+          titleEn:
+              '[Grade 9] Unit 4: Indigenous Knowledge & Dispute Resolution',
+          titleAm: 'ሀገር በቀል እውቀትና የግጭት አፈታት',
+        ),
+        Unit(
+          id: 'civ_g9_u5',
+          subjectId: 'civics_g12',
+          unitNumber: 5,
+          titleEn: '[Grade 9] Unit 5: Multiculturalism in Ethiopia',
+          titleAm: 'ብዝሃ-ባህል በኢትዮጵያ',
+        ),
+        Unit(
+          id: 'civ_g9_u6',
+          subjectId: 'civics_g12',
+          unitNumber: 6,
+          titleEn: '[Grade 9] Unit 6: National Unity through Diversity',
+          titleAm: 'ሀገራዊ አንድነት በብዝሃነት',
+        ),
+        Unit(
+          id: 'civ_g9_u7',
+          subjectId: 'civics_g12',
+          unitNumber: 7,
+          titleEn: '[Grade 9] Unit 7: Problem-Solving Skills',
+          titleAm: 'የችግር ፈቺነት ክህሎት',
+        ),
+        Unit(
+          id: 'civ_g9_u8',
+          subjectId: 'civics_g12',
+          unitNumber: 8,
+          titleEn:
+              '[Grade 9] Unit 8: Ethiopia\'s Foreign Relations in East Africa',
+          titleAm: 'የኢትዮጵያ የውጭ ግንኙነት በምስራቅ አፍሪካ',
+        ),
+        Unit(
+          id: 'civ_g10_u1',
+          subjectId: 'civics_g12',
+          unitNumber: 9,
+          titleEn: '[Grade 10] Unit 1: Democracy and Democratization',
+          titleAm: 'ዲሞክራሲና የዲሞክራሲ ስርዓት ግንባታ',
+        ),
+        Unit(
+          id: 'civ_g10_u3',
+          subjectId: 'civics_g12',
+          unitNumber: 10,
+          titleEn: '[Grade 10] Unit 3: Understanding Good Governance',
+          titleAm: 'መልካም አስተዳደርና የህግ የበላይነት',
+        ),
+        Unit(
+          id: 'civ_g10_u4',
+          subjectId: 'civics_g12',
+          unitNumber: 11,
+          titleEn: '[Grade 10] Unit 4: Peace & Indigenous Conflict Resolution',
+          titleAm: 'ሰላምና ሀገር በቀል የግጭት አፈታት ስልቶች',
+        ),
+        Unit(
+          id: 'civ_g10_u5',
+          subjectId: 'civics_g12',
+          unitNumber: 12,
+          titleEn: '[Grade 10] Unit 5: Federalism in Ethiopia',
+          titleAm: 'ፌደራሊዝም በኢትዮጵያ',
+        ),
+        Unit(
+          id: 'civ_g10_u6',
+          subjectId: 'civics_g12',
+          unitNumber: 13,
+          titleEn: '[Grade 10] Unit 6: Human Rights',
+          titleAm: 'ሰብአዊ መብቶች',
+        ),
+        Unit(
+          id: 'civ_g10_u7',
+          subjectId: 'civics_g12',
+          unitNumber: 14,
+          titleEn: '[Grade 10] Unit 7: Patriotism',
+          titleAm: 'ሀገር ወዳድነትና ዜግነታዊ ኃላፊነት',
+        ),
+        Unit(
+          id: 'civ_g10_u8',
+          subjectId: 'civics_g12',
+          unitNumber: 15,
+          titleEn: '[Grade 10] Unit 8: Globalization and Global Issues',
+          titleAm: 'ግሎባላይዜሽንና ዓለም አቀፍ ጉዳዮች',
+        ),
+        Unit(
+          id: 'civ_g11_econ_u4',
+          subjectId: 'civics_g12',
+          unitNumber: 16,
+          titleEn: '[Grade 11 Economics] Consumption, Saving and Investment',
+          titleAm: 'አጠቃቀም፣ ቁጠባና ኢንቨስትመንት',
+        ),
+        Unit(
+          id: 'civ_g11_econ_u5',
+          subjectId: 'civics_g12',
+          unitNumber: 17,
+          titleEn: '[Grade 11 Economics] Trade, Finance and Global Economy',
+          titleAm: 'ንግድ፣ ፋይናንስና ዓለም አቀፍ ኢኮኖሚ',
+        ),
+        Unit(
+          id: 'civ_g11_econ_u6',
+          subjectId: 'civics_g12',
+          unitNumber: 18,
+          titleEn:
+              '[Grade 11 Economics] Economic Development & Reversing Dependency',
+          titleAm: 'የኢኮኖሚ ልማትና ጥገኝነትን መቀነስ',
+        ),
+        Unit(
+          id: 'civ_g11_econ_u7',
+          subjectId: 'civics_g12',
+          unitNumber: 19,
+          titleEn:
+              '[Grade 11 Economics] Main Sectors & Sectoral Policies of Ethiopia',
+          titleAm: 'ዋና ዋና የኢኮኖሚ ዘርፎችና ፖሊሲዎች',
+        ),
+        Unit(
+          id: 'civ_g12_econ_u1',
+          subjectId: 'civics_g12',
+          unitNumber: 20,
+          titleEn:
+              '[Grade 12 Economics] Fundamental Concepts of Macroeconomics',
+          titleAm: 'መሰረታዊ የማክሮ ኢኮኖሚ ጽንሰ-ሀሳቦች',
+        ),
+        Unit(
+          id: 'civ_g12_econ_u5',
+          subjectId: 'civics_g12',
+          unitNumber: 21,
+          titleEn: '[Grade 12 Economics] Tax Theory and Practice',
+          titleAm: 'የታክስ ንድፈ-ሀሳብና አሰራር',
+        ),
+        Unit(
+          id: 'civ_g12_econ_u7',
+          subjectId: 'civics_g12',
+          unitNumber: 22,
+          titleEn: '[Grade 12 Economics] Macroeconomic Reforms in Ethiopia',
+          titleAm: 'የማክሮ ኢኮኖሚ ማሻሻያዎች',
+        ),
+        Unit(
+          id: 'civ_g12_econ_u8',
+          subjectId: 'civics_g12',
+          unitNumber: 23,
+          titleEn: '[Grade 12 Economics] Economy, Environment & Climate Change',
+          titleAm: 'ኢኮኖሚ፣ አካባቢና የአየር ንብረት ለውጥ',
+        ),
+        Unit(
+          id: 'civ_g12_hist_u5',
+          subjectId: 'civics_g12',
+          unitNumber: 24,
+          titleEn:
+              '[Grade 12 History] Global & Regional Developments Since 1945',
+          titleAm: 'ከ1945 ጀምሮ የታዩ ዓለም አቀፍና ቀጣናዊ ለውጦች',
+        ),
+        Unit(
+          id: 'civ_g12_hist_u6',
+          subjectId: 'civics_g12',
+          unitNumber: 25,
+          titleEn: '[Grade 12 History] Ethiopia 1941–1991',
+          titleAm: 'ኢትዮጵያ ከ1941 እስከ 1991',
+        ),
+        Unit(
+          id: 'civ_g12_hist_u7',
+          subjectId: 'civics_g12',
+          unitNumber: 26,
+          titleEn: '[Grade 12 History] Africa Since the 1960s & Pan-Africanism',
+          titleAm: 'አፍሪካ ከ1960ዎቹ ጀምሮና ፓን-አፍሪካኒዝም',
+        ),
+        Unit(
+          id: 'civ_g12_hist_u8',
+          subjectId: 'civics_g12',
+          unitNumber: 27,
+          titleEn: '[Grade 12 History] Post-1991 Constitutional Developments',
+          titleAm: 'ከ1991 በኋላ ያሉ ህገ-መንግስታዊ ለውጦች',
+        ),
       ];
     }
     return const [];

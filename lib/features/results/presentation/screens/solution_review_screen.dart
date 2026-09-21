@@ -418,6 +418,22 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                       variant: FidelBadgeVariant.neutral,
                       isSmall: true,
                     ),
+                  if (currentQ.officialAnswerKeyAvailable == false ||
+                      currentQ.answerKeySource ==
+                          'curriculum_aligned_study_guide')
+                    const FidelBadge(
+                      text: 'CURRICULUM-ALIGNED STUDY ANSWER',
+                      variant: FidelBadgeVariant.warning,
+                      icon: Icons.auto_stories_rounded,
+                      isSmall: true,
+                    ),
+                  if (!currentQ.isScorable)
+                    const FidelBadge(
+                      text: 'NON-SCORABLE / DEFECTIVE IN SOURCE',
+                      variant: FidelBadgeVariant.danger,
+                      icon: Icons.error_outline_rounded,
+                      isSmall: true,
+                    ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -455,9 +471,58 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
             currentQ.vectorDiagram != null)
           const SizedBox(height: 16),
 
+        if (currentQ.reviewNote != null && currentQ.reviewNote!.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0x26F59E0B) : const Color(0xFFFFFBEB),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              border: Border.all(
+                color: AppTheme.accent.withValues(alpha: 0.5),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.info_outline_rounded,
+                    color: AppTheme.accentDark, size: 20),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Curriculum Review Note',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: AppTheme.accentDark,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        currentQ.reviewNote!,
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          height: 1.4,
+                          color:
+                              isDark ? AppTheme.darkText : AppTheme.lightText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+
         // Choices with verified state
         Text(
-          'Answer Verification & Choices:',
+          currentQ.officialAnswerKeyAvailable == false
+              ? 'Study Guide Answer & Choices:'
+              : 'Answer Verification & Choices:',
           style: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 13.5,

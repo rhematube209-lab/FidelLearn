@@ -210,9 +210,11 @@ class _ExamResultScreenState extends ConsumerState<ExamResultScreen> {
                     ),
                   ),
                   Text(
-                    'FINAL SCORE',
+                    _attempt!.subjectId.toLowerCase().contains('civ')
+                        ? 'CURRICULUM-ALIGNED SCORE'
+                        : 'FINAL SCORE',
                     style: TextStyle(
-                      fontSize: 9.5,
+                      fontSize: 8.5,
                       fontWeight: FontWeight.w800,
                       color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                       letterSpacing: 0.5,
