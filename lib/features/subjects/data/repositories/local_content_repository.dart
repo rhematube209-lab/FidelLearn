@@ -30,6 +30,8 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/biology_2013_seed.json',
                     'assets/seed/chemistry_2013_seed.json',
                     'assets/seed/chemistry_2014_seed.json',
+                    'assets/seed/chemistry_2015_seed.json',
+                    'assets/seed/chemistry_2016_seed.json',
                     'assets/seed/math_2014_seed.json',
                     'assets/seed/physics_2014_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
@@ -532,13 +534,15 @@ class LocalContentRepository implements ContentRepository {
             id: 'chem_g10_u6',
             subjectId: 'chemistry_g12',
             unitNumber: 11,
-            titleEn: '[Grade 10] Unit 6: Hydrocarbons and Their Natural Sources',
+            titleEn:
+                '[Grade 10] Unit 6: Hydrocarbons and Their Natural Sources',
             titleAm: 'ሃይድሮካርቦኖችና የተፈጥሮ ምንጮቻቸው'),
         Unit(
             id: 'chem_g11_u1',
             subjectId: 'chemistry_g12',
             unitNumber: 12,
-            titleEn: '[Grade 11] Unit 1: Atomic Structure and Periodic Properties',
+            titleEn:
+                '[Grade 11] Unit 1: Atomic Structure and Periodic Properties',
             titleAm: 'የአተም መዋቅርና ወቅታዊ ባህሪያት'),
         Unit(
             id: 'chem_g11_u2',
@@ -599,7 +603,8 @@ class LocalContentRepository implements ContentRepository {
             id: 'chem_g12_u5',
             subjectId: 'chemistry_g12',
             unitNumber: 22,
-            titleEn: '[Grade 12] Unit 5: Introduction to Environmental Chemistry',
+            titleEn:
+                '[Grade 12] Unit 5: Introduction to Environmental Chemistry',
             titleAm: 'የአካባቢ ኬሚስትሪ'),
       ];
     } else if (lower.contains('eng')) {

@@ -12,8 +12,10 @@ enum VerificationStatus {
   verified,
   correctedSource,
   intendedAnswer,
+  bestAnswer,
   multipleValidAnswers,
   noValidOption,
+  underdetermined,
   imageDependent,
   incompleteSource;
 
@@ -38,12 +40,17 @@ enum VerificationStatus {
       case 'intended_answer':
       case 'intendedanswer':
         return VerificationStatus.intendedAnswer;
+      case 'best_answer':
+      case 'bestanswer':
+        return VerificationStatus.bestAnswer;
       case 'multiple_valid_answers':
       case 'multiplevalidanswers':
         return VerificationStatus.multipleValidAnswers;
       case 'no_valid_option':
       case 'novalidoption':
         return VerificationStatus.noValidOption;
+      case 'underdetermined':
+        return VerificationStatus.underdetermined;
       case 'image_dependent':
       case 'imagedependent':
         return VerificationStatus.imageDependent;
@@ -74,10 +81,14 @@ enum VerificationStatus {
         return 'corrected_source';
       case VerificationStatus.intendedAnswer:
         return 'intended_answer';
+      case VerificationStatus.bestAnswer:
+        return 'best_answer';
       case VerificationStatus.multipleValidAnswers:
         return 'multiple_valid_answers';
       case VerificationStatus.noValidOption:
         return 'no_valid_option';
+      case VerificationStatus.underdetermined:
+        return 'underdetermined';
       case VerificationStatus.imageDependent:
         return 'image_dependent';
       case VerificationStatus.incompleteSource:
@@ -200,7 +211,8 @@ class Question extends Equatable {
   final int contentVersion;
   final int? questionNumber;
   final String? reviewNote;
-  final String difficultySource; // 'source_provided' | 'fidel_learn_assigned' | 'educator_verified'
+  final String
+      difficultySource; // 'source_provided' | 'fidel_learn_assigned' | 'educator_verified'
   final bool isScorable;
   final bool isPracticeEligible;
   final List<AnswerChoice> choices;

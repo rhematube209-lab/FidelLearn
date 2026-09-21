@@ -127,6 +127,8 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     } else if (cleanId.contains('chem')) {
       defaultDownloaded.add(2013);
       defaultDownloaded.add(2014);
+      defaultDownloaded.add(2015);
+      defaultDownloaded.add(2016);
     }
 
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
@@ -340,6 +342,32 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             'በሀገር አቀፍ የትምህርት ምዘናና ፈተናዎች አገልግሎት የተሰጠ የ2013 ዓ.ም. ባለ 80 ጥያቄ ኬሚስትሪ ፈተና (የትምህርት ኮድ 05፣ የተፈቀደው ጊዜ 2 ሰዓት ከ30 ደቂቃ)።',
       );
     }
+    if (isChem && base.ethiopianYear == 2016) {
+      return base.copyWith(
+        standardQuestionCount: 80,
+        bookletCode: 'N/A',
+        standardTimeMinutes: 0,
+        isVerifiedArchive: true,
+        specialBadge: '80 RECOVERABLE',
+        descriptionEn:
+            'Official 2016 E.C. (July 2024 G.C.) National Exam (80 questions recoverable) with verified answers and explanations.',
+        descriptionAm:
+            'የ2016 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና (80 ጥያቄዎች ከተሟላ የትምህርት መርሃ-ግብር ማብራሪያ ጋር)።',
+      );
+    }
+    if (isChem && base.ethiopianYear == 2015) {
+      return base.copyWith(
+        standardQuestionCount: 78,
+        bookletCode: 'N/A',
+        standardTimeMinutes: 0,
+        isVerifiedArchive: true,
+        specialBadge: '78 AVAILABLE',
+        descriptionEn:
+            'Official 2015 E.C. (July 2023 G.C.) National Exam (78 questions available; original archive header states 80 questions, but Questions 79–80 were not present in archive).',
+        descriptionAm:
+            'የ2015 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኬሚስትሪ ፈተና። በማህደሩ 80 ጥያቄዎች ቢጠቀሱም በጥራዙ የተገኙት 78 ጥያቄዎች (ጥያቄ 1-78) ብቻ ናቸው።',
+      );
+    }
     if (isChem && base.ethiopianYear == 2014) {
       return base.copyWith(
         standardQuestionCount: 70,
@@ -380,12 +408,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       return [y2013, ...others];
     }
     if (isChem) {
+      final y2016 = _availableYears.firstWhere((y) => y.ethiopianYear == 2016);
+      final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
       final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
       final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
       final others = _availableYears
-          .where((y) => y.ethiopianYear != 2014 && y.ethiopianYear != 2013)
+          .where((y) =>
+              y.ethiopianYear != 2016 &&
+              y.ethiopianYear != 2015 &&
+              y.ethiopianYear != 2014 &&
+              y.ethiopianYear != 2013)
           .toList();
-      return [y2014, y2013, ...others];
+      return [y2016, y2015, y2014, y2013, ...others];
     }
     return _availableYears;
   }
@@ -570,7 +604,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     final hubTheme = _getHubTheme(subject);
 
     bool showInstant = false;
-    bool isTimed = _timedMode;
+    bool isTimed = yearInfo.standardTimeMinutes > 0 ? _timedMode : false;
 
     await showDialog<void>(
       context: context,
@@ -581,11 +615,15 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             final isChem = LocalContentRepository.matchesSubjectId(
                     subject.id, 'chemistry_g12') ||
                 subject.nameEn.toLowerCase().contains('chem');
+            final isChemUntimed = isChem &&
+                (yearInfo.ethiopianYear == 2014 ||
+                    yearInfo.ethiopianYear == 2015 ||
+                    yearInfo.ethiopianYear == 2016);
             final isChem2014 = isChem && yearInfo.ethiopianYear == 2014;
-            final bookletCode = isChem2014
+            final bookletCode = isChemUntimed
                 ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
                 : yearInfo.bookletCode.replaceAll('Booklet', '').trim();
-            final subjectCode = isChem2014
+            final subjectCode = isChemUntimed
                 ? (isAmharic ? 'አልተሰጠም' : 'Not provided')
                 : _getOfficialSubjectCode(subject);
             final streamName = _getStreamDisplayName(subject, isAmharic);
@@ -604,8 +642,10 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                         : (hours > 0
                             ? (hours == 1 ? '1 Hour' : '$hours Hours')
                             : '$mins Min')))
-                : (isChem2014
-                    ? (isAmharic ? 'በምንጩ አልተጠቀሰም' : 'Not provided in source')
+                : (isChemUntimed
+                    ? (isAmharic
+                        ? 'በምንጩ አልተጠቀሰም'
+                        : 'Not provided in supplied source')
                     : (isAmharic ? 'ያልተገደበ' : 'Untimed'));
 
             return Dialog(
@@ -871,6 +911,90 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           ),
                         ),
                       ],
+                      if (isChem && yearInfo.ethiopianYear == 2015) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0x26F59E0B)
+                                : const Color(0xFFFFFBEB),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0x66F59E0B)
+                                  : const Color(0xFFFDE68A),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.info_outline_rounded,
+                                size: 18,
+                                color: Color(0xFFD97706),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  isAmharic
+                                      ? '78 ጥያቄዎች ይገኛሉ። በዋናው ምንጭ ርዕስ 80 ጥያቄዎች ቢጠቀሱም ጥያቄ 79–80 በተላከው ማህደር ውስጥ አልተገኙም። ጥያቄ 79 እና 80 ሆን ተብለው አልተፈጠሩም።'
+                                      : '78 questions available. The original source header states 80 questions, but Questions 79–80 were not present in the supplied archive. Questions 79 and 80 were intentionally not invented.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFFFDE68A)
+                                        : const Color(0xFF92400E),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                      if (isChem && yearInfo.ethiopianYear == 2016) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0x260284C7)
+                                : const Color(0xFFF0F9FF),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0x660284C7)
+                                  : const Color(0xFFBAE6FD),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.info_outline_rounded,
+                                size: 18,
+                                color: Color(0xFF0284C7),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  isAmharic
+                                      ? '80 ጥያቄዎች ይገኛሉ። ሁሉም 80 ጥያቄዎች ከማህደሩ የተገኙ ናቸው።'
+                                      : '80 questions available. All 80 questions are recoverable from the supplied archive.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? const Color(0xFFBAE6FD)
+                                        : const Color(0xFF0369A1),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
 
                       // =======================================================
                       // 📐 REFERENCE CONSTANTS (Page 1 Official Exam Document)
@@ -943,7 +1067,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                           Row(
                             children: [
                               Icon(
-                                isTimed
+                                yearInfo.standardTimeMinutes > 0 && isTimed
                                     ? Icons.timer_outlined
                                     : Icons.all_inclusive_rounded,
                                 size: 16,
@@ -962,29 +1086,53 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              _buildDialogTimerPill(
-                                label: isAmharic
-                                    ? '${yearInfo.standardTimeMinutes} ደቂቃ'
-                                    : '${yearInfo.standardTimeMinutes}m',
-                                isActive: isTimed,
-                                onTap: () =>
-                                    setDialogState(() => isTimed = true),
-                                hubTheme: hubTheme,
-                                isDark: isDark,
+                          if (yearInfo.standardTimeMinutes > 0)
+                            Row(
+                              children: [
+                                _buildDialogTimerPill(
+                                  label: isAmharic
+                                      ? '${yearInfo.standardTimeMinutes} ደቂቃ'
+                                      : '${yearInfo.standardTimeMinutes}m',
+                                  isActive: isTimed,
+                                  onTap: () =>
+                                      setDialogState(() => isTimed = true),
+                                  hubTheme: hubTheme,
+                                  isDark: isDark,
+                                ),
+                                const SizedBox(width: 6),
+                                _buildDialogTimerPill(
+                                  label: isAmharic ? 'ያልተገደበ' : 'Untimed',
+                                  isActive: !isTimed,
+                                  onTap: () =>
+                                      setDialogState(() => isTimed = false),
+                                  hubTheme: hubTheme,
+                                  isDark: isDark,
+                                ),
+                              ],
+                            )
+                          else
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? const Color(0xFF1E293B)
+                                    : const Color(0xFFF1F5F9),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              const SizedBox(width: 6),
-                              _buildDialogTimerPill(
-                                label: isAmharic ? 'ያልተገደበ' : 'Untimed',
-                                isActive: !isTimed,
-                                onTap: () =>
-                                    setDialogState(() => isTimed = false),
-                                hubTheme: hubTheme,
-                                isDark: isDark,
+                              child: Text(
+                                isAmharic
+                                    ? 'በምንጩ አልተጠቀሰም (ያልተገደበ)'
+                                    : 'Not provided in source (Untimed)',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDark
+                                      ? AppTheme.darkMuted
+                                      : const Color(0xFF64748B),
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
                         ],
                       ),
                       const SizedBox(height: 20),

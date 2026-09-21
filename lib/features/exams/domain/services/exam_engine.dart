@@ -132,7 +132,9 @@ class ExamEngine {
 
     final total = scorableCount > 0
         ? scorableCount
-        : (questions.isNotEmpty ? questions.length : currentAttempt.totalQuestions);
+        : (questions.isNotEmpty
+            ? questions.length
+            : currentAttempt.totalQuestions);
     final percentage = total > 0 ? (correct / total) * 100.0 : 0.0;
 
     return currentAttempt.copyWith(

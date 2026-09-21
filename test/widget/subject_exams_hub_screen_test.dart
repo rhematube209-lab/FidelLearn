@@ -169,15 +169,15 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Chemistry 2013 and 2014 are bundled as pre-downloaded verified offline archives.
+    // Chemistry 2013, 2014, 2015, and 2016 are bundled as pre-downloaded verified offline archives.
     // Verified archives show 'Start (N Qs)' labels, not 'Start Exam'.
-    // So 4 years remain as 'Download' (2016, 2015, 2012, 2011)
-    // and 2 years show 'Start (80 Qs)' / 'Start (70 Qs)' (2013, 2014 verified archives).
-    expect(find.text('Download'), findsNWidgets(4));
-    expect(find.textContaining('Start ('), findsNWidgets(2));
+    // So 2 years remain as 'Download' (2012, 2011)
+    // and 4 years show 'Start (80 Qs)' / 'Start (78 Qs)' / 'Start (70 Qs)' (2016, 2015, 2014, 2013 verified archives).
+    expect(find.text('Download'), findsNWidgets(2));
+    expect(find.textContaining('Start ('), findsNWidgets(4));
     expect(find.text('Start Exam'), findsNothing);
 
-    // Tap the first download button (for 2016 E.C.)
+    // Tap the first download button (for 2012 E.C.)
     await tester.tap(find.text('Download').first);
     await tester.pump(); // Enter downloading state
 
@@ -185,11 +185,11 @@ void main() {
     await tester.pump(const Duration(milliseconds: 700));
     await tester.pumpAndSettle();
 
-    // 2016 is a generic (non-verified-archive) year: shows 'Start Exam'
+    // 2012 is a generic (non-verified-archive) year: shows 'Start Exam'
     expect(find.text('Start Exam'), findsOneWidget);
-    // Still 2 verified archives showing 'Start (N Qs)'
-    expect(find.textContaining('Start ('), findsNWidgets(2));
-    expect(find.text('Download'), findsNWidgets(3));
+    // Still 4 verified archives showing 'Start (N Qs)'
+    expect(find.textContaining('Start ('), findsNWidgets(4));
+    expect(find.text('Download'), findsNWidgets(1));
 
     // Verify success snackbar notification
     expect(find.textContaining('downloaded & verified for offline practice'),

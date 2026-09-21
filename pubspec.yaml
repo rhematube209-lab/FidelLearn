@@ -59,4 +59,6 @@ flutter:
     - assets/images/exams/phys_2014/
     - assets/images/exams/chem_2013/
     - assets/images/exams/chem_2014/
+    - assets/images/exams/chem_2015/
+    - assets/images/exams/chem_2016/
     - assets/translations/
