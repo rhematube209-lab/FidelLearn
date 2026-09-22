@@ -441,7 +441,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isAmharic = Localizations.localeOf(context).languageCode == 'am';
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth >= 800;
+    final isDesktop = screenWidth >= 900;
 
     final scopeCounts = _activeScopeCounts;
     final unmasteredCount = scopeCounts.needsReview + scopeCounts.improving;
@@ -498,56 +498,107 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                           title: headerTitle,
                           subtitle: headerSubtitle,
                           actionLabel: actionLabel,
+                          isDesktop: isDesktop,
                         ),
 
-                        // 2. Scrollable Body Content
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 16.0),
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.stretch,
-                            children: [
-                              // Breadcrumbs (when drilled into subject or unit)
-                              if (_selectedSubjectId != null) ...[
-                                _buildBreadcrumbs(isDark),
-                                const SizedBox(height: 14),
-                              ],
+                        // 2. Responsive Scrollable Body Content
+                        Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 1140),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isDesktop ? 32.0 : 16.0,
+                                vertical: isDesktop ? 24.0 : 16.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // Breadcrumbs (when drilled into subject or unit)
+                                  if (_selectedSubjectId != null) ...[
+                                    _buildBreadcrumbs(isDark),
+                                    const SizedBox(height: 14),
+                                  ],
 
-                              // Drill Breakdown Metrics Dashboard
-                              _buildMetricsDashboard(context, isDark),
-                              const SizedBox(height: 16),
+                                  // Drill Breakdown Metrics Dashboard
+                                  _buildMetricsDashboard(
+                                    context,
+                                    isDark,
+                                    isDesktop: isDesktop,
+                                  ),
+                                  const SizedBox(height: 20),
 
-                              // Main Root View
-                              if (_selectedSubjectId == null) ...[
-                                // All Mistakes Quick Banner
-                                _buildAllMistakesBanner(isDark),
-                                const SizedBox(height: 18),
+                                  // Main Root View
+                                  if (_selectedSubjectId == null) ...[
+                                    if (isDesktop) ...[
+                                      // Desktop: Side-by-side Quick Banner & High-Yield Tip
+                                      IntrinsicHeight(
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Expanded(
+                                              flex: 6,
+                                              child: _buildAllMistakesBanner(
+                                                  isDark),
+                                            ),
+                                            const SizedBox(width: 16),
+                                            Expanded(
+                                              flex: 5,
+                                              child: _buildEncouragementTip(
+                                                  isDark),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 24),
 
-                                // Subjects with Mistakes
-                                _buildSubjectsWithMistakesSection(
-                                  context,
-                                  _subjectSummaries,
-                                  isDark,
-                                ),
-                                const SizedBox(height: 18),
+                                      // Desktop: Multi-column Subjects with Mistakes
+                                      _buildSubjectsWithMistakesSection(
+                                        context,
+                                        _subjectSummaries,
+                                        isDark,
+                                        isDesktop: true,
+                                      ),
+                                      const SizedBox(height: 32),
+                                    ] else ...[
+                                      // Mobile: Vertical flow
+                                      _buildAllMistakesBanner(isDark),
+                                      const SizedBox(height: 18),
 
-                                // High-Yield Rule Tip
-                                _buildEncouragementTip(isDark),
-                                const SizedBox(height: 24),
-                              ]
-                              // Subject Drill Units View
-                              else if (_selectedSubjectId != 'ALL' &&
-                                  _selectedUnitId == null) ...[
-                                _buildSubjectUnitsView(context, isDark),
-                                const SizedBox(height: 20),
-                              ]
-                              // Question List View
-                              else ...[
-                                _buildQuestionListView(context, isDark),
-                                const SizedBox(height: 20),
-                              ],
-                            ],
+                                      _buildSubjectsWithMistakesSection(
+                                        context,
+                                        _subjectSummaries,
+                                        isDark,
+                                        isDesktop: false,
+                                      ),
+                                      const SizedBox(height: 18),
+
+                                      _buildEncouragementTip(isDark),
+                                      const SizedBox(height: 24),
+                                    ],
+                                  ]
+                                  // Subject Drill Units View
+                                  else if (_selectedSubjectId != 'ALL' &&
+                                      _selectedUnitId == null) ...[
+                                    _buildSubjectUnitsView(
+                                      context,
+                                      isDark,
+                                      isDesktop: isDesktop,
+                                    ),
+                                    const SizedBox(height: 24),
+                                  ]
+                                  // Question List View
+                                  else ...[
+                                    _buildQuestionListView(
+                                      context,
+                                      isDark,
+                                      isDesktop: isDesktop,
+                                    ),
+                                    const SizedBox(height: 24),
+                                  ],
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -568,6 +619,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     required String title,
     required String subtitle,
     required String actionLabel,
+    bool isDesktop = false,
   }) {
     return Container(
       decoration: const BoxDecoration(
@@ -596,8 +648,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
             top: -30,
             right: -20,
             child: Container(
-              width: 170,
-              height: 170,
+              width: isDesktop ? 260 : 170,
+              height: isDesktop ? 260 : 170,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: const Color(0xFFA5B4FC).withValues(alpha: 0.20),
@@ -606,10 +658,10 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
           ),
           Positioned(
             bottom: 20,
-            right: 48,
+            right: isDesktop ? 120 : 48,
             child: Container(
-              width: 110,
-              height: 110,
+              width: isDesktop ? 160 : 110,
+              height: isDesktop ? 160 : 110,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: const Color(0xFF8B5CF6).withValues(alpha: 0.20),
@@ -617,199 +669,37 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
             ),
           ),
 
-          // Header Content
+          // Header Content (Edge-to-edge full width background with centered container)
           SafeArea(
             bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Row: Icon squircle + Title + Back Button
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.20),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.25),
-                            width: 1.2,
-                          ),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.menu_book_rounded,
-                            color: Colors.white,
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                            letterSpacing: -0.4,
-                            height: 1.2,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Circular Back Button
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: _navigateBack,
-                          borderRadius: BorderRadius.circular(999),
-                          child: Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withValues(alpha: 0.15),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.20),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.arrow_back_rounded,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1140),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    isDesktop ? 32 : 20,
+                    isDesktop ? 22 : 14,
+                    isDesktop ? 32 : 20,
+                    isDesktop ? 26 : 24,
                   ),
-                  const SizedBox(height: 12),
-
-                  // Subtitle
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFFE0E7FF).withValues(alpha: 0.85),
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-
-                  // Floating Primary CTA Button ("Practice My Mistakes")
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: unmasteredCount > 0
-                          ? () => _startMistakeRetryExam(
-                                subjectId: _selectedSubjectId == 'ALL'
-                                    ? null
-                                    : _selectedSubjectId,
-                                unitId: _selectedUnitId,
-                              )
-                          : null,
-                      borderRadius: BorderRadius.circular(16),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 14),
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? const Color(0xFF1E293B)
-                              : const Color(0xFFF4F6FB),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: isDark
-                                ? const Color(0xFF334155)
-                                : Colors.white.withValues(alpha: 0.9),
-                            width: 1.0,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF0F172A).withValues(alpha: 0.25),
-                              offset: const Offset(0, 6),
-                              blurRadius: 16,
-                            ),
-                            if (!isDark)
-                              BoxShadow(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                offset: const Offset(0, 1),
-                                blurRadius: 1,
-                              ),
-                          ],
+                  child: isDesktop
+                      ? _buildDesktopHeaderContent(
+                          context: context,
+                          isDark: isDark,
+                          unmasteredCount: unmasteredCount,
+                          title: title,
+                          subtitle: subtitle,
+                          actionLabel: actionLabel,
+                        )
+                      : _buildMobileHeaderContent(
+                          context: context,
+                          isDark: isDark,
+                          unmasteredCount: unmasteredCount,
+                          title: title,
+                          subtitle: subtitle,
+                          actionLabel: actionLabel,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 26,
-                              height: 26,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFF4F46E5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0x334F46E5),
-                                    offset: Offset(0, 2),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              actionLabel,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800,
-                                color: isDark
-                                    ? Colors.white
-                                    : const Color(0xFF1E293B),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? const Color(0xFF312E81)
-                                    : const Color(0xFFEEF2FF),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                              child: Text(
-                                '$unmasteredCount',
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF4338CA),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -818,10 +708,347 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
+  Widget _buildDesktopHeaderContent({
+    required BuildContext context,
+    required bool isDark,
+    required int unmasteredCount,
+    required String title,
+    required String subtitle,
+    required String actionLabel,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Left Column: Icon + Title + Subtitle
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.20),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.25),
+                        width: 1.2,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.menu_book_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: -0.4,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 620),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFFE0E7FF).withValues(alpha: 0.85),
+                    height: 1.45,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 28),
+
+        // Right Column: CTA Button + Back Navigation
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 270,
+              child: _buildPracticeCtaButton(
+                context: context,
+                isDark: isDark,
+                unmasteredCount: unmasteredCount,
+                actionLabel: actionLabel,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: _navigateBack,
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.15),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.20),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_back_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMobileHeaderContent({
+    required BuildContext context,
+    required bool isDark,
+    required int unmasteredCount,
+    required String title,
+    required String subtitle,
+    required String actionLabel,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Row: Icon squircle + Title + Back Button
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.20),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  width: 1.2,
+                ),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.menu_book_rounded,
+                  color: Colors.white,
+                  size: 22,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                  letterSpacing: -0.4,
+                  height: 1.2,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 8),
+            // Circular Back Button
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: _navigateBack,
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.15),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.20),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.arrow_back_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        // Subtitle
+        Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFFE0E7FF).withValues(alpha: 0.85),
+            height: 1.4,
+          ),
+        ),
+        const SizedBox(height: 18),
+
+        // Floating Primary CTA Button ("Practice My Mistakes")
+        _buildPracticeCtaButton(
+          context: context,
+          isDark: isDark,
+          unmasteredCount: unmasteredCount,
+          actionLabel: actionLabel,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPracticeCtaButton({
+    required BuildContext context,
+    required bool isDark,
+    required int unmasteredCount,
+    required String actionLabel,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: unmasteredCount > 0
+            ? () => _startMistakeRetryExam(
+                  subjectId: _selectedSubjectId == 'ALL'
+                      ? null
+                      : _selectedSubjectId,
+                  unitId: _selectedUnitId,
+                )
+            : null,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark
+                  ? const Color(0xFF334155)
+                  : Colors.white.withValues(alpha: 0.9),
+              width: 1.0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0F172A).withValues(alpha: 0.25),
+                offset: const Offset(0, 6),
+                blurRadius: 16,
+              ),
+              if (!isDark)
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  offset: const Offset(0, 1),
+                  blurRadius: 1,
+                ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 26,
+                height: 26,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF4F46E5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x334F46E5),
+                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  actionLabel,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : const Color(0xFF1E293B),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (unmasteredCount > 0) ...[
+                const SizedBox(width: 8),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF312E81)
+                        : const Color(0xFFEEF2FF),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    '$unmasteredCount',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF4338CA),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   // ==========================================
   // 2. DRILL BREAKDOWN METRICS DASHBOARD
   // ==========================================
-  Widget _buildMetricsDashboard(BuildContext context, bool isDark) {
+  Widget _buildMetricsDashboard(
+    BuildContext context,
+    bool isDark, {
+    bool isDesktop = false,
+  }) {
     final counts = _activeScopeCounts;
 
     return Column(
@@ -836,7 +1063,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               Text(
                 'DRILL BREAKDOWN',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: isDesktop ? 12 : 11,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
                   color:
@@ -846,7 +1073,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               Text(
                 'Auto-updated',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: isDesktop ? 12 : 11,
                   fontWeight: FontWeight.w500,
                   color: isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8),
                 ),
@@ -873,9 +1100,10 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     ? const Color(0xFF818CF8)
                     : const Color(0xFF4338CA).withValues(alpha: 0.85),
                 isDark: isDark,
+                isDesktop: isDesktop,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: isDesktop ? 14 : 6),
             Expanded(
               child: _buildMetricTile(
                 title: 'Needs Review',
@@ -890,9 +1118,10 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     ? const Color(0xFFFCD34D)
                     : const Color(0xFFB45309).withValues(alpha: 0.85),
                 isDark: isDark,
+                isDesktop: isDesktop,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: isDesktop ? 14 : 6),
             Expanded(
               child: _buildMetricTile(
                 title: 'Improving',
@@ -907,9 +1136,10 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     ? const Color(0xFF7DD3FC)
                     : const Color(0xFF0369A1).withValues(alpha: 0.85),
                 isDark: isDark,
+                isDesktop: isDesktop,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: isDesktop ? 14 : 6),
             Expanded(
               child: _buildMetricTile(
                 title: 'Mastered',
@@ -924,6 +1154,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     ? const Color(0xFF6EE7B7)
                     : const Color(0xFF047857).withValues(alpha: 0.85),
                 isDark: isDark,
+                isDesktop: isDesktop,
               ),
             ),
           ],
@@ -941,9 +1172,13 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     required Color titleColor,
     required Color subLabelColor,
     required bool isDark,
+    bool isDesktop = false,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: EdgeInsets.symmetric(
+        horizontal: isDesktop ? 14 : 8,
+        vertical: isDesktop ? 14 : 10,
+      ),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
         borderRadius: BorderRadius.circular(16),
@@ -980,7 +1215,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               Text(
                 displayTitle,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: isDesktop ? 11.5 : 10,
                   fontWeight: FontWeight.w800,
                   color: titleColor,
                   letterSpacing: -0.2,
@@ -1000,21 +1235,21 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: isDesktop ? 6 : 4),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: isDesktop ? 22 : 18,
               fontWeight: FontWeight.w900,
               color: valueColor,
               height: 1.1,
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: isDesktop ? 4 : 2),
           Text(
             subLabel,
             style: TextStyle(
-              fontSize: 9.5,
+              fontSize: isDesktop ? 11 : 9.5,
               fontWeight: FontWeight.w600,
               color: subLabelColor,
             ),
@@ -1173,7 +1408,11 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   // 4. SUBJECTS WITH MISTAKES SECTION
   // ==========================================
   Widget _buildSubjectsWithMistakesSection(
-      BuildContext context, List<SubjectMistakeSummary> summaries, bool isDark) {
+    BuildContext context,
+    List<SubjectMistakeSummary> summaries,
+    bool isDark, {
+    bool isDesktop = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1194,7 +1433,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               const Text(
                 'Subjects with Mistakes',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: -0.2,
                 ),
@@ -1213,17 +1452,34 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         ),
         const SizedBox(height: 12),
 
-        // Subject Cards List
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: summaries.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final s = summaries[index];
-            return _buildSubjectCard(s, isDark);
-          },
-        ),
+        // Responsive Subject Cards List / Multi-column Grid
+        if (isDesktop && summaries.length > 1)
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cardWidth = (constraints.maxWidth - 16) / 2;
+              return Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: summaries
+                    .map((s) => SizedBox(
+                          width: cardWidth,
+                          child: _buildSubjectCard(s, isDark),
+                        ))
+                    .toList(),
+              );
+            },
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: summaries.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final s = summaries[index];
+              return _buildSubjectCard(s, isDark);
+            },
+          ),
       ],
     );
   }
@@ -1602,7 +1858,11 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   // ==========================================
   // 7. SUBJECT UNITS & TOPICS VIEW
   // ==========================================
-  Widget _buildSubjectUnitsView(BuildContext context, bool isDark) {
+  Widget _buildSubjectUnitsView(
+    BuildContext context,
+    bool isDark, {
+    bool isDesktop = false,
+  }) {
     final units = _unitSummariesForSelectedSubject;
     final subjectTitle = _resolveSubjectName(_selectedSubjectId!);
 
@@ -1649,6 +1909,22 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
           _buildEmptyFilteredCard(
               'No units matching the selected status filter in $subjectTitle.',
               isDark)
+        else if (isDesktop && units.length > 1)
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cardWidth = (constraints.maxWidth - 16) / 2;
+              return Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: units
+                    .map((u) => SizedBox(
+                          width: cardWidth,
+                          child: _buildUnitCard(u, isDark),
+                        ))
+                    .toList(),
+              );
+            },
+          )
         else
           ListView.separated(
             shrinkWrap: true,
@@ -1814,7 +2090,11 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   // ==========================================
   // 8. QUESTION LIST VIEW
   // ==========================================
-  Widget _buildQuestionListView(BuildContext context, bool isDark) {
+  Widget _buildQuestionListView(
+    BuildContext context,
+    bool isDark, {
+    bool isDesktop = false,
+  }) {
     final questions = _activeQuestions;
 
     return Column(
@@ -1858,14 +2138,18 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final m = questions[index];
-              return _buildMistakeCard(m, isDark);
+              return _buildMistakeCard(m, isDark, isDesktop: isDesktop);
             },
           ),
       ],
     );
   }
 
-  Widget _buildMistakeCard(MistakeRecord m, bool isDark) {
+  Widget _buildMistakeCard(
+    MistakeRecord m,
+    bool isDark, {
+    bool isDesktop = false,
+  }) {
     final q = _questions[m.questionId];
     final previewText = q?.questionTextEn ?? 'Question ${m.questionId}';
     final subjectTitle = _resolveSubjectName(m.subjectId);
@@ -1899,7 +2183,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         onTap: () => _openMistakeSolutionReview(m),
         borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(isDesktop ? 20 : 16),
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
             borderRadius: BorderRadius.circular(16),
