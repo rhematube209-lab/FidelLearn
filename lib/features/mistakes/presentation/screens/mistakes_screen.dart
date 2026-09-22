@@ -479,99 +479,78 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
       },
       child: Scaffold(
         backgroundColor:
-            isDark ? const Color(0xFF0B0F19) : const Color(0xFFF8FAFC),
+            isDark ? const Color(0xFF0F172A) : const Color(0xFFFAFBFD),
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: AppTheme.brand))
             : _counts.total == 0
                 ? _buildEmptyOverallState(isDark)
                 : SingleChildScrollView(
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxWidth: isDesktop ? 680 : 440),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xFF0F172A)
-                                : const Color(0xFFFAFBFD),
-                            border: Border.symmetric(
-                              vertical: BorderSide(
-                                color: isDark
-                                    ? const Color(0xFF1E293B)
-                                    : const Color(0xFFF1F5F9),
-                                width: isDesktop ? 1.0 : 0.0,
-                              ),
-                            ),
-                          ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // 1. Top Integrated Gradient Header & Primary CTA
+                        _buildTopHeader(
+                          context: context,
+                          isDark: isDark,
+                          isAmharic: isAmharic,
+                          unmasteredCount: unmasteredCount,
+                          title: headerTitle,
+                          subtitle: headerSubtitle,
+                          actionLabel: actionLabel,
+                        ),
+
+                        // 2. Scrollable Body Content
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 16.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.stretch,
                             children: [
-                              // 1. Top Integrated Gradient Header & Primary CTA
-                              _buildTopHeader(
-                                context: context,
-                                isDark: isDark,
-                                isAmharic: isAmharic,
-                                unmasteredCount: unmasteredCount,
-                                title: headerTitle,
-                                subtitle: headerSubtitle,
-                                actionLabel: actionLabel,
-                              ),
+                              // Breadcrumbs (when drilled into subject or unit)
+                              if (_selectedSubjectId != null) ...[
+                                _buildBreadcrumbs(isDark),
+                                const SizedBox(height: 14),
+                              ],
 
-                              // 2. Scrollable Body Content
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 16.0),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    // Breadcrumbs (when drilled into subject or unit)
-                                    if (_selectedSubjectId != null) ...[
-                                      _buildBreadcrumbs(isDark),
-                                      const SizedBox(height: 14),
-                                    ],
+                              // Drill Breakdown Metrics Dashboard
+                              _buildMetricsDashboard(context, isDark),
+                              const SizedBox(height: 16),
 
-                                    // Drill Breakdown Metrics Dashboard
-                                    _buildMetricsDashboard(context, isDark),
-                                    const SizedBox(height: 16),
+                              // Main Root View
+                              if (_selectedSubjectId == null) ...[
+                                // All Mistakes Quick Banner
+                                _buildAllMistakesBanner(isDark),
+                                const SizedBox(height: 18),
 
-                                    // Main Root View
-                                    if (_selectedSubjectId == null) ...[
-                                      // All Mistakes Quick Banner
-                                      _buildAllMistakesBanner(isDark),
-                                      const SizedBox(height: 18),
-
-                                      // Subjects with Mistakes
-                                      _buildSubjectsWithMistakesSection(
-                                        context,
-                                        _subjectSummaries,
-                                        isDark,
-                                      ),
-                                      const SizedBox(height: 18),
-
-                                      // High-Yield Rule Tip
-                                      _buildEncouragementTip(isDark),
-                                      const SizedBox(height: 24),
-                                    ]
-                                    // Subject Drill Units View
-                                    else if (_selectedSubjectId != 'ALL' &&
-                                        _selectedUnitId == null) ...[
-                                      _buildSubjectUnitsView(context, isDark),
-                                      const SizedBox(height: 20),
-                                    ]
-                                    // Question List View
-                                    else ...[
-                                      _buildQuestionListView(context, isDark),
-                                      const SizedBox(height: 20),
-                                    ],
-                                  ],
+                                // Subjects with Mistakes
+                                _buildSubjectsWithMistakesSection(
+                                  context,
+                                  _subjectSummaries,
+                                  isDark,
                                 ),
-                              ),
+                                const SizedBox(height: 18),
+
+                                // High-Yield Rule Tip
+                                _buildEncouragementTip(isDark),
+                                const SizedBox(height: 24),
+                              ]
+                              // Subject Drill Units View
+                              else if (_selectedSubjectId != 'ALL' &&
+                                  _selectedUnitId == null) ...[
+                                _buildSubjectUnitsView(context, isDark),
+                                const SizedBox(height: 20),
+                              ]
+                              // Question List View
+                              else ...[
+                                _buildQuestionListView(context, isDark),
+                                const SizedBox(height: 20),
+                              ],
                             ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
       ),
@@ -887,6 +866,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.total}',
                 subLabel: 'mistakes',
                 valueColor: const Color(0xFF4F46E5),
+                titleColor: isDark
+                    ? const Color(0xFFA5B4FC)
+                    : const Color(0xFF4338CA),
+                subLabelColor: isDark
+                    ? const Color(0xFF818CF8)
+                    : const Color(0xFF4338CA).withValues(alpha: 0.85),
                 isDark: isDark,
               ),
             ),
@@ -898,8 +883,13 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.needsReview}',
                 subLabel: 'review',
                 valueColor: const Color(0xFFF59E0B),
+                titleColor: isDark
+                    ? const Color(0xFFFDE68A)
+                    : const Color(0xFFB45309),
+                subLabelColor: isDark
+                    ? const Color(0xFFFCD34D)
+                    : const Color(0xFFB45309).withValues(alpha: 0.85),
                 isDark: isDark,
-                hasAmberHighlight: true,
               ),
             ),
             const SizedBox(width: 6),
@@ -910,6 +900,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.improving}',
                 subLabel: '1 of 2',
                 valueColor: const Color(0xFF0284C7),
+                titleColor: isDark
+                    ? const Color(0xFFBAE6FD)
+                    : const Color(0xFF0369A1),
+                subLabelColor: isDark
+                    ? const Color(0xFF7DD3FC)
+                    : const Color(0xFF0369A1).withValues(alpha: 0.85),
                 isDark: isDark,
               ),
             ),
@@ -921,6 +917,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.mastered}',
                 subLabel: 'resolved',
                 valueColor: const Color(0xFF10B981),
+                titleColor: isDark
+                    ? const Color(0xFFA7F3D0)
+                    : const Color(0xFF047857),
+                subLabelColor: isDark
+                    ? const Color(0xFF6EE7B7)
+                    : const Color(0xFF047857).withValues(alpha: 0.85),
                 isDark: isDark,
               ),
             ),
@@ -936,8 +938,9 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     required String value,
     required String subLabel,
     required Color valueColor,
+    required Color titleColor,
+    required Color subLabelColor,
     required bool isDark,
-    bool hasAmberHighlight = false,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -945,10 +948,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: hasAmberHighlight
-              ? const Color(0xFFF59E0B).withValues(alpha: 0.35)
-              : (isDark ? const Color(0xFF334155) : Colors.transparent),
-          width: hasAmberHighlight ? 1.4 : 1.0,
+          color: valueColor.withValues(alpha: isDark ? 0.45 : 0.35),
+          width: 1.4,
         ),
         boxShadow: [
           if (!isDark) ...[
@@ -981,11 +982,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
-                  color: hasAmberHighlight
-                      ? const Color(0xFFB45309)
-                      : (isDark
-                          ? const Color(0xFF94A3B8)
-                          : const Color(0xFF64748B)),
+                  color: titleColor,
                   letterSpacing: -0.2,
                 ),
                 maxLines: 1,
@@ -1019,9 +1016,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
             style: TextStyle(
               fontSize: 9.5,
               fontWeight: FontWeight.w600,
-              color: hasAmberHighlight
-                  ? const Color(0xFFB45309).withValues(alpha: 0.85)
-                  : (isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8)),
+              color: subLabelColor,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
