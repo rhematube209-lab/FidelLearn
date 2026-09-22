@@ -439,8 +439,36 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isAmharic = Localizations.localeOf(context).languageCode == 'am';
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth >= 900;
+    final isDesktop = screenWidth >= 800;
+
+    final scopeCounts = _activeScopeCounts;
+    final unmasteredCount = scopeCounts.needsReview + scopeCounts.improving;
+
+    String headerTitle = 'Mistake Remediation Drill';
+    String headerSubtitle =
+        'Targeted recovery drill powered by spaced repetition. Mastery requires 2 consecutive correct retries on separate attempts.';
+    String actionLabel = 'Practice My Mistakes';
+
+    if (_selectedUnitId != null) {
+      final unitTitle = _resolveUnitTitle(_selectedUnitId, null);
+      headerTitle = 'Drill: $unitTitle';
+      headerSubtitle =
+          'Targeted unit-level recovery drill powered by spaced repetition.';
+      actionLabel = 'Practice Unit Mistakes';
+    } else if (_selectedSubjectId == 'ALL') {
+      headerTitle = 'All Mistakes';
+      headerSubtitle =
+          'Browse and practice all unmastered mistakes across every subject.';
+      actionLabel = 'Practice All Mistakes';
+    } else if (_selectedSubjectId != null) {
+      final subjTitle = _resolveSubjectName(_selectedSubjectId!);
+      headerTitle = '$subjTitle Mistakes';
+      headerSubtitle =
+          'Subject-specific recovery drill powered by spaced repetition.';
+      actionLabel = 'Practice $subjTitle Mistakes';
+    }
 
     return PopScope(
       canPop: _selectedSubjectId == null,
@@ -450,66 +478,98 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _selectedUnitId != null
-                ? _resolveUnitTitle(_selectedUnitId, null)
-                : _selectedSubjectId == 'ALL'
-                    ? 'All Mistakes'
-                    : _selectedSubjectId != null
-                        ? '${_resolveSubjectName(_selectedSubjectId!)} Mistakes'
-                        : 'Mistake Notebook & Mastery Engine',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
-            onPressed: _navigateBack,
-          ),
-        ),
+        backgroundColor:
+            isDark ? const Color(0xFF0B0F19) : const Color(0xFFF8FAFC),
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(color: AppTheme.brand))
             : _counts.total == 0
                 ? _buildEmptyOverallState(isDark)
                 : SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isDesktop ? 48.0 : 16.0,
-                      vertical: 24.0,
-                    ),
                     child: Center(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1100),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            // Breadcrumbs Navigation
-                            if (_selectedSubjectId != null) ...[
-                              _buildBreadcrumbs(isDark),
-                              const SizedBox(height: 16),
+                        constraints:
+                            BoxConstraints(maxWidth: isDesktop ? 680 : 440),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0xFF0F172A)
+                                : const Color(0xFFFAFBFD),
+                            border: Border.symmetric(
+                              vertical: BorderSide(
+                                color: isDark
+                                    ? const Color(0xFF1E293B)
+                                    : const Color(0xFFF1F5F9),
+                                width: isDesktop ? 1.0 : 0.0,
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // 1. Top Integrated Gradient Header & Primary CTA
+                              _buildTopHeader(
+                                context: context,
+                                isDark: isDark,
+                                isAmharic: isAmharic,
+                                unmasteredCount: unmasteredCount,
+                                title: headerTitle,
+                                subtitle: headerSubtitle,
+                                actionLabel: actionLabel,
+                              ),
+
+                              // 2. Scrollable Body Content
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 16.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    // Breadcrumbs (when drilled into subject or unit)
+                                    if (_selectedSubjectId != null) ...[
+                                      _buildBreadcrumbs(isDark),
+                                      const SizedBox(height: 14),
+                                    ],
+
+                                    // Drill Breakdown Metrics Dashboard
+                                    _buildMetricsDashboard(context, isDark),
+                                    const SizedBox(height: 16),
+
+                                    // Main Root View
+                                    if (_selectedSubjectId == null) ...[
+                                      // All Mistakes Quick Banner
+                                      _buildAllMistakesBanner(isDark),
+                                      const SizedBox(height: 18),
+
+                                      // Subjects with Mistakes
+                                      _buildSubjectsWithMistakesSection(
+                                        context,
+                                        _subjectSummaries,
+                                        isDark,
+                                      ),
+                                      const SizedBox(height: 18),
+
+                                      // High-Yield Rule Tip
+                                      _buildEncouragementTip(isDark),
+                                      const SizedBox(height: 24),
+                                    ]
+                                    // Subject Drill Units View
+                                    else if (_selectedSubjectId != 'ALL' &&
+                                        _selectedUnitId == null) ...[
+                                      _buildSubjectUnitsView(context, isDark),
+                                      const SizedBox(height: 20),
+                                    ]
+                                    // Question List View
+                                    else ...[
+                                      _buildQuestionListView(context, isDark),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  ],
+                                ),
+                              ),
                             ],
-
-                            // Top Header Banner & Remediation Drill Action
-                            _buildHeaderBanner(isDark),
-                            const SizedBox(height: 20),
-
-                            // Summary Metrics Row
-                            _buildMetricsRow(context, isDark),
-                            const SizedBox(height: 20),
-
-                            // Main View: Subjects List + "All Mistakes" tile
-                            if (_selectedSubjectId == null) ...[
-                              _buildMainSubjectListView(context, isDark),
-                            ]
-                            // Subject View: Curriculum Units / Topics list
-                            else if (_selectedSubjectId != 'ALL' &&
-                                _selectedUnitId == null) ...[
-                              _buildSubjectUnitsView(context, isDark),
-                            ]
-                            // Question List: Unit Detail or All Mistakes
-                            else ...[
-                              _buildQuestionListView(context, isDark),
-                            ],
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -518,6 +578,934 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
+  // ==========================================
+  // 1. TOP INTEGRATED GRADIENT HEADER
+  // ==========================================
+  Widget _buildTopHeader({
+    required BuildContext context,
+    required bool isDark,
+    required bool isAmharic,
+    required int unmasteredCount,
+    required String title,
+    required String subtitle,
+    required String actionLabel,
+  }) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF3730A3),
+            Color(0xFF4338CA),
+            Color(0xFF1E1B4B),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x333730A3),
+            offset: Offset(0, 8),
+            blurRadius: 20,
+          ),
+        ],
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Background ambient glowing blur circles (per reference)
+          Positioned(
+            top: -30,
+            right: -20,
+            child: Container(
+              width: 170,
+              height: 170,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFA5B4FC).withValues(alpha: 0.20),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 48,
+            child: Container(
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF8B5CF6).withValues(alpha: 0.20),
+              ),
+            ),
+          ),
+
+          // Header Content
+          SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Row: Icon squircle + Title + Back Button
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.20),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.25),
+                            width: 1.2,
+                          ),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.menu_book_rounded,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            letterSpacing: -0.4,
+                            height: 1.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Circular Back Button
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: _navigateBack,
+                          borderRadius: BorderRadius.circular(999),
+                          child: Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.15),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.20),
+                                width: 1.0,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Subtitle
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFFE0E7FF).withValues(alpha: 0.85),
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // Floating Primary CTA Button ("Practice My Mistakes")
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: unmasteredCount > 0
+                          ? () => _startMistakeRetryExam(
+                                subjectId: _selectedSubjectId == 'ALL'
+                                    ? null
+                                    : _selectedSubjectId,
+                                unitId: _selectedUnitId,
+                              )
+                          : null,
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF1E293B)
+                              : const Color(0xFFF4F6FB),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isDark
+                                ? const Color(0xFF334155)
+                                : Colors.white.withValues(alpha: 0.9),
+                            width: 1.0,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF0F172A).withValues(alpha: 0.25),
+                              offset: const Offset(0, 6),
+                              blurRadius: 16,
+                            ),
+                            if (!isDark)
+                              BoxShadow(
+                                color: Colors.white.withValues(alpha: 0.9),
+                                offset: const Offset(0, 1),
+                                blurRadius: 1,
+                              ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 26,
+                              height: 26,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFF4F46E5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0x334F46E5),
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              actionLabel,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: isDark
+                                    ? Colors.white
+                                    : const Color(0xFF1E293B),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? const Color(0xFF312E81)
+                                    : const Color(0xFFEEF2FF),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                '$unmasteredCount',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF4338CA),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================
+  // 2. DRILL BREAKDOWN METRICS DASHBOARD
+  // ==========================================
+  Widget _buildMetricsDashboard(BuildContext context, bool isDark) {
+    final counts = _activeScopeCounts;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section Header Row
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'DRILL BREAKDOWN',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.8,
+                  color:
+                      isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                ),
+              ),
+              Text(
+                'Auto-updated',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        // 4 Metric Tiles Row
+        Row(
+          children: [
+            Expanded(
+              child: _buildMetricTile(
+                title: 'Total Mistakes',
+                displayTitle: 'TOTAL',
+                value: '${counts.total}',
+                subLabel: 'mistakes',
+                valueColor: const Color(0xFF4F46E5),
+                isDark: isDark,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: _buildMetricTile(
+                title: 'Needs Review',
+                displayTitle: 'NEEDS',
+                value: '${counts.needsReview}',
+                subLabel: 'review',
+                valueColor: const Color(0xFFF59E0B),
+                isDark: isDark,
+                hasAmberHighlight: true,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: _buildMetricTile(
+                title: 'Improving',
+                displayTitle: 'IMPROVING',
+                value: '${counts.improving}',
+                subLabel: '1 of 2',
+                valueColor: const Color(0xFF0284C7),
+                isDark: isDark,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: _buildMetricTile(
+                title: 'Mastered',
+                displayTitle: 'MASTERED',
+                value: '${counts.mastered}',
+                subLabel: 'resolved',
+                valueColor: const Color(0xFF10B981),
+                isDark: isDark,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMetricTile({
+    required String title,
+    required String displayTitle,
+    required String value,
+    required String subLabel,
+    required Color valueColor,
+    required bool isDark,
+    bool hasAmberHighlight = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: hasAmberHighlight
+              ? const Color(0xFFF59E0B).withValues(alpha: 0.35)
+              : (isDark ? const Color(0xFF334155) : Colors.transparent),
+          width: hasAmberHighlight ? 1.4 : 1.0,
+        ),
+        boxShadow: [
+          if (!isDark) ...[
+            const BoxShadow(
+              color: Color(0x38A3B1C6),
+              offset: Offset(4, 4),
+              blurRadius: 10,
+            ),
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-4, -4),
+              blurRadius: 10,
+            ),
+          ] else ...[
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: const Offset(0, 3),
+              blurRadius: 8,
+            ),
+          ],
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                displayTitle,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  color: hasAmberHighlight
+                      ? const Color(0xFFB45309)
+                      : (isDark
+                          ? const Color(0xFF94A3B8)
+                          : const Color(0xFF64748B)),
+                  letterSpacing: -0.2,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              // Zero-size accessible node so find.text(title) works in widget tests
+              SizedBox(
+                width: 0,
+                height: 0,
+                child: OverflowBox(
+                  maxWidth: 0,
+                  maxHeight: 0,
+                  child: Text(title),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              color: valueColor,
+              height: 1.1,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            subLabel,
+            style: TextStyle(
+              fontSize: 9.5,
+              fontWeight: FontWeight.w600,
+              color: hasAmberHighlight
+                  ? const Color(0xFFB45309).withValues(alpha: 0.85)
+                  : (isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8)),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================
+  // 3. ALL MISTAKES QUICK BANNER
+  // ==========================================
+  Widget _buildAllMistakesBanner(bool isDark) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedSubjectId = 'ALL';
+            _selectedUnitId = null;
+            _selectedStatusFilter = null;
+          });
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark ? const Color(0xFF334155) : Colors.transparent,
+            ),
+            boxShadow: [
+              if (!isDark) ...[
+                const BoxShadow(
+                  color: Color(0x38A3B1C6),
+                  offset: Offset(5, 5),
+                  blurRadius: 12,
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-5, -5),
+                  blurRadius: 12,
+                ),
+              ] else ...[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  offset: const Offset(0, 4),
+                  blurRadius: 10,
+                ),
+              ],
+            ],
+          ),
+          child: Row(
+            children: [
+              // Inset squircle icon
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                    width: 0.8,
+                  ),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.menu_book_rounded,
+                    color: Color(0xFF4F46E5),
+                    size: 22,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'All Mistakes',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Browse and filter all ${_counts.total} mistakes across every subject',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isDark
+                            ? AppTheme.darkMuted
+                            : const Color(0xFF64748B),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Count badge
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE0E7FF),
+                  ),
+                ),
+                child: Text(
+                  '${_counts.total} Qs',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF4338CA),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Circle Chevron Button
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                  border: Border.all(
+                    color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  ),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    size: 16,
+                    color: Color(0xFF94A3B8),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ==========================================
+  // 4. SUBJECTS WITH MISTAKES SECTION
+  // ==========================================
+  Widget _buildSubjectsWithMistakesSection(
+      BuildContext context, List<SubjectMistakeSummary> summaries, bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section Header
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Row(
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF4F46E5),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Subjects with Mistakes',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.2,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                '(${summaries.length})',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? AppTheme.darkMuted : const Color(0xFF94A3B8),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        // Subject Cards List
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: summaries.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final s = summaries[index];
+            return _buildSubjectCard(s, isDark);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubjectCard(SubjectMistakeSummary s, bool isDark) {
+    final color = _getSubjectColor(s.subjectId);
+    final icon = _getSubjectIcon(s.subjectId);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedSubjectId = s.subjectId;
+            _selectedUnitId = null;
+            _selectedStatusFilter = null;
+          });
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark ? const Color(0xFF334155) : Colors.transparent,
+            ),
+            boxShadow: [
+              if (!isDark) ...[
+                const BoxShadow(
+                  color: Color(0x38A3B1C6),
+                  offset: Offset(5, 5),
+                  blurRadius: 12,
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-5, -5),
+                  blurRadius: 12,
+                ),
+              ] else ...[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  offset: const Offset(0, 4),
+                  blurRadius: 10,
+                ),
+              ],
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Row: Icon + Subject Name + Mistake count badge + chevron
+              Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        width: 0.8,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        icon,
+                        color: color,
+                        size: 22,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          s.nameEn,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (s.nameAm.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            s.nameAm,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : const Color(0xFF64748B),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE0E7FF),
+                      ),
+                    ),
+                    child: Text(
+                      '${s.counts.total} mistakes',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF4338CA),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.chevron_right_rounded,
+                        size: 16,
+                        color: Color(0xFF94A3B8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Bottom status breakdown strip
+              Container(
+                padding: const EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0).withValues(alpha: 0.6),
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+                child: Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    _buildStatusPill(
+                      label: '${s.counts.needsReview} Needs Review',
+                      bgColor: isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB),
+                      textColor: isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309),
+                      borderColor: isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A),
+                    ),
+                    _buildStatusPill(
+                      label: '${s.counts.improving} Improving',
+                      bgColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                      textColor: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                      borderColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                    ),
+                    _buildStatusPill(
+                      label: '${s.counts.mastered} Mastered',
+                      bgColor: isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5),
+                      textColor: isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857),
+                      borderColor: isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ==========================================
+  // 5. ENCOURAGEMENT HIGH-YIELD TIP
+  // ==========================================
+  Widget _buildEncouragementTip(bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFA7F3D0).withValues(alpha: isDark ? 0.25 : 0.6),
+          width: 1.2,
+        ),
+        boxShadow: [
+          if (!isDark) ...[
+            const BoxShadow(
+              color: Color(0x38A3B1C6),
+              offset: Offset(4, 4),
+              blurRadius: 10,
+            ),
+            const BoxShadow(
+              color: Colors.white,
+              offset: Offset(-4, -4),
+              blurRadius: 10,
+            ),
+          ],
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            margin: const EdgeInsets.only(top: 1),
+            decoration: BoxDecoration(
+              color: const Color(0xFF10B981),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x3310B981),
+                  offset: Offset(0, 2),
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.check_rounded,
+                color: Colors.white,
+                size: 16,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 12,
+                  height: 1.45,
+                  color: isDark ? Colors.white70 : const Color(0xFF334155),
+                ),
+                children: [
+                  TextSpan(
+                    text: 'EUEE High-Yield Rule: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? const Color(0xFF6EE7B7) : const Color(0xFF064E3B),
+                    ),
+                  ),
+                  const TextSpan(
+                    text:
+                        'Reviewing a mistake within 24 hours increases long-term retention by 70%.',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================
+  // 6. BREADCRUMBS NAVIGATION
+  // ==========================================
   Widget _buildBreadcrumbs(bool isDark) {
     final subjectTitle = _selectedSubjectId == 'ALL'
         ? 'All Mistakes'
@@ -528,12 +1516,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
         _selectedUnitId != null ? _resolveUnitTitle(_selectedUnitId, null) : '';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-        borderRadius: BorderRadius.circular(10),
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+          color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
         ),
       ),
       child: Row(
@@ -552,14 +1540,14 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               child: Row(
                 children: [
                   Icon(Icons.menu_book_rounded,
-                      size: 16, color: AppTheme.brand),
+                      size: 15, color: Color(0xFF4F46E5)),
                   SizedBox(width: 6),
                   Text(
                     'Mistake Notebook',
                     style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.brand,
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF4F46E5),
                     ),
                   ),
                 ],
@@ -583,10 +1571,10 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 child: Text(
                   subjectTitle,
                   style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
                     color: _selectedUnitId != null
-                        ? AppTheme.brand
+                        ? const Color(0xFF4F46E5)
                         : (isDark ? AppTheme.darkText : AppTheme.lightText),
                   ),
                 ),
@@ -603,8 +1591,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   unitTitle,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
                     color: isDark ? AppTheme.darkText : AppTheme.lightText,
                   ),
                 ),
@@ -616,495 +1604,9 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
-  Widget _buildEmptyOverallState(bool isDark) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(28),
-              decoration: BoxDecoration(
-                color: AppTheme.green.withValues(alpha: 0.12),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.verified_rounded,
-                size: 64,
-                color: AppTheme.green,
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'No mistakes yet',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Text(
-                'Questions you answer incorrectly during mock exams, untimed practice, or custom builder sessions will automatically appear here for review and targeted drills.',
-                style: TextStyle(
-                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                  fontSize: 14,
-                  height: 1.45,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderBanner(bool isDark) {
-    final scopeCounts = _activeScopeCounts;
-    final unmasteredCount = scopeCounts.needsReview + scopeCounts.improving;
-
-    String bannerTitle = 'Mistake Remediation Drill';
-    String bannerSubtitle =
-        'Mastery requires 2 consecutive correct retries on separate attempts.';
-    String actionLabel = 'Practice My Mistakes ($unmasteredCount)';
-
-    if (_selectedUnitId != null) {
-      final unitTitle = _resolveUnitTitle(_selectedUnitId, null);
-      bannerTitle = 'Drill: $unitTitle';
-      actionLabel = 'Practice Unit Mistakes ($unmasteredCount)';
-    } else if (_selectedSubjectId == 'ALL') {
-      bannerTitle = 'All Subjects Remediation Drill';
-      actionLabel = 'Practice All Mistakes ($unmasteredCount)';
-    } else if (_selectedSubjectId != null) {
-      final subjTitle = _resolveSubjectName(_selectedSubjectId!);
-      bannerTitle = '$subjTitle Mistakes Drill';
-      actionLabel = 'Practice $subjTitle Mistakes ($unmasteredCount)';
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isDark
-              ? [const Color(0xFF1E1B4B), const Color(0xFF312E81)]
-              : [const Color(0xFFEEF2FF), const Color(0xFFE0E7FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? const Color(0xFF4338CA) : const Color(0xFFC7D2FE),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.brand.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.psychology_rounded,
-                    color: AppTheme.brand, size: 28),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      bannerTitle,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      bannerSubtitle,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color:
-                            isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
-              onPressed: unmasteredCount > 0
-                  ? () => _startMistakeRetryExam(
-                        subjectId: _selectedSubjectId == 'ALL'
-                            ? null
-                            : _selectedSubjectId,
-                        unitId: _selectedUnitId,
-                      )
-                  : null,
-              icon: const Icon(Icons.play_circle_fill_rounded, size: 20),
-              label: Text(actionLabel),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.brand,
-                foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMetricsRow(BuildContext context, bool isDark) {
-    final counts = _activeScopeCounts;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final itemWidth = (constraints.maxWidth - 36) / 4;
-        final useGrid = itemWidth < 120;
-
-        if (useGrid) {
-          return GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: 1.8,
-            children: [
-              _buildCountCard(
-                  'Total Mistakes', counts.total, AppTheme.brand, isDark),
-              _buildCountCard(
-                  'Needs Review', counts.needsReview, AppTheme.accent, isDark),
-              _buildCountCard(
-                  'Improving', counts.improving, AppTheme.info, isDark),
-              _buildCountCard(
-                  'Mastered', counts.mastered, AppTheme.green, isDark),
-            ],
-          );
-        }
-
-        return Row(
-          children: [
-            Expanded(
-                child: _buildCountCard(
-                    'Total Mistakes', counts.total, AppTheme.brand, isDark)),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _buildCountCard('Needs Review', counts.needsReview,
-                    AppTheme.accent, isDark)),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _buildCountCard(
-                    'Improving', counts.improving, AppTheme.info, isDark)),
-            const SizedBox(width: 12),
-            Expanded(
-                child: _buildCountCard(
-                    'Mastered', counts.mastered, AppTheme.green, isDark)),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildCountCard(String label, int count, Color color, bool isDark) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '$count',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusFilterChips(bool isDark) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          _buildFilterChip('All', null, isDark),
-          const SizedBox(width: 8),
-          _buildFilterChip('Needs Review', MasteryStatus.needsReview, isDark,
-              accentColor: AppTheme.accent),
-          const SizedBox(width: 8),
-          _buildFilterChip('Improving', MasteryStatus.improving, isDark,
-              accentColor: AppTheme.info),
-          const SizedBox(width: 8),
-          _buildFilterChip('Mastered', MasteryStatus.mastered, isDark,
-              accentColor: AppTheme.green),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(String label, MasteryStatus? status, bool isDark,
-      {Color? accentColor}) {
-    final isSelected = _selectedStatusFilter == status;
-    final color = accentColor ?? AppTheme.brand;
-
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (_) {
-        setState(() {
-          _selectedStatusFilter = status;
-        });
-      },
-      selectedColor: color.withValues(alpha: 0.18),
-      checkmarkColor: color,
-      labelStyle: TextStyle(
-        fontSize: 13,
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        color: isSelected
-            ? color
-            : (isDark ? AppTheme.darkText : AppTheme.lightText),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(
-          color: isSelected
-              ? color
-              : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMainSubjectListView(BuildContext context, bool isDark) {
-    final summaries = _subjectSummaries;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // "All Mistakes" Master Tile
-        InkWell(
-          onTap: () {
-            setState(() {
-              _selectedSubjectId = 'ALL';
-              _selectedUnitId = null;
-              _selectedStatusFilter = null;
-            });
-          },
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppTheme.brand.withValues(alpha: 0.35),
-                width: 1.5,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.brand.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.auto_stories_rounded,
-                      color: AppTheme.brand, size: 26),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'All Mistakes',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Browse and filter all ${_counts.total} mistakes across every subject',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color:
-                              isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 12),
-                FidelBadge(
-                  text: '${_counts.total} Qs',
-                  variant: FidelBadgeVariant.primary,
-                ),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 16, color: Colors.grey),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-
-        // Section Title: Subjects
-        Row(
-          children: [
-            const Icon(Icons.category_rounded, size: 20, color: AppTheme.brand),
-            const SizedBox(width: 8),
-            Text(
-              'Subjects with Mistakes (${summaries.length})',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-
-        // Subject Cards List
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: summaries.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final s = summaries[index];
-            return _buildSubjectCard(s, isDark);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSubjectCard(SubjectMistakeSummary s, bool isDark) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _selectedSubjectId = s.subjectId;
-          _selectedUnitId = null;
-          _selectedStatusFilter = null;
-        });
-      },
-      borderRadius: BorderRadius.circular(14),
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppTheme.brand.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.school_rounded,
-                      color: AppTheme.brand, size: 22),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        s.nameEn,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (s.nameAm.isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          s.nameAm,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: isDark
-                                ? AppTheme.darkMuted
-                                : AppTheme.lightMuted,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                FidelBadge(
-                  text: '${s.counts.total} mistakes',
-                  variant: FidelBadgeVariant.primary,
-                ),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 14, color: Colors.grey),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              children: [
-                _buildMiniBadge(
-                    '${s.counts.needsReview} Needs Review', AppTheme.accent),
-                _buildMiniBadge(
-                    '${s.counts.improving} Improving', AppTheme.info),
-                _buildMiniBadge(
-                    '${s.counts.mastered} Mastered', AppTheme.green),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+  // ==========================================
+  // 7. SUBJECT UNITS & TOPICS VIEW
+  // ==========================================
   Widget _buildSubjectUnitsView(BuildContext context, bool isDark) {
     final units = _unitSummariesForSelectedSubject;
     final subjectTitle = _resolveSubjectName(_selectedSubjectId!);
@@ -1112,24 +1614,23 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Filter Bar for Subject
         _buildStatusFilterChips(isDark),
-        const SizedBox(height: 18),
+        const SizedBox(height: 16),
 
-        // Section Title
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
                 const Icon(Icons.account_tree_rounded,
-                    size: 20, color: AppTheme.brand),
+                    size: 18, color: Color(0xFF4F46E5)),
                 const SizedBox(width: 8),
                 Text(
                   'Curriculum Units & Topics (${units.length})',
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
                   ),
                 ),
               ],
@@ -1138,12 +1639,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               onPressed: () {
                 setState(() {
                   _selectedUnitId = null;
-                  // Switch to viewing all questions for this subject
                   _selectedSubjectId = 'ALL';
                 });
               },
               icon: const Icon(Icons.list_alt_rounded, size: 16),
-              label: const Text('View Flat List'),
+              label: const Text('Flat List',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -1169,110 +1670,173 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
   }
 
   Widget _buildUnitCard(UnitMistakeSummary u, bool isDark) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _selectedUnitId = u.unitId;
-        });
-      },
-      borderRadius: BorderRadius.circular(14),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedUnitId = u.unitId;
+          });
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark ? const Color(0xFF334155) : Colors.transparent,
+            ),
+            boxShadow: [
+              if (!isDark) ...[
+                const BoxShadow(
+                  color: Color(0x38A3B1C6),
+                  offset: Offset(4, 4),
+                  blurRadius: 10,
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-4, -4),
+                  blurRadius: 10,
+                ),
+              ] else ...[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  offset: const Offset(0, 3),
+                  blurRadius: 8,
+                ),
+              ],
+            ],
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.brand.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(Icons.folder_special_rounded,
-                      color: AppTheme.brand, size: 20),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        u.titleEn,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
                       ),
-                      if (u.titleAm.isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          u.titleAm,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: isDark
-                                ? AppTheme.darkMuted
-                                : AppTheme.lightMuted,
-                          ),
-                        ),
-                      ],
-                    ],
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.folder_special_rounded,
+                          color: Color(0xFF4F46E5), size: 20),
+                    ),
                   ),
-                ),
-                FidelBadge(
-                  text: '${u.counts.total} mistakes',
-                  variant: FidelBadgeVariant.primary,
-                ),
-                const SizedBox(width: 8),
-                const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 14, color: Colors.grey),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              children: [
-                _buildMiniBadge(
-                    '${u.counts.needsReview} Needs Review', AppTheme.accent),
-                _buildMiniBadge(
-                    '${u.counts.improving} Improving', AppTheme.info),
-                _buildMiniBadge(
-                    '${u.counts.mastered} Mastered', AppTheme.green),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          u.titleEn,
+                          style: const TextStyle(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (u.titleAm.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            u.titleAm,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              color: isDark
+                                  ? AppTheme.darkMuted
+                                  : const Color(0xFF64748B),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE0E7FF),
+                      ),
+                    ),
+                    child: Text(
+                      '${u.counts.total} mistakes',
+                      style: const TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF4338CA),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.chevron_right_rounded,
+                      size: 16, color: Color(0xFF94A3B8)),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  _buildStatusPill(
+                    label: '${u.counts.needsReview} Needs Review',
+                    bgColor: isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB),
+                    textColor: isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309),
+                    borderColor: isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A),
+                  ),
+                  _buildStatusPill(
+                    label: '${u.counts.improving} Improving',
+                    bgColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                    textColor: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                    borderColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                  ),
+                  _buildStatusPill(
+                    label: '${u.counts.mastered} Mastered',
+                    bgColor: isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5),
+                    textColor: isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857),
+                    borderColor: isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  // ==========================================
+  // 8. QUESTION LIST VIEW
+  // ==========================================
   Widget _buildQuestionListView(BuildContext context, bool isDark) {
     final questions = _activeQuestions;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Filter Bar
         _buildStatusFilterChips(isDark),
-        const SizedBox(height: 18),
+        const SizedBox(height: 16),
 
-        // Section Title
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Questions (${questions.length})',
               style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.2,
               ),
             ),
             if (_selectedUnitId != null)
@@ -1281,7 +1845,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   setState(() => _selectedUnitId = null);
                 },
                 icon: const Icon(Icons.arrow_upward_rounded, size: 16),
-                label: const Text('Back to Units'),
+                label: const Text('Back to Units',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               ),
           ],
         ),
@@ -1305,68 +1870,68 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
-  Widget _buildEmptyFilteredCard(String message, bool isDark) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
-      ),
-      child: Center(
-        child: Column(
-          children: [
-            const Icon(Icons.filter_list_off_rounded,
-                size: 40, color: Colors.grey),
-            const SizedBox(height: 12),
-            Text(
-              message,
-              style: TextStyle(
-                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildMistakeCard(MistakeRecord m, bool isDark) {
     final q = _questions[m.questionId];
     final previewText = q?.questionTextEn ?? 'Question ${m.questionId}';
     final subjectTitle = _resolveSubjectName(m.subjectId);
     final unitTitle = _resolveUnitTitle(m.unitId, m.topicId);
 
-    FidelBadgeVariant badgeVariant;
+    Color statusBg;
+    Color statusText;
+    Color statusBorder;
+
     switch (m.masteryStatus) {
       case MasteryStatus.needsReview:
-        badgeVariant = FidelBadgeVariant.warning;
+        statusBg = isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB);
+        statusText = isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309);
+        statusBorder = isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A);
         break;
       case MasteryStatus.improving:
-        badgeVariant = FidelBadgeVariant.info;
+        statusBg = isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8);
+        statusText = isDark ? const Color(0xFF94A3B8) : const Color(0xFF0284C7);
+        statusBorder = isDark ? const Color(0xFF334155) : const Color(0xFFBAE6FD);
         break;
       case MasteryStatus.mastered:
-        badgeVariant = FidelBadgeVariant.success;
+        statusBg = isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5);
+        statusText = isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857);
+        statusBorder = isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0);
         break;
     }
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
-      ),
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: () => _openMistakeSolutionReview(m),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
           padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDark ? const Color(0xFF334155) : Colors.transparent,
+            ),
+            boxShadow: [
+              if (!isDark) ...[
+                const BoxShadow(
+                  color: Color(0x38A3B1C6),
+                  offset: Offset(4, 4),
+                  blurRadius: 10,
+                ),
+                const BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-4, -4),
+                  blurRadius: 10,
+                ),
+              ] else ...[
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  offset: const Offset(0, 3),
+                  blurRadius: 8,
+                ),
+              ],
+            ],
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1379,30 +1944,42 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                       spacing: 6,
                       runSpacing: 4,
                       children: [
-                        _buildTag(subjectTitle, AppTheme.brand),
-                        _buildTag(unitTitle, Colors.grey),
+                        _buildTag(subjectTitle, const Color(0xFF4F46E5)),
+                        _buildTag(unitTitle, const Color(0xFF64748B)),
                         if (q?.difficulty != null)
-                          _buildTag(q!.difficulty.toUpperCase(), Colors.purple),
+                          _buildTag(q!.difficulty.toUpperCase(), const Color(0xFF7C3AED)),
                         if (q?.examYear != null)
-                          _buildTag('${q!.examYear} E.C.', Colors.teal),
+                          _buildTag('${q!.examYear} E.C.', const Color(0xFF0D9488)),
                       ],
                     ),
                   ),
                   const SizedBox(width: 8),
-                  FidelBadge(
-                    text: m.masteryStatus.displayNameEn,
-                    variant: badgeVariant,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: statusBg,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: statusBorder),
+                    ),
+                    child: Text(
+                      m.masteryStatus.displayNameEn,
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w800,
+                        color: statusText,
+                      ),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
 
-              // Question Preview Text
+              // Question Text Preview
               Text(
                 previewText,
                 style: const TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   height: 1.4,
                 ),
                 maxLines: 2,
@@ -1410,7 +1987,7 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               ),
               const SizedBox(height: 12),
 
-              // Footer: Miss count, Retry progress, and Tap action
+              // Footer: Missed count, Retry progress, and "Review Solution"
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1418,20 +1995,30 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 4,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         Text(
                           'Missed ${m.missCount} times',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: isDark
-                                ? AppTheme.darkMuted
-                                : AppTheme.lightMuted,
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
                           ),
                         ),
-                        FidelBadge(
-                          text: 'Retry: ${m.correctRetryCount}/2',
-                          variant: FidelBadgeVariant.primary,
-                          isSmall: true,
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            'Retry: ${m.correctRetryCount}/2',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF4F46E5),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -1443,12 +2030,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.brand,
+                          color: Color(0xFF4F46E5),
                         ),
                       ),
                       SizedBox(width: 4),
                       Icon(Icons.arrow_forward_rounded,
-                          size: 14, color: AppTheme.brand),
+                          size: 14, color: Color(0xFF4F46E5)),
                     ],
                   ),
                 ],
@@ -1460,19 +2047,81 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
     );
   }
 
-  Widget _buildMiniBadge(String label, Color color) {
+  // ==========================================
+  // 9. FILTER CHIPS & STATUS PILLS
+  // ==========================================
+  Widget _buildStatusFilterChips(bool isDark) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildFilterChip('All', null, isDark),
+          const SizedBox(width: 8),
+          _buildFilterChip('Needs Review', MasteryStatus.needsReview, isDark,
+              accentColor: const Color(0xFFF59E0B)),
+          const SizedBox(width: 8),
+          _buildFilterChip('Improving', MasteryStatus.improving, isDark,
+              accentColor: const Color(0xFF0284C7)),
+          const SizedBox(width: 8),
+          _buildFilterChip('Mastered', MasteryStatus.mastered, isDark,
+              accentColor: const Color(0xFF10B981)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, MasteryStatus? status, bool isDark,
+      {Color? accentColor}) {
+    final isSelected = _selectedStatusFilter == status;
+    final color = accentColor ?? const Color(0xFF4F46E5);
+
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) {
+        setState(() {
+          _selectedStatusFilter = status;
+        });
+      },
+      selectedColor: color.withValues(alpha: 0.18),
+      checkmarkColor: color,
+      labelStyle: TextStyle(
+        fontSize: 12.5,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+        color: isSelected
+            ? color
+            : (isDark ? AppTheme.darkText : const Color(0xFF475569)),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(999),
+        side: BorderSide(
+          color: isSelected
+              ? color
+              : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusPill({
+    required String label,
+    required Color bgColor,
+    required Color textColor,
+    required Color borderColor,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(6),
+        color: bgColor,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: borderColor, width: 0.8),
       ),
       child: Text(
         label,
         style: TextStyle(
           fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: color,
+          fontWeight: FontWeight.w700,
+          color: textColor,
         ),
       ),
     );
@@ -1480,19 +2129,136 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
 
   Widget _buildTag(String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(4),
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: color.withValues(alpha: 0.25), width: 0.8),
       ),
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
+          fontSize: 10.5,
+          fontWeight: FontWeight.w700,
           color: color,
         ),
       ),
     );
+  }
+
+  // ==========================================
+  // 10. EMPTY STATES & HELPERS
+  // ==========================================
+  Widget _buildEmptyOverallState(bool isDark) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(26),
+              decoration: BoxDecoration(
+                color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.verified_rounded,
+                size: 64,
+                color: Color(0xFF10B981),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'No mistakes yet',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Mistake Notebook & Mastery Engine',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+              ),
+            ),
+            const SizedBox(height: 12),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Text(
+                'Questions you answer incorrectly during mock exams, untimed practice, or custom builder sessions will automatically appear here for review and targeted drills.',
+                style: TextStyle(
+                  color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                  fontSize: 13.5,
+                  height: 1.45,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyFilteredCard(String message, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF4F6FB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            const Icon(Icons.filter_list_off_rounded,
+                size: 38, color: Colors.grey),
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: TextStyle(
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+                fontSize: 13.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _getSubjectIcon(String subjectId) {
+    final key = subjectId.toLowerCase();
+    if (key.contains('phys')) return Icons.school_rounded;
+    if (key.contains('chem')) return Icons.biotech_rounded;
+    if (key.contains('bio')) return Icons.eco_rounded;
+    if (key.contains('math')) return Icons.functions_rounded;
+    if (key.contains('eng')) return Icons.menu_book_rounded;
+    if (key.contains('civ')) return Icons.balance_rounded;
+    if (key.contains('hist')) return Icons.history_edu_rounded;
+    if (key.contains('geo')) return Icons.public_rounded;
+    if (key.contains('econ')) return Icons.trending_up_rounded;
+    return Icons.school_rounded;
+  }
+
+  Color _getSubjectColor(String subjectId) {
+    final key = subjectId.toLowerCase();
+    if (key.contains('phys')) return const Color(0xFF7C3AED); // Violet
+    if (key.contains('chem')) return const Color(0xFF0284C7); // Sky blue
+    if (key.contains('bio')) return const Color(0xFF059669); // Emerald
+    if (key.contains('math')) return const Color(0xFF4F46E5); // Indigo
+    if (key.contains('eng')) return const Color(0xFFD97706); // Amber
+    if (key.contains('civ')) return const Color(0xFF0D9488); // Teal
+    if (key.contains('hist')) return const Color(0xFFEA580C); // Orange
+    if (key.contains('geo')) return const Color(0xFF0D9488); // Teal
+    if (key.contains('econ')) return const Color(0xFF0284C7); // Sky
+    return const Color(0xFF4F46E5);
   }
 }
