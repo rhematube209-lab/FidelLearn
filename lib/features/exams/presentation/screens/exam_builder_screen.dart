@@ -239,7 +239,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
   // National Exam Year Selection
   ExamYearFilterMode _yearMode = ExamYearFilterMode.single;
-  int _selectedSingleYear = 2014;
+  int _selectedSingleYear = 0;
   int _rangeStartYear = 2013;
   int _rangeEndYear = 2017;
   final List<int> _availableYears = const [
@@ -634,7 +634,7 @@ class _ExamBuilderScreenState extends ConsumerState<ExamBuilderScreen> {
 
     if (availabilities.isNotEmpty) {
       final availYears = availabilities.map((a) => a.year).toSet();
-      if (!availYears.contains(selectedYear)) {
+      if (!availYears.contains(selectedYear) || selectedYear <= 0) {
         selectedYear = availabilities.first.year;
       }
       final minYear =

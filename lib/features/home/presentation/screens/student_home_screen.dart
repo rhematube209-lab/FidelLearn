@@ -303,17 +303,33 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     }
   }
 
-  Future<void> _startFullOfficialExam(bool isPhysics) async {
+  Future<void> _startFullOfficialExam(int tabIndex) async {
     final user = ref.read(currentUserProvider).valueOrNull;
     if (user == null) return;
     final contentRepo = ref.read(contentRepositoryProvider);
     final examRepo = ref.read(examRepositoryProvider);
 
-    final subjectId = isPhysics ? 'physics_g12' : 'biology_g12';
-    final examYear = isPhysics ? 2014 : 2013;
-    final title = isPhysics
-        ? 'ESSLCE Physics 2014 E.C. (Natural Science, 32 Questions)'
-        : 'ESSLCE Biology 2013 E.C. (Natural Science, 100 Questions)';
+    final String subjectId;
+    final int examYear;
+    final String title;
+    final int timeLimitMinutes;
+
+    if (tabIndex == 0) {
+      subjectId = 'physics_g12';
+      examYear = 2014;
+      title = 'ESSLCE Physics 2014 E.C. (Natural Science, 32 Questions)';
+      timeLimitMinutes = 120;
+    } else if (tabIndex == 1) {
+      subjectId = 'biology_g12';
+      examYear = 2013;
+      title = 'ESSLCE Biology 2013 E.C. (Natural Science, 100 Questions)';
+      timeLimitMinutes = 150;
+    } else {
+      subjectId = 'civics_g12';
+      examYear = 2015;
+      title = 'ESSLCE Civics 2015 E.C. (Social/Natural Science, 100 Questions)';
+      timeLimitMinutes = 150;
+    }
 
     final questions = await contentRepo.getQuestions(
       grade: 12,
@@ -343,9 +359,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       title: title,
       examType: ExamType.practice,
       grade: 12,
-      stream: 'natural',
+      stream: tabIndex == 2 ? 'common' : 'natural',
       subjectId: subjectId,
-      timeLimitMinutes: isPhysics ? 120 : 150,
+      timeLimitMinutes: timeLimitMinutes,
       totalQuestions: sortedQuestions.length,
       questions: sortedQuestions,
       createdAt: DateTime.now(),
@@ -1746,8 +1762,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                               ),
                                               child: Text(
                                                 isAmharic
-                                                    ? '2013-14 ፈተና (100 Qs)'
-                                                    : '2013-14 Exam (100 Qs)',
+                                                    ? '2013-15 ፈተና (300 Qs)'
+                                                    : '2013-15 Exam (300 Qs)',
                                                 style: const TextStyle(
                                                   fontSize: 9.5,
                                                   fontWeight: FontWeight.w800,
@@ -2143,9 +2159,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   }
 
   // ==========================================
-  // ⚡ / 🧬 FEATURED OFFICIAL EXAM CARD (Physics 2014 & Biology 2013)
+  // ⚡ / 🧬 / ⚖️ FEATURED OFFICIAL EXAM CARD (Physics 2014, Biology 2013, & Civics 2015)
   // ==========================================
-  int _featuredExamTab = 0; // 0: Physics 2014, 1: Biology 2013
+  int _featuredExamTab = 0; // 0: Physics 2014, 1: Biology 2013, 2: Civics 2015
 
   Widget _buildFeaturedExamCard(
     BuildContext context,
@@ -2153,14 +2169,22 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     bool isAmharic,
   ) {
     final isPhysics = _featuredExamTab == 0;
-    final accentColor =
-        isPhysics ? const Color(0xFFD97706) : AppTheme.greenDark;
+    final isBiology = _featuredExamTab == 1;
+    final isCivics = _featuredExamTab == 2;
+
+    final accentColor = isPhysics
+        ? const Color(0xFFD97706)
+        : (isBiology ? AppTheme.greenDark : const Color(0xFF0D9488));
     final borderColor = isPhysics
         ? const Color(0xFFF59E0B).withValues(alpha: 0.45)
-        : AppTheme.green.withValues(alpha: 0.35);
+        : (isBiology
+            ? AppTheme.green.withValues(alpha: 0.35)
+            : const Color(0xFF0D9488).withValues(alpha: 0.40));
     final bgColor = isPhysics
         ? (isDark ? const Color(0xFF261D0B) : const Color(0xFFFFFBEB))
-        : (isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4));
+        : (isBiology
+            ? (isDark ? const Color(0xFF0D2523) : const Color(0xFFF0FDF4))
+            : (isDark ? const Color(0xFF042F2E) : const Color(0xFFF0FDFA)));
 
     return FidelCard(
       padding: const EdgeInsets.all(18),
@@ -2169,7 +2193,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Selector tabs: Physics 2014 vs Biology 2013
+          // Selector tabs: Physics 2014 vs Biology 2013 vs Civics 2015
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -2187,10 +2211,19 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 title: isAmharic
                     ? '🧬 ባዮሎጂ 2013 (100 ጥያቄ)'
                     : '🧬 Biology 2013 (100 Qs)',
-                isActive: !isPhysics,
+                isActive: isBiology,
                 activeColor: const Color(0xFF059669),
                 isDark: isDark,
                 onTap: () => setState(() => _featuredExamTab = 1),
+              ),
+              _buildFeaturedTabPill(
+                title: isAmharic
+                    ? '⚖️ ስነ-ዜጋ 2015 (100 ጥያቄ)'
+                    : '⚖️ Civics 2015 (100 Qs)',
+                isActive: isCivics,
+                activeColor: const Color(0xFF0D9488),
+                isDark: isDark,
+                onTap: () => setState(() => _featuredExamTab = 2),
               ),
             ],
           ),
@@ -2206,13 +2239,17 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 decoration: BoxDecoration(
                   color: (isPhysics
                           ? const Color(0xFFF59E0B)
-                          : const Color(0xFF10B981))
+                          : (isBiology
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFF0D9488)))
                       .withValues(alpha: 0.16),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(
                     color: (isPhysics
                             ? const Color(0xFFF59E0B)
-                            : const Color(0xFF10B981))
+                            : (isBiology
+                                ? const Color(0xFF10B981)
+                                : const Color(0xFF0D9488)))
                         .withValues(alpha: 0.45),
                     width: 0.8,
                   ),
@@ -2225,7 +2262,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       size: 12,
                       color: isPhysics
                           ? const Color(0xFFD97706)
-                          : const Color(0xFF059669),
+                          : (isBiology
+                              ? const Color(0xFF059669)
+                              : const Color(0xFF0D9488)),
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -2241,7 +2280,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         fontWeight: FontWeight.w800,
                         color: isPhysics
                             ? const Color(0xFFD97706)
-                            : const Color(0xFF059669),
+                            : (isBiology
+                                ? const Color(0xFF059669)
+                                : const Color(0xFF0D9488)),
                       ),
                     ),
                   ],
@@ -2253,9 +2294,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       ? (isAmharic
                           ? '2014 ዓ.ም. (2022) • ቡክሌት 11'
                           : '2014 E.C. (2022 G.C.) • Booklet 11')
-                      : (isAmharic
-                          ? '2013 ዓ.ም. (2021) • ቡክሌት 12'
-                          : '2013 E.C. (2021 G.C.) • Booklet 12'),
+                      : (isBiology
+                          ? (isAmharic
+                              ? '2013 ዓ.ም. (2021) • ቡክሌት 12'
+                              : '2013 E.C. (2021 G.C.) • Booklet 12')
+                          : (isAmharic
+                              ? '2015 ዓ.ም. (2023) • ቡክሌት 653'
+                              : '2015 E.C. (2023 G.C.) • Booklet 653')),
                   style: TextStyle(
                     color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
                     fontSize: 11.5,
@@ -2275,9 +2320,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 ? (isAmharic
                     ? 'የ2014 የፊዚክስ ብሔራዊ ፈተና (32 ጥያቄዎች)'
                     : 'ESSLCE Physics 2014 (32 Questions)')
-                : (isAmharic
-                    ? 'የ2013 የባዮሎጂ ብሔራዊ ፈተና (100 ጥያቄዎች)'
-                    : 'ESSLCE Biology 2013 (100 Questions)'),
+                : (isBiology
+                    ? (isAmharic
+                        ? 'የ2013 የባዮሎጂ ብሔራዊ ፈተና (100 ጥያቄዎች)'
+                        : 'ESSLCE Biology 2013 (100 Questions)')
+                    : (isAmharic
+                        ? 'የ2015 የሲቪክስ ብሔራዊ ፈተና (100 ጥያቄዎች)'
+                        : 'ESSLCE Civics 2015 (100 Questions)')),
             style: TextStyle(
               fontSize: 15.5,
               fontWeight: FontWeight.w700,
@@ -2292,9 +2341,13 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 ? (isAmharic
                     ? 'ከነሙሉ ማብራሪያ፣ የስዕልና ዲያግራም ምስሎች፣ እና ደረጃ በደረጃ የሂሳብ አሰራር ጋር የተዘጋጀ ይፋዊ ፈተና።'
                     : 'Official National Exam with vector mechanics, circuits, wave optics, & complete step-by-step solutions.')
-                : (isAmharic
-                    ? 'ከነሙሉ ማብራሪያ፣ የቬክተር ዲያግራም እና የባክቴሪዮፋጅ ምስሎች ጋር የተዘጋጀ ይፋዊ ፈተና።'
-                    : 'Official National Exam with vector diagrams, bacteriophage models, & complete solutions.'),
+                : (isBiology
+                    ? (isAmharic
+                        ? 'ከነሙሉ ማብራሪያ፣ የቬክተር ዲያግራም እና የባክቴሪዮፋጅ ምስሎች ጋር የተዘጋጀ ይፋዊ ፈተና።'
+                        : 'Official National Exam with vector diagrams, bacteriophage models, & complete solutions.')
+                    : (isAmharic
+                        ? 'ከነሙሉ ማብራሪያ፣ ሕገ-መንግሥታዊ ዴሞክራሲ፣ የሰብዓዊ መብቶች እና የሕግ የበላይነት ጋር የተዘጋጀ ይፋዊ ፈተና።'
+                        : 'Official National Exam with constitutional democracy, human rights, rule of law, & complete solutions.')),
             style: TextStyle(
               fontSize: 12,
               color: isDark ? AppTheme.darkTextSoft : AppTheme.lightTextSoft,
@@ -2309,7 +2362,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             runSpacing: 8,
             children: [
               ElevatedButton.icon(
-                onPressed: () => _startFullOfficialExam(isPhysics),
+                onPressed: () => _startFullOfficialExam(_featuredExamTab),
                 icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
                 label: Text(
                   isPhysics
@@ -2331,8 +2384,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 onPressed: () {
                   if (isPhysics) {
                     context.push('/exam_builder?subjectId=physics_g12');
-                  } else {
+                  } else if (isBiology) {
                     context.push('/exam_builder?subjectId=biology_g12');
+                  } else {
+                    context.push('/exam_builder?subjectId=civics_g12');
                   }
                 },
                 icon: const Icon(Icons.tune_rounded, size: 16),
@@ -2355,8 +2410,10 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                 onPressed: () {
                   if (isPhysics) {
                     context.push('/subject_exams/physics_g12');
-                  } else {
+                  } else if (isBiology) {
                     context.push('/subject_exams/biology_g12');
+                  } else {
+                    context.push('/subject_exams/civics_g12');
                   }
                 },
                 icon: const Icon(Icons.folder_open_rounded, size: 16),
