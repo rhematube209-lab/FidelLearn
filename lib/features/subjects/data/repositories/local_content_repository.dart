@@ -37,6 +37,7 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/physics_2014_seed.json',
                     'assets/seed/civics_2013_seed.json',
                     'assets/seed/civics_2014_seed.json',
+                    'assets/seed/civics_2015_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
                   ]);
 
@@ -941,6 +942,20 @@ class LocalContentRepository implements ContentRepository {
           unitNumber: 27,
           titleEn: '[Grade 12 History] Post-1991 Constitutional Developments',
           titleAm: 'ከ1991 በኋላ ያሉ ህገ-መንግስታዊ ለውጦች',
+        ),
+        Unit(
+          id: 'civ_g12_hist_u3',
+          subjectId: 'civics_g12',
+          unitNumber: 28,
+          titleEn: '[Grade 12 History] Ethiopia: Mid-19th Century to 1941',
+          titleAm: 'ኢትዮጵያ ከ19ኛው ክፍለ ዘመን አጋማሽ እስከ 1941',
+        ),
+        Unit(
+          id: 'civ_g12_econ_u6',
+          subjectId: 'civics_g12',
+          unitNumber: 29,
+          titleEn: '[Grade 12 Economics] Poverty and Inequality',
+          titleAm: 'ድህነትና አለመመጣጠን',
         ),
       ];
     }

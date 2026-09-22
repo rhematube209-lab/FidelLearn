@@ -44,6 +44,20 @@ void main() {
       'A', 'B', 'A', 'C', 'B', 'A', 'A', 'A', 'A', 'C', // 91-100
     ];
 
+    // Expected answer key for 2015 (100 questions) from PDF Page 44
+    const expectedKey2015 = [
+      'A', 'A', 'B', 'B', 'A', 'B', 'C', 'A', 'C', 'B', // 1-10
+      'D', 'A', 'C', 'C', 'D', 'C', 'A', 'B', 'D', 'D', // 11-20
+      'A', 'C', 'C', 'A', 'C', 'D', 'B', 'D', 'A', 'A', // 21-30
+      'D', 'B', 'D', 'B', 'D', 'D', 'A', 'A', 'D', 'B', // 31-40
+      'B', 'C', 'A', 'B', 'D', 'B', 'D', 'C', 'B', 'B', // 41-50
+      'C', 'A', 'D', 'C', 'D', 'D', 'D', 'B', 'C', 'B', // 51-60
+      'B', 'C', 'C', 'A', 'A', 'D', 'C', 'A', 'C', 'B', // 61-70
+      'D', 'A', 'C', 'A', 'B', 'C', 'B', 'A', 'C', 'B', // 71-80
+      'A', 'D', 'D', 'C', 'D', 'A', 'D', 'A', 'C', 'D', // 81-90
+      'C', 'B', 'A', 'C', 'B', 'D', 'C', 'B', 'C', 'D', // 91-100
+    ];
+
     test('Civics 2013 E.C. has exactly 100 recoverable questions', () async {
       final questions = await repository.getQuestions(
         subjectId: 'civics_g12',
@@ -75,6 +89,23 @@ void main() {
       for (int i = 1; i <= 100; i++) {
         expect(qNumbers.contains(i), isTrue,
             reason: 'Question $i must exist in 2014');
+      }
+    });
+
+    test('Civics 2015 E.C. has exactly 100 recoverable questions', () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+      );
+
+      expect(questions.length, equals(100));
+      expect(questions.first.questionNumber, equals(1));
+      expect(questions.last.questionNumber, equals(100));
+
+      final qNumbers = questions.map((q) => q.questionNumber).toSet();
+      for (int i = 1; i <= 100; i++) {
+        expect(qNumbers.contains(i), isTrue,
+            reason: 'Question $i must exist in 2015');
       }
     });
 
@@ -111,6 +142,24 @@ void main() {
         expect(correctLabels.contains(expectedKey2014[i - 1]), isTrue,
             reason:
                 'Civics 2014 Q$i expected to have correct answer ${expectedKey2014[i - 1]}');
+      }
+    });
+
+    test('Civics 2015 100-item answer key matches PDF Page 44 table', () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+      );
+
+      final qMap = {for (var q in questions) q.questionNumber!: q};
+
+      for (int i = 1; i <= 100; i++) {
+        final q = qMap[i]!;
+        final correctLabels =
+            q.choices.where((c) => c.isCorrect).map((c) => c.label).toSet();
+        expect(correctLabels.contains(expectedKey2015[i - 1]), isTrue,
+            reason:
+                'Civics 2015 Q$i expected to have correct answer ${expectedKey2015[i - 1]}');
       }
     });
 
@@ -200,7 +249,41 @@ void main() {
       expect(q68Correct, containsAll({'A', 'B', 'D'}));
     });
 
-    test('All 200 questions preserve study-guide provenance and metadata',
+    test('Civics 2015 flagged questions, statuses, and review notes', () async {
+      final questions = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+      );
+      final qMap = {for (var q in questions) q.questionNumber!: q};
+
+      const flagged2015 = [
+        3, 4, 6, 8, 13, 22, 40, 43, 44, 51, 58, 62, 66, 68, 82, 83, 84, 86, 87, 90, 97
+      ];
+
+      for (final qn in flagged2015) {
+        final q = qMap[qn]!;
+        expect(q.reviewNote, isNotNull,
+            reason: '2015 Q$qn must have review note');
+        expect(q.reviewNote!.isNotEmpty, isTrue,
+            reason: '2015 Q$qn review note must not be empty');
+        expect(q.verificationStatus, equals(VerificationStatus.bestAnswer));
+        expect(q.isScorable, isTrue);
+        expect(q.isPracticeEligible, isTrue);
+      }
+
+      // Check unflagged questions have verified status and null review notes
+      final unflagged2015 = List.generate(100, (i) => i + 1)
+          .where((qn) => !flagged2015.contains(qn));
+      for (final qn in unflagged2015) {
+        final q = qMap[qn]!;
+        expect(q.reviewNote, isNull);
+        expect(q.verificationStatus, equals(VerificationStatus.verified));
+        expect(q.isScorable, isTrue);
+        expect(q.isPracticeEligible, isTrue);
+      }
+    });
+
+    test('All 300 questions preserve study-guide provenance and metadata',
         () async {
       final q2013 = await repository.getQuestions(
         subjectId: 'civics_g12',
@@ -210,9 +293,13 @@ void main() {
         subjectId: 'civics_g12',
         examYear: 2014,
       );
+      final q2015 = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+      );
 
-      final allQuestions = [...q2013, ...q2014];
-      expect(allQuestions.length, equals(200));
+      final allQuestions = [...q2013, ...q2014, ...q2015];
+      expect(allQuestions.length, equals(300));
 
       for (final q in allQuestions) {
         expect(q.officialAnswerKeyAvailable, isFalse,
@@ -226,7 +313,7 @@ void main() {
       }
     });
 
-    test('Civics 2013 and 2014 curriculum grade distributions match spec',
+    test('Civics 2013, 2014, and 2015 curriculum grade distributions match spec',
         () async {
       final q2013 = await repository.getQuestions(
         subjectId: 'civics_g12',
@@ -235,6 +322,10 @@ void main() {
       final q2014 = await repository.getQuestions(
         subjectId: 'civics_g12',
         examYear: 2014,
+      );
+      final q2015 = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
       );
 
       // 2013: Grade 9 (36), Grade 10 (42), Grade 11 (12), Grade 12 (10)
@@ -258,9 +349,20 @@ void main() {
       expect(grades2014[10], equals(32));
       expect(grades2014[11], equals(9));
       expect(grades2014[12], equals(13));
+
+      // 2015: Grade 9 (37), Grade 10 (48), Grade 11 (5), Grade 12 (10)
+      final grades2015 = <int, int>{};
+      for (final q in q2015) {
+        grades2015[q.curriculumGrade!] =
+            (grades2015[q.curriculumGrade!] ?? 0) + 1;
+      }
+      expect(grades2015[9], equals(37));
+      expect(grades2015[10], equals(48));
+      expect(grades2015[11], equals(5));
+      expect(grades2015[12], equals(10));
     });
 
-    test('Civics 2013 and 2014 difficulty distributions match spec', () async {
+    test('Civics 2013, 2014, and 2015 difficulty distributions match spec', () async {
       final q2013 = await repository.getQuestions(
         subjectId: 'civics_g12',
         examYear: 2013,
@@ -268,6 +370,10 @@ void main() {
       final q2014 = await repository.getQuestions(
         subjectId: 'civics_g12',
         examYear: 2014,
+      );
+      final q2015 = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
       );
 
       // 2013: Easy (49), Medium (40), Hard (11)
@@ -287,6 +393,15 @@ void main() {
       expect(diff2014['easy'], equals(52));
       expect(diff2014['medium'], equals(36));
       expect(diff2014['hard'], equals(12));
+
+      // 2015: Easy (54), Medium (33), Hard (13)
+      final diff2015 = <String, int>{};
+      for (final q in q2015) {
+        diff2015[q.difficulty] = (diff2015[q.difficulty] ?? 0) + 1;
+      }
+      expect(diff2015['easy'], equals(54));
+      expect(diff2015['medium'], equals(33));
+      expect(diff2015['hard'], equals(13));
     });
 
     test('Subject & Units Resolution for Civics', () async {
@@ -303,7 +418,7 @@ void main() {
       expect(civicsFound.isNotEmpty, isTrue);
 
       final unitsCivics = LocalContentRepository.getDefaultUnits('civics_g12');
-      expect(unitsCivics.length, equals(27));
+      expect(unitsCivics.length, equals(29));
       expect(unitsCivics.where((u) => u.id.startsWith('civ_g9_')).length,
           equals(8));
       expect(unitsCivics.where((u) => u.id.startsWith('civ_g10_')).length,
@@ -311,7 +426,7 @@ void main() {
       expect(unitsCivics.where((u) => u.id.startsWith('civ_g11_')).length,
           equals(4));
       expect(unitsCivics.where((u) => u.id.startsWith('civ_g12_')).length,
-          equals(8));
+          equals(10));
     });
 
     test('Scoring safety in ExamEngine for Civics with defective items',
@@ -462,6 +577,57 @@ void main() {
       expect(att3Q68.responses[q68.id]!.isCorrect, isFalse);
     });
 
+    test('Scoring in ExamEngine for Civics 2015 full mock exam', () async {
+      final q2015 = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+      );
+
+      final exam = Exam(
+        id: 'civics_2015_full_test',
+        title: 'Civics 2015 Full Exam',
+        examType: ExamType.mockFull,
+        grade: 12,
+        stream: 'common',
+        subjectId: 'civics_g12',
+        timeLimitMinutes: 120,
+        totalQuestions: 100,
+        questions: q2015,
+        createdAt: DateTime.now(),
+      );
+
+      var attempt = ExamEngine.startAttempt(
+        attemptId: 'att_civics_2015_1',
+        userId: 'student_1',
+        exam: exam,
+      );
+
+      // Answer all 100 questions using the expected answers
+      for (final q in q2015) {
+        final correctChoice = q.choices.firstWhere(
+          (c) => c.isCorrect,
+          orElse: () => q.choices.first,
+        );
+        attempt = ExamEngine.answerQuestion(
+          currentAttempt: attempt,
+          question: q,
+          choiceId: correctChoice.id,
+        );
+      }
+
+      final submitted = ExamEngine.submitAttempt(
+        currentAttempt: attempt,
+        questions: q2015,
+        totalDurationSeconds: 3600,
+      );
+
+      // All 100 questions are scorable and correctly answered
+      expect(submitted.score, equals(100));
+      expect(submitted.correctCount, equals(100));
+      expect(submitted.incorrectCount, equals(0));
+      expect(submitted.percentage, equals(100.0));
+    });
+
     test('Custom Practice Builder filtering by Grade and Practice Eligibility',
         () async {
       // Filter for Grade 9 Civics questions
@@ -469,8 +635,8 @@ void main() {
         subjectId: 'civics_g12',
         grade: 9,
       );
-      // 36 from 2013 + 46 from 2014 = 82 Grade 9 Civics questions
-      expect(g9Questions.length, equals(82));
+      // 36 from 2013 + 46 from 2014 + 37 from 2015 = 119 Grade 9 Civics questions
+      expect(g9Questions.length, equals(119));
       for (final q in g9Questions) {
         expect(q.curriculumGrade, equals(9));
       }
@@ -498,6 +664,15 @@ void main() {
       final qNums2014 = eligible2014.map((q) => q.questionNumber).toSet();
       expect(qNums2014.contains(30), isFalse);
       expect(qNums2014.contains(56), isFalse);
+
+      // Filter for practice eligible questions in 2015
+      final eligible2015 = await repository.getQuestions(
+        subjectId: 'civics_g12',
+        examYear: 2015,
+        practiceEligibleOnly: true,
+      );
+      // All 100 questions eligible
+      expect(eligible2015.length, equals(100));
     });
   });
 }

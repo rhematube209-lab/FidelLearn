@@ -143,6 +143,7 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       defaultDownloaded.add(2016);
       defaultDownloaded.add(2017);
     } else if (cleanId.contains('civ')) {
+      defaultDownloaded.add(2015);
       defaultDownloaded.add(2014);
       defaultDownloaded.add(2013);
     }
@@ -413,6 +414,19 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     final isCivics =
         LocalContentRepository.matchesSubjectId(subject.id, 'civics_g12') ||
             subject.nameEn.toLowerCase().contains('civ');
+    if (isCivics && base.ethiopianYear == 2015) {
+      return base.copyWith(
+        standardQuestionCount: 100,
+        bookletCode: 'Booklet 653',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: '100 Qs · STUDY GUIDE',
+        descriptionEn:
+            'EUEE Civics and Ethical Education (Natural Science, Hamlie 2015 E.C. - July 2023 G.C., Booklet 653, 100 Questions) with curriculum-aligned study answers and explanations.',
+        descriptionAm:
+            'የ2015 ዓ.ም. የዩኒቨርሲቲ መግቢያ የስነ-ዜጋና ስነ-ምግባር ትምህርት ፈተና (የተፈጥሮ ሳይንስ - 100 ጥያቄዎች፣ ጥራዝ 653 ከስርዓተ-ትምህርት ጥናት ማብራሪያ ጋር)።',
+      );
+    }
     if (isCivics && base.ethiopianYear == 2014) {
       return base.copyWith(
         standardQuestionCount: 100,
@@ -485,12 +499,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         LocalContentRepository.matchesSubjectId(subject.id, 'civics_g12') ||
             subject.nameEn.toLowerCase().contains('civ');
     if (isCivics) {
+      final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
       final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
       final y2013 = _availableYears.firstWhere((y) => y.ethiopianYear == 2013);
       final others = _availableYears
-          .where((y) => y.ethiopianYear != 2014 && y.ethiopianYear != 2013)
+          .where((y) =>
+              y.ethiopianYear != 2015 &&
+              y.ethiopianYear != 2014 &&
+              y.ethiopianYear != 2013)
           .toList();
-      return [y2014, y2013, ...others];
+      return [y2015, y2014, y2013, ...others];
     }
     return _availableYears;
   }
