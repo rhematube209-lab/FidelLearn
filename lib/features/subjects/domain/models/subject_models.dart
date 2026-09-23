@@ -1,5 +1,94 @@
 import 'package:equatable/equatable.dart';
 
+enum SubjectScope {
+  commonExam, // Required for both streams (English, Aptitude, Mathematics)
+  streamExam, // Stream specific (Sciences or Social Sciences)
+  curriculumOnly, // Supplementary / revision (Civics)
+}
+
+enum ExamVariantCode {
+  shared, // Taken identically across streams (English, Aptitude)
+  naturalScience, // Natural Science specific examination (Math Nat, Physics, Chem, Bio)
+  socialScience, // Social Science specific examination (Math Soc, History, Geo, Econ)
+}
+
+enum AssessmentStructure {
+  curriculum, // Standard units & topics (Sciences, Social Studies, Math)
+  skillBased, // Cognitive domains & skills (Scholastic Aptitude)
+  mixed, // Stimulus reading passages + discrete language skills (English)
+}
+
+class SubjectExamVariant extends Equatable {
+  final String variantId; // e.g. 'math_g12_natural', 'math_g12_social'
+  final String subjectId; // 'math_g12'
+  final ExamVariantCode variantCode;
+  final String nameEn;
+  final String nameAm;
+  final String streamEligibility; // 'natural', 'social', 'common'
+  final AssessmentStructure assessmentStructure;
+  final String packageId;
+  final String manifestId;
+
+  const SubjectExamVariant({
+    required this.variantId,
+    required this.subjectId,
+    required this.variantCode,
+    required this.nameEn,
+    required this.nameAm,
+    this.streamEligibility = 'common',
+    this.assessmentStructure = AssessmentStructure.curriculum,
+    this.packageId = '',
+    this.manifestId = '',
+  });
+
+  factory SubjectExamVariant.fromJson(Map<String, dynamic> json) {
+    return SubjectExamVariant(
+      variantId: json['variant_id']?.toString() ?? '',
+      subjectId: json['subject_id']?.toString() ?? '',
+      variantCode: ExamVariantCode.values.firstWhere(
+        (e) => e.name == json['variant_code'],
+        orElse: () => ExamVariantCode.shared,
+      ),
+      nameEn: json['name_en']?.toString() ?? '',
+      nameAm: json['name_am']?.toString() ?? '',
+      streamEligibility: json['stream_eligibility']?.toString() ?? 'common',
+      assessmentStructure: AssessmentStructure.values.firstWhere(
+        (e) => e.name == json['assessment_structure'],
+        orElse: () => AssessmentStructure.curriculum,
+      ),
+      packageId: json['package_id']?.toString() ?? '',
+      manifestId: json['manifest_id']?.toString() ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'variant_id': variantId,
+      'subject_id': subjectId,
+      'variant_code': variantCode.name,
+      'name_en': nameEn,
+      'name_am': nameAm,
+      'stream_eligibility': streamEligibility,
+      'assessment_structure': assessmentStructure.name,
+      'package_id': packageId,
+      'manifest_id': manifestId,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+        variantId,
+        subjectId,
+        variantCode,
+        nameEn,
+        nameAm,
+        streamEligibility,
+        assessmentStructure,
+        packageId,
+        manifestId,
+      ];
+}
+
 class Subject extends Equatable {
   final String id;
   final String code;
@@ -9,6 +98,9 @@ class Subject extends Equatable {
   final String stream;
   final String? iconAsset;
   final int sortOrder;
+  final SubjectScope scope;
+  final AssessmentStructure assessmentStructure;
+  final List<SubjectExamVariant> availableVariants;
 
   const Subject({
     required this.id,
@@ -19,11 +111,90 @@ class Subject extends Equatable {
     required this.stream,
     this.iconAsset,
     required this.sortOrder,
+    this.scope = SubjectScope.streamExam,
+    this.assessmentStructure = AssessmentStructure.curriculum,
+    this.availableVariants = const [],
   });
 
-  factory Subject.fromJson(Map<String, dynamic> json) {
+  /// Resolves the student stream to the appropriate exam variant track.
+  SubjectExamVariant? resolveVariant(String studentStream) {
+    if (availableVariants.isEmpty) return null;
+    if (availableVariants.length == 1) return availableVariants.first;
+    for (final v in availableVariants) {
+      if (v.streamEligibility == studentStream) return v;
+    }
+    return availableVariants.first;
+  }
+
+  Subject copyWith({
+    String? id,
+    String? code,
+    String? nameEn,
+    String? nameAm,
+    int? grade,
+    String? stream,
+    String? iconAsset,
+    int? sortOrder,
+    SubjectScope? scope,
+    AssessmentStructure? assessmentStructure,
+    List<SubjectExamVariant>? availableVariants,
+  }) {
     return Subject(
-      id: json['id']?.toString() ?? '',
+      id: id ?? this.id,
+      code: code ?? this.code,
+      nameEn: nameEn ?? this.nameEn,
+      nameAm: nameAm ?? this.nameAm,
+      grade: grade ?? this.grade,
+      stream: stream ?? this.stream,
+      iconAsset: iconAsset ?? this.iconAsset,
+      sortOrder: sortOrder ?? this.sortOrder,
+      scope: scope ?? this.scope,
+      assessmentStructure: assessmentStructure ?? this.assessmentStructure,
+      availableVariants: availableVariants ?? this.availableVariants,
+    );
+  }
+
+  factory Subject.fromJson(Map<String, dynamic> json) {
+    final rawId = json['id']?.toString() ?? '';
+    final rawScope = json['scope']?.toString();
+    final SubjectScope resolvedScope;
+    if (rawScope != null) {
+      resolvedScope = SubjectScope.values.firstWhere(
+        (s) => s.name == rawScope,
+        orElse: () => SubjectScope.streamExam,
+      );
+    } else if (rawId.contains('civics')) {
+      resolvedScope = SubjectScope.curriculumOnly;
+    } else if (rawId.contains('english') ||
+        rawId.contains('aptitude') ||
+        rawId.contains('math')) {
+      resolvedScope = SubjectScope.commonExam;
+    } else {
+      resolvedScope = SubjectScope.streamExam;
+    }
+
+    final rawStructure = json['assessment_structure']?.toString();
+    final AssessmentStructure resolvedStructure;
+    if (rawStructure != null) {
+      resolvedStructure = AssessmentStructure.values.firstWhere(
+        (a) => a.name == rawStructure,
+        orElse: () => AssessmentStructure.curriculum,
+      );
+    } else if (rawId.contains('aptitude')) {
+      resolvedStructure = AssessmentStructure.skillBased;
+    } else if (rawId.contains('english')) {
+      resolvedStructure = AssessmentStructure.mixed;
+    } else {
+      resolvedStructure = AssessmentStructure.curriculum;
+    }
+
+    final variantsList = (json['available_variants'] as List<dynamic>?)
+            ?.map((v) => SubjectExamVariant.fromJson(v as Map<String, dynamic>))
+            .toList() ??
+        const [];
+
+    return Subject(
+      id: rawId,
       code: json['code']?.toString() ?? '',
       nameEn: json['name_en']?.toString() ?? '',
       nameAm: json['name_am']?.toString() ?? '',
@@ -31,6 +202,9 @@ class Subject extends Equatable {
       stream: json['stream']?.toString() ?? 'common',
       iconAsset: json['icon_asset']?.toString(),
       sortOrder: (json['sort_order'] as num?)?.toInt() ?? 0,
+      scope: resolvedScope,
+      assessmentStructure: resolvedStructure,
+      availableVariants: variantsList,
     );
   }
 
@@ -44,6 +218,9 @@ class Subject extends Equatable {
       'stream': stream,
       'icon_asset': iconAsset,
       'sort_order': sortOrder,
+      'scope': scope.name,
+      'assessment_structure': assessmentStructure.name,
+      'available_variants': availableVariants.map((v) => v.toJson()).toList(),
     };
   }
 
@@ -57,6 +234,9 @@ class Subject extends Equatable {
         stream,
         iconAsset,
         sortOrder,
+        scope,
+        assessmentStructure,
+        availableVariants,
       ];
 }
 

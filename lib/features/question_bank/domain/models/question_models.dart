@@ -1,6 +1,127 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:fidel_learn/features/subjects/domain/models/subject_models.dart';
 import 'diagram_models.dart';
+
+enum SourceProvenanceType {
+  officialNeaeaPaper, // Official ESSLCE examination paper published by EAES/NEAEA
+  nationalArchive, // Verified regional/national examination bureau archive
+  educatorModelExam, // National model examination prepared by verified expert educator panel
+}
+
+class QuestionProvenance extends Equatable {
+  final SourceProvenanceType provenanceType;
+  final String sourceDocument;
+  final int? examYear;
+  final String? bookletCode;
+  final int? questionNumber;
+  final String verifiedBy;
+  final DateTime verifiedAt;
+  final bool isAuthoritativePastExam;
+
+  const QuestionProvenance({
+    required this.provenanceType,
+    required this.sourceDocument,
+    this.examYear,
+    this.bookletCode,
+    this.questionNumber,
+    required this.verifiedBy,
+    required this.verifiedAt,
+    this.isAuthoritativePastExam = true,
+  });
+
+  factory QuestionProvenance.fromJson(Map<String, dynamic> json) {
+    final typeStr = json['provenance_type']?.toString();
+    final SourceProvenanceType resolvedType;
+    if (typeStr == 'national_archive') {
+      resolvedType = SourceProvenanceType.nationalArchive;
+    } else if (typeStr == 'educator_model_exam') {
+      resolvedType = SourceProvenanceType.educatorModelExam;
+    } else {
+      resolvedType = SourceProvenanceType.officialNeaeaPaper;
+    }
+
+    DateTime parsedDate;
+    if (json['verified_at'] != null) {
+      parsedDate =
+          DateTime.tryParse(json['verified_at'].toString()) ?? DateTime.now();
+    } else {
+      parsedDate = DateTime.now();
+    }
+
+    return QuestionProvenance(
+      provenanceType: resolvedType,
+      sourceDocument: json['source_document']?.toString() ?? '',
+      examYear: (json['exam_year'] as num?)?.toInt(),
+      bookletCode: json['booklet_code']?.toString(),
+      questionNumber: (json['question_number'] as num?)?.toInt(),
+      verifiedBy: json['verified_by']?.toString() ?? 'EAES Panel',
+      verifiedAt: parsedDate,
+      isAuthoritativePastExam:
+          json['is_authoritative_past_exam'] as bool? ?? true,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'provenance_type': provenanceType.name,
+      'source_document': sourceDocument,
+      if (examYear != null) 'exam_year': examYear,
+      if (bookletCode != null) 'booklet_code': bookletCode,
+      if (questionNumber != null) 'question_number': questionNumber,
+      'verified_by': verifiedBy,
+      'verified_at': verifiedAt.toIso8601String(),
+      'is_authoritative_past_exam': isAuthoritativePastExam,
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+        provenanceType,
+        sourceDocument,
+        examYear,
+        bookletCode,
+        questionNumber,
+        verifiedBy,
+        verifiedAt,
+        isAuthoritativePastExam,
+      ];
+}
+
+class ReadingPassage extends Equatable {
+  final String id;
+  final String title;
+  final String body;
+  final String? source;
+
+  const ReadingPassage({
+    required this.id,
+    required this.title,
+    required this.body,
+    this.source,
+  });
+
+  factory ReadingPassage.fromJson(Map<String, dynamic> json) {
+    return ReadingPassage(
+      id: json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? '',
+      body: json['body']?.toString() ?? '',
+      source: json['source']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'body': body,
+      if (source != null) 'source': source,
+    };
+  }
+
+  @override
+  List<Object?> get props => [id, title, body, source];
+}
 
 enum VerificationStatus {
   draft,
@@ -220,6 +341,12 @@ class Question extends Equatable {
   final List<String>? secondaryCurriculumLinks;
   final String? answerKeySource;
   final bool? officialAnswerKeyAvailable;
+  final QuestionProvenance? provenance;
+  final ReadingPassage? readingPassage;
+  final ExamVariantCode? examVariant;
+  final AssessmentStructure? assessmentStructure;
+  final String? contentDomain;
+  final String? skill;
 
   const Question({
     required this.id,
@@ -252,9 +379,22 @@ class Question extends Equatable {
     this.secondaryCurriculumLinks,
     this.answerKeySource,
     this.officialAnswerKeyAvailable,
+    this.provenance,
+    this.readingPassage,
+    this.examVariant,
+    this.assessmentStructure,
+    this.contentDomain,
+    this.skill,
   });
 
+  bool get isAuthoritativeVerifiedPastExam =>
+      (verificationStatus == VerificationStatus.published ||
+          verificationStatus == VerificationStatus.verified) &&
+      provenance != null &&
+      provenance!.isAuthoritativePastExam;
+
   Question copyWith({
+    String? id,
     int? grade,
     String? stream,
     String? subjectId,
@@ -284,9 +424,15 @@ class Question extends Equatable {
     List<String>? secondaryCurriculumLinks,
     String? answerKeySource,
     bool? officialAnswerKeyAvailable,
+    QuestionProvenance? provenance,
+    ReadingPassage? readingPassage,
+    ExamVariantCode? examVariant,
+    AssessmentStructure? assessmentStructure,
+    String? contentDomain,
+    String? skill,
   }) {
     return Question(
-      id: id,
+      id: id ?? this.id,
       grade: grade ?? this.grade,
       stream: stream ?? this.stream,
       subjectId: subjectId ?? this.subjectId,
@@ -318,6 +464,12 @@ class Question extends Equatable {
       answerKeySource: answerKeySource ?? this.answerKeySource,
       officialAnswerKeyAvailable:
           officialAnswerKeyAvailable ?? this.officialAnswerKeyAvailable,
+      provenance: provenance ?? this.provenance,
+      readingPassage: readingPassage ?? this.readingPassage,
+      examVariant: examVariant ?? this.examVariant,
+      assessmentStructure: assessmentStructure ?? this.assessmentStructure,
+      contentDomain: contentDomain ?? this.contentDomain,
+      skill: skill ?? this.skill,
     );
   }
 
@@ -341,6 +493,64 @@ class Question extends Equatable {
     } else {
       explanationObj =
           const Explanation(solutionTextEn: 'No explanation available.');
+    }
+
+    final rawVariant = json['exam_variant']?.toString();
+    ExamVariantCode? resolvedVariant;
+    if (rawVariant != null) {
+      final vName = rawVariant.toLowerCase().replaceAll('-', '_');
+      if (vName.contains('nat')) {
+        resolvedVariant = ExamVariantCode.naturalScience;
+      } else if (vName.contains('soc')) {
+        resolvedVariant = ExamVariantCode.socialScience;
+      } else {
+        resolvedVariant = ExamVariantCode.shared;
+      }
+    }
+
+    final rawStructure = json['assessment_structure']?.toString();
+    AssessmentStructure? resolvedStructure;
+    if (rawStructure != null) {
+      final sName = rawStructure.toLowerCase().replaceAll('-', '_');
+      if (sName.contains('skill')) {
+        resolvedStructure = AssessmentStructure.skillBased;
+      } else if (sName.contains('mix')) {
+        resolvedStructure = AssessmentStructure.mixed;
+      } else {
+        resolvedStructure = AssessmentStructure.curriculum;
+      }
+    }
+
+    QuestionProvenance? provenanceObj;
+    if (json['provenance'] is Map<String, dynamic>) {
+      provenanceObj = QuestionProvenance.fromJson(
+        json['provenance'] as Map<String, dynamic>,
+      );
+    } else if (json['exam_year'] != null &&
+        (json['source_name']?.toString().toUpperCase().contains('ESSLCE') ==
+                true ||
+            json['source_name']?.toString().toUpperCase().contains('NEAEA') ==
+                true ||
+            json['source_name']?.toString().toUpperCase().contains('EAES') ==
+                true)) {
+      provenanceObj = QuestionProvenance(
+        provenanceType: SourceProvenanceType.officialNeaeaPaper,
+        sourceDocument:
+            json['source_name']?.toString() ?? 'Official ESSLCE Exam Paper',
+        examYear: (json['exam_year'] as num?)?.toInt(),
+        bookletCode: json['booklet_code']?.toString(),
+        questionNumber: (json['question_number'] as num?)?.toInt(),
+        verifiedBy: json['verified_by']?.toString() ?? 'EAES Panel',
+        verifiedAt: DateTime.now(),
+        isAuthoritativePastExam: true,
+      );
+    }
+
+    ReadingPassage? passageObj;
+    if (json['reading_passage'] is Map<String, dynamic>) {
+      passageObj = ReadingPassage.fromJson(
+        json['reading_passage'] as Map<String, dynamic>,
+      );
     }
 
     return Question(
@@ -394,6 +604,17 @@ class Question extends Equatable {
       answerKeySource: json['answer_key_source']?.toString(),
       officialAnswerKeyAvailable:
           json['official_answer_key_available'] as bool?,
+      provenance: provenanceObj,
+      readingPassage: passageObj,
+      examVariant: resolvedVariant,
+      assessmentStructure: resolvedStructure,
+      contentDomain: json['content_domain']?.toString() ??
+          (json['unit_id']?.toString().contains('verbal') == true
+              ? 'verbal_reasoning'
+              : (json['unit_id']?.toString().contains('quant') == true
+                  ? 'quantitative_reasoning'
+                  : null)),
+      skill: json['skill']?.toString() ?? json['topic_id']?.toString(),
     );
   }
 
@@ -432,6 +653,13 @@ class Question extends Equatable {
       if (answerKeySource != null) 'answer_key_source': answerKeySource,
       if (officialAnswerKeyAvailable != null)
         'official_answer_key_available': officialAnswerKeyAvailable,
+      if (provenance != null) 'provenance': provenance!.toJson(),
+      if (readingPassage != null) 'reading_passage': readingPassage!.toJson(),
+      if (examVariant != null) 'exam_variant': examVariant!.name,
+      if (assessmentStructure != null)
+        'assessment_structure': assessmentStructure!.name,
+      if (contentDomain != null) 'content_domain': contentDomain,
+      if (skill != null) 'skill': skill,
     };
   }
 
@@ -467,6 +695,12 @@ class Question extends Equatable {
         secondaryCurriculumLinks,
         answerKeySource,
         officialAnswerKeyAvailable,
+        provenance,
+        readingPassage,
+        examVariant,
+        assessmentStructure,
+        contentDomain,
+        skill,
       ];
 }
 

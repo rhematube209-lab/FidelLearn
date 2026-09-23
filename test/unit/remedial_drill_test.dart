@@ -57,6 +57,8 @@ class MockContentRepository implements ContentRepository {
     List<int>? examYears,
     int? limit,
     bool practiceEligibleOnly = false,
+    String? stream,
+    ExamVariantCode? examVariant,
   }) async {
     var filtered = availableQuestions.where((q) {
       if (grade != null && q.grade != grade) return false;

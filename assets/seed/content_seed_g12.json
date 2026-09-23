@@ -181,6 +181,20 @@
       "license": "demo_evaluation",
       "attribution": "FidelLearn original demonstration content",
       "is_downloaded": true
+    },
+    {
+      "package_id": "pkg_g12_math_soc_2026",
+      "subject_id": "math_soc_g12",
+      "name_en": "Grade 12 Mathematics (Social Science)",
+      "name_am": "የ12ኛ ክፍል ሂሳብ (የማህበራዊ ሳይንስ)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 480000,
+      "publisher": "FidelLearn Original Demonstration",
+      "license": "demo_evaluation",
+      "attribution": "FidelLearn original demonstration content",
+      "is_downloaded": true
     }
   ],
   "subjects": [
@@ -313,6 +327,16 @@
       "stream": "social",
       "icon_asset": "assets/images/economics_icon.png",
       "sort_order": 3
+    },
+    {
+      "id": "math_soc_g12",
+      "code": "MATH12",
+      "name_en": "Mathematics (Social Science)",
+      "name_am": "ሒሳብ (የማህበራዊ ሳይንስ)",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 4
     }
   ],
   "units": [

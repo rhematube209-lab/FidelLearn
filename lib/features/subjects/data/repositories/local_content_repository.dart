@@ -38,6 +38,12 @@ class LocalContentRepository implements ContentRepository {
                     'assets/seed/civics_2013_seed.json',
                     'assets/seed/civics_2014_seed.json',
                     'assets/seed/civics_2015_seed.json',
+                    'assets/seed/history_g12_seed.json',
+                    'assets/seed/geography_g12_seed.json',
+                    'assets/seed/economics_g12_seed.json',
+                    'assets/seed/english_g12_seed.json',
+                    'assets/seed/aptitude_g12_seed.json',
+                    'assets/seed/math_social_g12_seed.json',
                     'assets/seed/secondary_curriculum_seed.json',
                   ]);
 
@@ -84,7 +90,16 @@ class LocalContentRepository implements ContentRepository {
           }
           if (data.containsKey('subjects')) {
             for (final s in data['subjects'] as List<dynamic>) {
-              final subj = Subject.fromJson(s as Map<String, dynamic>);
+              var subj = Subject.fromJson(s as Map<String, dynamic>);
+              if (subj.id == 'math_g12') {
+                final defMath =
+                    resolveDefaultSubject('math_g12', grade: subj.grade);
+                subj = subj.copyWith(
+                  stream: 'common',
+                  scope: SubjectScope.commonExam,
+                  availableVariants: defMath.availableVariants,
+                );
+              }
               if (seenSubjectIds.add(subj.id)) {
                 _subjects.add(subj);
               }
@@ -158,21 +173,56 @@ class LocalContentRepository implements ContentRepository {
     required String stream,
   }) async {
     await initializeSeedData();
-    final list = _subjects
-        .where(
-          (s) =>
-              (grade == null || s.grade == grade) &&
-              (s.stream == stream ||
-                  s.stream == 'common' ||
-                  s.stream == 'general'),
-        )
-        .toList();
+    final list = _subjects.where(
+      (s) {
+        if (grade != null && s.grade != grade) return false;
+        if (stream == 'natural') {
+          if (s.stream == 'social' ||
+              s.id.contains('hist') ||
+              s.id.contains('geo') ||
+              s.id.contains('econ')) {
+            return false;
+          }
+          return s.stream == 'natural' ||
+              s.stream == 'common' ||
+              s.stream == 'general';
+        } else if (stream == 'social') {
+          if (s.stream == 'natural' ||
+              s.id.contains('bio') ||
+              s.id.contains('phys') ||
+              s.id.contains('chem')) {
+            return false;
+          }
+          return s.stream == 'social' ||
+              s.stream == 'common' ||
+              s.stream == 'general';
+        }
+        return s.stream == stream ||
+            s.stream == 'common' ||
+            s.stream == 'general';
+      },
+    ).toList();
 
     // Ensure all standard subjects for this grade/stream are available
     final defaultList = getAllDefaultSubjects(grade: grade ?? 12);
     final existingIds = list.map((s) => s.id.toLowerCase()).toSet();
     final existingNames = list.map((s) => s.nameEn.toLowerCase()).toSet();
     for (final def in defaultList) {
+      if (stream == 'natural') {
+        if (def.stream == 'social' ||
+            def.id.contains('hist') ||
+            def.id.contains('geo') ||
+            def.id.contains('econ')) {
+          continue;
+        }
+      } else if (stream == 'social') {
+        if (def.stream == 'natural' ||
+            def.id.contains('bio') ||
+            def.id.contains('phys') ||
+            def.id.contains('chem')) {
+          continue;
+        }
+      }
       if ((def.stream == stream ||
               def.stream == 'common' ||
               def.stream == 'general') &&
@@ -247,20 +297,50 @@ class LocalContentRepository implements ContentRepository {
     final effectiveStream = stream ??
         (lower.contains('hist') ||
                 lower.contains('geo') ||
-                lower.contains('econ')
+                lower.contains('econ') ||
+                lower.contains('soc')
             ? 'social'
             : 'natural');
 
     if (lower.contains('math')) {
+      final isSocial = lower.contains('soc') || effectiveStream == 'social';
+      final variants = [
+        SubjectExamVariant(
+          variantId: 'math_g${grade}_natural',
+          subjectId: isSocial ? 'math_soc_g$grade' : canonId,
+          variantCode: ExamVariantCode.naturalScience,
+          nameEn: 'Mathematics (Natural Science)',
+          nameAm: 'ሒሳብ (የተፈጥሮ ሳይንስ)',
+          streamEligibility: 'natural',
+          assessmentStructure: AssessmentStructure.curriculum,
+          packageId: 'pkg_g${grade}_math_nat_2026',
+          manifestId: 'manifest_math_natural_g$grade',
+        ),
+        SubjectExamVariant(
+          variantId: 'math_g${grade}_social',
+          subjectId: isSocial ? 'math_soc_g$grade' : canonId,
+          variantCode: ExamVariantCode.socialScience,
+          nameEn: 'Mathematics (Social Science)',
+          nameAm: 'ሒሳብ (የማህበራዊ ሳይንስ)',
+          streamEligibility: 'social',
+          assessmentStructure: AssessmentStructure.curriculum,
+          packageId: 'pkg_g${grade}_math_soc_2026',
+          manifestId: 'manifest_math_social_g$grade',
+        ),
+      ];
+
       return Subject(
-        id: canonId,
-        code: 'MATH$grade',
+        id: isSocial ? 'math_soc_g$grade' : canonId,
+        code: isSocial ? 'MATHSOC$grade' : 'MATH$grade',
         nameEn: 'Mathematics',
         nameAm: 'ሒሳብ',
         grade: grade,
-        stream: effectiveStream,
+        stream: isSocial ? 'social' : 'common',
+        scope: SubjectScope.commonExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/math_icon.png',
         sortOrder: 1,
+        availableVariants: variants,
       );
     } else if (lower.contains('bio')) {
       return Subject(
@@ -270,8 +350,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ባዮሎጂ',
         grade: grade,
         stream: 'natural',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/biology_icon.png',
         sortOrder: 2,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'biology_g${grade}_natural',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.naturalScience,
+            nameEn: 'Biology',
+            nameAm: 'ባዮሎጂ',
+            streamEligibility: 'natural',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_bio_2026',
+            manifestId: 'manifest_biology_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('phys')) {
       return Subject(
@@ -281,8 +376,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ፊዚክስ',
         grade: grade,
         stream: 'natural',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/physics_icon.png',
         sortOrder: 3,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'physics_g${grade}_natural',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.naturalScience,
+            nameEn: 'Physics',
+            nameAm: 'ፊዚክስ',
+            streamEligibility: 'natural',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_physics_2026',
+            manifestId: 'manifest_physics_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('chem')) {
       return Subject(
@@ -292,8 +402,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ኬሚስትሪ',
         grade: grade,
         stream: 'natural',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/chemistry_icon.png',
         sortOrder: 4,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'chemistry_g${grade}_natural',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.naturalScience,
+            nameEn: 'Chemistry',
+            nameAm: 'ኬሚስትሪ',
+            streamEligibility: 'natural',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_chem_2026',
+            manifestId: 'manifest_chemistry_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('eng')) {
       return Subject(
@@ -303,8 +428,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'እንግሊዝኛ',
         grade: grade,
         stream: 'common',
+        scope: SubjectScope.commonExam,
+        assessmentStructure: AssessmentStructure.mixed,
         iconAsset: 'assets/images/english_icon.png',
         sortOrder: 5,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'english_g${grade}_shared',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.shared,
+            nameEn: 'English',
+            nameAm: 'እንግሊዝኛ',
+            streamEligibility: 'common',
+            assessmentStructure: AssessmentStructure.mixed,
+            packageId: 'pkg_g${grade}_english_2026',
+            manifestId: 'manifest_english_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('apt')) {
       return Subject(
@@ -314,8 +454,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'አፕቲትዩድ',
         grade: grade,
         stream: 'common',
+        scope: SubjectScope.commonExam,
+        assessmentStructure: AssessmentStructure.skillBased,
         iconAsset: 'assets/images/aptitude_icon.png',
         sortOrder: 7,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'aptitude_g${grade}_shared',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.shared,
+            nameEn: 'Scholastic Aptitude',
+            nameAm: 'አፕቲትዩድ',
+            streamEligibility: 'common',
+            assessmentStructure: AssessmentStructure.skillBased,
+            packageId: 'pkg_g${grade}_aptitude_2026',
+            manifestId: 'manifest_aptitude_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('hist')) {
       return Subject(
@@ -325,8 +480,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ታሪክ',
         grade: grade,
         stream: 'social',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/history_icon.png',
-        sortOrder: 1,
+        sortOrder: 8,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'history_g${grade}_social',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.socialScience,
+            nameEn: 'History',
+            nameAm: 'ታሪክ',
+            streamEligibility: 'social',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_history_2026',
+            manifestId: 'manifest_history_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('geo')) {
       return Subject(
@@ -336,8 +506,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ጂኦግራፊ',
         grade: grade,
         stream: 'social',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/geography_icon.png',
-        sortOrder: 2,
+        sortOrder: 9,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'geography_g${grade}_social',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.socialScience,
+            nameEn: 'Geography',
+            nameAm: 'ጂኦግራፊ',
+            streamEligibility: 'social',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_geography_2026',
+            manifestId: 'manifest_geography_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('econ')) {
       return Subject(
@@ -347,8 +532,23 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ኢኮኖሚክስ',
         grade: grade,
         stream: 'social',
+        scope: SubjectScope.streamExam,
+        assessmentStructure: AssessmentStructure.curriculum,
         iconAsset: 'assets/images/economics_icon.png',
-        sortOrder: 3,
+        sortOrder: 10,
+        availableVariants: [
+          SubjectExamVariant(
+            variantId: 'economics_g${grade}_social',
+            subjectId: canonId,
+            variantCode: ExamVariantCode.socialScience,
+            nameEn: 'Economics',
+            nameAm: 'ኢኮኖሚክስ',
+            streamEligibility: 'social',
+            assessmentStructure: AssessmentStructure.curriculum,
+            packageId: 'pkg_g${grade}_economics_2026',
+            manifestId: 'manifest_economics_g$grade',
+          ),
+        ],
       );
     } else if (lower.contains('civ')) {
       return Subject(
@@ -358,7 +558,10 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'ስነ-ዜጋና ስነ-ምግባር',
         grade: grade,
         stream: 'common',
-        sortOrder: 6,
+        scope: SubjectScope.curriculumOnly,
+        assessmentStructure: AssessmentStructure.curriculum,
+        iconAsset: 'assets/images/civics_icon.png',
+        sortOrder: 11,
       );
     } else {
       return Subject(
@@ -368,26 +571,26 @@ class LocalContentRepository implements ContentRepository {
         nameAm: 'የትምህርት ዓይነት',
         grade: grade,
         stream: effectiveStream,
-        sortOrder: 10,
+        sortOrder: 12,
       );
     }
   }
 
   static List<Subject> getAllDefaultSubjects({int grade = 12}) {
     return [
-      resolveDefaultSubject('math_g$grade', grade: grade, stream: 'natural'),
+      resolveDefaultSubject('math_g$grade', grade: grade, stream: 'common'),
       resolveDefaultSubject('biology_g$grade', grade: grade, stream: 'natural'),
       resolveDefaultSubject('physics_g$grade', grade: grade, stream: 'natural'),
       resolveDefaultSubject('chemistry_g$grade',
           grade: grade, stream: 'natural'),
       resolveDefaultSubject('english_g$grade', grade: grade, stream: 'common'),
       resolveDefaultSubject('aptitude_g$grade', grade: grade, stream: 'common'),
-      resolveDefaultSubject('civics_g$grade', grade: grade, stream: 'common'),
       resolveDefaultSubject('history_g$grade', grade: grade, stream: 'social'),
       resolveDefaultSubject('geography_g$grade',
           grade: grade, stream: 'social'),
       resolveDefaultSubject('economics_g$grade',
           grade: grade, stream: 'social'),
+      resolveDefaultSubject('civics_g$grade', grade: grade, stream: 'common'),
     ];
   }
 
@@ -965,13 +1168,19 @@ class LocalContentRepository implements ContentRepository {
   @override
   Future<List<Unit>> getUnits(String subjectId) async {
     await initializeSeedData();
-    final matched = _units
-        .where((u) =>
-            matchesSubjectId(u.subjectId, subjectId) ||
-            matchesSubjectDiscipline(u.subjectId, subjectId))
-        .toList()
-      ..sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
-    if (matched.isNotEmpty) return matched;
+    var matched =
+        _units.where((u) => matchesSubjectId(u.subjectId, subjectId)).toList();
+    if (matched.isNotEmpty) {
+      matched.sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
+      return matched;
+    }
+    matched = _units
+        .where((u) => matchesSubjectDiscipline(u.subjectId, subjectId))
+        .toList();
+    if (matched.isNotEmpty) {
+      matched.sort((a, b) => a.unitNumber.compareTo(b.unitNumber));
+      return matched;
+    }
     return getDefaultUnits(subjectId);
   }
 
@@ -1070,6 +1279,8 @@ class LocalContentRepository implements ContentRepository {
     List<int>? examYears,
     int? limit,
     bool practiceEligibleOnly = false,
+    String? stream,
+    ExamVariantCode? examVariant,
   }) async {
     await initializeSeedData();
 
@@ -1088,6 +1299,38 @@ class LocalContentRepository implements ContentRepository {
       if (practiceEligibleOnly && !q.isPracticeEligible) {
         return false;
       }
+
+      // Cross-stream and exam variant isolation
+      if (examVariant != null) {
+        if (q.examVariant != null &&
+            q.examVariant != ExamVariantCode.shared &&
+            q.examVariant != examVariant) {
+          return false;
+        }
+      }
+      if (stream != null && stream != 'common' && stream != 'general') {
+        if (q.stream != 'common' &&
+            q.stream != 'general' &&
+            q.stream != stream) {
+          return false;
+        }
+        if (stream == 'natural' &&
+            (q.examVariant == ExamVariantCode.socialScience ||
+                q.subjectId.toLowerCase().contains('soc'))) {
+          return false;
+        }
+        if (stream == 'social' &&
+            (q.examVariant == ExamVariantCode.naturalScience ||
+                q.subjectId.toLowerCase().contains('nat'))) {
+          return false;
+        }
+      }
+      if (subjectId.toLowerCase().contains('soc') &&
+          (q.stream == 'natural' ||
+              q.examVariant == ExamVariantCode.naturalScience)) {
+        return false;
+      }
+
       if (unitId != null &&
           q.unitId != unitId &&
           q.curriculumUnitId != unitId) {

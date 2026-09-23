@@ -199,6 +199,8 @@ class SupabaseContentRepository implements ContentRepository {
     List<int>? examYears,
     int? limit,
     bool practiceEligibleOnly = false,
+    String? stream,
+    ExamVariantCode? examVariant,
   }) async {
     final client = _client;
     if (client != null) {
@@ -264,6 +266,8 @@ class SupabaseContentRepository implements ContentRepository {
       examYears: examYears,
       limit: limit,
       practiceEligibleOnly: practiceEligibleOnly,
+      stream: stream,
+      examVariant: examVariant,
     );
   }
 

@@ -1,0 +1,366 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_economics_2026",
+      "subject_id": "economics_g12",
+      "name_en": "Grade 12 Economics (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል ኢኮኖሚክስ (ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "economics_g12",
+      "code": "ECON12",
+      "name_en": "Economics",
+      "name_am": "ኢኮኖሚክስ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/economics_icon.png",
+      "sort_order": 4
+    }
+  ],
+  "units": [
+    {
+      "id": "econ_u1",
+      "subject_id": "economics_g12",
+      "unit_number": 1,
+      "title_en": "Market Equilibrium & Price Mechanism",
+      "title_am": "የገበያ ሚዛንና የዋጋ ስርአት"
+    },
+    {
+      "id": "econ_u2",
+      "subject_id": "economics_g12",
+      "unit_number": 2,
+      "title_en": "National Income Accounting & GDP",
+      "title_am": "ብሔራዊ ገቢና አጠቃላይ የሀገር ውስጥ ምርት"
+    },
+    {
+      "id": "econ_u3",
+      "subject_id": "economics_g12",
+      "unit_number": 3,
+      "title_en": "Money, Banking & Financial Institutions",
+      "title_am": "ገንዘብ፣ ባንክና የፋይናንስ ተቋማት"
+    },
+    {
+      "id": "econ_u4",
+      "subject_id": "economics_g12",
+      "unit_number": 4,
+      "title_en": "Macroeconomic Problems & Policies",
+      "title_am": "የማክሮ ኢኮኖሚ ችግሮችና ፖሊሲዎች"
+    },
+    {
+      "id": "econ_u5",
+      "subject_id": "economics_g12",
+      "unit_number": 5,
+      "title_en": "International Trade & Economic Growth",
+      "title_am": "ዓለም አቀፍ ንግድና የኢኮኖሚ እድገት"
+    }
+  ],
+  "topics": [
+    {
+      "id": "econ_t1_1",
+      "unit_id": "econ_u1",
+      "topic_number": 1,
+      "title_en": "Price Elasticity of Demand and Supply Equilibrium",
+      "title_am": "የፍላጎትና አቅርቦት ዋጋ የመለጠጥ ባህሪና የገበያ ሚዛን"
+    },
+    {
+      "id": "econ_t2_1",
+      "unit_id": "econ_u2",
+      "topic_number": 1,
+      "title_en": "GDP Measurement Approaches, Nominal vs. Real GDP",
+      "title_am": "የሀገር ውስጥ ምርት ስሌት ዘዴዎች፣ ስመ-ስም እና እውነተኛ ጂዲፒ"
+    },
+    {
+      "id": "econ_t3_1",
+      "unit_id": "econ_u3",
+      "topic_number": 1,
+      "title_en": "Functions of Central Bank & Commercial Banking Credit Creation",
+      "title_am": "የማዕከላዊ ባንክ ተግባራትና የንግድ ባንኮች የብድር ፈጠራ"
+    },
+    {
+      "id": "econ_t4_1",
+      "unit_id": "econ_u4",
+      "topic_number": 1,
+      "title_en": "Inflationary Pressures, Types of Unemployment & Fiscal Stabilization",
+      "title_am": "የዋጋ ግሽበት፣ የስራ አጥነት ዓይነቶችና የፊስካል ፖሊሲ"
+    },
+    {
+      "id": "econ_t5_1",
+      "unit_id": "econ_u5",
+      "topic_number": 1,
+      "title_en": "Comparative Advantage, Exchange Rate Regimes & Balance of Payments",
+      "title_am": "አንጻራዊ ብልጫ፣ የውጭ ምንዛሪ ተመንና የክፍያ ሚዛን"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_econ_2015_01",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "econ_u2",
+      "topic_id": "econ_t2_1",
+      "exam_year": 2015,
+      "question_number": 1,
+      "question_text_en": "Gross Domestic Product (GDP) calculated using the Expenditure Approach is represented by which standard macroeconomic identity?",
+      "question_text_am": "በወጪ ስሌት ዘዴ የሚሰላው አጠቃላይ የሀገር ውስጥ ምርት (GDP) በየትኛው መደበኛ የማክሮ ኢኮኖሚ ቀመር ይገለጻል?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_e15_1_a",
+          "label": "A",
+          "text_en": "GDP = C + I + G + (X - M)",
+          "text_am": "GDP = C + I + G + (X - M)",
+          "is_correct": true
+        },
+        {
+          "id": "c_e15_1_b",
+          "label": "B",
+          "text_en": "GDP = Wages + Interest + Rent + Profits + Taxes",
+          "text_am": "GDP = ደመወዝ + ወለድ + ኪራይ + ትርፍ + ታክስ",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_1_c",
+          "label": "C",
+          "text_en": "GDP = Total Value Added - Depreciation",
+          "text_am": "GDP = ጠቅላላ የተጨመረ እሴት - እርጅና",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_1_d",
+          "label": "D",
+          "text_en": "GDP = C + S + T - Imports",
+          "text_am": "GDP = C + S + T - አስመጪ ንግድ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Under the expenditure approach, GDP measures total spending on final goods and services produced domestically within a given time period. It is composed of four main components: Personal Consumption expenditure (C), Gross Private Domestic Investment (I), Government Purchases of goods and services (G), and Net Exports (X - M), where X represents Exports and M represents Imports: GDP = C + I + G + (X - M).",
+        "simpler_explanation_en": "GDP expenditure formula adds consumer spending (C), business investment (I), government spending (G), and net exports (X - M).",
+        "key_concept": "National Income Accounting and components of Aggregate Expenditure.",
+        "common_pitfall": "Forgetting that imports (M) must be subtracted from exports (X) rather than added to domestic investment."
+      }
+    },
+    {
+      "id": "q_econ_2015_02",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "econ_u4",
+      "topic_id": "econ_t4_1",
+      "exam_year": 2015,
+      "question_number": 2,
+      "question_text_en": "When an economy is experiencing high inflation caused by excessive aggregate demand, which combination of fiscal and monetary policy measures is appropriate to cool down price pressures?",
+      "question_text_am": "አንድ ኢኮኖሚ ከልክ በላይ በሆነ አጠቃላይ ፍላጎት ምክንያት ከፍተኛ የዋጋ ግሽበት ሲገጥመው፣ የዋጋ ጫናውን ለማርገብ ተገቢው የፊስካል እና የገንዘብ ፖሊሲ ውህደት የትኛው ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_e15_2_a",
+          "label": "A",
+          "text_en": "Contractionary fiscal policy (reduce government spending / raise taxes) and contractionary monetary policy (raise interest rates / reserve requirements)",
+          "text_am": "የሚያቀዘቅዝ የፊስካል ፖሊሲ (የመንግስት ወጪን መቀነስ/ታክስ መጨመር) እና የሚያቀዘቅዝ የገንዘብ ፖሊሲ (የወለድ ምጣኔን/የተቀማጭ መጠባበቂያን መጨመር)",
+          "is_correct": true
+        },
+        {
+          "id": "c_e15_2_b",
+          "label": "B",
+          "text_en": "Expansionary fiscal policy (increase subsidies) and expansionary monetary policy (print currency)",
+          "text_am": "አስፋፊ የፊስካል ፖሊሲ (ድጎማ መጨመር) እና አስፋፊ የገንዘብ ፖሊሲ (ገንዘብ ማተም)",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_2_c",
+          "label": "C",
+          "text_en": "Reduce central bank reserve requirements and increase national minimum wages",
+          "text_am": "የማዕከላዊ ባንክ የተጠባባቂ ገንዘብ መጠንን መቀነስ እና ዝቅተኛ ደመወዝን ማሳደግ",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_2_d",
+          "label": "D",
+          "text_en": "Lower corporate tax rates and increase open-market purchases of government bonds",
+          "text_am": "የንግድ ግብርን መቀነስ እና በመንግስት ቦንድ ግዢ ገበያ ውስጥ ገንዘብ ማሰራጨት",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Demand-pull inflation occurs when aggregate demand outpaces aggregate supply (AD > AS). To stabilize price levels, governments and central banks implement contractionary (tight) macroeconomic policies: 1) Fiscal: Decrease government spending (G) and increase direct/indirect taxes (T) to reduce consumer disposable income; 2) Monetary: Increase policy interest rates, sell government securities in open market operations (OMO), and raise commercial bank reserve ratios to restrict bank credit expansion and money supply growth.",
+        "simpler_explanation_en": "To stop inflation, the government cuts spending, raises taxes, and the central bank raises interest rates to slow borrowing.",
+        "key_concept": "Counter-cyclical macroeconomic stabilization policies against demand-pull inflation.",
+        "common_pitfall": "Confusing expansionary policies (used during recessions) with contractionary policies (used during inflationary booms)."
+      }
+    },
+    {
+      "id": "q_econ_2015_03",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "econ_u1",
+      "topic_id": "econ_t1_1",
+      "exam_year": 2015,
+      "question_number": 3,
+      "question_text_en": "If the price of teff rises by 10% and the quantity demanded falls by 2%, the price elasticity of demand (|Ed|) for teff is:",
+      "question_text_am": "የጤፍ ዋጋ በ10 በመቶ ሲጨምር የሚፈለገው መጠን በ2 በመቶ ቢቀንስ፣ የጤፍ የፍላጎት ዋጋ መለጠጥ (|Ed|) ስንት ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_e15_3_a",
+          "label": "A",
+          "text_en": "0.2 (Inelastic demand)",
+          "text_am": "0.2 (የማይለጠጥ ፍላጎት)",
+          "is_correct": true
+        },
+        {
+          "id": "c_e15_3_b",
+          "label": "B",
+          "text_en": "5.0 (Elastic demand)",
+          "text_am": "5.0 (የሚለጠጥ ፍላጎት)",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_3_c",
+          "label": "C",
+          "text_en": "1.0 (Unitary elastic demand)",
+          "text_am": "1.0 (ተመጣጣኝ የመለጠጥ ባህሪ)",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_3_d",
+          "label": "D",
+          "text_en": "0.0 (Perfectly inelastic demand)",
+          "text_am": "0.0 (ፈጽሞ የማይለጠጥ ፍላጎት)",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Price Elasticity of Demand (Ed) = (% change in Quantity Demanded) / (% change in Price) = (-2%) / (+10%) = -0.2. In absolute terms, |Ed| = 0.2. Since |Ed| < 1, the demand is price inelastic. Because teff is an essential staple food with few close substitutes in the Ethiopian diet, consumers are relatively unresponsive to price increases.",
+        "simpler_explanation_en": "Elasticity = 2% / 10% = 0.2. Because it is less than 1, demand for teff is inelastic (a necessity).",
+        "key_concept": "Price Elasticity of Demand coefficient calculation and necessity classification.",
+        "common_pitfall": "Dividing price change by quantity change (10 / 2 = 5) instead of quantity change by price change."
+      }
+    },
+    {
+      "id": "q_econ_2015_04",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "econ_u3",
+      "topic_id": "econ_t3_1",
+      "exam_year": 2015,
+      "question_number": 4,
+      "question_text_en": "If the National Bank of Ethiopia sets a legal reserve requirement of 10% (0.10) for commercial banks, the theoretical simple money multiplier in the banking system is:",
+      "question_text_am": "የኢትዮጵያ ብሔራዊ ባንክ ለንግድ ባንኮች ህጋዊ የተጠባባቂ ገንዘብ መጠን 10% (0.10) ቢወስን፣ በባንክ ስርዓቱ ውስጥ የንድፈ ሀሳብ የገንዘብ አባዥ (money multiplier) ስንት ይሆናል?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_e15_4_a",
+          "label": "A",
+          "text_en": "10",
+          "text_am": "10",
+          "is_correct": true
+        },
+        {
+          "id": "c_e15_4_b",
+          "label": "B",
+          "text_en": "5",
+          "text_am": "5",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_4_c",
+          "label": "C",
+          "text_en": "1",
+          "text_am": "1",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_4_d",
+          "label": "D",
+          "text_en": "100",
+          "text_am": "100",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The simple money (deposit) multiplier is calculated as the inverse of the required reserve ratio: Money Multiplier (m) = 1 / RRR. With a required reserve ratio of 10% (0.10), m = 1 / 0.10 = 10. This indicates that for every 1 Birr of initial new deposit into commercial banks, the commercial banking system can theoretically create up to 10 Birr of total money supply through loans and checking deposits (assuming zero excess reserves and zero currency drain).",
+        "simpler_explanation_en": "The money multiplier formula is 1 divided by the reserve ratio: 1 / 0.10 = 10.",
+        "key_concept": "Fractional reserve banking, required reserve ratios, and credit creation dynamics.",
+        "common_pitfall": "Multiplying the reserve ratio directly by 100 instead of calculating the reciprocal 1 / RRR."
+      }
+    },
+    {
+      "id": "q_econ_2015_05",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "economics_g12",
+      "unit_id": "econ_u5",
+      "topic_id": "econ_t5_1",
+      "exam_year": 2015,
+      "question_number": 5,
+      "question_text_en": "According to David Ricardo's Classical Theory of Comparative Advantage, international trade is mutually beneficial to two countries even if one country is more efficient in producing all goods, provided that:",
+      "question_text_am": "በዴቪድ ሪካርዶ የአንጻራዊ ብልጫ (Comparative Advantage) ንድፈ ሀሳብ መሰረት፣ አንደኛው ሀገር ሁሉንም እቃዎች በማምረት የበለጠ ብቃት ቢኖረውም እንኳ፣ በሁለቱ አገሮች መካከል የሚደረግ ዓለም አቀፍ ንግድ ሁለቱንም ተጠቃሚ የሚያደርገው በምን ሁኔታ ነው?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_e15_5_a",
+          "label": "A",
+          "text_en": "The two countries have different opportunity costs of production",
+          "text_am": "ሁለቱ አገራት የተለያየ የማምረቻ የዕድል ወጪ (Opportunity Cost) ሲኖራቸው",
+          "is_correct": true
+        },
+        {
+          "id": "c_e15_5_b",
+          "label": "B",
+          "text_en": "Both nations enforce strict protective import tariffs",
+          "text_am": "ሁለቱም አገራት ጥብቅ የገቢ ንግድ ቀረጥ ሲጥሉ",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_5_c",
+          "label": "C",
+          "text_en": "The developing nation maintains an absolute cost advantage across both commodities",
+          "text_am": "ታዳጊው አገር በሁለቱም ምርቶች ፍፁም የወጪ ብልጫ ሲኖረው",
+          "is_correct": false
+        },
+        {
+          "id": "c_e15_5_d",
+          "label": "D",
+          "text_en": "Currency exchange rates are completely fixed by international treaties",
+          "text_am": "የውጭ ምንዛሪ ተመን በዓለም አቀፍ ስምምነቶች ሙሉ በሙሉ ቋሚ ሲደረግ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "David Ricardo proved that absolute advantage is not a necessary condition for trade. As long as the domestic opportunity cost of producing commodities differs between trading partners, each nation possesses a comparative advantage in the good it can produce at a lower relative opportunity cost. By specializing in the production of goods in which they have a comparative advantage and trading with one another, total global output increases and both nations can consume beyond their domestic Production Possibilities Frontier (PPF).",
+        "simpler_explanation_en": "Trade helps both countries when they specialize in what they can produce with the lowest opportunity cost.",
+        "key_concept": "The Ricardian Law of Comparative Advantage and opportunity cost differentials.",
+        "common_pitfall": "Confusing comparative advantage (lower opportunity cost) with Adam Smith's absolute advantage (lower absolute resource input)."
+      }
+    }
+  ]
+}

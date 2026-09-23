@@ -1,0 +1,366 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_geography_2026",
+      "subject_id": "geography_g12",
+      "name_en": "Grade 12 Geography of Ethiopia & The Horn (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል ጂኦግራፊ (የኢትዮጵያና የአፍሪካ ቀንድ ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "geography_g12",
+      "code": "GEO12",
+      "name_en": "Geography",
+      "name_am": "ጂኦግራፊ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/geography_icon.png",
+      "sort_order": 3
+    }
+  ],
+  "units": [
+    {
+      "id": "geo_u1",
+      "subject_id": "geography_g12",
+      "unit_number": 1,
+      "title_en": "Geology & Rift Valley of Ethiopia",
+      "title_am": "የኢትዮጵያ ጂኦሎጂና ስምጥ ሸለቆ"
+    },
+    {
+      "id": "geo_u2",
+      "subject_id": "geography_g12",
+      "unit_number": 2,
+      "title_en": "Climate & Drainage Systems of Ethiopia",
+      "title_am": "የአየር ንብረትና የውሃ ፍሰት ስርአቶች"
+    },
+    {
+      "id": "geo_u3",
+      "subject_id": "geography_g12",
+      "unit_number": 3,
+      "title_en": "Natural Resources & Environmental Issues",
+      "title_am": "የተፈጥሮ ሀብትና የአካባቢ ጥበቃ"
+    },
+    {
+      "id": "geo_u4",
+      "subject_id": "geography_g12",
+      "unit_number": 4,
+      "title_en": "Population Dynamics & Urbanization",
+      "title_am": "የህዝብ ቁጥር እድገትና ከተሞች"
+    },
+    {
+      "id": "geo_u5",
+      "subject_id": "geography_g12",
+      "unit_number": 5,
+      "title_en": "Economic Activities & Sustainable Development",
+      "title_am": "የኢኮኖሚ እንቅስቃሴዎችና ዘላቂ ልማት"
+    }
+  ],
+  "topics": [
+    {
+      "id": "geo_t1_1",
+      "unit_id": "geo_u1",
+      "topic_number": 1,
+      "title_en": "Geological Eras, Rock Types & The Ethiopian Rift Valley",
+      "title_am": "የጂኦሎጂ ዘመናት፣ የድንጋይ ዓይነቶችና የኢትዮጵያ ስምጥ ሸለቆ"
+    },
+    {
+      "id": "geo_t2_1",
+      "unit_id": "geo_u2",
+      "topic_number": 1,
+      "title_en": "Atmospheric Mechanisms, Rainfall Regimes & Major River Basins",
+      "title_am": "የአየር ንብረት ሁኔታዎች፣ የዝናብ ስርጭትና ዋና ዋና የተፋሰስ ስርአቶች"
+    },
+    {
+      "id": "geo_t3_1",
+      "unit_id": "geo_u3",
+      "topic_number": 1,
+      "title_en": "Soil Types, Degradation & Conservation Strategies",
+      "title_am": "የአፈር ዓይነቶች፣ መሸርሸርና የአፈር ጥበቃ ስልቶች"
+    },
+    {
+      "id": "geo_t4_1",
+      "unit_id": "geo_u4",
+      "topic_number": 1,
+      "title_en": "Demographic Structure, Migration & Urban Growth",
+      "title_am": "የህዝብ ስነ-ተዋልዶ መዋቅር፣ ፍልሰትና የከተሞች እድገት"
+    },
+    {
+      "id": "geo_t5_1",
+      "unit_id": "geo_u5",
+      "topic_number": 1,
+      "title_en": "Agricultural Systems, Industrialization & Infrastructure",
+      "title_am": "የግብርና ስርአቶች፣ ኢንዱስትሪና መሰረተ ልማት"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_geo_2015_01",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "geography_g12",
+      "unit_id": "geo_u1",
+      "topic_id": "geo_t1_1",
+      "exam_year": 2015,
+      "question_number": 1,
+      "question_text_en": "The formation of the Great East African Rift Valley, which bisects the Ethiopian highlands into the Northwestern and Southeastern plateaus, occurred during which geological era?",
+      "question_text_am": "የኢትዮጵያን ከፍተኛ ቦታዎች ወደ ሰሜን ምዕራብና ደቡብ ምስራቅ ደጋማ ቦታዎች የከፈለው የታላቁ የምስራቅ አፍሪካ ስምጥ ሸለቆ የተፈጠረው በየትኛው የጂኦሎጂ ዘመን ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_g15_1_a",
+          "label": "A",
+          "text_en": "Cenozoic Era (Tertiary and Quaternary periods)",
+          "text_am": "ሴኖዞይክ ዘመን (በተርሸሪና ኳተርነሪ ክፍለ ዘመናት)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g15_1_b",
+          "label": "B",
+          "text_en": "Mesozoic Era (Jurassic and Cretaceous periods)",
+          "text_am": "ሜሶዞይክ ዘመን (በጁራሲክና ክሬተሺየስ ክፍለ ዘመናት)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_1_c",
+          "label": "C",
+          "text_en": "Paleozoic Era (Permian and Carboniferous periods)",
+          "text_am": "ፓሊዮዞይክ ዘመን (በፐርሚያንና ካርቦኒፈረስ ክፍለ ዘመናት)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_1_d",
+          "label": "D",
+          "text_en": "Precambrian Era",
+          "text_am": "ፕሪካምብሪያን ዘመን",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The Ethiopian Rift Valley was formed during the Cenozoic Era through intense tectonic epeirogenic uplifting, deep faulting, and rifting that began in the Oligocene/Miocene (Tertiary period) and continued through the Quaternary period. Massive basaltic volcanic outpourings (Trappean series) accompanied this rifting, dividing the older Mesozoic sedimentary and crystalline basement formations into the Northwestern Highlands and Southeastern Highlands.",
+        "simpler_explanation_en": "The Rift Valley and its volcanoes formed in the Cenozoic Era, splitting Ethiopia's plateau in two.",
+        "key_concept": "Cenozoic tectonism, faulting, and the structural morphology of the Ethiopian Rift System.",
+        "common_pitfall": "Confusing the Cenozoic rifting with the Mesozoic marine transgression that formed limestone and sandstone."
+      }
+    },
+    {
+      "id": "q_geo_2015_02",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "geography_g12",
+      "unit_id": "geo_u2",
+      "topic_id": "geo_t2_1",
+      "exam_year": 2015,
+      "question_number": 2,
+      "question_text_en": "Which major Ethiopian river basin drains the largest volume of water towards the Nile River system, contributing approximately 60% of the main Nile's total discharge at Aswan?",
+      "question_text_am": "ወደ አባይ (ናይል) ወንዝ ከፍተኛውን የውሃ መጠን የሚያስገባውና በአስዋን ለሚገኘው የናይል ወንዝ ጠቅላላ ፍሰት 60% የሚሆነውን አስተዋጽኦ የሚያደርገው ዋናው የኢትዮጵያ ወንዝ ተፋሰስ የትኛው ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_g15_2_a",
+          "label": "A",
+          "text_en": "The Abbay (Blue Nile) River Basin",
+          "text_am": "የዓባይ (ብሉ ናይል) ወንዝ ተፋሰስ",
+          "is_correct": true
+        },
+        {
+          "id": "c_g15_2_b",
+          "label": "B",
+          "text_en": "The Wabe Shebelle River Basin",
+          "text_am": "የዋቢ ሸበሌ ወንዝ ተፋሰስ",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_2_c",
+          "label": "C",
+          "text_en": "The Genale-Dawa River Basin",
+          "text_am": "የገናሌ-ዳዋ ወንዝ ተፋሰስ",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_2_d",
+          "label": "D",
+          "text_en": "The Awash River Basin",
+          "text_am": "የአዋሽ ወንዝ ተፋሰስ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The Abbay (Blue Nile) basin is Ethiopia's most hydrologically significant drainage system, with an annual runoff of over 54 billion cubic meters (BCM). Together with the Tekeze (Atbara) and Baro-Akobo basins, Ethiopia contributes over 85% of the total water reaching Egypt and Sudan, with the Abbay alone providing nearly 60% of the Nile's total annual volume.",
+        "simpler_explanation_en": "The Abbay River discharges over 54 BCM per year, providing 60% of the entire Nile's flow.",
+        "key_concept": "Ethiopia's western drainage systems and transboundary river basin hydropolitics.",
+        "common_pitfall": "Assuming Wabe Shebelle is the largest by water volume because it is the longest river inside Ethiopia."
+      }
+    },
+    {
+      "id": "q_geo_2015_03",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "geography_g12",
+      "unit_id": "geo_u2",
+      "topic_id": "geo_t2_1",
+      "exam_year": 2015,
+      "question_number": 3,
+      "question_text_en": "In the traditional Ethiopian agro-climatic zonation system, the 'Dega' zone is characterized by which altitude range and mean annual temperature?",
+      "question_text_am": "በተለምዷዊው የኢትዮጵያ የአየር ንብረት ክልል አመዳደብ፣ 'ደጋ' በመባል የሚታወቀው ዞን በየትኛው የከፍታ ወሰን እና አማካይ አመታዊ የሙቀት መጠን ይገለጻል?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_g15_3_a",
+          "label": "A",
+          "text_en": "2,300 to 3,200 meters above sea level; 10°C to 15°C",
+          "text_am": "ከባህር ጠለል በላይ ከ2,300 እስከ 3,200 ሜትር፤ ከ10°C እስከ 15°C",
+          "is_correct": true
+        },
+        {
+          "id": "c_g15_3_b",
+          "label": "B",
+          "text_en": "1,500 to 2,300 meters above sea level; 15°C to 20°C",
+          "text_am": "ከባህር ጠለል በላይ ከ1,500 እስከ 2,300 ሜትር፤ ከ15°C እስከ 20°C",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_3_c",
+          "label": "C",
+          "text_en": "500 to 1,500 meters above sea level; 20°C to 30°C",
+          "text_am": "ከባህር ጠለል በላይ ከ500 እስከ 1,500 ሜትር፤ ከ20°C እስከ 30°C",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_3_d",
+          "label": "D",
+          "text_en": "Above 3,200 meters above sea level; below 10°C",
+          "text_am": "ከባህር ጠለል በላይ ከ3,200 ሜትር በላይ፤ ከ10°C በታች",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The traditional Ethiopian agro-climatic zones are: 1) Kur (Alpine/Wurch): >3,200 m, <10°C; 2) Dega (Temperate/Cold Highlands): 2,300–3,200 m, 10°C–15°C; 3) Woina Dega (Sub-tropical/Warm Highlands): 1,500–2,300 m, 15°C–20°C; 4) Kolla (Tropical/Warm Lowlands): 500–1,500 m, 20°C–30°C; 5) Bereha (Hot Arid Lowlands): <500 m, >30°C. Dega zones are ideal for cool-weather cereal crops like barley and wheat.",
+        "simpler_explanation_en": "Dega covers cold mountain highlands between 2,300 and 3,200 meters with temperatures between 10°C and 15°C.",
+        "key_concept": "Altitude-temperature lapse rate and traditional Ethiopian agro-ecological classification.",
+        "common_pitfall": "Confusing Dega (2,300–3,200 m) with Woina Dega (1,500–2,300 m), where the majority of Ethiopia's population lives."
+      }
+    },
+    {
+      "id": "q_geo_2015_04",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "geography_g12",
+      "unit_id": "geo_u4",
+      "topic_id": "geo_t4_1",
+      "exam_year": 2015,
+      "question_number": 4,
+      "question_text_en": "The spatial distribution of Ethiopia's population is heavily skewed, with over 80% of the national population residing in:",
+      "question_text_am": "የኢትዮጵያ ህዝብ የቦታ ስርጭት በእጅጉ የተዛባ ሲሆን፣ ከ80 በመቶ በላይ የሚሆነው የአገሪቱ ህዝብ የሚኖረው በየትኛው አካባቢ ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_g15_4_a",
+          "label": "A",
+          "text_en": "Highland zones situated above 1,500 meters altitude (Woina Dega and Dega)",
+          "text_am": "ከባህር ጠለል በላይ ከ1,500 ሜትር ከፍታ ባላቸው ደጋማ አካባቢዎች (ወይና ደጋና ደጋ)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g15_4_b",
+          "label": "B",
+          "text_en": "Lowland pastoral valleys located below 1,000 meters altitude",
+          "text_am": "ከ1,000 ሜትር ከፍታ በታች ባሉ የቆላ አርብቶ አደር ሸለቆዎች",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_4_c",
+          "label": "C",
+          "text_en": "The arid peripheral plains of Afar and Somali regions",
+          "text_am": "በአፋርና በሶማሌ ክልሎች ደረቅ የዳርቻ ሜዳዎች",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_4_d",
+          "label": "D",
+          "text_en": "The marshy lowlands of the western Gambella borderlands",
+          "text_am": "በምዕራብ ጋምቤላ የድንበር አካባቢ ረግረጋማ ቆላማ ቦታዎች",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Ethiopia's population settlement is predominantly concentrated in the highland plateau areas above 1,500 meters, which constitute only about 45% of the total land area but support over 80% to 85% of the population. This concentration is driven by favorable climatic conditions (moderate temperatures, reliable rainfall), rich volcanic soils, and historical freedom from tropical vector-borne diseases such as malaria and trypanosomiasis (sleeping sickness).",
+        "simpler_explanation_en": "Ethiopians live mostly in the cool, fertile highlands above 1,500 meters where malaria is absent and rain is plentiful.",
+        "key_concept": "Environmental determinism and altitudinal controls on Ethiopian population density.",
+        "common_pitfall": "Assuming land area corresponds proportionally to population settlement."
+      }
+    },
+    {
+      "id": "q_geo_2015_05",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "geography_g12",
+      "unit_id": "geo_u5",
+      "topic_id": "geo_t5_1",
+      "exam_year": 2015,
+      "question_number": 5,
+      "question_text_en": "Which major export commodity consistently generates the highest share of Ethiopia's agricultural foreign exchange earnings?",
+      "question_text_am": "ለኢትዮጵያ የግብርና የውጭ ምንዛሪ ገቢ ከፍተኛውን ድርሻ በተከታታይ የሚያስገኘው ዋናው የወጪ ንግድ ምርት የትኛው ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_g15_5_a",
+          "label": "A",
+          "text_en": "Coffee (Coffea Arabica)",
+          "text_am": "ቡና (አረቢካ ቡና)",
+          "is_correct": true
+        },
+        {
+          "id": "c_g15_5_b",
+          "label": "B",
+          "text_en": "Cut flowers and horticulture",
+          "text_am": "የተቆረጡ አበቦችና የሆርቲካልቸር ውጤቶች",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_5_c",
+          "label": "C",
+          "text_en": "Oilseeds (sesame and niger seed)",
+          "text_am": "የቅባት እህሎች (ሰሊጥና ኑግ)",
+          "is_correct": false
+        },
+        {
+          "id": "c_g15_5_d",
+          "label": "D",
+          "text_en": "Live animals and meat products",
+          "text_am": "ህያው እንስሳትና የስጋ ውጤቶች",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Coffee Arabica, indigenous to the southwestern montane forests of Kaffa, Jimma, Sidama, and Yirgacheffe, is Ethiopia's leading agricultural export, contributing between 30% and 35% of total merchandise export revenue. Ethiopia is Africa's largest coffee producer and the fifth largest globally, supporting the livelihoods of an estimated 15 million citizens across cultivation, processing, and distribution value chains.",
+        "simpler_explanation_en": "Coffee is Ethiopia's top foreign exchange earner, accounting for about a third of all national export revenues.",
+        "key_concept": "Commercial cash crop agriculture and international trade commodities in Ethiopia.",
+        "common_pitfall": "Overestimating the export earnings of gold or textiles compared to coffee's dominant share."
+      }
+    }
+  ]
+}

@@ -31,6 +31,8 @@ abstract class ContentRepository {
     List<int>? examYears,
     int? limit,
     bool practiceEligibleOnly = false,
+    String? stream,
+    ExamVariantCode? examVariant,
   });
   Future<Question?> getQuestionById(String id);
   Future<List<int>> getAvailableExamYears(String subjectId);

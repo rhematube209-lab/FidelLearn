@@ -1,0 +1,418 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_history_2026",
+      "subject_id": "history_g12",
+      "name_en": "Grade 12 History of Ethiopia & The Horn (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል ታሪክ (የኢትዮጵያና የአፍሪካ ቀንድ ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian National Educational Assessment and Examinations Agency (NEAEA)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "history_g12",
+      "code": "HIST12",
+      "name_en": "History",
+      "name_am": "ታሪክ",
+      "grade": 12,
+      "stream": "social",
+      "icon_asset": "assets/images/history_icon.png",
+      "sort_order": 2
+    }
+  ],
+  "units": [
+    {
+      "id": "hist_u1",
+      "subject_id": "history_g12",
+      "unit_number": 1,
+      "title_en": "State Formation & Sovereignty in Ethiopia",
+      "title_am": "የሀገር ግንባታና ሉዓላዊነት በኢትዮጵያ"
+    },
+    {
+      "id": "hist_u2",
+      "subject_id": "history_g12",
+      "unit_number": 2,
+      "title_en": "The Horn of Africa in the 19th Century",
+      "title_am": "የአፍሪካ ቀንድ በ19ኛው ክፍለ ዘመን"
+    },
+    {
+      "id": "hist_u3",
+      "subject_id": "history_g12",
+      "unit_number": 3,
+      "title_en": "Ethiopian Resistance & Victory of Adwa",
+      "title_am": "የኢትዮጵያ ተጋድሎና የአድዋ ድል"
+    },
+    {
+      "id": "hist_u4",
+      "subject_id": "history_g12",
+      "unit_number": 4,
+      "title_en": "Modernization and State Consolidation",
+      "title_am": "ዘመናዊነትና የመንግስት መጠናከር"
+    },
+    {
+      "id": "hist_u5",
+      "subject_id": "history_g12",
+      "unit_number": 5,
+      "title_en": "Contemporary Ethiopia & Global Relations",
+      "title_am": "ወቅታዊቷ ኢትዮጵያና ዓለም አቀፍ ግንኙነቶች"
+    }
+  ],
+  "topics": [
+    {
+      "id": "hist_t1_1",
+      "unit_id": "hist_u1",
+      "topic_number": 1,
+      "title_en": "Medieval & Early Modern Ethiopian States",
+      "title_am": "የመካከለኛውና የቅድመ-ዘመናዊ ዘመን የኢትዮጵያ መንግስታት"
+    },
+    {
+      "id": "hist_t2_1",
+      "unit_id": "hist_u2",
+      "topic_number": 1,
+      "title_en": "Regional Trade Routes & European Encroachment",
+      "title_am": "የቀጣናው የንግድ መስመሮችና የአውሮፓውያን መስፋፋት"
+    },
+    {
+      "id": "hist_t3_1",
+      "unit_id": "hist_u3",
+      "topic_number": 1,
+      "title_en": "Treaty of Wuchale & The Battle of Adwa (1896)",
+      "title_am": "የውጫሌ ውል እና የዓድዋ ጦርነት (1888 ዓ.ም.)"
+    },
+    {
+      "id": "hist_t4_1",
+      "unit_id": "hist_u4",
+      "topic_number": 1,
+      "title_en": "Administrative Centralization & The Italian Occupation (1936-1941)",
+      "title_am": "አስተዳደራዊ ማእከላዊነትና የፋሺስት ጣሊያን ወረራ"
+    },
+    {
+      "id": "hist_t5_1",
+      "unit_id": "hist_u5",
+      "topic_number": 1,
+      "title_en": "Post-WWII Ethiopia, African Independence & The OAU",
+      "title_am": "ከሁለተኛው የዓለም ጦርነት በኋላ፣ የአፍሪካ ነፃነትና የአፍሪካ አንድነት ድርጅት"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_hist_2015_01",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u3",
+      "topic_id": "hist_t3_1",
+      "exam_year": 2015,
+      "question_number": 1,
+      "question_text_en": "Which article of the Treaty of Wuchale, signed on May 2, 1889, created the fundamental diplomatic rift that directly culminated in the Battle of Adwa?",
+      "question_text_am": "በግንቦት 2 ቀን 1881 ዓ.ም. የተፈረመው የውጫሌ ውል የትኛው አንቀጽ ነው በቀጥታ ወደ ዓድዋ ጦርነት ላመራው ዲፕሎማሲያዊ አለመግባባት ዋነኛ መንስኤ የሆነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_1_a",
+          "label": "A",
+          "text_en": "Article XVII (17) regarding foreign relations and protectorate claims",
+          "text_am": "ስለ ውጭ ግንኙነትና የሞግዚት አስተዳደር የሚደነግገው አንቀጽ 17",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_1_b",
+          "label": "B",
+          "text_en": "Article III (3) concerning boundary delimitations with Italian Eritrea",
+          "text_am": "ከጣሊያን ኤርትራ ጋር ስላለው የድንበር ወሰን የሚደነግገው አንቀጽ 3",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_1_c",
+          "label": "C",
+          "text_en": "Article V (5) governing arms importation through the Red Sea port of Massawa",
+          "text_am": "በቀይ ባህር ምፅዋ ወደብ በኩል የጦር መሳሪያ ማስገባትን የሚመለከተው አንቀጽ 5",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_1_d",
+          "label": "D",
+          "text_en": "Article XII (12) establishing bilateral customs duties and tariffs",
+          "text_am": "የጉምሩክ ቀረጥና ታሪፍ የሚወስነው አንቀጽ 12",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Article XVII (17) of the Treaty of Wuchale contained intentional discrepancies between the Amharic and Italian texts. The Amharic text stated that Ethiopia *could* optionally choose to use Italian diplomatic channels for communications with European powers ('ይችላሉ'), whereas the Italian text falsely stated that Ethiopia *must* conduct all foreign affairs exclusively through Italy ('consente di servirsi'), establishing a de facto Italian protectorate over Ethiopia. When Italy notified European powers of this protectorate under the General Act of the Berlin Conference, Emperor Menelik II vigorously protested and ultimately abrogated the treaty in February 1893, leading directly to Italian aggression and the Battle of Adwa on March 1, 1896.",
+        "simpler_explanation_en": "Article 17 was mistranslated on purpose by Italy: Amharic gave Ethiopia a choice, while Italian made Ethiopia an Italian colony.",
+        "key_concept": "The linguistic discrepancy in Article XVII of the 1889 Treaty of Wuchale and Ethiopia's anti-colonial sovereignty defense.",
+        "common_pitfall": "Confusing Article XVII (foreign relations) with Article III (territorial demarcation of Mareb-Belessa border)."
+      }
+    },
+    {
+      "id": "q_hist_2015_02",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u1",
+      "topic_id": "hist_t1_1",
+      "exam_year": 2015,
+      "question_number": 2,
+      "question_text_en": "The Zemene Mesafint (Era of the Princes) in Ethiopian history was initiated by which pivotal historical event in 1769?",
+      "question_text_am": "በኢትዮጵያ ታሪክ ዘመነ መሳፍንት የተጀመረው በ1761 ዓ.ም. (1769 እ.ኤ.አ.) በተከሰተው በየትኛው ወሳኝ ታሪካዊ ክስተት ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_2_a",
+          "label": "A",
+          "text_en": "The deposition and assassination of Emperor Iyoas I by Ras Mikael Sehul",
+          "text_am": "በራስ ሚካኤል ስሑል አጼ ኢዮአስ ከስልጣን መውረዳቸውና መገደላቸው",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_2_b",
+          "label": "B",
+          "text_en": "The coronation of Emperor Tewodros II at Deresge Mariam",
+          "text_am": "በደረስጌ ማርያም የአጼ ቴዎድሮስ ሁለተኛ ንግስና",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_2_c",
+          "label": "C",
+          "text_en": "The expulsion of the Jesuit missionaries by Emperor Fasilides",
+          "text_am": "በአጼ ፋሲለደስ የኢየሱሳውያን (ጄስዊት) ሚሲዮናውያን ከአገር መባረራቸው",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_2_d",
+          "label": "D",
+          "text_en": "The establishment of the mobile imperial capitals in Shewa",
+          "text_am": "በሸዋ ተንቀሳቃሽ የንጉሠ ነገሥት ከተሞች መመስረት",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The Zemene Mesafint (Era of the Princes) is traditionally dated from 1769 to 1855. It began in 1769 when Ras Mikael Sehul of Tigray, serving as the imperial kingmaker and Enderase, deposed and assassinated the reigning monarch, Emperor Iyoas I. This unprecedented violation of imperial sacred authority subordinated the Gondarine monarchy to powerful regional warlords (Rases and Dejazmaches of Begemder, Gojjam, Wollo, Tigray, and Simien), fracturing centralized authority until Kassa Hailu reunited the empire as Emperor Tewodros II in 1855.",
+        "simpler_explanation_en": "Ras Mikael Sehul assassinated the Emperor in 1769, taking real power away from Gondar kings and giving it to regional warlords.",
+        "key_concept": "The political fragmentation and warlord hegemony of the Zemene Mesafint (1769–1855).",
+        "common_pitfall": "Assuming the Era of Princes began with the death of Emperor Bakaffa or Emperor Fasilides."
+      }
+    },
+    {
+      "id": "q_hist_2015_03",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u2",
+      "topic_id": "hist_t2_1",
+      "exam_year": 2015,
+      "question_number": 3,
+      "question_text_en": "During the mid-19th century, the major long-distance trade route connecting southwestern Ethiopian production centers (such as Kaffa and Jimma) to the northern Red Sea ports passed primarily through which key commercial terminal?",
+      "question_text_am": "በ19ኛው ክፍለ ዘመን አጋማሽ ደቡብ ምዕራብ ኢትዮጵያን (እንደ ከፋ እና ጅማ ያሉ የምርት ማዕከላትን) ከቀይ ባህር ወደቦች ጋር የሚያገናኘው ዋናው የረጅም ርቀት የንግድ መስመር የሚያልፈው በየትኛው ቁልፍ የንግድ ማዕከል ነበር?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_3_a",
+          "label": "A",
+          "text_en": "Bonga → Basso → Gondar → Adwa → Massawa",
+          "text_am": "ቦንጋ → ባሶ → ጎንደር → ዓድዋ → ምፅዋ",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_3_b",
+          "label": "B",
+          "text_en": "Harar → Zeila → Berbera → Aden",
+          "text_am": "ሐረር → ዘይላ → በርበራ → ኤደን",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_3_c",
+          "label": "C",
+          "text_en": "Gambella → Khartoum → Cairo → Alexandria",
+          "text_am": "ጋምቤላ → ካርቱም → ካይሮ → እስክንድርያ",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_3_d",
+          "label": "D",
+          "text_en": "Moyale → Lamu → Mombasa → Zanzibar",
+          "text_am": "ሞያሌ → ላሙ → ሞምባሳ → ዛንዚባር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The northern long-distance trade route originated in southwestern source regions (such as Bonga in Kaffa and the Gibe monarchies), crossed the Abbay river to the major market of Basso in Gojjam, proceeded to Gondar and Darita in Begemder, continued through Adwa in Tigray, and reached the Red Sea coast at the port of Massawa. The eastern trade route linked Shewa and the southwest through Aliyu Amba to the Gulf of Aden ports of Zeila and Berbera via Harar.",
+        "simpler_explanation_en": "Coffee, gold, civet, and ivory traveled north from Bonga through Gojjam's Basso market to Massawa on the Red Sea.",
+        "key_concept": "Nineteenth-century Ethiopian long-distance trade corridors and regional economic integration.",
+        "common_pitfall": "Confusing the northern Massawa trade corridor with the eastern Zeila/Harar caravan route."
+      }
+    },
+    {
+      "id": "q_hist_2015_04",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u3",
+      "topic_id": "hist_t3_1",
+      "exam_year": 2015,
+      "question_number": 4,
+      "question_text_en": "At the Battle of Adwa on March 1, 1896, the overall commander of the invading Italian colonial army was:",
+      "question_text_am": "የካቲት 23 ቀን 1888 ዓ.ም. (March 1, 1896) በተካሄደው የዓድዋ ጦርነት የወራሪው የጣሊያን ቅኝ ገዥ ጦር ዋና አዛዥ የነበረው ማን ነበር?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_4_a",
+          "label": "A",
+          "text_en": "General Oreste Baratieri",
+          "text_am": "ጄኔራል ኦሬስቴ ባራቲዬሪ",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_4_b",
+          "label": "B",
+          "text_en": "Marshal Pietro Badoglio",
+          "text_am": "ማርሻል ፒዬትሮ ባዶሊዮ",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_4_c",
+          "label": "C",
+          "text_en": "Marshal Rodolfo Graziani",
+          "text_am": "ማርሻል ሮዶልፎ ግራዚያኒ",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_4_d",
+          "label": "D",
+          "text_en": "General Giuseppe Arimondi",
+          "text_am": "ጄኔራል ጁሴፔ አሪሞንዲ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "General Oreste Baratieri was the Governor of Eritrea and the Supreme Commander of the Italian forces at the Battle of Adwa in 1896. Pressured by Italian Prime Minister Francesco Crispi to achieve a decisive victory, Baratieri ordered a disastrous three-column advance into the mountainous terrain of Adwa, where his army of 17,000 Italian and Askari troops was decisively crushed by Emperor Menelik II and Empress Taytu Betul's coordinated force of over 100,000 Ethiopian fighters. Badoglio and Graziani commanded forces during the 1935–1936 Fascist invasion forty years later.",
+        "simpler_explanation_en": "General Baratieri commanded the Italian forces at Adwa in 1896, while Badoglio and Graziani commanded during the 1935 Fascist invasion.",
+        "key_concept": "Military leadership and strategic blunders of the Italian command at the Battle of Adwa (1896).",
+        "common_pitfall": "Anachronistically confusing 1896 commanders (Baratieri) with 1935 Fascist commanders (Badoglio and Graziani)."
+      }
+    },
+    {
+      "id": "q_hist_2015_05",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u4",
+      "topic_id": "hist_t4_1",
+      "exam_year": 2015,
+      "question_number": 5,
+      "question_text_en": "The Black Lion organization (Tikur Anbessa), formed in western Ethiopia following the 1936 Fascist Italian occupation, was primarily composed of:",
+      "question_text_am": "በ1928 ዓ.ም. የፋሺስት ጣሊያን ወረራን ተከትሎ በምዕራብ ኢትዮጵያ የተመሰረተው 'ጥቁር አንበሳ' ድርጅት በዋነኝነት የተዋቀረው ከማን ነበር?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_5_a",
+          "label": "A",
+          "text_en": "Cadets from the Holeta Military Academy and educated young Ethiopian intellectuals",
+          "text_am": "የሆለታ ጦር አካዳሚ ምሩቃን እና የተማሩ ወጣት ኢትዮጵያውያን ምሁራን",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_5_b",
+          "label": "B",
+          "text_en": "Exiled aristocrats residing in London and Jerusalem",
+          "text_am": "በለንደንና በእየሩሳሌም በስደት ይኖሩ የነበሩ መኳንንት",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_5_c",
+          "label": "C",
+          "text_en": "British colonial troops dispatched from Anglo-Egyptian Sudan",
+          "text_am": "ከአንግሎ-ግብፅ ሱዳን የተላኩ የብሪታንያ ወታደሮች",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_5_d",
+          "label": "D",
+          "text_en": "Former Banda collaborators who defected from the Italian colonial administration",
+          "text_am": "ከጣሊያን አስተዳደር የከዱ የቀድሞ ባንዳዎች",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The Black Lion (ጥቁር አንበሳ) organization was founded in Gore, Illubabor, in late 1936 to organize armed patriotic resistance against the Fascist occupation. Its leadership consisted of progressive, Western-educated young Ethiopians and graduates of the Holeta Military Academy (established in 1934 under Swedish instructors), including Dr. Alemwork Beyene (president), Ketema Beshah, and Yilma Deressa. They drafted a progressive constitutional charter emphasizing national sovereignty, discipline, non-plundering of peasants, and democratic ideals.",
+        "simpler_explanation_en": "The Black Lions were educated young officers and graduates of the Holeta Military Academy who led patriotic guerrilla warfare.",
+        "key_concept": "The patriotic resistance movement (Arbegnoch) and intellectual leadership of the Black Lions (1936).",
+        "common_pitfall": "Assuming the Black Lion organization was led by traditional regional feudal lords rather than modern-educated officer cadets."
+      }
+    },
+    {
+      "id": "q_hist_2015_06",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "history_g12",
+      "unit_id": "hist_u5",
+      "topic_id": "hist_t5_1",
+      "exam_year": 2015,
+      "question_number": 6,
+      "question_text_en": "The Organization of African Unity (OAU) was officially founded in Addis Ababa in May 1963 as a historic compromise between which two ideological blocs?",
+      "question_text_am": "በግንቦት 1955 ዓ.ም. (May 1963) በአዲስ አበባ የተመሰረተው የአፍሪካ አንድነት ድርጅት (OAU) በየትኞቹ ሁለት ጎራዎች መካከል የተደረገ ታሪካዊ ስምምነት ነበር?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE • 2015 E.C.",
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c_h15_6_a",
+          "label": "A",
+          "text_en": "The Casablanca Group (radical federalist) and the Monrovia Group (moderate gradualist)",
+          "text_am": "የካዛብላንካ ጎራ (አክራሪ የፌደራል አንድነት ፈላጊ) እና የሞንሮቪያ ጎራ (መጠነኛ ቀስ በቀስ አንድነት ፈላጊ)",
+          "is_correct": true
+        },
+        {
+          "id": "c_h15_6_b",
+          "label": "B",
+          "text_en": "The Non-Aligned Movement and the Warsaw Pact",
+          "text_am": "የገለልተኛ አገሮች ንቅናቄ እና የዋርሶ ስምምነት",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_6_c",
+          "label": "C",
+          "text_en": "The East African Community and the Commonwealth of Nations",
+          "text_am": "የምስራቅ አፍሪካ ማህበረሰብ እና የኮመንዌልዝ አገራት",
+          "is_correct": false
+        },
+        {
+          "id": "c_h15_6_d",
+          "label": "D",
+          "text_en": "The Arab League and the Southern African Development Community",
+          "text_am": "የአረብ ሊግ እና የደቡብ አፍሪካ ልማት ማህበረሰብ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Before 1963, independent African states were divided into the radical Casablanca Group (led by Kwame Nkrumah of Ghana, advocating immediate political union and an all-African military command) and the larger, moderate Monrovia Group (including Nigeria, Liberia, and Francophone states, advocating gradual economic integration, non-interference, and preservation of existing sovereign borders). Through the patient diplomatic mediation of Emperor Haile Selassie I, leaders of 32 independent African nations met in Addis Ababa on May 25, 1963, to bridge this divide and sign the OAU Charter.",
+        "simpler_explanation_en": "Emperor Haile Selassie unified the radical Casablanca group and moderate Monrovia group to establish the OAU in Addis Ababa in 1963.",
+        "key_concept": "Pan-Africanism, diplomatic mediation, and the founding of the OAU (May 1963).",
+        "common_pitfall": "Confusing the ideological blocs of post-independence Africa with Cold War military alliances."
+      }
+    }
+  ]
+}

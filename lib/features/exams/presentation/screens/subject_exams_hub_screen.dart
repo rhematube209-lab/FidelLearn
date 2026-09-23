@@ -146,6 +146,12 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
       defaultDownloaded.add(2015);
       defaultDownloaded.add(2014);
       defaultDownloaded.add(2013);
+    } else if (cleanId.contains('hist')) {
+      defaultDownloaded.add(2015);
+    } else if (cleanId.contains('geo')) {
+      defaultDownloaded.add(2015);
+    } else if (cleanId.contains('econ')) {
+      defaultDownloaded.add(2015);
     }
 
     if (_memoryDownloadedYears.containsKey(widget.subjectId)) {
@@ -453,6 +459,70 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
             'የ2013/14 ዓ.ም. የዩኒቨርሲቲ መግቢያ የስነ-ዜጋና ስነ-ምግባር ትምህርት ፈተና (የተፈጥሮ ሳይንስ - 100 ጥያቄዎች፣ ጥራዝ 054 ከስርዓተ-ትምህርት ጥናት ማብራሪያ ጋር)።',
       );
     }
+    final isMath =
+        LocalContentRepository.matchesSubjectId(subject.id, 'math_g12') ||
+            subject.nameEn.toLowerCase().contains('math');
+    if (isMath && base.ethiopianYear == 2014) {
+      return base.copyWith(
+        standardQuestionCount: 65,
+        bookletCode: 'Booklet 01',
+        standardTimeMinutes: 180,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL 65 Qs',
+        descriptionEn:
+            'Official 2014 E.C. (2022 G.C.) National Exam (Mathematics Natural Science, 65 Questions) with step-by-step calculus, vectors, and coordinate geometry solutions.',
+        descriptionAm:
+            'የ2014 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ሂሳብ ፈተና (የተፈጥሮ ሳይንስ - 65 ጥያቄዎች ከተሟላ አሰራር ጋር)።',
+      );
+    }
+    final isHist =
+        LocalContentRepository.matchesSubjectId(subject.id, 'history_g12') ||
+            subject.nameEn.toLowerCase().contains('hist');
+    if (isHist && base.ethiopianYear == 2015) {
+      return base.copyWith(
+        standardQuestionCount: 60,
+        bookletCode: 'Booklet 12',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL ESSLCE',
+        descriptionEn:
+            'Official 2015 E.C. National Exam (Social Science History of Ethiopia & The Horn) with verified primary source analysis and distractor rationales.',
+        descriptionAm:
+            'የ2015 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ታሪክ ፈተና (የማህበራዊ ሳይንስ - የኢትዮጵያና የአፍሪካ ቀንድ ታሪክ)።',
+      );
+    }
+    final isGeo =
+        LocalContentRepository.matchesSubjectId(subject.id, 'geography_g12') ||
+            subject.nameEn.toLowerCase().contains('geo');
+    if (isGeo && base.ethiopianYear == 2015) {
+      return base.copyWith(
+        standardQuestionCount: 60,
+        bookletCode: 'Booklet 14',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL ESSLCE',
+        descriptionEn:
+            'Official 2015 E.C. National Exam (Social Science Geography of Ethiopia & The Horn) with topographic, drainage, and climatic rationales.',
+        descriptionAm:
+            'የ2015 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ጂኦግራፊ ፈተና (የኢትዮጵያና የአፍሪካ ቀንድ ጂኦግራፊ)።',
+      );
+    }
+    final isEcon =
+        LocalContentRepository.matchesSubjectId(subject.id, 'economics_g12') ||
+            subject.nameEn.toLowerCase().contains('econ');
+    if (isEcon && base.ethiopianYear == 2015) {
+      return base.copyWith(
+        standardQuestionCount: 60,
+        bookletCode: 'Booklet 08',
+        standardTimeMinutes: 120,
+        isVerifiedArchive: true,
+        specialBadge: 'OFFICIAL ESSLCE',
+        descriptionEn:
+            'Official 2015 E.C. National Exam (Social Science Economics) with macroeconomic calculations and market structure step-by-step analysis.',
+        descriptionAm:
+            'የ2015 ዓ.ም. ሀገር አቀፍ የ12ኛ ክፍል ኢኮኖሚክስ ፈተና (የማክሮኢኮኖሚክስ እና ማይክሮኢኮኖሚክስ ትንተና)።',
+      );
+    }
     return base;
   }
 
@@ -466,6 +536,18 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     final isChem =
         LocalContentRepository.matchesSubjectId(subject.id, 'chemistry_g12') ||
             subject.nameEn.toLowerCase().contains('chem');
+    final isMath =
+        LocalContentRepository.matchesSubjectId(subject.id, 'math_g12') ||
+            subject.nameEn.toLowerCase().contains('math');
+    final isHist =
+        LocalContentRepository.matchesSubjectId(subject.id, 'history_g12') ||
+            subject.nameEn.toLowerCase().contains('hist');
+    final isGeo =
+        LocalContentRepository.matchesSubjectId(subject.id, 'geography_g12') ||
+            subject.nameEn.toLowerCase().contains('geo');
+    final isEcon =
+        LocalContentRepository.matchesSubjectId(subject.id, 'economics_g12') ||
+            subject.nameEn.toLowerCase().contains('econ');
 
     if (isPhys) {
       final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
@@ -494,6 +576,30 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
               y.ethiopianYear != 2013)
           .toList();
       return [y2017, y2016, y2015, y2014, y2013, ...others];
+    }
+    if (isMath) {
+      final y2014 = _availableYears.firstWhere((y) => y.ethiopianYear == 2014);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2014).toList();
+      return [y2014, ...others];
+    }
+    if (isHist) {
+      final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2015).toList();
+      return [y2015, ...others];
+    }
+    if (isGeo) {
+      final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2015).toList();
+      return [y2015, ...others];
+    }
+    if (isEcon) {
+      final y2015 = _availableYears.firstWhere((y) => y.ethiopianYear == 2015);
+      final others =
+          _availableYears.where((y) => y.ethiopianYear != 2015).toList();
+      return [y2015, ...others];
     }
     final isCivics =
         LocalContentRepository.matchesSubjectId(subject.id, 'civics_g12') ||

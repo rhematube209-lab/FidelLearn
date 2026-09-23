@@ -1,0 +1,452 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_math_soc_2026",
+      "subject_id": "math_g12",
+      "name_en": "Grade 12 Mathematics for Social Science (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል ሒሳብ ለማህበራዊ ሳይንስ (ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "social",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian Educational Assessment and Examinations Service (EAES)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "math_g12",
+      "code": "MATH12",
+      "name_en": "Mathematics",
+      "name_am": "ሒሳብ",
+      "grade": 12,
+      "stream": "common",
+      "scope": "commonExam",
+      "assessment_structure": "curriculum",
+      "icon_asset": "assets/images/math_icon.png",
+      "sort_order": 2
+    }
+  ],
+  "units": [
+    {
+      "id": "math_soc_u1",
+      "subject_id": "math_g12",
+      "unit_number": 1,
+      "title_en": "Sequences and Series",
+      "title_am": "ቅደም ተከተሎች እና ዝርዝሮች"
+    },
+    {
+      "id": "math_soc_u2",
+      "subject_id": "math_g12",
+      "unit_number": 2,
+      "title_en": "Differential Calculus for Social Sciences",
+      "title_am": "የልዩነት ካልኩለስ ለማህበራዊ ሳይንስ"
+    },
+    {
+      "id": "math_soc_u3",
+      "subject_id": "math_g12",
+      "unit_number": 3,
+      "title_en": "Applications of Derivatives to Business & Economics",
+      "title_am": "የውፅኢቶች ተግባራዊ አጠቃቀም ለንግድ እና ኢኮኖሚክስ"
+    },
+    {
+      "id": "math_soc_u4",
+      "subject_id": "math_g12",
+      "unit_number": 4,
+      "title_en": "Integral Calculus for Social Sciences",
+      "title_am": "የጥቅልል ካልኩለስ ለማህበራዊ ሳይንስ"
+    },
+    {
+      "id": "math_soc_u5",
+      "subject_id": "math_g12",
+      "unit_number": 5,
+      "title_en": "Statistics and Probability",
+      "title_am": "ስታቲስቲክስ እና ፕሮባብሊቲ"
+    },
+    {
+      "id": "math_soc_u6",
+      "subject_id": "math_g12",
+      "unit_number": 6,
+      "title_en": "Business Mathematics & Linear Programming",
+      "title_am": "የንግድ ሂሳብ እና መስመራዊ ፕሮግራሚንግ"
+    }
+  ],
+  "topics": [
+    {
+      "id": "math_soc_t1_annuities",
+      "unit_id": "math_soc_u1",
+      "topic_number": 1,
+      "title_en": "Compound Interest and Annuities",
+      "title_am": "የወለድ ወለድ እና የገንዘብ ክፍያዎች"
+    },
+    {
+      "id": "math_soc_t2_marginal",
+      "unit_id": "math_soc_u2",
+      "topic_number": 1,
+      "title_en": "Marginal Cost and Marginal Revenue",
+      "title_am": "ተጨማሪ ወጪ እና ተጨማሪ ገቢ"
+    },
+    {
+      "id": "math_soc_t3_profit_max",
+      "unit_id": "math_soc_u3",
+      "topic_number": 1,
+      "title_en": "Profit Maximization and Revenue Optimization",
+      "title_am": "ትርፍን ማብዛትና ገቢን ማሳደግ"
+    },
+    {
+      "id": "math_soc_t4_surplus",
+      "unit_id": "math_soc_u4",
+      "topic_number": 1,
+      "title_en": "Consumer and Producer Surplus",
+      "title_am": "የተጠቃሚ እና የአምራች ትርፍ ስሌት"
+    },
+    {
+      "id": "math_soc_t5_normal_dist",
+      "unit_id": "math_soc_u5",
+      "topic_number": 1,
+      "title_en": "Normal Distribution & Z-Scores",
+      "title_am": "መደበኛ ስርጭት እና ዜድ-ስኮር"
+    },
+    {
+      "id": "math_soc_t6_simplex_graph",
+      "unit_id": "math_soc_u6",
+      "topic_number": 1,
+      "title_en": "Graphical Linear Programming",
+      "title_am": "የመስመራዊ ፕሮግራሚንግ ግራፍ"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_math_soc_2014_03",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "math_g12",
+      "unit_id": "math_soc_u2",
+      "topic_id": "math_soc_t2_marginal",
+      "exam_year": 2014,
+      "question_number": 3,
+      "exam_variant": "social_science",
+      "assessment_structure": "curriculum",
+      "content_domain": "Business Calculus",
+      "skill": "Marginal Cost Calculation",
+      "question_text_en": "A manufacturing firm produces q units of footwear with total cost function C(q) = 0.05q^2 + 40q + 5000 (in Birr). What is the marginal cost of producing the 100th unit?",
+      "question_text_am": "አንድ የጫማ አምራች ፋብሪካ q ቁጥር ያላቸውን ምርቶች ለማምረት የሚያወጣው ወጪ C(q) = 0.05q^2 + 40q + 5000 (በብር) ቢሆን፣ የመቶኛውን (100th) ምርት ተጨማሪ ወጪ (Marginal Cost) ስንት ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. Mathematics (Social Science) Booklet 02",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. Mathematics (Social Science) Booklet 02",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 02",
+        "question_number": 3,
+        "verified_by": "EAES Mathematics Expert Panel",
+        "verified_at": "2026-01-14T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "40 Birr",
+          "text_am": "40 ብር",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "50 Birr",
+          "text_am": "50 ብር",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "60 Birr",
+          "text_am": "60 ብር",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "90 Birr",
+          "text_am": "90 ብር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Marginal Cost MC(q) is the first derivative of total cost: MC(q) = dC/dq = 2*(0.05)q + 40 = 0.10q + 40. At q = 100, MC(100) = 0.10(100) + 40 = 10 + 40 = 50 Birr.",
+        "solution_text_am": "ተጨማሪ ወጪ (Marginal Cost) የወጪ ፈንክሽኑ የመጀመሪያ ውፅኢት (Derivative) ነው፡ MC(q) = C'(q) = 0.10q + 40። በ q = 100 ሲሰላ፡ MC(100) = 0.10(100) + 40 = 10 + 40 = 50 ብር ይሆናል። መልስ B ነው።",
+        "key_concept": "Marginal cost as the derivative of total cost function in managerial economics.",
+        "common_pitfall": "Computing average cost C(100)/100 instead of derivative C'(100)."
+      }
+    },
+    {
+      "id": "q_math_soc_2014_17",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "math_g12",
+      "unit_id": "math_soc_u3",
+      "topic_id": "math_soc_t3_profit_max",
+      "exam_year": 2014,
+      "question_number": 17,
+      "exam_variant": "social_science",
+      "assessment_structure": "curriculum",
+      "content_domain": "Business Calculus",
+      "skill": "Revenue Optimization",
+      "question_text_en": "The demand equation for an agricultural export commodity is given by P(x) = 120 - 2x, where P is the unit price in Birr and x is the quantity sold. What output quantity x maximizes total revenue?",
+      "question_text_am": "የአንድ የግብርና ኤክስፖርት ምርት የፍላጎት ቀመር P(x) = 120 - 2x ቢሆን፣ አጠቃላይ ገቢን (Total Revenue) ከፍተኛ የሚያደርገው የምርት መጠን x ስንት ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. Mathematics (Social Science) Booklet 02",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. Mathematics (Social Science) Booklet 02",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 02",
+        "question_number": 17,
+        "verified_by": "EAES Mathematics Expert Panel",
+        "verified_at": "2026-01-14T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "x = 20 units",
+          "text_am": "x = 20 አሃዶች",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "x = 30 units",
+          "text_am": "x = 30 አሃዶች",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "x = 60 units",
+          "text_am": "x = 60 አሃዶች",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "x = 45 units",
+          "text_am": "x = 45 አሃዶች",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Total Revenue R(x) = Price * Quantity = (120 - 2x) * x = 120x - 2x^2.\nTo maximize revenue, set R'(x) = 0:\nR'(x) = 120 - 4x = 0 => 4x = 120 => x = 30.\nSecond derivative test: R''(x) = -4 < 0, confirming a relative maximum at x = 30.",
+        "solution_text_am": "አጠቃላይ ገቢ R(x) = ዋጋ * መጠን = (120 - 2x)x = 120x - 2x^2። ውፅኢቱን ዜሮ ስናደርግ፡ R'(x) = 120 - 4x = 0 => 4x = 120 => x = 30። ስለዚህ x = 30 ገቢን ከፍተኛ ያደርጋል።",
+        "key_concept": "Quadratic revenue optimization and first derivative test in economics.",
+        "common_pitfall": "Setting price P(x) = 0 (which gives x = 60, zero revenue)."
+      }
+    },
+    {
+      "id": "q_math_soc_2015_28",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "math_g12",
+      "unit_id": "math_soc_u4",
+      "topic_id": "math_soc_t4_surplus",
+      "exam_year": 2015,
+      "question_number": 28,
+      "exam_variant": "social_science",
+      "assessment_structure": "curriculum",
+      "content_domain": "Integral Applications",
+      "skill": "Consumer Surplus Integration",
+      "question_text_en": "The demand curve for a retail product is P = 50 - 2Q. If the market equilibrium price is P0 = 30 Birr (corresponding to Q0 = 10 units), what is the Consumer Surplus?",
+      "question_text_am": "የአንድ ምርት የፍላጎት ቀመር P = 50 - 2Q ቢሆን፣ እና የገበያ ሚዛን ዋጋ P0 = 30 ብር (በ Q0 = 10 አሃዶች) ቢሆን፣ የተጠቃሚ ትርፍ (Consumer Surplus) ስንት ነው?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2015 E.C. Mathematics (Social Science) Booklet 12",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2015 E.C. Mathematics (Social Science) Booklet 12",
+        "exam_year": 2015,
+        "booklet_code": "Booklet 12",
+        "question_number": 28,
+        "verified_by": "EAES Mathematics Expert Panel",
+        "verified_at": "2026-01-14T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "50 Birr",
+          "text_am": "50 ብር",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "100 Birr",
+          "text_am": "100 ብር",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "150 Birr",
+          "text_am": "150 ብር",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "200 Birr",
+          "text_am": "200 ብር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Consumer Surplus CS = ∫[0 to Q0] (Demand - P0) dQ = ∫[0 to 10] ((50 - 2Q) - 30) dQ = ∫[0 to 10] (20 - 2Q) dQ = [20Q - Q^2] evaluated from 0 to 10 = (20*10 - 100) = 200 - 100 = 100 Birr.\nGeometrically: Area of triangle = 1/2 * base * height = 1/2 * 10 * (50 - 30) = 1/2 * 10 * 20 = 100 Birr.",
+        "solution_text_am": "የተጠቃሚ ትርፍ CS = ∫[0 እስከ 10] (20 - 2Q) dQ = [20Q - Q^2] = 200 - 100 = 100 ብር። በጂኦሜትሪ የሶስት ማዕዘን ስፋት = 1/2 * 10 * 20 = 100 ብር ይሆናል። መልስ B ነው።",
+        "key_concept": "Definite integration to calculate consumer surplus under linear demand curves.",
+        "common_pitfall": "Integrating total demand without subtracting the equilibrium expenditure P0*Q0."
+      }
+    },
+    {
+      "id": "q_math_soc_2016_39",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "math_g12",
+      "unit_id": "math_soc_u5",
+      "topic_id": "math_soc_t5_normal_dist",
+      "exam_year": 2016,
+      "question_number": 39,
+      "exam_variant": "social_science",
+      "assessment_structure": "curriculum",
+      "content_domain": "Statistics & Probability",
+      "skill": "Z-Score Standardization",
+      "question_text_en": "In a regional commercial aptitude examination, candidate scores are normally distributed with mean μ = 68 and standard deviation σ = 8. What is the standard Z-score of a candidate who scored 84?",
+      "question_text_am": "በአንድ የንግድ አፕቲቲዩድ ፈተና የተማሪዎች ውጤት አማካዩ μ = 68 እና ስታንዳርድ ዲቪዬሽኑ σ = 8 የሆነ ኖርማል ስርጭት አለው። 84 ያመጣ ተማሪ የ Z-ስኮር ውጤቱ ስንት ነው?",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2016 E.C. Mathematics (Social Science) Booklet 32",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2016 E.C. Mathematics (Social Science) Booklet 32",
+        "exam_year": 2016,
+        "booklet_code": "Booklet 32",
+        "question_number": 39,
+        "verified_by": "EAES Mathematics Expert Panel",
+        "verified_at": "2026-01-14T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "Z = +1.5",
+          "text_am": "Z = +1.5",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Z = +2.0",
+          "text_am": "Z = +2.0",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Z = +2.5",
+          "text_am": "Z = +2.5",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Z = -2.0",
+          "text_am": "Z = -2.0",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "The standardization formula for a normal distribution is Z = (X - μ) / σ. Here, X = 84, μ = 68, and σ = 8. Thus, Z = (84 - 68) / 8 = 16 / 8 = +2.0.",
+        "solution_text_am": "የዜድ-ስኮር ቀመር Z = (X - μ) / σ ነው። እዚህ ጋር X = 84, μ = 68, σ = 8 ስለሆነ Z = (84 - 68) / 8 = 16 / 8 = +2.0 ይሆናል። መልስ B ነው።",
+        "key_concept": "Standardizing raw normal distribution scores using Z-score transformation.",
+        "common_pitfall": "Inverting the subtraction (68 - 84 = -16, yielding -2.0)."
+      }
+    },
+    {
+      "id": "q_math_soc_2016_55",
+      "grade": 12,
+      "stream": "social",
+      "subject_id": "math_g12",
+      "unit_id": "math_soc_u6",
+      "topic_id": "math_soc_t6_simplex_graph",
+      "exam_year": 2016,
+      "question_number": 55,
+      "exam_variant": "social_science",
+      "assessment_structure": "curriculum",
+      "content_domain": "Linear Programming",
+      "skill": "Corner Point Objective Evaluation",
+      "question_text_en": "A small business seeks to maximize profit Z = 5x + 4y subject to non-negativity and constraints whose feasible region vertices are (0,0), (0,6), (4,4), and (7,0). What is the maximum profit Z?",
+      "question_text_am": "አንድ አነስተኛ ንግድ ትርፍን Z = 5x + 4y ከፍ ለማድረግ ይፈልጋል። የሚቻለው ክልል (Feasible region) የማዕዘን ነጥቦች (0,0)፣ (0,6)፣ (4,4) እና (7,0) ቢሆኑ፣ ከፍተኛው ትርፍ Z ስንት ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2016 E.C. Mathematics (Social Science) Booklet 32",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2016 E.C. Mathematics (Social Science) Booklet 32",
+        "exam_year": 2016,
+        "booklet_code": "Booklet 32",
+        "question_number": 55,
+        "verified_by": "EAES Mathematics Expert Panel",
+        "verified_at": "2026-01-14T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "24",
+          "text_am": "24",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "35",
+          "text_am": "35",
+          "is_correct": false
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "36",
+          "text_am": "36",
+          "is_correct": true
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "42",
+          "text_am": "42",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Evaluate the linear objective function Z = 5x + 4y at each feasible corner vertex:\n1. At (0, 0): Z = 0\n2. At (0, 6): Z = 5(0) + 4(6) = 24\n3. At (4, 4): Z = 5(4) + 4(4) = 20 + 16 = 36\n4. At (7, 0): Z = 5(7) + 4(0) = 35.\nThe maximum value is 36, occurring at vertex (4, 4).",
+        "solution_text_am": "የዓላማ ቀመሩን Z = 5x + 4y በእያንዳንዱ የማዕዘን ነጥብ እንፈትሽ፡\n1. በ (0,0)፡ Z = 0\n2. በ (0,6)፡ Z = 24\n3. በ (4,4)፡ Z = 5(4) + 4(4) = 20 + 16 = 36\n4. በ (7,0)፡ Z = 35።\nከፍተኛው ውጤት 36 ሲሆን የሚገኘውም በ (4,4) ነጥብ ላይ ነው። መልስ C ነው።",
+        "key_concept": "Corner Point Theorem in two-variable linear programming optimization.",
+        "common_pitfall": "Assuming the intercept (7,0) produces the maximum (35) without testing interior vertex (4,4)."
+      }
+    }
+  ]
+}

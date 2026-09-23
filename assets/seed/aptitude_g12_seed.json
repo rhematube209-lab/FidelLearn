@@ -1,0 +1,417 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_aptitude_2026",
+      "subject_id": "aptitude_g12",
+      "name_en": "Grade 12 Scholastic Aptitude Test (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል አፕቲቲዩድ ፈተና (ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian Educational Assessment and Examinations Service (EAES)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "aptitude_g12",
+      "code": "APT12",
+      "name_en": "Scholastic Aptitude",
+      "name_am": "አፕቲቲዩድ",
+      "grade": 12,
+      "stream": "common",
+      "scope": "commonExam",
+      "assessment_structure": "skillBased",
+      "icon_asset": "assets/images/aptitude_icon.png",
+      "sort_order": 3
+    }
+  ],
+  "units": [
+    {
+      "id": "apt_domain_verbal",
+      "subject_id": "aptitude_g12",
+      "unit_number": 1,
+      "title_en": "Verbal Reasoning",
+      "title_am": "ቃላዊ አመክንዮ"
+    },
+    {
+      "id": "apt_domain_quantitative",
+      "subject_id": "aptitude_g12",
+      "unit_number": 2,
+      "title_en": "Quantitative Reasoning",
+      "title_am": "ቁጥራዊ አመክንዮ"
+    }
+  ],
+  "topics": [
+    {
+      "id": "apt_skill_analogies",
+      "unit_id": "apt_domain_verbal",
+      "topic_number": 1,
+      "title_en": "Word Analogies & Conceptual Pairs",
+      "title_am": "የቃላት ንፅፅርና ተዛምዶ"
+    },
+    {
+      "id": "apt_skill_deduction",
+      "unit_id": "apt_domain_verbal",
+      "topic_number": 2,
+      "title_en": "Analytical Deduction & Logic Syllogisms",
+      "title_am": "ትንተናዊ አመክንዮ"
+    },
+    {
+      "id": "apt_skill_number_series",
+      "unit_id": "apt_domain_quantitative",
+      "topic_number": 1,
+      "title_en": "Number Sequences & Pattern Recognition",
+      "title_am": "የቁጥሮች ቅደም ተከተልና ስርዓት"
+    },
+    {
+      "id": "apt_skill_quant_comp",
+      "unit_id": "apt_domain_quantitative",
+      "topic_number": 2,
+      "title_en": "Quantitative Comparison & Algebraic Logic",
+      "title_am": "ቁጥራዊ ንፅፅር"
+    },
+    {
+      "id": "apt_skill_data_interp",
+      "unit_id": "apt_domain_quantitative",
+      "topic_number": 3,
+      "title_en": "Data Interpretation & Word Problems",
+      "title_am": "የመረጃ ትንተና እና ስሌቶች"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_apt_2014_05",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_domain_verbal",
+      "topic_id": "apt_skill_analogies",
+      "exam_year": 2014,
+      "question_number": 5,
+      "exam_variant": "shared",
+      "assessment_structure": "skillBased",
+      "content_domain": "Verbal Reasoning",
+      "skill": "Analogies",
+      "question_text_en": "THERMOMETER : TEMPERATURE :: BAROMETER : ______",
+      "question_text_am": "ቴርሞሜትር ፡ የሙቀት መጠን ፡ ፡ ባሮሜትር ፡ ______",
+      "difficulty": "easy",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. Scholastic Aptitude Exam Booklet 01",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. Scholastic Aptitude Exam Booklet 01",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 01",
+        "question_number": 5,
+        "verified_by": "EAES Aptitude Assessment Specialist Panel",
+        "verified_at": "2026-01-12T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "Atmospheric Pressure",
+          "text_am": "የከባቢ አየር ግፊት",
+          "is_correct": true
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Wind Velocity",
+          "text_am": "የነፋስ ፍጥነት",
+          "is_correct": false
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Relative Humidity",
+          "text_am": "አንጻራዊ እርጥበት",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Solar Radiation",
+          "text_am": "የፀሐይ ጨረር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "A thermometer is an instrument specifically designed to measure temperature; analogously, a barometer is an instrument designed to measure atmospheric pressure.",
+        "solution_text_am": "ቴርሞሜትር የሙቀት መጠንን መለኪያ መሳሪያ እንደሆነው ሁሉ፤ ባሮሜትር ደግሞ የከባቢ አየር ግፊትን (Atmospheric pressure) መለኪያ መሳሪያ ነው። ስለዚህ መልሱ A ነው።",
+        "key_concept": "Tool-to-measurement-property functional analogy.",
+        "common_pitfall": "Confusing a barometer with an anemometer (measures wind speed) or hygrometer (humidity)."
+      }
+    },
+    {
+      "id": "q_apt_2014_14",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_domain_verbal",
+      "topic_id": "apt_skill_deduction",
+      "exam_year": 2014,
+      "question_number": 14,
+      "exam_variant": "shared",
+      "assessment_structure": "skillBased",
+      "content_domain": "Verbal Reasoning",
+      "skill": "Deductive Syllogism",
+      "question_text_en": "Premise 1: All members of the Ethiopian Aviation Academy must pass advanced altitude physiology.\nPremise 2: Some licensed commercial drone pilots are members of the Ethiopian Aviation Academy.\nConclusion: Which statement must logically follow?",
+      "question_text_am": "ቅድመ-ግምት 1፡ ሁሉም የኢትዮጵያ አቪዬሽን አካዳሚ አባላት የከፍታ ስነ-ህይወት ፈተናን ማለፍ አለባቸው።\nቅድመ-ግምት 2፡ አንዳንድ የድሮን አብራሪዎች የኢትዮጵያ አቪዬሽን አካዳሚ አባላት ናቸው።\nማጠቃለያ፡ የትኛው አረፍተ ነገር በሎጂክ የግድ ይከተላል?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. Scholastic Aptitude Exam Booklet 01",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. Scholastic Aptitude Exam Booklet 01",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 01",
+        "question_number": 14,
+        "verified_by": "EAES Aptitude Assessment Specialist Panel",
+        "verified_at": "2026-01-12T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "All commercial drone pilots pass advanced altitude physiology.",
+          "text_am": "ሁሉም የድሮን አብራሪዎች የከፍታ ስነ-ህይወትን ያልፋሉ።",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Some licensed commercial drone pilots must pass advanced altitude physiology.",
+          "text_am": "አንዳንድ የድሮን አብራሪዎች የከፍታ ስነ-ህይወትን ማለፍ አለባቸው።",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "No drone pilots are academy members.",
+          "text_am": "ምንም የድሮን አብራሪዎች የአካዳሚው አባል አይደሉም።",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Anyone who passes altitude physiology is a commercial drone pilot.",
+          "text_am": "የከፍታ ስነ-ህይወትን ያለፈ ሁሉ የድሮን አብራሪ ነው።",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Let A = Academy members, P = pass altitude physiology, D = drone pilots. We are given: All A are P (A ⊆ P) and Some D are A (D ∩ A ≠ ∅). Therefore, the intersection of D and A must also belong to P, proving: Some D are P.",
+        "solution_text_am": "አንዳንድ የድሮን አብራሪዎች የአካዳሚው አባል ከሆኑ፣ እና ሁሉም የአካዳሚው አባላት ይህንን ፈተና የሚያልፉ ከሆነ፣ እነዚያ የተወሰኑ የድሮን አብራሪዎችም የግድ ፈተናውን ያልፋሉ። ስለዚህ B ትክክል ነው።",
+        "key_concept": "Categorical syllogism: Universal affirmative + Particular affirmative intersection.",
+        "common_pitfall": "Overgeneralizing 'some' to 'all' (Option A)."
+      }
+    },
+    {
+      "id": "q_apt_2015_23",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_domain_quantitative",
+      "topic_id": "apt_skill_number_series",
+      "exam_year": 2015,
+      "question_number": 23,
+      "exam_variant": "shared",
+      "assessment_structure": "skillBased",
+      "content_domain": "Quantitative Reasoning",
+      "skill": "Number Sequence",
+      "question_text_en": "What is the next number in the sequence: 3, 7, 15, 31, 63, ______?",
+      "question_text_am": "በተከታታዩ ቁጥሮች ውስጥ ቀጣዩ ቁጥር ስንት ነው፡ 3፣ 7፣ 15፣ 31፣ 63፣ ______?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2015 E.C. Scholastic Aptitude Exam Booklet 02",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2015 E.C. Scholastic Aptitude Exam Booklet 02",
+        "exam_year": 2015,
+        "booklet_code": "Booklet 02",
+        "question_number": 23,
+        "verified_by": "EAES Aptitude Assessment Specialist Panel",
+        "verified_at": "2026-01-12T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "95",
+          "text_am": "95",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "127",
+          "text_am": "127",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "126",
+          "text_am": "126",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "135",
+          "text_am": "135",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Method 1: Each term is obtained by multiplying the previous term by 2 and adding 1: 3*2+1=7, 7*2+1=15, 15*2+1=31, 31*2+1=63, 63*2+1=127.\nMethod 2: Notice the differences are successive powers of 2: +4, +8, +16, +32, so next is +64. 63 + 64 = 127.",
+        "solution_text_am": "ዘዴ 1፡ እያንዳንዱ ቁጥር በ 2 ተባዝቶ 1 ሲደመርበት የሚቀጥለውን ይሰጣል፡ 63 * 2 + 1 = 127። ወይም ልዩነታቸው 4፣ 8፣ 16፣ 32 ሲሆን ቀጣዩ 64 ይሆናል፤ 63 + 64 = 127።",
+        "key_concept": "Recursive pattern identification: 2n + 1 and geometric successive differences.",
+        "common_pitfall": "Arithmetic slip: forgetting to add 1 when doubling 63 (getting 126)."
+      }
+    },
+    {
+      "id": "q_apt_2015_38",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_domain_quantitative",
+      "topic_id": "apt_skill_quant_comp",
+      "exam_year": 2015,
+      "question_number": 38,
+      "exam_variant": "shared",
+      "assessment_structure": "skillBased",
+      "content_domain": "Quantitative Reasoning",
+      "skill": "Quantitative Comparison",
+      "question_text_en": "Given that x < 0:\nQuantity A: (x - 2)^2\nQuantity B: x^2 + 4\nWhich relationship is always true?",
+      "question_text_am": "x < 0 (አሉታዊ) መሆኑ ቢታወቅ:\nመጠን A: (x - 2)^2\nመጠን B: x^2 + 4\nየትኛው ንፅፅር ሁልጊዜ እውነት ነው?",
+      "difficulty": "hard",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2015 E.C. Scholastic Aptitude Exam Booklet 02",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2015 E.C. Scholastic Aptitude Exam Booklet 02",
+        "exam_year": 2015,
+        "booklet_code": "Booklet 02",
+        "question_number": 38,
+        "verified_by": "EAES Aptitude Assessment Specialist Panel",
+        "verified_at": "2026-01-12T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "Quantity A is greater than Quantity B.",
+          "text_am": "መጠን A ከመጠን B ይበልጣል።",
+          "is_correct": true
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Quantity B is greater than Quantity A.",
+          "text_am": "መጠን B ከመጠን A ይበልጣል።",
+          "is_correct": false
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Quantity A is equal to Quantity B.",
+          "text_am": "መጠን A እና መጠን B እኩል ናቸው።",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "The relationship cannot be determined from the information given.",
+          "text_am": "ከተሰጠው መረጃ ግንኙነቱን መወሰን አይቻልም።",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Expand Quantity A: (x - 2)^2 = x^2 - 4x + 4.\nSubtract x^2 + 4 from both quantities:\nQuantity A becomes -4x\nQuantity B becomes 0.\nSince x is negative (x < 0), -4x is strictly positive (-4 * negative = positive > 0).\nTherefore, Quantity A is always strictly greater than Quantity B.",
+        "solution_text_am": "መጠን A ሲዘረዘር x^2 - 4x + 4 ይሆናል። ከሁለቱም (x^2 + 4) ስንቀንስ፣ A = -4x እና B = 0 ይሆናሉ። x አሉታዊ (negative) በመሆኑ፣ -4 * (አሉታዊ) ሁልጊዜ አዎንታዊ (positive > 0) ይሆናል። ስለዚህ A ሁልጊዜ ከ B ይበልጣል።",
+        "key_concept": "Algebraic manipulation and sign deduction in quantitative comparison.",
+        "common_pitfall": "Assuming (x - 2)^2 = x^2 - 4 or neglecting the sign of x."
+      }
+    },
+    {
+      "id": "q_apt_2016_49",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "aptitude_g12",
+      "unit_id": "apt_domain_quantitative",
+      "topic_id": "apt_skill_data_interp",
+      "exam_year": 2016,
+      "question_number": 49,
+      "exam_variant": "shared",
+      "assessment_structure": "skillBased",
+      "content_domain": "Quantitative Reasoning",
+      "skill": "Data Problem Solving",
+      "question_text_en": "A cooperative dairy union processed 12,000 liters of milk in July. In August, milk processing increased by 25%. In September, due to seasonal rains, processing increased by an additional 20% over August. How many liters were processed in September?",
+      "question_text_am": "አንድ የወተት ህብረት ስራ ማህበር በሐምሌ ወር 12,000 ሊትር ወተት አቀነባበረ። በነሐሴ ወር ምርቱ በ 25% አደገ። በመስከረም ወር ከነሐሴ ወር ምርት ላይ ተጨማሪ 20% ጨመረ። በመስከረም ወር ምን ያህል ሊትር ተቀነባበረ?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2016 E.C. Scholastic Aptitude Exam Booklet 03",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2016 E.C. Scholastic Aptitude Exam Booklet 03",
+        "exam_year": 2016,
+        "booklet_code": "Booklet 03",
+        "question_number": 49,
+        "verified_by": "EAES Aptitude Assessment Specialist Panel",
+        "verified_at": "2026-01-12T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "17,400 liters",
+          "text_am": "17,400 ሊትር",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "18,000 liters",
+          "text_am": "18,000 ሊትር",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "16,800 liters",
+          "text_am": "16,800 ሊትር",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "15,000 liters",
+          "text_am": "15,000 ሊትር",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "August processing = 12,000 * 1.25 = 15,000 liters.\nSeptember processing = 15,000 * 1.20 = 18,000 liters.\nAlternatively, overall multiplier = 1.25 * 1.20 = 1.50, so 12,000 * 1.50 = 18,000 liters.",
+        "solution_text_am": "የነሐሴ ወር ምርት = 12,000 * 1.25 = 15,000 ሊትር። የመስከረም ወር ምርት = 15,000 * 1.20 = 18,000 ሊትር። (አጠቃላይ ጭማሪ = 1.25 * 1.20 = 1.50 ወይም 50%፤ 12,000 * 1.5 = 18,000)። መልስ B ነው።",
+        "key_concept": "Successive percentage increases: compounding multipliers vs simple addition.",
+        "common_pitfall": "Simply adding percentages (25% + 20% = 45% -> 12,000 * 1.45 = 17,400)."
+      }
+    }
+  ]
+}

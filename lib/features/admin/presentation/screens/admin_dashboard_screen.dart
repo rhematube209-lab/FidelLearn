@@ -5,7 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../subjects/data/repositories/local_content_repository.dart';
+import '../../../subjects/domain/models/subject_models.dart';
+import '../../../subjects/domain/services/curriculum_coverage_service.dart';
 import '../../domain/models/admin_models.dart';
+import '../widgets/curriculum_coverage_dashboard.dart';
 
 class AdminDashboardScreen extends ConsumerStatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -21,12 +25,13 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   AdminContentOverview? _overview;
   List<Question> _pendingQuestions = [];
   List<ContentAuditLog> _auditLogs = [];
+  CurriculumCoverageReport? _coverageReport;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _loadAdminData();
   }
 
@@ -39,15 +44,62 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
   Future<void> _loadAdminData() async {
     try {
       final adminRepo = ref.read(adminRepositoryProvider);
+      final contentRepo = ref.read(contentRepositoryProvider);
       final ov = await adminRepo.getContentOverview();
       final pend = await adminRepo.getPendingReviewQuestions();
       final logs = await adminRepo.getAuditLogs();
+
+      // Grade 12 Launch Curriculum Coverage Analysis
+      CurriculumCoverageReport? report;
+      try {
+        final naturalSubjects =
+            await contentRepo.getSubjects(grade: 12, stream: 'natural');
+        final socialSubjects =
+            await contentRepo.getSubjects(grade: 12, stream: 'social');
+
+        final allSubjectsMap = <String, Subject>{};
+        for (final s in [...naturalSubjects, ...socialSubjects]) {
+          final code = LocalContentRepository.baseSubjectCode(s.id);
+          if ([
+            'mathematics',
+            'physics',
+            'chemistry',
+            'biology',
+            'history',
+            'geography',
+            'economics'
+          ].contains(code)) {
+            allSubjectsMap[s.id] = s;
+          }
+        }
+        final launchSubjects = allSubjectsMap.values.toList();
+
+        final List<Unit> allUnits = [];
+        final List<Question> allQuestions = [];
+        for (final s in launchSubjects) {
+          final uList = await contentRepo.getUnits(s.id);
+          allUnits.addAll(uList);
+          final qList =
+              await contentRepo.getQuestions(grade: 12, subjectId: s.id);
+          allQuestions.addAll(qList);
+        }
+
+        report = CurriculumCoverageService().generateReport(
+          subjects: launchSubjects,
+          units: allUnits,
+          questions: allQuestions,
+        );
+      } catch (e) {
+        debugPrint(
+            'AdminDashboardScreen: error generating coverage report: $e');
+      }
 
       if (mounted) {
         setState(() {
           _overview = ov;
           _pendingQuestions = pend;
           _auditLogs = logs;
+          _coverageReport = report;
         });
       }
     } catch (e) {
@@ -156,7 +208,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           labelColor: AppTheme.primaryGreen,
           unselectedLabelColor: AppTheme.textMuted,
           tabs: [
-            Tab(text: 'Verification Queue (${_pendingQuestions.length})'),
+            Tab(text: 'Queue (${_pendingQuestions.length})'),
+            const Tab(text: 'Curriculum Coverage 📊'),
             const Tab(text: 'Audit Trail 📜'),
           ],
         ),
@@ -200,7 +253,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [_buildVerificationQueue(), _buildAuditLogList()],
+              children: [
+                _buildVerificationQueue(),
+                _buildCoverageTab(),
+                _buildAuditLogList(),
+              ],
             ),
           ),
         ],
@@ -431,6 +488,21 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCoverageTab() {
+    if (_coverageReport == null) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: CurriculumCoverageDashboardWidget(report: _coverageReport!),
     );
   }
 }

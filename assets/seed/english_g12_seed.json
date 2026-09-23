@@ -1,0 +1,524 @@
+{
+  "packages": [
+    {
+      "package_id": "pkg_g12_english_2026",
+      "subject_id": "english_g12",
+      "name_en": "Grade 12 English Language (ESSLCE National Exam Archive)",
+      "name_am": "የ12ኛ ክፍል እንግሊዝኛ (ብሔራዊ ፈተና ማህደር)",
+      "grade": 12,
+      "stream": "common",
+      "version": 1,
+      "size_bytes": 524288,
+      "publisher": "FidelLearn National Curriculum Archive",
+      "license": "official_archive",
+      "attribution": "Ethiopian Educational Assessment and Examinations Service (EAES)",
+      "is_downloaded": true
+    }
+  ],
+  "subjects": [
+    {
+      "id": "english_g12",
+      "code": "ENG12",
+      "name_en": "English",
+      "name_am": "እንግሊዝኛ",
+      "grade": 12,
+      "stream": "common",
+      "scope": "commonExam",
+      "assessment_structure": "mixed",
+      "icon_asset": "assets/images/english_icon.png",
+      "sort_order": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "eng_domain_reading",
+      "subject_id": "english_g12",
+      "unit_number": 1,
+      "title_en": "Reading Comprehension",
+      "title_am": "የንባብ ግንዛቤ"
+    },
+    {
+      "id": "eng_domain_vocabulary",
+      "subject_id": "english_g12",
+      "unit_number": 2,
+      "title_en": "Vocabulary & Idiomatic Expressions",
+      "title_am": "የቃላት ትርጉምና ፈሊጣዊ አነጋገሮች"
+    },
+    {
+      "id": "eng_domain_grammar",
+      "subject_id": "english_g12",
+      "unit_number": 3,
+      "title_en": "Grammar & Syntactic Structures",
+      "title_am": "ሰዋስው እና የአረፍተ ነገር አወቃቀር"
+    },
+    {
+      "id": "eng_domain_communication",
+      "subject_id": "english_g12",
+      "unit_number": 4,
+      "title_en": "Language Usage & Communication",
+      "title_am": "የቋንቋ አጠቃቀም እና ተግባቦት"
+    },
+    {
+      "id": "eng_domain_sentence_completion",
+      "subject_id": "english_g12",
+      "unit_number": 5,
+      "title_en": "Sentence Completion & Connectors",
+      "title_am": "አረፍተ ነገር ማሟላት እና አያያዥ ቃላት"
+    },
+    {
+      "id": "eng_domain_writing",
+      "subject_id": "english_g12",
+      "unit_number": 6,
+      "title_en": "Writing Skills & Punctuation",
+      "title_am": "የመጻፍ ክህሎት እና ስርዓተ ነጥብ"
+    }
+  ],
+  "topics": [
+    {
+      "id": "eng_topic_reading_inference",
+      "unit_id": "eng_domain_reading",
+      "topic_number": 1,
+      "title_en": "Main Idea & Passage Inference",
+      "title_am": "ዋና ሃሳብ እና የንባብ መረዳት"
+    },
+    {
+      "id": "eng_topic_vocab_context",
+      "unit_id": "eng_domain_vocabulary",
+      "topic_number": 1,
+      "title_en": "Contextual Meaning & Collocations",
+      "title_am": "የቃላት አውዳዊ ትርጉም"
+    },
+    {
+      "id": "eng_topic_grammar_tenses",
+      "unit_id": "eng_domain_grammar",
+      "topic_number": 1,
+      "title_en": "Conditionals and Perfect Aspects",
+      "title_am": "ሁኔታዊ አረፍተ ነገሮች እና ግሶች"
+    },
+    {
+      "id": "eng_topic_comm_dialogue",
+      "unit_id": "eng_domain_communication",
+      "topic_number": 1,
+      "title_en": "Situational Dialogues & Requests",
+      "title_am": "የሁኔታ ውይይቶች እና ጥያቄዎች"
+    },
+    {
+      "id": "eng_topic_sent_connectors",
+      "unit_id": "eng_domain_sentence_completion",
+      "topic_number": 1,
+      "title_en": "Concessive and Causal Connectors",
+      "title_am": "ምክንያታዊና ተቃራኒ አያያዦች"
+    },
+    {
+      "id": "eng_topic_writing_mechanics",
+      "unit_id": "eng_domain_writing",
+      "topic_number": 1,
+      "title_en": "Punctuation & Letter Conventions",
+      "title_am": "ስርዓተ ነጥብ እና የደብዳቤ ህጎች"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_eng_2014_01",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_reading",
+      "topic_id": "eng_topic_reading_inference",
+      "exam_year": 2014,
+      "question_number": 1,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Reading Comprehension",
+      "skill": "Main Idea Identification",
+      "reading_passage": {
+        "id": "pass_eng_2014_forestry",
+        "title": "Ethiopia's Watershed Restoration and Agroforestry",
+        "body": "Over the past two decades, integrated watershed management in the Ethiopian highlands has reversed extensive soil erosion and restored groundwater tables. By terracing steep slopes and planting indigenous nitrogen-fixing acacia species alongside vetiver grass hedges, rural communities have demonstrated that environmental rehabilitation and agricultural productivity are mutually reinforcing. The transformation of once-barren hillsides into productive fodder banks has enabled stall-fed dairy farming, reducing uncontrolled free grazing that historically stripped hillside soils of organic cover.",
+        "source": "ESSLCE 2014 E.C. English Exam Booklet 12 Reading Section"
+      },
+      "question_text_en": "According to the passage, what has been the primary consequence of terracing steep slopes and cultivating indigenous legumes?",
+      "question_text_am": "በምንባቡ መሰረት፣ ቁልቁለታማ ተዳፋቶችን በእርከን ማበጀት እና ሀገር በቀል እፅዋትን መትከል ያስገኘው ዋነኛ ውጤት ምንድን ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. English Exam Booklet 12",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. English Exam Booklet 12",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 12",
+        "question_number": 1,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "It has eradicated all need for livestock husbandry in the highlands.",
+          "text_am": "በደጋማው አካባቢ ያለውን የእንስሳት እርባታ ፍላጎት ሙሉ በሙሉ አስወግዷል።",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "It has curtailed soil erosion and recharged local groundwater reserves.",
+          "text_am": "የአፈር መሸርሸርን በመግታት የከርሰ ምድር ውሃ ክምችት እንዲያገግም አድርጓል።",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "It increased free grazing on vulnerable barren hillsides.",
+          "text_am": "በረሃማ በሆኑ ተዳፋቶች ላይ ልቅ ግጦሽን አባብሷል።",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "It accelerated seasonal surface runoff into deep river gorges.",
+          "text_am": "የወቅቱን የገጸ ምድር ጎርፍ ወደ ጥልቅ ወንዞች ፍሰት አፋጥኗል።",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "Option B is directly stated in lines 1–3 of the passage: 'integrated watershed management... has reversed extensive soil erosion and restored groundwater tables.'",
+        "solution_text_am": "መልስ B ትክክል ነው፤ በምንባቡ የመጀመሪያ ዓረፍተ ነገር ላይ የአፈር መሸርሸርን እንዳስቀረና የከርሰ ምድር ውሃን እንደመለሰ በግልጽ ተቀምጧል።",
+        "key_concept": "Direct textual evidence and paraphrase in reading comprehension questions.",
+        "common_pitfall": "Confusing stall-fed dairy farming with total elimination of livestock."
+      }
+    },
+    {
+      "id": "q_eng_2014_18",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_vocabulary",
+      "topic_id": "eng_topic_vocab_context",
+      "exam_year": 2014,
+      "question_number": 18,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Vocabulary",
+      "skill": "Contextual Synonyms",
+      "question_text_en": "The committee commended the engineers for their 'meticulous' scrutiny of the structural blueprint prior to commencing foundation work. The word 'meticulous' is closest in meaning to:",
+      "question_text_am": "ኮሚቴው መሃንዲሶቹ የመሰረት ግንባታ ከመጀመራቸው በፊት የንድፍ ፕላኑን 'meticulous' በሆነ መንገድ በመመርመራቸው አደነቃቸው። የቃሉ ተቀራራቢ ፍቺ ምንድን ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2014 E.C. English Exam Booklet 12",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2014 E.C. English Exam Booklet 12",
+        "exam_year": 2014,
+        "booklet_code": "Booklet 12",
+        "question_number": 18,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "Hasty and superficial",
+          "text_am": "የተጣደፈና ላዩን ብቻ የሆነ",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Extremely thorough and painstaking",
+          "text_am": "እጅግ ጥንቃቄ የተሞላበትና ዝርዝር አጥኚ",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Reluctant and hesitant",
+          "text_am": "ፈቃደኛ ያልሆነና የተጠራጠረ",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Casual and informal",
+          "text_am": "ቀለል ያለና መደበኛ ያልሆነ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "'Meticulous' means taking extreme care about minute details; painstaking. Therefore, option B is correct.",
+        "solution_text_am": "'Meticulous' ማለት ለጥቃቅን ዝርዝሮች ከፍተኛ ጥንቃቄ ማድረግ ማለት ሲሆን ትክክለኛው ተቀራራቢ ፍቺ 'extremely thorough and painstaking' (B) ነው።",
+        "key_concept": "Advanced academic adjective vocabulary in formal evaluation context.",
+        "common_pitfall": "Confusing meticulous with hesitant or reluctant."
+      }
+    },
+    {
+      "id": "q_eng_2015_35",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_grammar",
+      "topic_id": "eng_topic_grammar_tenses",
+      "exam_year": 2015,
+      "question_number": 35,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Grammar",
+      "skill": "Third Conditional Form",
+      "question_text_en": "If the laboratory technician ______ the specimen at sub-zero temperatures as instructed, the viral culture would not have decayed.",
+      "question_text_am": "የላቦራቶሪ ባለሙያው እንደታዘዘው ናሙናውን ከዜሮ በታች ባለው ቅዝቃዜ ______ ኖሮ፣ የቫይረሱ ዝርያ ባልተበላሸ ነበር።",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2015 E.C. English Exam Booklet 21",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2015 E.C. English Exam Booklet 21",
+        "exam_year": 2015,
+        "booklet_code": "Booklet 21",
+        "question_number": 35,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "stored",
+          "text_am": "ቢያከማች",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "had stored",
+          "text_am": "አከማችቶ በነበረ",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "would store",
+          "text_am": "ያከማች ነበር",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "has stored",
+          "text_am": "አከማችቷል",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "This is a Third Conditional sentence expressing an unreal past hypothesis: If + Past Perfect ('had stored'), would have + past participle ('would not have decayed').",
+        "solution_text_am": "ይህ በሶስተኛ ደረጃ ሁኔታዊ አረፍተ ነገር (Third Conditional) የተዋቀረ ሲሆን፣ በቀደመ ጊዜ ላልተፈጸመ ድርጊት 'If + had + V3' መዋቅር ይፈልጋል፤ ስለዚህ 'had stored' (B) ትክክል ነው።",
+        "key_concept": "Third Conditional syntactic structure for past counterfactual statements.",
+        "common_pitfall": "Using simple past 'stored' (which belongs to Second Conditional)."
+      }
+    },
+    {
+      "id": "q_eng_2015_52",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_communication",
+      "topic_id": "eng_topic_comm_dialogue",
+      "exam_year": 2015,
+      "question_number": 52,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Communication",
+      "skill": "Polite Refusal & Explanation",
+      "question_text_en": "Customer: 'Could you possibly expedite my passport renewal by Friday?'\nOfficer: '______'",
+      "question_text_am": "ደንበኛ፡ 'እባክዎ የፓስፖርት እድሳቴን እስከ አርብ ሊያፋጥኑልኝ ይችላሉ?'\nባለሙያ፡ '______'",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2015 E.C. English Exam Booklet 21",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2015 E.C. English Exam Booklet 21",
+        "exam_year": 2015,
+        "booklet_code": "Booklet 21",
+        "question_number": 52,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "No, I definitely refuse to do that.",
+          "text_am": "አይ፣ ያንን በፍጹም አላደርግም።",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "I'm afraid that's impossible because biometric verification requires five working days.",
+          "text_am": "ይቅርታ ያ አይቻልም፤ ምክንያቱም የባዮሜትሪክ ማረጋገጫ አምስት የስራ ቀናትን ይወስዳል።",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Why do you always ask for impossible deadlines?",
+          "text_am": "ለምንድን ነው ሁልጊዜ የማይቻሉ ጥያቄዎችን የምታቀርቡት?",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Sure, whatever you say.",
+          "text_am": "እሺ፣ ያልከው ይሁን።",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In professional communication, polite declines start with conversational softening markers such as 'I'm afraid...' followed by an objective rationale.",
+        "solution_text_am": "በመደበኛ የሙያ ተግባቦት ውድቅ የሚደረግ ጥያቄ በትህትና አገላለጽ ('I'm afraid...') እና በተጨባጭ ምክንያት መገለጽ አለበት።",
+        "key_concept": "Pragmatic competence: polite refusal in institutional customer service dialogue.",
+        "common_pitfall": "Selecting overly blunt or aggressive colloquial responses."
+      }
+    },
+    {
+      "id": "q_eng_2016_68",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_sentence_completion",
+      "topic_id": "eng_topic_sent_connectors",
+      "exam_year": 2016,
+      "question_number": 68,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Sentence Completion",
+      "skill": "Concessive Connectors",
+      "question_text_en": "______ the severe drought experienced in the eastern lowlands, regional crop yields remained stable due to expanded drip-irrigation networks.",
+      "question_text_am": "በምስራቁ ቆላማ አካባቢ ከባድ ድርቅ ______፣ በተስፋፋው የጠብታ መስኖ አማካኝነት የአካባቢው የሰብል ምርት ሳይዛባ ቆይቷል።",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2016 E.C. English Exam Booklet 31",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2016 E.C. English Exam Booklet 31",
+        "exam_year": 2016,
+        "booklet_code": "Booklet 31",
+        "question_number": 68,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "In spite of",
+          "text_am": "ቢሆንም / ምንም እንኳን",
+          "is_correct": true
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Although",
+          "text_am": "ምንም እንኳን (ሙሉ አረፍተ ነገር ይፈልጋል)",
+          "is_correct": false
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Consequently",
+          "text_am": "በዚህም ምክንያት",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Because of",
+          "text_am": "በመሆኑ የተነሳ",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "'In spite of' is a prepositional phrase expressing concession that takes a noun phrase ('the severe drought...'). 'Although' requires a full clause with subject and finite verb.",
+        "solution_text_am": "'In spite of' የስም ሀረግን (Noun phrase) ተከትሎ የሚመጣ የተቃርኖ አያያዥ ሲሆን፤ 'Although' ሙሉ ዓረፍተ ነገር ይፈልጋል። እዚህ ጋር 'the severe drought...' የስም ሀረግ በመሆኑ መልሱ A ነው።",
+        "key_concept": "Prepositional concessive markers vs subordinating adverbial conjunctions.",
+        "common_pitfall": "Confusing 'although' (requires clause) with 'in spite of' (requires noun phrase)."
+      }
+    },
+    {
+      "id": "q_eng_2016_84",
+      "grade": 12,
+      "stream": "common",
+      "subject_id": "english_g12",
+      "unit_id": "eng_domain_writing",
+      "topic_id": "eng_topic_writing_mechanics",
+      "exam_year": 2016,
+      "question_number": 84,
+      "exam_variant": "shared",
+      "assessment_structure": "mixed",
+      "content_domain": "Writing Skills",
+      "skill": "Formal Salutation and Complementary Close",
+      "question_text_en": "When addressing a formal letter to a company hiring director whose name you do NOT know, which combination of salutation and complimentary close is conventional?",
+      "question_text_am": "ስሙን የማያውቁትን የድርጅት የስራ አመራር ኃላፊ መደበኛ ደብዳቤ ሲጽፉ፣ ተገቢው የአክብሮት ሰላምታ እና መዝጊያ የትኛው ነው?",
+      "difficulty": "medium",
+      "verification_status": "published",
+      "source_name": "ESSLCE Hamle 2016 E.C. English Exam Booklet 31",
+      "provenance": {
+        "provenance_type": "officialNeaeaPaper",
+        "source_document": "ESSLCE Hamle 2016 E.C. English Exam Booklet 31",
+        "exam_year": 2016,
+        "booklet_code": "Booklet 31",
+        "question_number": 84,
+        "verified_by": "EAES English Expert Review Panel",
+        "verified_at": "2026-01-10T00:00:00.000Z",
+        "is_authoritative_past_exam": true
+      },
+      "content_version": 1,
+      "choices": [
+        {
+          "id": "c1",
+          "choice_label": "A",
+          "text_en": "Dear Mr. Director, ... Yours sincerely,",
+          "text_am": "ውድ ዳይሬክተር፣ ... ከታማኝነት ጋር፣",
+          "is_correct": false
+        },
+        {
+          "id": "c2",
+          "choice_label": "B",
+          "text_en": "Dear Sir or Madam, ... Yours faithfully,",
+          "text_am": "የተከበሩ እመቤት/ክቡር ሆይ፣ ... ከታማኝ አክብሮት ጋር፣",
+          "is_correct": true
+        },
+        {
+          "id": "c3",
+          "choice_label": "C",
+          "text_en": "Hi there, ... Best wishes,",
+          "text_am": "ሰላም፣ ... መልካም ምኞት ጋር፣",
+          "is_correct": false
+        },
+        {
+          "id": "c4",
+          "choice_label": "D",
+          "text_en": "Dear Sirs, ... Warm regards,",
+          "text_am": "ክቡራን፣ ... ሞቅ ያለ ሰላምታ፣",
+          "is_correct": false
+        }
+      ],
+      "explanation": {
+        "solution_text_en": "In formal British/Commonwealth and standard international business writing convention, letters beginning with 'Dear Sir or Madam' or 'To Whom It May Concern' conclude with 'Yours faithfully'. Letters using the recipient's personal surname (e.g. 'Dear Dr. Abebe') conclude with 'Yours sincerely'.",
+        "solution_text_am": "በመደበኛ ደብዳቤ አጻጻፍ ደንብ መሰረት ስሙ ላልታወቀ ተቀባይ 'Dear Sir or Madam' ተብሎ ከተጀመረ መዝጊያው 'Yours faithfully' (B) መሆን አለበት።",
+        "key_concept": "Formal letter layout: matching salutations and valedictions.",
+        "common_pitfall": "Mismating 'Dear Sir or Madam' with 'Yours sincerely'."
+      }
+    }
+  ]
+}
