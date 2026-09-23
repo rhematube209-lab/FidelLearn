@@ -160,7 +160,7 @@ void main() {
       expect(find.text('2013 Exam (100 Qs)'), findsOneWidget);
       expect(find.text('2014 Exam (32 Qs)'), findsOneWidget);
       expect(find.text('2013-17 Exam (386 Qs)'), findsOneWidget);
-      expect(find.text('2013-14 Exam (100 Qs)'), findsOneWidget);
+      expect(find.text('2013-15 Exam (300 Qs)'), findsOneWidget);
     });
   });
 }

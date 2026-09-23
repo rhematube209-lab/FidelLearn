@@ -1,0 +1,140 @@
+name: Deploy — Production
+
+on:
+  push:
+    branches: [main]
+
+  # Production deployments may also be triggered manually after explicit review
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false   # Never cancel a running production migration
+
+jobs:
+  validate:
+    name: Pre-deploy Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Run full test suite
+        run: flutter test --coverage
+
+      - name: Validate production build configuration (fail-closed check)
+        run: |
+          if [[ -z "$SUPABASE_URL" ]]; then
+            echo "ERROR: SUPABASE_URL_PRODUCTION secret is missing."
+            echo "A production build must not proceed without Supabase credentials."
+            exit 1
+          fi
+          if [[ -z "$SUPABASE_PUBLISHABLE_KEY" ]]; then
+            echo "ERROR: SUPABASE_PUBLISHABLE_KEY_PRODUCTION secret is missing."
+            exit 1
+          fi
+          echo "Production credentials present — build may proceed."
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL_PRODUCTION }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY_PRODUCTION }}
+
+  # MANUAL APPROVAL GATE
+  # Requires a reviewer to approve in GitHub's Environments UI before migrations run.
+  # Configure: Settings → Environments → production → Required reviewers
+  approve-production:
+    name: Await Production Approval
+    runs-on: ubuntu-latest
+    needs: validate
+    environment: production   # <-- This step waits for required reviewers
+    steps:
+      - name: Production deployment approved
+        run: echo "Production deployment approved by reviewer. Proceeding."
+
+  migrate-production:
+    name: Apply Migrations to Production
+    runs-on: ubuntu-latest
+    needs: approve-production
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Apply database migrations to production
+        run: |
+          supabase db push \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF_PRODUCTION }}" \
+            --password "${{ secrets.SUPABASE_DB_PASSWORD_PRODUCTION }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+  deploy-functions-production:
+    name: Deploy Edge Functions to Production
+    runs-on: ubuntu-latest
+    needs: migrate-production
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy Edge Functions
+        run: |
+          supabase functions deploy claim-reward \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF_PRODUCTION }}"
+          supabase functions deploy redeem-coins \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF_PRODUCTION }}"
+          supabase functions deploy grant-role \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF_PRODUCTION }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Verify Edge Function health
+        run: |
+          for fn in claim-reward redeem-coins grant-role; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" \
+              -X POST \
+              "https://${{ secrets.SUPABASE_PROJECT_REF_PRODUCTION }}.functions.supabase.co/$fn")
+            if [[ "$status" == "401" ]]; then
+              echo "$fn: OK (401 unauthenticated as expected)"
+            else
+              echo "ERROR: $fn returned unexpected status $status"
+              exit 1
+            fi
+          done
+
+      - name: Notify deployment complete
+        run: |
+          echo "=========================================="
+          echo "FidelLearn production deployment complete."
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployed by: ${{ github.actor }}"
+          echo "Time: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "=========================================="

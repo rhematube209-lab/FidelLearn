@@ -14,16 +14,38 @@ enum CoinTransactionType {
       this == CoinTransactionType.credit ? 'CREDIT' : 'DEBIT';
 }
 
+/// An entry in the append-only Study Coin ledger.
+///
+/// **Important — Security Model:**
+/// The [amount] field is used for local display and optimistic state only.
+/// When a credit entry is synced to the server, only [eventType] and
+/// [sourceEntityId] are sent to the `claim-reward` Edge Function.
+/// The server determines the authoritative amount from server-controlled
+/// reward rules. The client must never determine its own reward amount.
+///
+/// [serverVerified] is `false` for locally-created credit entries until the
+/// server confirms the claim. It is always `true` for debit entries that
+/// completed the `redeem-coins` Edge Function successfully.
 class CoinLedgerEntry extends Equatable {
   final String id;
   final String userId;
   final CoinTransactionType transactionType;
-  final int amount; // strictly positive integer
+  final int
+      amount; // strictly positive integer; for credits, may be optimistic until serverVerified
   final String reason;
   final String? relatedEntityId;
   final String idempotencyKey;
   final DateTime createdAt;
   final bool serverVerified;
+
+  /// For credit entries: the event type used to claim the reward server-side.
+  /// Must match a key in the server's `reward_rules` table.
+  /// Examples: 'exam_completed', 'daily_streak', 'challenge_completed'
+  final String? eventType;
+
+  /// For credit entries: the ID of the source entity (attempt UUID, date string, etc.)
+  /// The server verifies this entity exists and belongs to the user before awarding.
+  final String? sourceEntityId;
 
   const CoinLedgerEntry({
     required this.id,
@@ -35,6 +57,8 @@ class CoinLedgerEntry extends Equatable {
     required this.idempotencyKey,
     required this.createdAt,
     this.serverVerified = true,
+    this.eventType,
+    this.sourceEntityId,
   }) : assert(
           amount > 0,
           'Ledger transaction amount must be strictly positive',
@@ -51,6 +75,8 @@ class CoinLedgerEntry extends Equatable {
       'idempotency_key': idempotencyKey,
       'created_at': createdAt.toIso8601String(),
       'server_verified': serverVerified,
+      if (eventType != null) 'event_type': eventType,
+      if (sourceEntityId != null) 'source_entity_id': sourceEntityId,
     };
   }
 
@@ -67,6 +93,27 @@ class CoinLedgerEntry extends Equatable {
       idempotencyKey: json['idempotency_key'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       serverVerified: json['server_verified'] as bool? ?? true,
+      eventType: json['event_type'] as String?,
+      sourceEntityId: json['source_entity_id'] as String?,
+    );
+  }
+
+  CoinLedgerEntry copyWith({
+    bool? serverVerified,
+    int? amount,
+  }) {
+    return CoinLedgerEntry(
+      id: id,
+      userId: userId,
+      transactionType: transactionType,
+      amount: amount ?? this.amount,
+      reason: reason,
+      relatedEntityId: relatedEntityId,
+      idempotencyKey: idempotencyKey,
+      createdAt: createdAt,
+      serverVerified: serverVerified ?? this.serverVerified,
+      eventType: eventType,
+      sourceEntityId: sourceEntityId,
     );
   }
 
@@ -81,5 +128,7 @@ class CoinLedgerEntry extends Equatable {
         idempotencyKey,
         createdAt,
         serverVerified,
+        eventType,
+        sourceEntityId,
       ];
 }

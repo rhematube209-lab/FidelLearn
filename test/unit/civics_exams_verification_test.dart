@@ -257,7 +257,27 @@ void main() {
       final qMap = {for (var q in questions) q.questionNumber!: q};
 
       const flagged2015 = [
-        3, 4, 6, 8, 13, 22, 40, 43, 44, 51, 58, 62, 66, 68, 82, 83, 84, 86, 87, 90, 97
+        3,
+        4,
+        6,
+        8,
+        13,
+        22,
+        40,
+        43,
+        44,
+        51,
+        58,
+        62,
+        66,
+        68,
+        82,
+        83,
+        84,
+        86,
+        87,
+        90,
+        97
       ];
 
       for (final qn in flagged2015) {
@@ -313,7 +333,8 @@ void main() {
       }
     });
 
-    test('Civics 2013, 2014, and 2015 curriculum grade distributions match spec',
+    test(
+        'Civics 2013, 2014, and 2015 curriculum grade distributions match spec',
         () async {
       final q2013 = await repository.getQuestions(
         subjectId: 'civics_g12',
@@ -362,7 +383,8 @@ void main() {
       expect(grades2015[12], equals(10));
     });
 
-    test('Civics 2013, 2014, and 2015 difficulty distributions match spec', () async {
+    test('Civics 2013, 2014, and 2015 difficulty distributions match spec',
+        () async {
       final q2013 = await repository.getQuestions(
         subjectId: 'civics_g12',
         examYear: 2013,

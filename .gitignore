@@ -53,3 +53,5 @@ macOS/Flutter/ephemeral/
 .widget_preview/
 .vercel
 .env*
+!.env.example
+

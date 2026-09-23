@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/auth/data/repositories/mock_auth_repository.dart';
 import '../../features/auth/data/repositories/supabase_auth_repository.dart';
 import '../../features/auth/domain/models/user_profile.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
-import '../../features/bookmarks/data/repositories/supabase_bookmark_repository.dart';
-import '../../features/bookmarks/domain/repositories/bookmark_repository.dart';
 import '../../features/challenges/data/repositories/local_challenge_repository.dart';
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
-import '../../features/exams/data/repositories/supabase_exam_repository.dart';
+import '../../features/exams/data/repositories/drift_exam_repository.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
 import '../../features/mistakes/domain/models/mistake_model.dart';
 import '../../features/mistakes/domain/repositories/mistake_repository.dart';
@@ -42,8 +41,9 @@ import '../sync/models/sync_models.dart';
 import '../sync/repositories/drift_sync_queue_repository.dart';
 import '../sync/repositories/sync_queue_repository.dart';
 import '../sync/services/sync_engine.dart';
-import '../../features/exams/data/repositories/drift_exam_repository.dart';
+import '../sync/services/supabase_sync_handlers.dart';
 import '../../features/bookmarks/data/repositories/drift_bookmark_repository.dart';
+import '../../features/bookmarks/domain/repositories/bookmark_repository.dart';
 import '../../features/mistakes/data/repositories/drift_mistake_repository.dart';
 import '../../features/rewards/data/repositories/drift_coin_ledger_repository.dart';
 
@@ -73,6 +73,21 @@ final syncEngineProvider = Provider<SyncEngine>((ref) {
     connectivityService: connectivity,
     queueRepository: queue,
   );
+
+  // Wire Supabase remote sync handlers when Supabase is configured.
+  // This is done after engine creation so handlers can be registered
+  // independently of the engine lifecycle.
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      final client = Supabase.instance.client;
+      // SupabaseSyncHandlers registers all handlers on the engine internally.
+      // The instance is kept alive by the provider closure.
+      SupabaseSyncHandlers(engine: engine, client: client);
+    } catch (e) {
+      // Supabase not yet initialised (e.g. during tests) — safe to skip.
+    }
+  }
+
   ref.onDispose(engine.dispose);
   return engine;
 });
@@ -125,22 +140,29 @@ final contentRepositoryProvider = Provider<ContentRepository>((ref) {
 });
 
 final examRepositoryProvider = Provider<ExamRepository>((ref) {
-  if (EnvConfig.isSupabaseConfigured) {
-    try {
-      return SupabaseExamRepository();
-    } catch (_) {}
-  }
+  // ALWAYS use DriftExamRepository regardless of Supabase configuration.
+  //
+  // Reason: DriftExamRepository persists active attempts to SQLite
+  // (DbActiveAttempts table) so they survive app restarts during an exam.
+  // SupabaseExamRepository used an in-memory Map for active attempts,
+  // which loses state on restart — violating the offline-first requirement.
+  //
+  // Completed attempts are synced to Supabase via the SyncEngine queue
+  // (SUBMIT_ATTEMPT operation registered in SupabaseSyncHandlers).
   final db = ref.watch(appDatabaseProvider);
   final queue = ref.watch(syncQueueRepositoryProvider);
   return DriftExamRepository(db: db, syncQueue: queue);
 });
 
 final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
-  if (EnvConfig.isSupabaseConfigured) {
-    try {
-      return SupabaseBookmarkRepository();
-    } catch (_) {}
-  }
+  // ALWAYS use DriftBookmarkRepository regardless of Supabase configuration.
+  //
+  // Reason: DriftBookmarkRepository persists bookmarks to SQLite so they
+  // survive app restarts when offline. SupabaseBookmarkRepository used an
+  // in-memory Map that lost state on restart.
+  //
+  // Bookmark changes are synced to Supabase via the SyncEngine queue
+  // (TOGGLE_BOOKMARK operation registered in SupabaseSyncHandlers).
   final db = ref.watch(appDatabaseProvider);
   final queue = ref.watch(syncQueueRepositoryProvider);
   return DriftBookmarkRepository(db: db, syncQueue: queue);
@@ -427,12 +449,26 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
 
   int get balance => CoinLedgerService.calculateBalance(state);
 
+  /// Award coins to a student for a verifiable event.
+  ///
+  /// [eventType] must match a key in the server's `reward_rules` table.
+  /// [sourceEntityId] is the ID of the entity that triggered the event
+  /// (e.g. attempt UUID for exam_completed).
+  ///
+  /// Security model:
+  ///   - [amount] is used for LOCAL display only (optimistic state).
+  ///   - The server independently determines the authoritative reward amount
+  ///     from the reward_rules table when the sync operation executes.
+  ///   - The sync queue entry carries only eventType + sourceEntityId +
+  ///     idempotencyKey — NOT the amount.
   void awardCoins({
     required String userId,
     required int amount,
     required String reason,
     required String idempotencyKey,
     String? relatedEntityId,
+    String? eventType,
+    String? sourceEntityId,
   }) {
     CoinLedgerService.validateIdempotency(
       currentLedger: state,
@@ -445,9 +481,12 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
       transactionType: CoinTransactionType.credit,
       amount: amount,
       reason: reason,
-      relatedEntityId: relatedEntityId,
+      relatedEntityId: relatedEntityId ?? sourceEntityId,
       idempotencyKey: idempotencyKey,
       createdAt: DateTime.now(),
+      serverVerified: false, // optimistic; confirmed after sync
+      eventType: eventType,
+      sourceEntityId: sourceEntityId,
     );
 
     state = [...state, entry];

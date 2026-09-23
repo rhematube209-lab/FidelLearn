@@ -17,14 +17,32 @@ void main() async {
     debugPrint('SharedPreferences initialization failed: $e');
   }
 
-  if (EnvConfig.isSupabaseConfigured) {
+  // requireSupabase:
+  //   development → returns false if credentials missing (offline/mock mode)
+  //   staging/production → throws StateError if credentials missing (fail closed)
+  bool supabaseReady = false;
+  try {
+    supabaseReady = EnvConfig.requireSupabase;
+  } on StateError catch (e) {
+    // In staging/production this is unrecoverable — rethrow to crash loudly
+    // so CI/CD and on-call teams see the misconfiguration immediately.
+    debugPrint(e.message);
+    rethrow;
+  }
+
+  if (supabaseReady) {
     try {
       await Supabase.initialize(
         url: EnvConfig.supabaseUrl,
-        anonKey: EnvConfig.supabaseAnonKey,
+        anonKey: EnvConfig.supabasePublishableKey,
       );
     } catch (e) {
-      debugPrint('Supabase initialization failed: $e');
+      if (!EnvConfig.isDevelopment) {
+        // Never silently swallow Supabase init failures in staging/production.
+        debugPrint('Supabase initialization failed: $e');
+        rethrow;
+      }
+      debugPrint('Supabase initialization failed (dev offline mode): $e');
     }
   }
 

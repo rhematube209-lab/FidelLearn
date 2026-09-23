@@ -5,8 +5,20 @@ enum SyncOperationType {
   submitAttempt,
   toggleBookmark,
   recordMistake,
+
+  /// Deprecated: legacy operation type kept for backward compatibility with
+  /// existing SQLite queue entries. New code uses [claimReward] instead.
   appendCoinEntry,
-  updateProfile;
+  updateProfile,
+
+  /// Sends an event claim to the `claim-reward` Edge Function.
+  /// Payload: { event_type, source_entity_id, idempotency_key }
+  /// The server determines the coin amount — the payload must NOT include amount.
+  claimReward,
+
+  /// Sends a redemption request to the `redeem-coins` Edge Function.
+  /// Payload: { redemption_item_id, idempotency_key }
+  redeemCoins;
 
   String get value {
     switch (this) {
@@ -20,6 +32,10 @@ enum SyncOperationType {
         return 'APPEND_COIN_ENTRY';
       case SyncOperationType.updateProfile:
         return 'UPDATE_PROFILE';
+      case SyncOperationType.claimReward:
+        return 'CLAIM_REWARD';
+      case SyncOperationType.redeemCoins:
+        return 'REDEEM_COINS';
     }
   }
 
@@ -35,6 +51,10 @@ enum SyncOperationType {
         return SyncOperationType.appendCoinEntry;
       case 'UPDATE_PROFILE':
         return SyncOperationType.updateProfile;
+      case 'CLAIM_REWARD':
+        return SyncOperationType.claimReward;
+      case 'REDEEM_COINS':
+        return SyncOperationType.redeemCoins;
       default:
         return SyncOperationType.submitAttempt;
     }

@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'fix/**']
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flutter-ci:
+    name: Flutter Analyze & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run code generation
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze (fatal infos)
+        run: flutter analyze --fatal-infos
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
+        # Note: tests run in development mode (no Supabase credentials needed).
+        # The fail-closed behavior (requireSupabase) only triggers in staging/production.
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/lcov.info
+          retention-days: 14
+
+  migration-lint:
+    name: Validate Supabase Migrations
+    runs-on: ubuntu-latest
+    # Only run when migration files change
+    if: contains(github.event.head_commit.modified, 'supabase/migrations/')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Check migration file ordering
+        run: |
+          # Verify migration files are named with valid timestamps in ascending order
+          prev=""
+          for f in supabase/migrations/*.sql; do
+            ts=$(basename "$f" | cut -d'_' -f1)
+            if [[ -n "$prev" && "$ts" < "$prev" ]]; then
+              echo "ERROR: Migration $f is out of order (before $prev)"
+              exit 1
+            fi
+            prev="$ts"
+          done
+          echo "All migrations are correctly ordered."
+
+      - name: Validate migration SQL syntax
+        run: |
+          # Start local Supabase instance and apply all migrations
+          supabase db start
+          supabase db reset --debug
+          supabase db stop
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}

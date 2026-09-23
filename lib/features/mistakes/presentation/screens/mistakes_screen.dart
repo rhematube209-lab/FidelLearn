@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../core/widgets/fidel_badge.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
@@ -942,9 +941,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
       child: InkWell(
         onTap: unmasteredCount > 0
             ? () => _startMistakeRetryExam(
-                  subjectId: _selectedSubjectId == 'ALL'
-                      ? null
-                      : _selectedSubjectId,
+                  subjectId:
+                      _selectedSubjectId == 'ALL' ? null : _selectedSubjectId,
                   unitId: _selectedUnitId,
                 )
             : null,
@@ -1066,8 +1064,9 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   fontSize: isDesktop ? 12 : 11,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color:
-                      isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                  color: isDark
+                      ? const Color(0xFF94A3B8)
+                      : const Color(0xFF64748B),
                 ),
               ),
               Text(
@@ -1093,9 +1092,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.total}',
                 subLabel: 'mistakes',
                 valueColor: const Color(0xFF4F46E5),
-                titleColor: isDark
-                    ? const Color(0xFFA5B4FC)
-                    : const Color(0xFF4338CA),
+                titleColor:
+                    isDark ? const Color(0xFFA5B4FC) : const Color(0xFF4338CA),
                 subLabelColor: isDark
                     ? const Color(0xFF818CF8)
                     : const Color(0xFF4338CA).withValues(alpha: 0.85),
@@ -1111,9 +1109,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.needsReview}',
                 subLabel: 'review',
                 valueColor: const Color(0xFFF59E0B),
-                titleColor: isDark
-                    ? const Color(0xFFFDE68A)
-                    : const Color(0xFFB45309),
+                titleColor:
+                    isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309),
                 subLabelColor: isDark
                     ? const Color(0xFFFCD34D)
                     : const Color(0xFFB45309).withValues(alpha: 0.85),
@@ -1129,9 +1126,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.improving}',
                 subLabel: '1 of 2',
                 valueColor: const Color(0xFF0284C7),
-                titleColor: isDark
-                    ? const Color(0xFFBAE6FD)
-                    : const Color(0xFF0369A1),
+                titleColor:
+                    isDark ? const Color(0xFFBAE6FD) : const Color(0xFF0369A1),
                 subLabelColor: isDark
                     ? const Color(0xFF7DD3FC)
                     : const Color(0xFF0369A1).withValues(alpha: 0.85),
@@ -1147,9 +1143,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 value: '${counts.mastered}',
                 subLabel: 'resolved',
                 valueColor: const Color(0xFF10B981),
-                titleColor: isDark
-                    ? const Color(0xFFA7F3D0)
-                    : const Color(0xFF047857),
+                titleColor:
+                    isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857),
                 subLabelColor: isDark
                     ? const Color(0xFF6EE7B7)
                     : const Color(0xFF047857).withValues(alpha: 0.85),
@@ -1312,10 +1307,14 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                  color: isDark
+                      ? const Color(0xFF0F172A)
+                      : const Color(0xFFEEF1F8),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
                     width: 0.8,
                   ),
                 ),
@@ -1358,9 +1357,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               const SizedBox(width: 10),
               // Count badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                  color: isDark
+                      ? const Color(0xFF0F172A)
+                      : const Color(0xFFF4F6FB),
                   borderRadius: BorderRadius.circular(999),
                   border: Border.all(
                     color: isDark
@@ -1384,9 +1386,13 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 height: 28,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                  color: isDark
+                      ? const Color(0xFF0F172A)
+                      : const Color(0xFFF4F6FB),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                    color: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
                   ),
                 ),
                 child: const Center(
@@ -1538,10 +1544,14 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFEEF1F8),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                         width: 0.8,
                       ),
                     ),
@@ -1585,9 +1595,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFF4F6FB),
                       borderRadius: BorderRadius.circular(999),
                       border: Border.all(
                         color: isDark
@@ -1610,9 +1623,13 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     height: 28,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFF4F6FB),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                       ),
                     ),
                     child: const Center(
@@ -1633,7 +1650,9 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0).withValues(alpha: 0.6),
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0).withValues(alpha: 0.6),
                       width: 1.0,
                     ),
                   ),
@@ -1644,21 +1663,39 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   children: [
                     _buildStatusPill(
                       label: '${s.counts.needsReview} Needs Review',
-                      bgColor: isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB),
-                      textColor: isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309),
-                      borderColor: isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A),
+                      bgColor: isDark
+                          ? const Color(0xFF451A03)
+                          : const Color(0xFFFFFBEB),
+                      textColor: isDark
+                          ? const Color(0xFFFDE68A)
+                          : const Color(0xFFB45309),
+                      borderColor: isDark
+                          ? const Color(0xFF78350F)
+                          : const Color(0xFFFDE68A),
                     ),
                     _buildStatusPill(
                       label: '${s.counts.improving} Improving',
-                      bgColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
-                      textColor: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
-                      borderColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                      bgColor: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFEEF1F8),
+                      textColor: isDark
+                          ? const Color(0xFF94A3B8)
+                          : const Color(0xFF64748B),
+                      borderColor: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0),
                     ),
                     _buildStatusPill(
                       label: '${s.counts.mastered} Mastered',
-                      bgColor: isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5),
-                      textColor: isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857),
-                      borderColor: isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0),
+                      bgColor: isDark
+                          ? const Color(0xFF064E3B)
+                          : const Color(0xFFECFDF5),
+                      textColor: isDark
+                          ? const Color(0xFFA7F3D0)
+                          : const Color(0xFF047857),
+                      borderColor: isDark
+                          ? const Color(0xFF065F46)
+                          : const Color(0xFFA7F3D0),
                     ),
                   ],
                 ),
@@ -1738,7 +1775,9 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     text: 'EUEE High-Yield Rule: ',
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
-                      color: isDark ? const Color(0xFF6EE7B7) : const Color(0xFF064E3B),
+                      color: isDark
+                          ? const Color(0xFF6EE7B7)
+                          : const Color(0xFF064E3B),
                     ),
                   ),
                   const TextSpan(
@@ -1871,7 +1910,6 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
       children: [
         _buildStatusFilterChips(isDark),
         const SizedBox(height: 16),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -1904,7 +1942,6 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
           ],
         ),
         const SizedBox(height: 12),
-
         if (units.isEmpty)
           _buildEmptyFilteredCard(
               'No units matching the selected status filter in $subjectTitle.',
@@ -1988,10 +2025,14 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFEEF1F8),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                       ),
                     ),
                     child: const Center(
@@ -2031,9 +2072,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 9, vertical: 3.5),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF4F6FB),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFF4F6FB),
                       borderRadius: BorderRadius.circular(999),
                       border: Border.all(
                         color: isDark
@@ -2062,21 +2106,39 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 children: [
                   _buildStatusPill(
                     label: '${u.counts.needsReview} Needs Review',
-                    bgColor: isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB),
-                    textColor: isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309),
-                    borderColor: isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A),
+                    bgColor: isDark
+                        ? const Color(0xFF451A03)
+                        : const Color(0xFFFFFBEB),
+                    textColor: isDark
+                        ? const Color(0xFFFDE68A)
+                        : const Color(0xFFB45309),
+                    borderColor: isDark
+                        ? const Color(0xFF78350F)
+                        : const Color(0xFFFDE68A),
                   ),
                   _buildStatusPill(
                     label: '${u.counts.improving} Improving',
-                    bgColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
-                    textColor: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
-                    borderColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                    bgColor: isDark
+                        ? const Color(0xFF0F172A)
+                        : const Color(0xFFEEF1F8),
+                    textColor: isDark
+                        ? const Color(0xFF94A3B8)
+                        : const Color(0xFF64748B),
+                    borderColor: isDark
+                        ? const Color(0xFF334155)
+                        : const Color(0xFFE2E8F0),
                   ),
                   _buildStatusPill(
                     label: '${u.counts.mastered} Mastered',
-                    bgColor: isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5),
-                    textColor: isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857),
-                    borderColor: isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0),
+                    bgColor: isDark
+                        ? const Color(0xFF064E3B)
+                        : const Color(0xFFECFDF5),
+                    textColor: isDark
+                        ? const Color(0xFFA7F3D0)
+                        : const Color(0xFF047857),
+                    borderColor: isDark
+                        ? const Color(0xFF065F46)
+                        : const Color(0xFFA7F3D0),
                   ),
                 ],
               ),
@@ -2102,7 +2164,6 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
       children: [
         _buildStatusFilterChips(isDark),
         const SizedBox(height: 16),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -2121,12 +2182,12 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                 },
                 icon: const Icon(Icons.arrow_upward_rounded, size: 16),
                 label: const Text('Back to Units',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               ),
           ],
         ),
         const SizedBox(height: 12),
-
         if (questions.isEmpty)
           _buildEmptyFilteredCard(
               'No mistake questions match the current filters.', isDark)
@@ -2163,17 +2224,20 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
       case MasteryStatus.needsReview:
         statusBg = isDark ? const Color(0xFF451A03) : const Color(0xFFFFFBEB);
         statusText = isDark ? const Color(0xFFFDE68A) : const Color(0xFFB45309);
-        statusBorder = isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A);
+        statusBorder =
+            isDark ? const Color(0xFF78350F) : const Color(0xFFFDE68A);
         break;
       case MasteryStatus.improving:
         statusBg = isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8);
         statusText = isDark ? const Color(0xFF94A3B8) : const Color(0xFF0284C7);
-        statusBorder = isDark ? const Color(0xFF334155) : const Color(0xFFBAE6FD);
+        statusBorder =
+            isDark ? const Color(0xFF334155) : const Color(0xFFBAE6FD);
         break;
       case MasteryStatus.mastered:
         statusBg = isDark ? const Color(0xFF064E3B) : const Color(0xFFECFDF5);
         statusText = isDark ? const Color(0xFFA7F3D0) : const Color(0xFF047857);
-        statusBorder = isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0);
+        statusBorder =
+            isDark ? const Color(0xFF065F46) : const Color(0xFFA7F3D0);
         break;
     }
 
@@ -2226,15 +2290,18 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                         _buildTag(subjectTitle, const Color(0xFF4F46E5)),
                         _buildTag(unitTitle, const Color(0xFF64748B)),
                         if (q?.difficulty != null)
-                          _buildTag(q!.difficulty.toUpperCase(), const Color(0xFF7C3AED)),
+                          _buildTag(q!.difficulty.toUpperCase(),
+                              const Color(0xFF7C3AED)),
                         if (q?.examYear != null)
-                          _buildTag('${q!.examYear} E.C.', const Color(0xFF0D9488)),
+                          _buildTag(
+                              '${q!.examYear} E.C.', const Color(0xFF0D9488)),
                       ],
                     ),
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: statusBg,
                       borderRadius: BorderRadius.circular(8),
@@ -2281,13 +2348,18 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
                           style: TextStyle(
                             fontSize: 11.5,
                             fontWeight: FontWeight.w500,
-                            color: isDark ? AppTheme.darkMuted : const Color(0xFF64748B),
+                            color: isDark
+                                ? AppTheme.darkMuted
+                                : const Color(0xFF64748B),
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 7, vertical: 2),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF0F172A) : const Color(0xFFEEF1F8),
+                            color: isDark
+                                ? const Color(0xFF0F172A)
+                                : const Color(0xFFEEF1F8),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
