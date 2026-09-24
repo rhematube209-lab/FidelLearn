@@ -290,5 +290,49 @@ void main() {
 
       await db.close();
     });
+
+    test(
+        'Upgrading when table already contains exam_variant column succeeds cleanly without throwing',
+        () async {
+      final db = AppDatabase.inMemory();
+
+      await db.customStatement('DROP TABLE IF EXISTS db_study_plan_sessions');
+      await db.customStatement('DROP TABLE IF EXISTS db_study_plans');
+      await db.customStatement('DROP TABLE IF EXISTS db_mistakes');
+      await db.customStatement('DROP TABLE IF EXISTS db_question_mastery');
+      await db.customStatement('DROP TABLE IF EXISTS db_learning_target_mastery');
+      await db.customStatement('DROP TABLE IF EXISTS db_review_events');
+
+      await db.customStatement('''
+        CREATE TABLE db_study_plan_sessions (
+          id TEXT NOT NULL PRIMARY KEY,
+          plan_id TEXT NOT NULL,
+          subject_id TEXT NOT NULL,
+          exam_variant TEXT
+        )
+      ''');
+
+      await db.customStatement('''
+        CREATE TABLE db_mistakes (
+          id TEXT NOT NULL PRIMARY KEY,
+          user_id TEXT,
+          question_id TEXT,
+          subject_id TEXT,
+          unit_id TEXT,
+          topic_id TEXT,
+          mastery_status TEXT,
+          miss_count INTEGER DEFAULT 0,
+          retry_count INTEGER DEFAULT 0,
+          correct_retry_count INTEGER DEFAULT 0,
+          last_attempt_at TEXT,
+          last_missed_at TEXT,
+          updated_at TEXT
+        )
+      ''');
+
+      await db.migration.onUpgrade(db.createMigrator(), 3, 6);
+
+      await db.close();
+    });
   });
 }

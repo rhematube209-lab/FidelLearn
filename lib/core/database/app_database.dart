@@ -35,15 +35,44 @@ class AppDatabase extends _$AppDatabase {
         },
         onUpgrade: (Migrator m, int from, int to) async {
           Future<bool> columnExists(String tableName, String columnName) async {
-            final result =
-                await customSelect('PRAGMA table_info("$tableName")').get();
-            return result.any((row) => row.read<String>('name') == columnName);
+            try {
+              final result =
+                  await customSelect('PRAGMA table_info("$tableName")').get();
+              return result.any((row) =>
+                  row.read<String>('name').toLowerCase() ==
+                  columnName.toLowerCase());
+            } catch (_) {
+              return false;
+            }
           }
 
           Future<void> safeAddColumn(
               TableInfo<Table, Object?> table, GeneratedColumn column) async {
-            if (!await columnExists(table.actualTableName, column.$name)) {
+            try {
+              final exists =
+                  await columnExists(table.actualTableName, column.$name);
+              if (exists) return;
+            } catch (_) {}
+
+            try {
               await m.addColumn(table, column);
+            } catch (e) {
+              final errStr = e.toString().toLowerCase();
+              if (!errStr.contains('duplicate column') &&
+                  !errStr.contains('already exists')) {
+                rethrow;
+              }
+            }
+          }
+
+          Future<void> safeCreateTable(TableInfo<Table, Object?> table) async {
+            try {
+              await m.createTable(table);
+            } catch (e) {
+              final errStr = e.toString().toLowerCase();
+              if (!errStr.contains('already exists')) {
+                rethrow;
+              }
             }
           }
 
@@ -84,8 +113,8 @@ class AppDatabase extends _$AppDatabase {
           }
 
           if (from < 3 && to >= 3) {
-            await m.createTable(dbStudyPlans);
-            await m.createTable(dbStudyPlanSessions);
+            await safeCreateTable(dbStudyPlans);
+            await safeCreateTable(dbStudyPlanSessions);
           }
 
           if (from < 4 && to >= 4) {
@@ -121,9 +150,9 @@ class AppDatabase extends _$AppDatabase {
           }
 
           if (from < 5 && to >= 5) {
-            await m.createTable(dbQuestionMastery);
-            await m.createTable(dbLearningTargetMastery);
-            await m.createTable(dbReviewEvents);
+            await safeCreateTable(dbQuestionMastery);
+            await safeCreateTable(dbLearningTargetMastery);
+            await safeCreateTable(dbReviewEvents);
 
             // Performance and review queue indexes
             await customStatement(
