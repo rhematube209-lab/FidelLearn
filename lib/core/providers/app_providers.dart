@@ -46,6 +46,12 @@ import '../../features/bookmarks/data/repositories/drift_bookmark_repository.dar
 import '../../features/bookmarks/domain/repositories/bookmark_repository.dart';
 import '../../features/mistakes/data/repositories/drift_mistake_repository.dart';
 import '../../features/rewards/data/repositories/drift_coin_ledger_repository.dart';
+import '../../features/progress/domain/models/study_plan_models.dart';
+import '../../features/progress/domain/repositories/study_plan_repository.dart';
+import '../../features/progress/data/repositories/drift_study_plan_repository.dart';
+import '../../features/progress/domain/services/adaptive_study_planner.dart';
+import '../../features/question_bank/domain/models/question_models.dart';
+import '../../features/subjects/domain/models/subject_models.dart';
 
 // --- Database Infrastructure ---
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
@@ -526,5 +532,170 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
     if (_repository != null) {
       unawaited(_repository.recordEntry(entry).catchError((_) {}));
     }
+  }
+}
+
+// --- Adaptive Study Planner & Today's Plan State ---
+final studyPlanRepositoryProvider = Provider<StudyPlanRepository>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return DriftStudyPlanRepository(db: db, prefs: prefs);
+});
+
+final adaptiveStudyPlannerProvider = Provider<AdaptiveStudyPlanner>((ref) {
+  return const AdaptiveStudyPlanner();
+});
+
+final plannerSettingsProvider = StateNotifierProvider.family<
+    PlannerSettingsNotifier, PlannerSettings, String>((ref, userId) {
+  final repo = ref.watch(studyPlanRepositoryProvider);
+  return PlannerSettingsNotifier(repo, userId);
+});
+
+class PlannerSettingsNotifier extends StateNotifier<PlannerSettings> {
+  final StudyPlanRepository _repo;
+  final String _userId;
+
+  PlannerSettingsNotifier(this._repo, this._userId)
+      : super(PlannerSettings(
+          dailyBudgetMinutes: 45,
+          targetExamDate: DateTime.now().add(const Duration(days: 75)),
+          includeWeekends: true,
+        )) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    final settings = await _repo.getPlannerSettings(_userId);
+    if (mounted) state = settings;
+  }
+
+  Future<void> updateDailyBudget(int minutes) async {
+    final updated = state.copyWith(dailyBudgetMinutes: minutes);
+    state = updated;
+    await _repo.savePlannerSettings(_userId, updated);
+  }
+
+  Future<void> updateTargetExamDate(DateTime date) async {
+    final updated = state.copyWith(targetExamDate: date);
+    state = updated;
+    await _repo.savePlannerSettings(_userId, updated);
+  }
+}
+
+final todayStudyPlanProvider = StateNotifierProvider.family<
+    TodayStudyPlanNotifier, AsyncValue<StudyPlan?>, String>((ref, userId) {
+  final repo = ref.watch(studyPlanRepositoryProvider);
+  final planner = ref.watch(adaptiveStudyPlannerProvider);
+  return TodayStudyPlanNotifier(ref, repo, planner, userId);
+});
+
+class TodayStudyPlanNotifier extends StateNotifier<AsyncValue<StudyPlan?>> {
+  final Ref _ref;
+  final StudyPlanRepository _studyPlanRepo;
+  final AdaptiveStudyPlanner _planner;
+  final String _userId;
+
+  TodayStudyPlanNotifier(
+    this._ref,
+    this._studyPlanRepo,
+    this._planner,
+    this._userId,
+  ) : super(const AsyncValue.loading()) {
+    loadOrCreatePlan();
+  }
+
+  Future<void> loadOrCreatePlan({bool forceRegenerate = false}) async {
+    state = const AsyncValue.loading();
+    try {
+      if (!forceRegenerate) {
+        final existing = await _studyPlanRepo.getStudyPlan(_userId);
+        if (existing != null && existing.sessions.isNotEmpty) {
+          state = AsyncValue.data(existing);
+          return;
+        }
+      }
+
+      // Generate new plan from actual historical data
+      final user = _ref.read(currentUserProvider).valueOrNull;
+      final grade = user?.grade ?? 12;
+      final stream = user?.stream ?? 'natural';
+
+      final settings = await _studyPlanRepo.getPlannerSettings(_userId);
+      final examRepo = _ref.read(examRepositoryProvider);
+      final mistakeRepo = _ref.read(mistakeRepositoryProvider);
+      final contentRepo = _ref.read(contentRepositoryProvider);
+
+      final attempts = await examRepo.getAttemptHistory(_userId);
+      final mistakes =
+          await mistakeRepo.getMistakes(_userId, onlyUnmastered: true);
+      final subjects =
+          await contentRepo.getSubjects(grade: grade, stream: stream);
+
+      final Map<String, List<Unit>> unitsBySub = {};
+      final Map<String, List<Topic>> topicsByUnit = {};
+      final List<Question> allQuestions = [];
+
+      for (final s in subjects) {
+        final units = await contentRepo.getUnits(s.id);
+        unitsBySub[s.id] = units;
+        for (final u in units) {
+          final topics = await contentRepo.getTopics(u.id);
+          topicsByUnit[u.id] = topics;
+        }
+        final qs =
+            await contentRepo.getQuestions(grade: grade, subjectId: s.id);
+        allQuestions.addAll(qs);
+      }
+
+      final packages =
+          await contentRepo.getPackages(grade: grade, stream: stream);
+      final installedIds =
+          packages.where((p) => p.isDownloaded).map((p) => p.subjectId).toSet();
+
+      final plan = _planner.generateDailyPlan(
+        userId: _userId,
+        grade: grade,
+        stream: stream,
+        settings: settings,
+        completedAttempts: attempts,
+        unmasteredMistakes: mistakes,
+        availableQuestions: allQuestions,
+        allSubjects: subjects,
+        unitsBySubject: unitsBySub,
+        topicsByUnit: topicsByUnit,
+        installedSubjectIds: installedIds,
+      );
+
+      await _studyPlanRepo.saveStudyPlan(plan);
+      state = AsyncValue.data(plan);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> markSessionCompleted(
+    String sessionId, {
+    int? timeSpentSeconds,
+    double? scorePercentage,
+  }) async {
+    await _studyPlanRepo.updateSessionStatus(
+      sessionId: sessionId,
+      status: SessionCompletionStatus.completed,
+      completedAt: DateTime.now(),
+      timeSpentSeconds: timeSpentSeconds,
+      scorePercentage: scorePercentage,
+    );
+    final updated = await _studyPlanRepo.getStudyPlan(_userId);
+    if (mounted) state = AsyncValue.data(updated);
+  }
+
+  Future<void> markSessionSkipped(String sessionId) async {
+    await _studyPlanRepo.updateSessionStatus(
+      sessionId: sessionId,
+      status: SessionCompletionStatus.skipped,
+    );
+    final updated = await _studyPlanRepo.getStudyPlan(_userId);
+    if (mounted) state = AsyncValue.data(updated);
   }
 }

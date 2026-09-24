@@ -40,6 +40,14 @@ class InvalidPackageFailure extends Failure {
   ]);
 }
 
+class PackageActivationFailure extends Failure {
+  const PackageActivationFailure([
+    super.message =
+        'Package activation blocked due to missing or corrupt scientific assets.',
+    super.code,
+  ]);
+}
+
 class InsufficientQuestionsFailure extends Failure {
   final int requested;
   final int available;

@@ -161,4 +161,45 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get commonMistake => 'የተለመደ ስህተት';
+
+  @override
+  String get todayStudyPlan => 'የዛሬ የጥናት እቅድ';
+
+  @override
+  String get whyThis => 'ለምን ተመረጠ?';
+
+  @override
+  String get startPractice => 'ልምምድ ጀምር';
+
+  @override
+  String get continueSession => 'ቀጥል';
+
+  @override
+  String get completed => 'ተጠናቋል';
+
+  @override
+  String get dueForReview => 'ክለሳ የሚሻ';
+
+  @override
+  String get weakTopic => 'ትኩረት የሚሻ ርዕስ';
+
+  @override
+  String get recommended => 'የተመረጠ';
+
+  @override
+  String minutesLabel(int count) {
+    return '$count ደቂቃ';
+  }
+
+  @override
+  String questionsLabel(int count) {
+    return '$count ጥያቄዎች';
+  }
+
+  @override
+  String get studyPlanComplete => 'የዛሬ የጥናት እቅድ ተጠናቋል!';
+
+  @override
+  String get studyPlanCompletedSubtitle =>
+      'እጅግ በጣም ጥሩ! የዛሬውን ግላዊ የጥናት እቅድ ሙሉ በሙሉ አጠናቀዋል።';
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../domain/models/question_models.dart';
+import 'fullscreen_diagram_modal.dart';
 import 'svg_diagram_viewer.dart';
 
 /// Renders official exam illustrations, extracted document figures,
@@ -50,6 +52,8 @@ class QuestionDiagramViewer extends StatelessWidget {
     String assetPath,
     bool isDark,
   ) {
+    final caption = question.vectorDiagram?.caption;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
@@ -105,8 +109,7 @@ class QuestionDiagramViewer extends StatelessWidget {
                     ],
                   ),
                   InkWell(
-                    onTap: () =>
-                        _openFullscreenModal(context, assetPath, isDark),
+                    onTap: () => _openFullscreenModal(context, assetPath),
                     borderRadius: BorderRadius.circular(6),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -140,102 +143,100 @@ class QuestionDiagramViewer extends StatelessWidget {
               ),
             ),
 
-            // Center Image Viewer
+            // Center Image / SVG Viewer
             GestureDetector(
-              onTap: () => _openFullscreenModal(context, assetPath, isDark),
+              onTap: () => _openFullscreenModal(context, assetPath),
               child: Container(
                 constraints: BoxConstraints(maxHeight: maxHeight),
                 color: Colors
                     .white, // Keep white background for clean official exam line art
                 padding: const EdgeInsets.all(12),
                 child: Center(
-                  child: Image.asset(
-                    assetPath,
-                    fit: BoxFit.contain,
-                    errorBuilder: (ctx, err, stack) {
-                      // Graceful fallback to vector diagram if image file is not found
-                      if (question.vectorDiagram != null) {
-                        return SvgDiagramViewer(
-                          diagram: question.vectorDiagram!,
-                          height: maxHeight,
-                          showControls: false,
-                        );
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.broken_image_rounded,
-                                size: 36, color: Color(0xFF94A3B8)),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Diagram asset could not be loaded ($assetPath)',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: Color(0xFF64748B),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                  child: _buildAssetWidget(assetPath),
                 ),
               ),
             ),
+
+            // Optional Figure Caption
+            if (caption != null && caption.isNotEmpty) ...[
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                color:
+                    isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+                child: Text(
+                  caption,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: isDark
+                        ? AppTheme.darkTextSoft
+                        : const Color(0xFF475569),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 
-  void _openFullscreenModal(
-      BuildContext context, String assetPath, bool isDark) {
-    showDialog<void>(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.85),
-      builder: (ctx) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(16),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Zoomable Image
-              InteractiveViewer(
-                minScale: 0.8,
-                maxScale: 4.0,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Image.asset(
-                    assetPath,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
+  Widget _buildAssetWidget(String assetPath) {
+    if (assetPath.toLowerCase().endsWith('.svg')) {
+      return SvgPicture.asset(
+        assetPath,
+        fit: BoxFit.contain,
+        placeholderBuilder: (ctx) => const SizedBox(
+          height: 120,
+          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        ),
+      );
+    }
 
-              // Close Button
-              Positioned(
-                top: 8,
-                right: 8,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black54,
-                  child: IconButton(
-                    icon: const Icon(Icons.close_rounded, color: Colors.white),
-                    onPressed: () => Navigator.pop(ctx),
-                  ),
+    return Image.asset(
+      assetPath,
+      fit: BoxFit.contain,
+      errorBuilder: (ctx, err, stack) {
+        // Graceful fallback to vector diagram if image file is not found
+        if (question.vectorDiagram != null) {
+          return SvgDiagramViewer(
+            diagram: question.vectorDiagram!,
+            height: maxHeight,
+            showControls: false,
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.broken_image_rounded,
+                  size: 36, color: Color(0xFF94A3B8)),
+              const SizedBox(height: 6),
+              Text(
+                'Diagram asset could not be loaded ($assetPath)',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: Color(0xFF64748B),
                 ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  void _openFullscreenModal(BuildContext context, String assetPath) {
+    FullscreenDiagramModal.show(
+      context,
+      assetPath: assetPath,
+      vectorDiagram: question.vectorDiagram,
+      caption: question.vectorDiagram?.caption,
     );
   }
 }

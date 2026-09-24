@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../domain/models/bookmark_model.dart';
 
 class BookmarksScreen extends ConsumerStatefulWidget {
@@ -221,8 +222,8 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      q?.questionTextEn ??
+                                    ScientificText(
+                                      text: q?.questionTextEn ??
                                           'Question content...',
                                       style: const TextStyle(
                                           fontSize: 14,

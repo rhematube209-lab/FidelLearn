@@ -161,4 +161,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonMistake => 'Common Pitfall';
+
+  @override
+  String get todayStudyPlan => 'Today\'s Study Plan';
+
+  @override
+  String get whyThis => 'Why this?';
+
+  @override
+  String get startPractice => 'Start Practice';
+
+  @override
+  String get continueSession => 'Continue';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get dueForReview => 'Due for Review';
+
+  @override
+  String get weakTopic => 'Weak Topic';
+
+  @override
+  String get recommended => 'Recommended';
+
+  @override
+  String minutesLabel(int count) {
+    return '$count min';
+  }
+
+  @override
+  String questionsLabel(int count) {
+    return '$count Questions';
+  }
+
+  @override
+  String get studyPlanComplete => 'Today\'s Study Plan Complete!';
+
+  @override
+  String get studyPlanCompletedSubtitle =>
+      'Outstanding work! You have finished all personalized recommendations for today.';
 }

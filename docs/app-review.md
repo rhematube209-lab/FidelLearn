@@ -198,6 +198,7 @@ graph TD
 
 ## 4. Current Status vs. Planned Roadmap
 
+### 4.1 Completed Implementation Phases
 | Phase / Feature | Current Status | Description & Deliverables |
 | :--- | :---: | :--- |
 | **Phase 0: Architecture & Foundation** | **COMPLETE** | Clean Architecture, Drift SQLite schema, Riverpod setup, Supabase RLS migrations. |
@@ -207,12 +208,16 @@ graph TD
 | **Phase 4: Teacher & School Portals** | **COMPLETE** | Classrooms, assignments, rosters, school-wide dashboards and analytics. |
 | **Phase 5: Admin CMS & Content Verification** | **COMPLETE** | Question authoring, verification lifecycle (`published`), audit logs. |
 | **Question Runner UI Redesign** | **COMPLETE** | Simplified header, timer pill, tactile option cards, interactive tap-to-jump footer counter. |
-| **Cloud Supabase Live Production Deploy** | *PLANNED* | Deploy PostgreSQL schema & Edge Functions to live Supabase cluster. |
-| **Native Android Wi-Fi Direct Protocol** | *PLANNED* | Replace local P2P simulation with native Android Nearby Connections / Wi-Fi Direct socket. |
-| **Expanded Content Packages** | *PLANNED* | Digitize and publish Grade 6 & Grade 8 National Exam packages (Regional & Ministry). |
-| **Live Classroom Competitions** | *PLANNED* | Real-time teacher-hosted multiplayer exam challenges via WebSockets. |
-| **Push Notifications & Reminders** | *PLANNED* | Local notifications for daily streak reminders and national exam countdowns. |
-| **Store Packaging & Release** | *PLANNED* | Android App Bundle (AAB), APK signing for Telegram/sideload distribution, Web PWA. |
+
+### 4.2 Engineering Priority Milestones
+| Priority Milestone | Target Scope | Current Status |
+| :--- | :--- | :---: |
+| **Priority 0 (P0)** | **Grade 12 Launch Curriculum & Architecture Freeze**<br>Canonical 9 subjects / 10 tracks matrix, unified Mathematics dual-variant model, non-destructive Drift/Supabase schemas, bilingual ARB strings. | **FROZEN** (`p0-grade12-schema-freeze-v1.0.0`) |
+| **Post-P0 Validation** | **Architecture & Track Isolation Validation**<br>Strict cross-track isolation (0% Math Natural/Social leakage), Civics excluded from national exam calculations, bilingual ARB completeness. | **PASS** |
+| **Priority 2 (P2)** | **Adaptive Learning & Personalized Study Planner**<br>Deterministic multi-factor prioritization, non-destructive Drift schema v4, native support for English (`mixed`) and Aptitude (`skillBased`), canonical 4-phase exam proximity engine, bilingual 'Why This?' audit explanations. | **FROZEN** (`adaptive_planner_v1.1`) |
+| **Priority 3 (P3)** | **Advanced Scientific Rendering**<br>Offline-first high-fidelity LaTeX/KaTeX equation rendering, scalable vector diagrams (SVG/Canvas), chemical formulas and reaction equations, sub-microsecond offline render cache. *(Note: Teacher/School portals were completed in MVP Phase 4).* | **NEXT PRIORITY** (Planned) |
+| **Priority 4 (P4)** | **Mastery + Intelligent Spaced Repetition**<br>SuperMemo-2 (SM-2) memory decay scheduling, multi-tier mastery progression (`needsReview` → `improving` → `mastered`), adaptive retention intervals. | Planned |
+| **Priority 5 (P5)** | **ESSLCE Full Exam Simulation**<br>True-to-life national entrance exam simulation, strict booklet timing, randomized booklet permutations, proctored lock-down modes. | Planned |
 
 ---
 
@@ -222,7 +227,7 @@ The codebase maintains strict quality control and comprehensive automated test c
 
 - **Static Analysis**: `flutter analyze` runs clean with **0 issues found** across the entire repository.
 - **Formatting**: Adheres strictly to standard Dart style guidelines (`dart format`).
-- **Automated Test Suite**: **135 automated tests passing** across unit, widget, and repository layers:
+- **Automated Test Suite**: **300+ automated tests passing** across unit, widget, and repository layers:
 
 ```text
 00:08 +135: All tests passed!

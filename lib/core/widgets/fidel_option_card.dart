@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../features/question_bank/presentation/widgets/scientific_text.dart';
 import '../theme/app_theme.dart';
 
 enum FidelOptionState {
@@ -119,8 +120,8 @@ class FidelOptionCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        textEn,
+                      ScientificText(
+                        text: textEn,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: state == FidelOptionState.selected
@@ -129,11 +130,12 @@ class FidelOptionCard extends StatelessWidget {
                           color: textColor,
                           height: 1.4,
                         ),
+                        mathColor: textColor,
                       ),
                       if (textAm != null && textAm!.isNotEmpty) ...[
                         const SizedBox(height: 4),
-                        Text(
-                          textAm!,
+                        ScientificText(
+                          text: textAm!,
                           style: TextStyle(
                             fontSize: 13,
                             color: isDark

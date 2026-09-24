@@ -9,6 +9,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/mistake_model.dart';
 
@@ -2321,8 +2322,8 @@ class _MistakesScreenState extends ConsumerState<MistakesScreen> {
               const SizedBox(height: 12),
 
               // Question Text Preview
-              Text(
-                previewText,
+              ScientificText(
+                text: previewText,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

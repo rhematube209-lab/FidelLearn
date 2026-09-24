@@ -64,5 +64,27 @@
   "readinessScore": "Readiness Score",
   "simplerExplanation": "Simpler Explanation",
   "keyConcept": "Key Concept & Formula",
-  "commonMistake": "Common Pitfall"
+  "commonMistake": "Common Pitfall",
+  "todayStudyPlan": "Today's Study Plan",
+  "whyThis": "Why this?",
+  "startPractice": "Start Practice",
+  "continueSession": "Continue",
+  "completed": "Completed",
+  "dueForReview": "Due for Review",
+  "weakTopic": "Weak Topic",
+  "recommended": "Recommended",
+  "minutesLabel": "{count} min",
+  "@minutesLabel": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "questionsLabel": "{count} Questions",
+  "@questionsLabel": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "studyPlanComplete": "Today's Study Plan Complete!",
+  "studyPlanCompletedSubtitle": "Outstanding work! You have finished all personalized recommendations for today."
 }

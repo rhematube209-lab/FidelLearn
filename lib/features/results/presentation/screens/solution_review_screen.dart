@@ -11,6 +11,7 @@ import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/audio_explanation_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../question_bank/presentation/widgets/question_diagram_viewer.dart';
+import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../widgets/audio_player_card.dart';
 
 class SolutionReviewScreen extends ConsumerStatefulWidget {
@@ -437,8 +438,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
-                currentQ.questionTextEn,
+              ScientificText(
+                text: currentQ.questionTextEn,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -449,8 +450,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
               if (currentQ.questionTextAm != null &&
                   currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
-                Text(
-                  currentQ.questionTextAm!,
+                ScientificText(
+                  text: currentQ.questionTextAm!,
                   style: TextStyle(
                     fontSize: 14.5,
                     color:
@@ -500,8 +501,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        currentQ.reviewNote!,
+                      ScientificText(
+                        text: currentQ.reviewNote!,
                         style: TextStyle(
                           fontSize: 12.5,
                           height: 1.4,
@@ -576,8 +577,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                 ],
               ),
               const SizedBox(height: 12),
-              Text(
-                currentQ.explanation.solutionTextEn,
+              ScientificText(
+                text: currentQ.explanation.solutionTextEn,
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.5,
@@ -608,8 +609,8 @@ class _SolutionReviewScreenState extends ConsumerState<SolutionReviewScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        currentQ.explanation.simplerExplanationEn!,
+                      ScientificText(
+                        text: currentQ.explanation.simplerExplanationEn!,
                         style: TextStyle(
                           fontSize: 12.5,
                           color: isDark

@@ -3463,6 +3463,1522 @@ class DbSyncQueueCompanion extends UpdateCompanion<DbSyncQueueItem> {
   }
 }
 
+class $DbStudyPlansTable extends DbStudyPlans
+    with TableInfo<$DbStudyPlansTable, DbStudyPlan> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DbStudyPlansTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _planDateMeta =
+      const VerificationMeta('planDate');
+  @override
+  late final GeneratedColumn<DateTime> planDate = GeneratedColumn<DateTime>(
+      'plan_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _targetMinutesMeta =
+      const VerificationMeta('targetMinutes');
+  @override
+  late final GeneratedColumn<int> targetMinutes = GeneratedColumn<int>(
+      'target_minutes', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(45));
+  static const VerificationMeta _estimatedMinutesMeta =
+      const VerificationMeta('estimatedMinutes');
+  @override
+  late final GeneratedColumn<int> estimatedMinutes = GeneratedColumn<int>(
+      'estimated_minutes', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(45));
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('not_started'));
+  static const VerificationMeta _algorithmVersionMeta =
+      const VerificationMeta('algorithmVersion');
+  @override
+  late final GeneratedColumn<String> algorithmVersion = GeneratedColumn<String>(
+      'algorithm_version', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('adaptive_planner_v1'));
+  static const VerificationMeta _generatedAtMeta =
+      const VerificationMeta('generatedAt');
+  @override
+  late final GeneratedColumn<DateTime> generatedAt = GeneratedColumn<DateTime>(
+      'generated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        planDate,
+        targetMinutes,
+        estimatedMinutes,
+        status,
+        algorithmVersion,
+        generatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'db_study_plans';
+  @override
+  VerificationContext validateIntegrity(Insertable<DbStudyPlan> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('plan_date')) {
+      context.handle(_planDateMeta,
+          planDate.isAcceptableOrUnknown(data['plan_date']!, _planDateMeta));
+    } else if (isInserting) {
+      context.missing(_planDateMeta);
+    }
+    if (data.containsKey('target_minutes')) {
+      context.handle(
+          _targetMinutesMeta,
+          targetMinutes.isAcceptableOrUnknown(
+              data['target_minutes']!, _targetMinutesMeta));
+    }
+    if (data.containsKey('estimated_minutes')) {
+      context.handle(
+          _estimatedMinutesMeta,
+          estimatedMinutes.isAcceptableOrUnknown(
+              data['estimated_minutes']!, _estimatedMinutesMeta));
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('algorithm_version')) {
+      context.handle(
+          _algorithmVersionMeta,
+          algorithmVersion.isAcceptableOrUnknown(
+              data['algorithm_version']!, _algorithmVersionMeta));
+    }
+    if (data.containsKey('generated_at')) {
+      context.handle(
+          _generatedAtMeta,
+          generatedAt.isAcceptableOrUnknown(
+              data['generated_at']!, _generatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_generatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbStudyPlan map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DbStudyPlan(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      planDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}plan_date'])!,
+      targetMinutes: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}target_minutes'])!,
+      estimatedMinutes: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}estimated_minutes'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      algorithmVersion: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}algorithm_version'])!,
+      generatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}generated_at'])!,
+    );
+  }
+
+  @override
+  $DbStudyPlansTable createAlias(String alias) {
+    return $DbStudyPlansTable(attachedDatabase, alias);
+  }
+}
+
+class DbStudyPlan extends DataClass implements Insertable<DbStudyPlan> {
+  final String id;
+  final String userId;
+  final DateTime planDate;
+  final int targetMinutes;
+  final int estimatedMinutes;
+  final String status;
+  final String algorithmVersion;
+  final DateTime generatedAt;
+  const DbStudyPlan(
+      {required this.id,
+      required this.userId,
+      required this.planDate,
+      required this.targetMinutes,
+      required this.estimatedMinutes,
+      required this.status,
+      required this.algorithmVersion,
+      required this.generatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['plan_date'] = Variable<DateTime>(planDate);
+    map['target_minutes'] = Variable<int>(targetMinutes);
+    map['estimated_minutes'] = Variable<int>(estimatedMinutes);
+    map['status'] = Variable<String>(status);
+    map['algorithm_version'] = Variable<String>(algorithmVersion);
+    map['generated_at'] = Variable<DateTime>(generatedAt);
+    return map;
+  }
+
+  DbStudyPlansCompanion toCompanion(bool nullToAbsent) {
+    return DbStudyPlansCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      planDate: Value(planDate),
+      targetMinutes: Value(targetMinutes),
+      estimatedMinutes: Value(estimatedMinutes),
+      status: Value(status),
+      algorithmVersion: Value(algorithmVersion),
+      generatedAt: Value(generatedAt),
+    );
+  }
+
+  factory DbStudyPlan.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DbStudyPlan(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      planDate: serializer.fromJson<DateTime>(json['planDate']),
+      targetMinutes: serializer.fromJson<int>(json['targetMinutes']),
+      estimatedMinutes: serializer.fromJson<int>(json['estimatedMinutes']),
+      status: serializer.fromJson<String>(json['status']),
+      algorithmVersion: serializer.fromJson<String>(json['algorithmVersion']),
+      generatedAt: serializer.fromJson<DateTime>(json['generatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'planDate': serializer.toJson<DateTime>(planDate),
+      'targetMinutes': serializer.toJson<int>(targetMinutes),
+      'estimatedMinutes': serializer.toJson<int>(estimatedMinutes),
+      'status': serializer.toJson<String>(status),
+      'algorithmVersion': serializer.toJson<String>(algorithmVersion),
+      'generatedAt': serializer.toJson<DateTime>(generatedAt),
+    };
+  }
+
+  DbStudyPlan copyWith(
+          {String? id,
+          String? userId,
+          DateTime? planDate,
+          int? targetMinutes,
+          int? estimatedMinutes,
+          String? status,
+          String? algorithmVersion,
+          DateTime? generatedAt}) =>
+      DbStudyPlan(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        planDate: planDate ?? this.planDate,
+        targetMinutes: targetMinutes ?? this.targetMinutes,
+        estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+        status: status ?? this.status,
+        algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+        generatedAt: generatedAt ?? this.generatedAt,
+      );
+  DbStudyPlan copyWithCompanion(DbStudyPlansCompanion data) {
+    return DbStudyPlan(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      planDate: data.planDate.present ? data.planDate.value : this.planDate,
+      targetMinutes: data.targetMinutes.present
+          ? data.targetMinutes.value
+          : this.targetMinutes,
+      estimatedMinutes: data.estimatedMinutes.present
+          ? data.estimatedMinutes.value
+          : this.estimatedMinutes,
+      status: data.status.present ? data.status.value : this.status,
+      algorithmVersion: data.algorithmVersion.present
+          ? data.algorithmVersion.value
+          : this.algorithmVersion,
+      generatedAt:
+          data.generatedAt.present ? data.generatedAt.value : this.generatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStudyPlan(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('planDate: $planDate, ')
+          ..write('targetMinutes: $targetMinutes, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('status: $status, ')
+          ..write('algorithmVersion: $algorithmVersion, ')
+          ..write('generatedAt: $generatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userId, planDate, targetMinutes,
+      estimatedMinutes, status, algorithmVersion, generatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbStudyPlan &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.planDate == this.planDate &&
+          other.targetMinutes == this.targetMinutes &&
+          other.estimatedMinutes == this.estimatedMinutes &&
+          other.status == this.status &&
+          other.algorithmVersion == this.algorithmVersion &&
+          other.generatedAt == this.generatedAt);
+}
+
+class DbStudyPlansCompanion extends UpdateCompanion<DbStudyPlan> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<DateTime> planDate;
+  final Value<int> targetMinutes;
+  final Value<int> estimatedMinutes;
+  final Value<String> status;
+  final Value<String> algorithmVersion;
+  final Value<DateTime> generatedAt;
+  final Value<int> rowid;
+  const DbStudyPlansCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.planDate = const Value.absent(),
+    this.targetMinutes = const Value.absent(),
+    this.estimatedMinutes = const Value.absent(),
+    this.status = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    this.generatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DbStudyPlansCompanion.insert({
+    required String id,
+    required String userId,
+    required DateTime planDate,
+    this.targetMinutes = const Value.absent(),
+    this.estimatedMinutes = const Value.absent(),
+    this.status = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    required DateTime generatedAt,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        userId = Value(userId),
+        planDate = Value(planDate),
+        generatedAt = Value(generatedAt);
+  static Insertable<DbStudyPlan> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<DateTime>? planDate,
+    Expression<int>? targetMinutes,
+    Expression<int>? estimatedMinutes,
+    Expression<String>? status,
+    Expression<String>? algorithmVersion,
+    Expression<DateTime>? generatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (planDate != null) 'plan_date': planDate,
+      if (targetMinutes != null) 'target_minutes': targetMinutes,
+      if (estimatedMinutes != null) 'estimated_minutes': estimatedMinutes,
+      if (status != null) 'status': status,
+      if (algorithmVersion != null) 'algorithm_version': algorithmVersion,
+      if (generatedAt != null) 'generated_at': generatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DbStudyPlansCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? userId,
+      Value<DateTime>? planDate,
+      Value<int>? targetMinutes,
+      Value<int>? estimatedMinutes,
+      Value<String>? status,
+      Value<String>? algorithmVersion,
+      Value<DateTime>? generatedAt,
+      Value<int>? rowid}) {
+    return DbStudyPlansCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      planDate: planDate ?? this.planDate,
+      targetMinutes: targetMinutes ?? this.targetMinutes,
+      estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+      status: status ?? this.status,
+      algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+      generatedAt: generatedAt ?? this.generatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (planDate.present) {
+      map['plan_date'] = Variable<DateTime>(planDate.value);
+    }
+    if (targetMinutes.present) {
+      map['target_minutes'] = Variable<int>(targetMinutes.value);
+    }
+    if (estimatedMinutes.present) {
+      map['estimated_minutes'] = Variable<int>(estimatedMinutes.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (algorithmVersion.present) {
+      map['algorithm_version'] = Variable<String>(algorithmVersion.value);
+    }
+    if (generatedAt.present) {
+      map['generated_at'] = Variable<DateTime>(generatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStudyPlansCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('planDate: $planDate, ')
+          ..write('targetMinutes: $targetMinutes, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('status: $status, ')
+          ..write('algorithmVersion: $algorithmVersion, ')
+          ..write('generatedAt: $generatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbStudyPlanSessionsTable extends DbStudyPlanSessions
+    with TableInfo<$DbStudyPlanSessionsTable, DbStudyPlanSession> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DbStudyPlanSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _planIdMeta = const VerificationMeta('planId');
+  @override
+  late final GeneratedColumn<String> planId = GeneratedColumn<String>(
+      'plan_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _subjectIdMeta =
+      const VerificationMeta('subjectId');
+  @override
+  late final GeneratedColumn<String> subjectId = GeneratedColumn<String>(
+      'subject_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
+  @override
+  late final GeneratedColumn<String> unitId = GeneratedColumn<String>(
+      'unit_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _topicIdMeta =
+      const VerificationMeta('topicId');
+  @override
+  late final GeneratedColumn<String> topicId = GeneratedColumn<String>(
+      'topic_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _sessionTypeMeta =
+      const VerificationMeta('sessionType');
+  @override
+  late final GeneratedColumn<String> sessionType = GeneratedColumn<String>(
+      'session_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleEnMeta =
+      const VerificationMeta('titleEn');
+  @override
+  late final GeneratedColumn<String> titleEn = GeneratedColumn<String>(
+      'title_en', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleAmMeta =
+      const VerificationMeta('titleAm');
+  @override
+  late final GeneratedColumn<String> titleAm = GeneratedColumn<String>(
+      'title_am', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _questionTargetMeta =
+      const VerificationMeta('questionTarget');
+  @override
+  late final GeneratedColumn<int> questionTarget = GeneratedColumn<int>(
+      'question_target', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(10));
+  static const VerificationMeta _estimatedMinutesMeta =
+      const VerificationMeta('estimatedMinutes');
+  @override
+  late final GeneratedColumn<int> estimatedMinutes = GeneratedColumn<int>(
+      'estimated_minutes', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(15));
+  static const VerificationMeta _priorityScoreMeta =
+      const VerificationMeta('priorityScore');
+  @override
+  late final GeneratedColumn<double> priorityScore = GeneratedColumn<double>(
+      'priority_score', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0.0));
+  static const VerificationMeta _reasonCodeMeta =
+      const VerificationMeta('reasonCode');
+  @override
+  late final GeneratedColumn<String> reasonCode = GeneratedColumn<String>(
+      'reason_code', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _reasonDetailEnMeta =
+      const VerificationMeta('reasonDetailEn');
+  @override
+  late final GeneratedColumn<String> reasonDetailEn = GeneratedColumn<String>(
+      'reason_detail_en', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _reasonDetailAmMeta =
+      const VerificationMeta('reasonDetailAm');
+  @override
+  late final GeneratedColumn<String> reasonDetailAm = GeneratedColumn<String>(
+      'reason_detail_am', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('not_started'));
+  static const VerificationMeta _questionIdsJsonMeta =
+      const VerificationMeta('questionIdsJson');
+  @override
+  late final GeneratedColumn<String> questionIdsJson = GeneratedColumn<String>(
+      'question_ids_json', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('[]'));
+  static const VerificationMeta _completedAtMeta =
+      const VerificationMeta('completedAt');
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+      'completed_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _timeSpentSecondsMeta =
+      const VerificationMeta('timeSpentSeconds');
+  @override
+  late final GeneratedColumn<int> timeSpentSeconds = GeneratedColumn<int>(
+      'time_spent_seconds', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _scorePercentageMeta =
+      const VerificationMeta('scorePercentage');
+  @override
+  late final GeneratedColumn<double> scorePercentage = GeneratedColumn<double>(
+      'score_percentage', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _examVariantMeta =
+      const VerificationMeta('examVariant');
+  @override
+  late final GeneratedColumn<String> examVariant = GeneratedColumn<String>(
+      'exam_variant', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _assessmentStructureMeta =
+      const VerificationMeta('assessmentStructure');
+  @override
+  late final GeneratedColumn<String> assessmentStructure =
+      GeneratedColumn<String>('assessment_structure', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _contentDomainMeta =
+      const VerificationMeta('contentDomain');
+  @override
+  late final GeneratedColumn<String> contentDomain = GeneratedColumn<String>(
+      'content_domain', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _skillMeta = const VerificationMeta('skill');
+  @override
+  late final GeneratedColumn<String> skill = GeneratedColumn<String>(
+      'skill', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        planId,
+        subjectId,
+        unitId,
+        topicId,
+        sessionType,
+        titleEn,
+        titleAm,
+        questionTarget,
+        estimatedMinutes,
+        priorityScore,
+        reasonCode,
+        reasonDetailEn,
+        reasonDetailAm,
+        status,
+        questionIdsJson,
+        completedAt,
+        timeSpentSeconds,
+        scorePercentage,
+        examVariant,
+        assessmentStructure,
+        contentDomain,
+        skill
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'db_study_plan_sessions';
+  @override
+  VerificationContext validateIntegrity(Insertable<DbStudyPlanSession> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('plan_id')) {
+      context.handle(_planIdMeta,
+          planId.isAcceptableOrUnknown(data['plan_id']!, _planIdMeta));
+    } else if (isInserting) {
+      context.missing(_planIdMeta);
+    }
+    if (data.containsKey('subject_id')) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableOrUnknown(data['subject_id']!, _subjectIdMeta));
+    } else if (isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (data.containsKey('unit_id')) {
+      context.handle(_unitIdMeta,
+          unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+    }
+    if (data.containsKey('topic_id')) {
+      context.handle(_topicIdMeta,
+          topicId.isAcceptableOrUnknown(data['topic_id']!, _topicIdMeta));
+    }
+    if (data.containsKey('session_type')) {
+      context.handle(
+          _sessionTypeMeta,
+          sessionType.isAcceptableOrUnknown(
+              data['session_type']!, _sessionTypeMeta));
+    } else if (isInserting) {
+      context.missing(_sessionTypeMeta);
+    }
+    if (data.containsKey('title_en')) {
+      context.handle(_titleEnMeta,
+          titleEn.isAcceptableOrUnknown(data['title_en']!, _titleEnMeta));
+    } else if (isInserting) {
+      context.missing(_titleEnMeta);
+    }
+    if (data.containsKey('title_am')) {
+      context.handle(_titleAmMeta,
+          titleAm.isAcceptableOrUnknown(data['title_am']!, _titleAmMeta));
+    } else if (isInserting) {
+      context.missing(_titleAmMeta);
+    }
+    if (data.containsKey('question_target')) {
+      context.handle(
+          _questionTargetMeta,
+          questionTarget.isAcceptableOrUnknown(
+              data['question_target']!, _questionTargetMeta));
+    }
+    if (data.containsKey('estimated_minutes')) {
+      context.handle(
+          _estimatedMinutesMeta,
+          estimatedMinutes.isAcceptableOrUnknown(
+              data['estimated_minutes']!, _estimatedMinutesMeta));
+    }
+    if (data.containsKey('priority_score')) {
+      context.handle(
+          _priorityScoreMeta,
+          priorityScore.isAcceptableOrUnknown(
+              data['priority_score']!, _priorityScoreMeta));
+    }
+    if (data.containsKey('reason_code')) {
+      context.handle(
+          _reasonCodeMeta,
+          reasonCode.isAcceptableOrUnknown(
+              data['reason_code']!, _reasonCodeMeta));
+    } else if (isInserting) {
+      context.missing(_reasonCodeMeta);
+    }
+    if (data.containsKey('reason_detail_en')) {
+      context.handle(
+          _reasonDetailEnMeta,
+          reasonDetailEn.isAcceptableOrUnknown(
+              data['reason_detail_en']!, _reasonDetailEnMeta));
+    } else if (isInserting) {
+      context.missing(_reasonDetailEnMeta);
+    }
+    if (data.containsKey('reason_detail_am')) {
+      context.handle(
+          _reasonDetailAmMeta,
+          reasonDetailAm.isAcceptableOrUnknown(
+              data['reason_detail_am']!, _reasonDetailAmMeta));
+    } else if (isInserting) {
+      context.missing(_reasonDetailAmMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('question_ids_json')) {
+      context.handle(
+          _questionIdsJsonMeta,
+          questionIdsJson.isAcceptableOrUnknown(
+              data['question_ids_json']!, _questionIdsJsonMeta));
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+          _completedAtMeta,
+          completedAt.isAcceptableOrUnknown(
+              data['completed_at']!, _completedAtMeta));
+    }
+    if (data.containsKey('time_spent_seconds')) {
+      context.handle(
+          _timeSpentSecondsMeta,
+          timeSpentSeconds.isAcceptableOrUnknown(
+              data['time_spent_seconds']!, _timeSpentSecondsMeta));
+    }
+    if (data.containsKey('score_percentage')) {
+      context.handle(
+          _scorePercentageMeta,
+          scorePercentage.isAcceptableOrUnknown(
+              data['score_percentage']!, _scorePercentageMeta));
+    }
+    if (data.containsKey('exam_variant')) {
+      context.handle(
+          _examVariantMeta,
+          examVariant.isAcceptableOrUnknown(
+              data['exam_variant']!, _examVariantMeta));
+    }
+    if (data.containsKey('assessment_structure')) {
+      context.handle(
+          _assessmentStructureMeta,
+          assessmentStructure.isAcceptableOrUnknown(
+              data['assessment_structure']!, _assessmentStructureMeta));
+    }
+    if (data.containsKey('content_domain')) {
+      context.handle(
+          _contentDomainMeta,
+          contentDomain.isAcceptableOrUnknown(
+              data['content_domain']!, _contentDomainMeta));
+    }
+    if (data.containsKey('skill')) {
+      context.handle(
+          _skillMeta, skill.isAcceptableOrUnknown(data['skill']!, _skillMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbStudyPlanSession map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DbStudyPlanSession(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      planId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}plan_id'])!,
+      subjectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}subject_id'])!,
+      unitId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_id']),
+      topicId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic_id']),
+      sessionType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_type'])!,
+      titleEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title_en'])!,
+      titleAm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title_am'])!,
+      questionTarget: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}question_target'])!,
+      estimatedMinutes: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}estimated_minutes'])!,
+      priorityScore: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}priority_score'])!,
+      reasonCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reason_code'])!,
+      reasonDetailEn: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}reason_detail_en'])!,
+      reasonDetailAm: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}reason_detail_am'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      questionIdsJson: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}question_ids_json'])!,
+      completedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}completed_at']),
+      timeSpentSeconds: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}time_spent_seconds'])!,
+      scorePercentage: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}score_percentage']),
+      examVariant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_variant']),
+      assessmentStructure: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}assessment_structure']),
+      contentDomain: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content_domain']),
+      skill: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}skill']),
+    );
+  }
+
+  @override
+  $DbStudyPlanSessionsTable createAlias(String alias) {
+    return $DbStudyPlanSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class DbStudyPlanSession extends DataClass
+    implements Insertable<DbStudyPlanSession> {
+  final String id;
+  final String planId;
+  final String subjectId;
+  final String? unitId;
+  final String? topicId;
+  final String sessionType;
+  final String titleEn;
+  final String titleAm;
+  final int questionTarget;
+  final int estimatedMinutes;
+  final double priorityScore;
+  final String reasonCode;
+  final String reasonDetailEn;
+  final String reasonDetailAm;
+  final String status;
+  final String questionIdsJson;
+  final DateTime? completedAt;
+  final int timeSpentSeconds;
+  final double? scorePercentage;
+  final String? examVariant;
+  final String? assessmentStructure;
+  final String? contentDomain;
+  final String? skill;
+  const DbStudyPlanSession(
+      {required this.id,
+      required this.planId,
+      required this.subjectId,
+      this.unitId,
+      this.topicId,
+      required this.sessionType,
+      required this.titleEn,
+      required this.titleAm,
+      required this.questionTarget,
+      required this.estimatedMinutes,
+      required this.priorityScore,
+      required this.reasonCode,
+      required this.reasonDetailEn,
+      required this.reasonDetailAm,
+      required this.status,
+      required this.questionIdsJson,
+      this.completedAt,
+      required this.timeSpentSeconds,
+      this.scorePercentage,
+      this.examVariant,
+      this.assessmentStructure,
+      this.contentDomain,
+      this.skill});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['plan_id'] = Variable<String>(planId);
+    map['subject_id'] = Variable<String>(subjectId);
+    if (!nullToAbsent || unitId != null) {
+      map['unit_id'] = Variable<String>(unitId);
+    }
+    if (!nullToAbsent || topicId != null) {
+      map['topic_id'] = Variable<String>(topicId);
+    }
+    map['session_type'] = Variable<String>(sessionType);
+    map['title_en'] = Variable<String>(titleEn);
+    map['title_am'] = Variable<String>(titleAm);
+    map['question_target'] = Variable<int>(questionTarget);
+    map['estimated_minutes'] = Variable<int>(estimatedMinutes);
+    map['priority_score'] = Variable<double>(priorityScore);
+    map['reason_code'] = Variable<String>(reasonCode);
+    map['reason_detail_en'] = Variable<String>(reasonDetailEn);
+    map['reason_detail_am'] = Variable<String>(reasonDetailAm);
+    map['status'] = Variable<String>(status);
+    map['question_ids_json'] = Variable<String>(questionIdsJson);
+    if (!nullToAbsent || completedAt != null) {
+      map['completed_at'] = Variable<DateTime>(completedAt);
+    }
+    map['time_spent_seconds'] = Variable<int>(timeSpentSeconds);
+    if (!nullToAbsent || scorePercentage != null) {
+      map['score_percentage'] = Variable<double>(scorePercentage);
+    }
+    if (!nullToAbsent || examVariant != null) {
+      map['exam_variant'] = Variable<String>(examVariant);
+    }
+    if (!nullToAbsent || assessmentStructure != null) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure);
+    }
+    if (!nullToAbsent || contentDomain != null) {
+      map['content_domain'] = Variable<String>(contentDomain);
+    }
+    if (!nullToAbsent || skill != null) {
+      map['skill'] = Variable<String>(skill);
+    }
+    return map;
+  }
+
+  DbStudyPlanSessionsCompanion toCompanion(bool nullToAbsent) {
+    return DbStudyPlanSessionsCompanion(
+      id: Value(id),
+      planId: Value(planId),
+      subjectId: Value(subjectId),
+      unitId:
+          unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      topicId: topicId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(topicId),
+      sessionType: Value(sessionType),
+      titleEn: Value(titleEn),
+      titleAm: Value(titleAm),
+      questionTarget: Value(questionTarget),
+      estimatedMinutes: Value(estimatedMinutes),
+      priorityScore: Value(priorityScore),
+      reasonCode: Value(reasonCode),
+      reasonDetailEn: Value(reasonDetailEn),
+      reasonDetailAm: Value(reasonDetailAm),
+      status: Value(status),
+      questionIdsJson: Value(questionIdsJson),
+      completedAt: completedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAt),
+      timeSpentSeconds: Value(timeSpentSeconds),
+      scorePercentage: scorePercentage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scorePercentage),
+      examVariant: examVariant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examVariant),
+      assessmentStructure: assessmentStructure == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assessmentStructure),
+      contentDomain: contentDomain == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentDomain),
+      skill:
+          skill == null && nullToAbsent ? const Value.absent() : Value(skill),
+    );
+  }
+
+  factory DbStudyPlanSession.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DbStudyPlanSession(
+      id: serializer.fromJson<String>(json['id']),
+      planId: serializer.fromJson<String>(json['planId']),
+      subjectId: serializer.fromJson<String>(json['subjectId']),
+      unitId: serializer.fromJson<String?>(json['unitId']),
+      topicId: serializer.fromJson<String?>(json['topicId']),
+      sessionType: serializer.fromJson<String>(json['sessionType']),
+      titleEn: serializer.fromJson<String>(json['titleEn']),
+      titleAm: serializer.fromJson<String>(json['titleAm']),
+      questionTarget: serializer.fromJson<int>(json['questionTarget']),
+      estimatedMinutes: serializer.fromJson<int>(json['estimatedMinutes']),
+      priorityScore: serializer.fromJson<double>(json['priorityScore']),
+      reasonCode: serializer.fromJson<String>(json['reasonCode']),
+      reasonDetailEn: serializer.fromJson<String>(json['reasonDetailEn']),
+      reasonDetailAm: serializer.fromJson<String>(json['reasonDetailAm']),
+      status: serializer.fromJson<String>(json['status']),
+      questionIdsJson: serializer.fromJson<String>(json['questionIdsJson']),
+      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      timeSpentSeconds: serializer.fromJson<int>(json['timeSpentSeconds']),
+      scorePercentage: serializer.fromJson<double?>(json['scorePercentage']),
+      examVariant: serializer.fromJson<String?>(json['examVariant']),
+      assessmentStructure:
+          serializer.fromJson<String?>(json['assessmentStructure']),
+      contentDomain: serializer.fromJson<String?>(json['contentDomain']),
+      skill: serializer.fromJson<String?>(json['skill']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'planId': serializer.toJson<String>(planId),
+      'subjectId': serializer.toJson<String>(subjectId),
+      'unitId': serializer.toJson<String?>(unitId),
+      'topicId': serializer.toJson<String?>(topicId),
+      'sessionType': serializer.toJson<String>(sessionType),
+      'titleEn': serializer.toJson<String>(titleEn),
+      'titleAm': serializer.toJson<String>(titleAm),
+      'questionTarget': serializer.toJson<int>(questionTarget),
+      'estimatedMinutes': serializer.toJson<int>(estimatedMinutes),
+      'priorityScore': serializer.toJson<double>(priorityScore),
+      'reasonCode': serializer.toJson<String>(reasonCode),
+      'reasonDetailEn': serializer.toJson<String>(reasonDetailEn),
+      'reasonDetailAm': serializer.toJson<String>(reasonDetailAm),
+      'status': serializer.toJson<String>(status),
+      'questionIdsJson': serializer.toJson<String>(questionIdsJson),
+      'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'timeSpentSeconds': serializer.toJson<int>(timeSpentSeconds),
+      'scorePercentage': serializer.toJson<double?>(scorePercentage),
+      'examVariant': serializer.toJson<String?>(examVariant),
+      'assessmentStructure': serializer.toJson<String?>(assessmentStructure),
+      'contentDomain': serializer.toJson<String?>(contentDomain),
+      'skill': serializer.toJson<String?>(skill),
+    };
+  }
+
+  DbStudyPlanSession copyWith(
+          {String? id,
+          String? planId,
+          String? subjectId,
+          Value<String?> unitId = const Value.absent(),
+          Value<String?> topicId = const Value.absent(),
+          String? sessionType,
+          String? titleEn,
+          String? titleAm,
+          int? questionTarget,
+          int? estimatedMinutes,
+          double? priorityScore,
+          String? reasonCode,
+          String? reasonDetailEn,
+          String? reasonDetailAm,
+          String? status,
+          String? questionIdsJson,
+          Value<DateTime?> completedAt = const Value.absent(),
+          int? timeSpentSeconds,
+          Value<double?> scorePercentage = const Value.absent(),
+          Value<String?> examVariant = const Value.absent(),
+          Value<String?> assessmentStructure = const Value.absent(),
+          Value<String?> contentDomain = const Value.absent(),
+          Value<String?> skill = const Value.absent()}) =>
+      DbStudyPlanSession(
+        id: id ?? this.id,
+        planId: planId ?? this.planId,
+        subjectId: subjectId ?? this.subjectId,
+        unitId: unitId.present ? unitId.value : this.unitId,
+        topicId: topicId.present ? topicId.value : this.topicId,
+        sessionType: sessionType ?? this.sessionType,
+        titleEn: titleEn ?? this.titleEn,
+        titleAm: titleAm ?? this.titleAm,
+        questionTarget: questionTarget ?? this.questionTarget,
+        estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+        priorityScore: priorityScore ?? this.priorityScore,
+        reasonCode: reasonCode ?? this.reasonCode,
+        reasonDetailEn: reasonDetailEn ?? this.reasonDetailEn,
+        reasonDetailAm: reasonDetailAm ?? this.reasonDetailAm,
+        status: status ?? this.status,
+        questionIdsJson: questionIdsJson ?? this.questionIdsJson,
+        completedAt: completedAt.present ? completedAt.value : this.completedAt,
+        timeSpentSeconds: timeSpentSeconds ?? this.timeSpentSeconds,
+        scorePercentage: scorePercentage.present
+            ? scorePercentage.value
+            : this.scorePercentage,
+        examVariant: examVariant.present ? examVariant.value : this.examVariant,
+        assessmentStructure: assessmentStructure.present
+            ? assessmentStructure.value
+            : this.assessmentStructure,
+        contentDomain:
+            contentDomain.present ? contentDomain.value : this.contentDomain,
+        skill: skill.present ? skill.value : this.skill,
+      );
+  DbStudyPlanSession copyWithCompanion(DbStudyPlanSessionsCompanion data) {
+    return DbStudyPlanSession(
+      id: data.id.present ? data.id.value : this.id,
+      planId: data.planId.present ? data.planId.value : this.planId,
+      subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      unitId: data.unitId.present ? data.unitId.value : this.unitId,
+      topicId: data.topicId.present ? data.topicId.value : this.topicId,
+      sessionType:
+          data.sessionType.present ? data.sessionType.value : this.sessionType,
+      titleEn: data.titleEn.present ? data.titleEn.value : this.titleEn,
+      titleAm: data.titleAm.present ? data.titleAm.value : this.titleAm,
+      questionTarget: data.questionTarget.present
+          ? data.questionTarget.value
+          : this.questionTarget,
+      estimatedMinutes: data.estimatedMinutes.present
+          ? data.estimatedMinutes.value
+          : this.estimatedMinutes,
+      priorityScore: data.priorityScore.present
+          ? data.priorityScore.value
+          : this.priorityScore,
+      reasonCode:
+          data.reasonCode.present ? data.reasonCode.value : this.reasonCode,
+      reasonDetailEn: data.reasonDetailEn.present
+          ? data.reasonDetailEn.value
+          : this.reasonDetailEn,
+      reasonDetailAm: data.reasonDetailAm.present
+          ? data.reasonDetailAm.value
+          : this.reasonDetailAm,
+      status: data.status.present ? data.status.value : this.status,
+      questionIdsJson: data.questionIdsJson.present
+          ? data.questionIdsJson.value
+          : this.questionIdsJson,
+      completedAt:
+          data.completedAt.present ? data.completedAt.value : this.completedAt,
+      timeSpentSeconds: data.timeSpentSeconds.present
+          ? data.timeSpentSeconds.value
+          : this.timeSpentSeconds,
+      scorePercentage: data.scorePercentage.present
+          ? data.scorePercentage.value
+          : this.scorePercentage,
+      examVariant:
+          data.examVariant.present ? data.examVariant.value : this.examVariant,
+      assessmentStructure: data.assessmentStructure.present
+          ? data.assessmentStructure.value
+          : this.assessmentStructure,
+      contentDomain: data.contentDomain.present
+          ? data.contentDomain.value
+          : this.contentDomain,
+      skill: data.skill.present ? data.skill.value : this.skill,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStudyPlanSession(')
+          ..write('id: $id, ')
+          ..write('planId: $planId, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('sessionType: $sessionType, ')
+          ..write('titleEn: $titleEn, ')
+          ..write('titleAm: $titleAm, ')
+          ..write('questionTarget: $questionTarget, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('priorityScore: $priorityScore, ')
+          ..write('reasonCode: $reasonCode, ')
+          ..write('reasonDetailEn: $reasonDetailEn, ')
+          ..write('reasonDetailAm: $reasonDetailAm, ')
+          ..write('status: $status, ')
+          ..write('questionIdsJson: $questionIdsJson, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('timeSpentSeconds: $timeSpentSeconds, ')
+          ..write('scorePercentage: $scorePercentage, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        id,
+        planId,
+        subjectId,
+        unitId,
+        topicId,
+        sessionType,
+        titleEn,
+        titleAm,
+        questionTarget,
+        estimatedMinutes,
+        priorityScore,
+        reasonCode,
+        reasonDetailEn,
+        reasonDetailAm,
+        status,
+        questionIdsJson,
+        completedAt,
+        timeSpentSeconds,
+        scorePercentage,
+        examVariant,
+        assessmentStructure,
+        contentDomain,
+        skill
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbStudyPlanSession &&
+          other.id == this.id &&
+          other.planId == this.planId &&
+          other.subjectId == this.subjectId &&
+          other.unitId == this.unitId &&
+          other.topicId == this.topicId &&
+          other.sessionType == this.sessionType &&
+          other.titleEn == this.titleEn &&
+          other.titleAm == this.titleAm &&
+          other.questionTarget == this.questionTarget &&
+          other.estimatedMinutes == this.estimatedMinutes &&
+          other.priorityScore == this.priorityScore &&
+          other.reasonCode == this.reasonCode &&
+          other.reasonDetailEn == this.reasonDetailEn &&
+          other.reasonDetailAm == this.reasonDetailAm &&
+          other.status == this.status &&
+          other.questionIdsJson == this.questionIdsJson &&
+          other.completedAt == this.completedAt &&
+          other.timeSpentSeconds == this.timeSpentSeconds &&
+          other.scorePercentage == this.scorePercentage &&
+          other.examVariant == this.examVariant &&
+          other.assessmentStructure == this.assessmentStructure &&
+          other.contentDomain == this.contentDomain &&
+          other.skill == this.skill);
+}
+
+class DbStudyPlanSessionsCompanion extends UpdateCompanion<DbStudyPlanSession> {
+  final Value<String> id;
+  final Value<String> planId;
+  final Value<String> subjectId;
+  final Value<String?> unitId;
+  final Value<String?> topicId;
+  final Value<String> sessionType;
+  final Value<String> titleEn;
+  final Value<String> titleAm;
+  final Value<int> questionTarget;
+  final Value<int> estimatedMinutes;
+  final Value<double> priorityScore;
+  final Value<String> reasonCode;
+  final Value<String> reasonDetailEn;
+  final Value<String> reasonDetailAm;
+  final Value<String> status;
+  final Value<String> questionIdsJson;
+  final Value<DateTime?> completedAt;
+  final Value<int> timeSpentSeconds;
+  final Value<double?> scorePercentage;
+  final Value<String?> examVariant;
+  final Value<String?> assessmentStructure;
+  final Value<String?> contentDomain;
+  final Value<String?> skill;
+  final Value<int> rowid;
+  const DbStudyPlanSessionsCompanion({
+    this.id = const Value.absent(),
+    this.planId = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.sessionType = const Value.absent(),
+    this.titleEn = const Value.absent(),
+    this.titleAm = const Value.absent(),
+    this.questionTarget = const Value.absent(),
+    this.estimatedMinutes = const Value.absent(),
+    this.priorityScore = const Value.absent(),
+    this.reasonCode = const Value.absent(),
+    this.reasonDetailEn = const Value.absent(),
+    this.reasonDetailAm = const Value.absent(),
+    this.status = const Value.absent(),
+    this.questionIdsJson = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.timeSpentSeconds = const Value.absent(),
+    this.scorePercentage = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DbStudyPlanSessionsCompanion.insert({
+    required String id,
+    required String planId,
+    required String subjectId,
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    required String sessionType,
+    required String titleEn,
+    required String titleAm,
+    this.questionTarget = const Value.absent(),
+    this.estimatedMinutes = const Value.absent(),
+    this.priorityScore = const Value.absent(),
+    required String reasonCode,
+    required String reasonDetailEn,
+    required String reasonDetailAm,
+    this.status = const Value.absent(),
+    this.questionIdsJson = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.timeSpentSeconds = const Value.absent(),
+    this.scorePercentage = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        planId = Value(planId),
+        subjectId = Value(subjectId),
+        sessionType = Value(sessionType),
+        titleEn = Value(titleEn),
+        titleAm = Value(titleAm),
+        reasonCode = Value(reasonCode),
+        reasonDetailEn = Value(reasonDetailEn),
+        reasonDetailAm = Value(reasonDetailAm);
+  static Insertable<DbStudyPlanSession> custom({
+    Expression<String>? id,
+    Expression<String>? planId,
+    Expression<String>? subjectId,
+    Expression<String>? unitId,
+    Expression<String>? topicId,
+    Expression<String>? sessionType,
+    Expression<String>? titleEn,
+    Expression<String>? titleAm,
+    Expression<int>? questionTarget,
+    Expression<int>? estimatedMinutes,
+    Expression<double>? priorityScore,
+    Expression<String>? reasonCode,
+    Expression<String>? reasonDetailEn,
+    Expression<String>? reasonDetailAm,
+    Expression<String>? status,
+    Expression<String>? questionIdsJson,
+    Expression<DateTime>? completedAt,
+    Expression<int>? timeSpentSeconds,
+    Expression<double>? scorePercentage,
+    Expression<String>? examVariant,
+    Expression<String>? assessmentStructure,
+    Expression<String>? contentDomain,
+    Expression<String>? skill,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (planId != null) 'plan_id': planId,
+      if (subjectId != null) 'subject_id': subjectId,
+      if (unitId != null) 'unit_id': unitId,
+      if (topicId != null) 'topic_id': topicId,
+      if (sessionType != null) 'session_type': sessionType,
+      if (titleEn != null) 'title_en': titleEn,
+      if (titleAm != null) 'title_am': titleAm,
+      if (questionTarget != null) 'question_target': questionTarget,
+      if (estimatedMinutes != null) 'estimated_minutes': estimatedMinutes,
+      if (priorityScore != null) 'priority_score': priorityScore,
+      if (reasonCode != null) 'reason_code': reasonCode,
+      if (reasonDetailEn != null) 'reason_detail_en': reasonDetailEn,
+      if (reasonDetailAm != null) 'reason_detail_am': reasonDetailAm,
+      if (status != null) 'status': status,
+      if (questionIdsJson != null) 'question_ids_json': questionIdsJson,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (timeSpentSeconds != null) 'time_spent_seconds': timeSpentSeconds,
+      if (scorePercentage != null) 'score_percentage': scorePercentage,
+      if (examVariant != null) 'exam_variant': examVariant,
+      if (assessmentStructure != null)
+        'assessment_structure': assessmentStructure,
+      if (contentDomain != null) 'content_domain': contentDomain,
+      if (skill != null) 'skill': skill,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DbStudyPlanSessionsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? planId,
+      Value<String>? subjectId,
+      Value<String?>? unitId,
+      Value<String?>? topicId,
+      Value<String>? sessionType,
+      Value<String>? titleEn,
+      Value<String>? titleAm,
+      Value<int>? questionTarget,
+      Value<int>? estimatedMinutes,
+      Value<double>? priorityScore,
+      Value<String>? reasonCode,
+      Value<String>? reasonDetailEn,
+      Value<String>? reasonDetailAm,
+      Value<String>? status,
+      Value<String>? questionIdsJson,
+      Value<DateTime?>? completedAt,
+      Value<int>? timeSpentSeconds,
+      Value<double?>? scorePercentage,
+      Value<String?>? examVariant,
+      Value<String?>? assessmentStructure,
+      Value<String?>? contentDomain,
+      Value<String?>? skill,
+      Value<int>? rowid}) {
+    return DbStudyPlanSessionsCompanion(
+      id: id ?? this.id,
+      planId: planId ?? this.planId,
+      subjectId: subjectId ?? this.subjectId,
+      unitId: unitId ?? this.unitId,
+      topicId: topicId ?? this.topicId,
+      sessionType: sessionType ?? this.sessionType,
+      titleEn: titleEn ?? this.titleEn,
+      titleAm: titleAm ?? this.titleAm,
+      questionTarget: questionTarget ?? this.questionTarget,
+      estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
+      priorityScore: priorityScore ?? this.priorityScore,
+      reasonCode: reasonCode ?? this.reasonCode,
+      reasonDetailEn: reasonDetailEn ?? this.reasonDetailEn,
+      reasonDetailAm: reasonDetailAm ?? this.reasonDetailAm,
+      status: status ?? this.status,
+      questionIdsJson: questionIdsJson ?? this.questionIdsJson,
+      completedAt: completedAt ?? this.completedAt,
+      timeSpentSeconds: timeSpentSeconds ?? this.timeSpentSeconds,
+      scorePercentage: scorePercentage ?? this.scorePercentage,
+      examVariant: examVariant ?? this.examVariant,
+      assessmentStructure: assessmentStructure ?? this.assessmentStructure,
+      contentDomain: contentDomain ?? this.contentDomain,
+      skill: skill ?? this.skill,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (planId.present) {
+      map['plan_id'] = Variable<String>(planId.value);
+    }
+    if (subjectId.present) {
+      map['subject_id'] = Variable<String>(subjectId.value);
+    }
+    if (unitId.present) {
+      map['unit_id'] = Variable<String>(unitId.value);
+    }
+    if (topicId.present) {
+      map['topic_id'] = Variable<String>(topicId.value);
+    }
+    if (sessionType.present) {
+      map['session_type'] = Variable<String>(sessionType.value);
+    }
+    if (titleEn.present) {
+      map['title_en'] = Variable<String>(titleEn.value);
+    }
+    if (titleAm.present) {
+      map['title_am'] = Variable<String>(titleAm.value);
+    }
+    if (questionTarget.present) {
+      map['question_target'] = Variable<int>(questionTarget.value);
+    }
+    if (estimatedMinutes.present) {
+      map['estimated_minutes'] = Variable<int>(estimatedMinutes.value);
+    }
+    if (priorityScore.present) {
+      map['priority_score'] = Variable<double>(priorityScore.value);
+    }
+    if (reasonCode.present) {
+      map['reason_code'] = Variable<String>(reasonCode.value);
+    }
+    if (reasonDetailEn.present) {
+      map['reason_detail_en'] = Variable<String>(reasonDetailEn.value);
+    }
+    if (reasonDetailAm.present) {
+      map['reason_detail_am'] = Variable<String>(reasonDetailAm.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (questionIdsJson.present) {
+      map['question_ids_json'] = Variable<String>(questionIdsJson.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (timeSpentSeconds.present) {
+      map['time_spent_seconds'] = Variable<int>(timeSpentSeconds.value);
+    }
+    if (scorePercentage.present) {
+      map['score_percentage'] = Variable<double>(scorePercentage.value);
+    }
+    if (examVariant.present) {
+      map['exam_variant'] = Variable<String>(examVariant.value);
+    }
+    if (assessmentStructure.present) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure.value);
+    }
+    if (contentDomain.present) {
+      map['content_domain'] = Variable<String>(contentDomain.value);
+    }
+    if (skill.present) {
+      map['skill'] = Variable<String>(skill.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbStudyPlanSessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('planId: $planId, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('sessionType: $sessionType, ')
+          ..write('titleEn: $titleEn, ')
+          ..write('titleAm: $titleAm, ')
+          ..write('questionTarget: $questionTarget, ')
+          ..write('estimatedMinutes: $estimatedMinutes, ')
+          ..write('priorityScore: $priorityScore, ')
+          ..write('reasonCode: $reasonCode, ')
+          ..write('reasonDetailEn: $reasonDetailEn, ')
+          ..write('reasonDetailAm: $reasonDetailAm, ')
+          ..write('status: $status, ')
+          ..write('questionIdsJson: $questionIdsJson, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('timeSpentSeconds: $timeSpentSeconds, ')
+          ..write('scorePercentage: $scorePercentage, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3473,6 +4989,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DbMistakesTable dbMistakes = $DbMistakesTable(this);
   late final $DbCoinLedgerTable dbCoinLedger = $DbCoinLedgerTable(this);
   late final $DbSyncQueueTable dbSyncQueue = $DbSyncQueueTable(this);
+  late final $DbStudyPlansTable dbStudyPlans = $DbStudyPlansTable(this);
+  late final $DbStudyPlanSessionsTable dbStudyPlanSessions =
+      $DbStudyPlanSessionsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3483,7 +5002,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbBookmarks,
         dbMistakes,
         dbCoinLedger,
-        dbSyncQueue
+        dbSyncQueue,
+        dbStudyPlans,
+        dbStudyPlanSessions
       ];
 }
 
@@ -5123,6 +6644,704 @@ typedef $$DbSyncQueueTableProcessedTableManager = ProcessedTableManager<
     ),
     DbSyncQueueItem,
     PrefetchHooks Function()>;
+typedef $$DbStudyPlansTableCreateCompanionBuilder = DbStudyPlansCompanion
+    Function({
+  required String id,
+  required String userId,
+  required DateTime planDate,
+  Value<int> targetMinutes,
+  Value<int> estimatedMinutes,
+  Value<String> status,
+  Value<String> algorithmVersion,
+  required DateTime generatedAt,
+  Value<int> rowid,
+});
+typedef $$DbStudyPlansTableUpdateCompanionBuilder = DbStudyPlansCompanion
+    Function({
+  Value<String> id,
+  Value<String> userId,
+  Value<DateTime> planDate,
+  Value<int> targetMinutes,
+  Value<int> estimatedMinutes,
+  Value<String> status,
+  Value<String> algorithmVersion,
+  Value<DateTime> generatedAt,
+  Value<int> rowid,
+});
+
+class $$DbStudyPlansTableFilterComposer
+    extends Composer<_$AppDatabase, $DbStudyPlansTable> {
+  $$DbStudyPlansTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get planDate => $composableBuilder(
+      column: $table.planDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get targetMinutes => $composableBuilder(
+      column: $table.targetMinutes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get generatedAt => $composableBuilder(
+      column: $table.generatedAt, builder: (column) => ColumnFilters(column));
+}
+
+class $$DbStudyPlansTableOrderingComposer
+    extends Composer<_$AppDatabase, $DbStudyPlansTable> {
+  $$DbStudyPlansTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get planDate => $composableBuilder(
+      column: $table.planDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get targetMinutes => $composableBuilder(
+      column: $table.targetMinutes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get generatedAt => $composableBuilder(
+      column: $table.generatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DbStudyPlansTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DbStudyPlansTable> {
+  $$DbStudyPlansTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get planDate =>
+      $composableBuilder(column: $table.planDate, builder: (column) => column);
+
+  GeneratedColumn<int> get targetMinutes => $composableBuilder(
+      column: $table.targetMinutes, builder: (column) => column);
+
+  GeneratedColumn<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get generatedAt => $composableBuilder(
+      column: $table.generatedAt, builder: (column) => column);
+}
+
+class $$DbStudyPlansTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DbStudyPlansTable,
+    DbStudyPlan,
+    $$DbStudyPlansTableFilterComposer,
+    $$DbStudyPlansTableOrderingComposer,
+    $$DbStudyPlansTableAnnotationComposer,
+    $$DbStudyPlansTableCreateCompanionBuilder,
+    $$DbStudyPlansTableUpdateCompanionBuilder,
+    (
+      DbStudyPlan,
+      BaseReferences<_$AppDatabase, $DbStudyPlansTable, DbStudyPlan>
+    ),
+    DbStudyPlan,
+    PrefetchHooks Function()> {
+  $$DbStudyPlansTableTableManager(_$AppDatabase db, $DbStudyPlansTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DbStudyPlansTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DbStudyPlansTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DbStudyPlansTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<DateTime> planDate = const Value.absent(),
+            Value<int> targetMinutes = const Value.absent(),
+            Value<int> estimatedMinutes = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            Value<DateTime> generatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbStudyPlansCompanion(
+            id: id,
+            userId: userId,
+            planDate: planDate,
+            targetMinutes: targetMinutes,
+            estimatedMinutes: estimatedMinutes,
+            status: status,
+            algorithmVersion: algorithmVersion,
+            generatedAt: generatedAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String userId,
+            required DateTime planDate,
+            Value<int> targetMinutes = const Value.absent(),
+            Value<int> estimatedMinutes = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            required DateTime generatedAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbStudyPlansCompanion.insert(
+            id: id,
+            userId: userId,
+            planDate: planDate,
+            targetMinutes: targetMinutes,
+            estimatedMinutes: estimatedMinutes,
+            status: status,
+            algorithmVersion: algorithmVersion,
+            generatedAt: generatedAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable<$DbStudyPlansTable, DbStudyPlan>(table),
+                    BaseReferences<_$AppDatabase, $DbStudyPlansTable,
+                        DbStudyPlan>(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DbStudyPlansTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $DbStudyPlansTable,
+    DbStudyPlan,
+    $$DbStudyPlansTableFilterComposer,
+    $$DbStudyPlansTableOrderingComposer,
+    $$DbStudyPlansTableAnnotationComposer,
+    $$DbStudyPlansTableCreateCompanionBuilder,
+    $$DbStudyPlansTableUpdateCompanionBuilder,
+    (
+      DbStudyPlan,
+      BaseReferences<_$AppDatabase, $DbStudyPlansTable, DbStudyPlan>
+    ),
+    DbStudyPlan,
+    PrefetchHooks Function()>;
+typedef $$DbStudyPlanSessionsTableCreateCompanionBuilder
+    = DbStudyPlanSessionsCompanion Function({
+  required String id,
+  required String planId,
+  required String subjectId,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  required String sessionType,
+  required String titleEn,
+  required String titleAm,
+  Value<int> questionTarget,
+  Value<int> estimatedMinutes,
+  Value<double> priorityScore,
+  required String reasonCode,
+  required String reasonDetailEn,
+  required String reasonDetailAm,
+  Value<String> status,
+  Value<String> questionIdsJson,
+  Value<DateTime?> completedAt,
+  Value<int> timeSpentSeconds,
+  Value<double?> scorePercentage,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  Value<int> rowid,
+});
+typedef $$DbStudyPlanSessionsTableUpdateCompanionBuilder
+    = DbStudyPlanSessionsCompanion Function({
+  Value<String> id,
+  Value<String> planId,
+  Value<String> subjectId,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String> sessionType,
+  Value<String> titleEn,
+  Value<String> titleAm,
+  Value<int> questionTarget,
+  Value<int> estimatedMinutes,
+  Value<double> priorityScore,
+  Value<String> reasonCode,
+  Value<String> reasonDetailEn,
+  Value<String> reasonDetailAm,
+  Value<String> status,
+  Value<String> questionIdsJson,
+  Value<DateTime?> completedAt,
+  Value<int> timeSpentSeconds,
+  Value<double?> scorePercentage,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  Value<int> rowid,
+});
+
+class $$DbStudyPlanSessionsTableFilterComposer
+    extends Composer<_$AppDatabase, $DbStudyPlanSessionsTable> {
+  $$DbStudyPlanSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get planId => $composableBuilder(
+      column: $table.planId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sessionType => $composableBuilder(
+      column: $table.sessionType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get titleEn => $composableBuilder(
+      column: $table.titleEn, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get titleAm => $composableBuilder(
+      column: $table.titleAm, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get questionTarget => $composableBuilder(
+      column: $table.questionTarget,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get priorityScore => $composableBuilder(
+      column: $table.priorityScore, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reasonCode => $composableBuilder(
+      column: $table.reasonCode, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reasonDetailEn => $composableBuilder(
+      column: $table.reasonDetailEn,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reasonDetailAm => $composableBuilder(
+      column: $table.reasonDetailAm,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get questionIdsJson => $composableBuilder(
+      column: $table.questionIdsJson,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+      column: $table.completedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get scorePercentage => $composableBuilder(
+      column: $table.scorePercentage,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnFilters(column));
+}
+
+class $$DbStudyPlanSessionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DbStudyPlanSessionsTable> {
+  $$DbStudyPlanSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get planId => $composableBuilder(
+      column: $table.planId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sessionType => $composableBuilder(
+      column: $table.sessionType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get titleEn => $composableBuilder(
+      column: $table.titleEn, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get titleAm => $composableBuilder(
+      column: $table.titleAm, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get questionTarget => $composableBuilder(
+      column: $table.questionTarget,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get priorityScore => $composableBuilder(
+      column: $table.priorityScore,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reasonCode => $composableBuilder(
+      column: $table.reasonCode, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reasonDetailEn => $composableBuilder(
+      column: $table.reasonDetailEn,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reasonDetailAm => $composableBuilder(
+      column: $table.reasonDetailAm,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get questionIdsJson => $composableBuilder(
+      column: $table.questionIdsJson,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+      column: $table.completedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get scorePercentage => $composableBuilder(
+      column: $table.scorePercentage,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DbStudyPlanSessionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DbStudyPlanSessionsTable> {
+  $$DbStudyPlanSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get planId =>
+      $composableBuilder(column: $table.planId, builder: (column) => column);
+
+  GeneratedColumn<String> get subjectId =>
+      $composableBuilder(column: $table.subjectId, builder: (column) => column);
+
+  GeneratedColumn<String> get unitId =>
+      $composableBuilder(column: $table.unitId, builder: (column) => column);
+
+  GeneratedColumn<String> get topicId =>
+      $composableBuilder(column: $table.topicId, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionType => $composableBuilder(
+      column: $table.sessionType, builder: (column) => column);
+
+  GeneratedColumn<String> get titleEn =>
+      $composableBuilder(column: $table.titleEn, builder: (column) => column);
+
+  GeneratedColumn<String> get titleAm =>
+      $composableBuilder(column: $table.titleAm, builder: (column) => column);
+
+  GeneratedColumn<int> get questionTarget => $composableBuilder(
+      column: $table.questionTarget, builder: (column) => column);
+
+  GeneratedColumn<int> get estimatedMinutes => $composableBuilder(
+      column: $table.estimatedMinutes, builder: (column) => column);
+
+  GeneratedColumn<double> get priorityScore => $composableBuilder(
+      column: $table.priorityScore, builder: (column) => column);
+
+  GeneratedColumn<String> get reasonCode => $composableBuilder(
+      column: $table.reasonCode, builder: (column) => column);
+
+  GeneratedColumn<String> get reasonDetailEn => $composableBuilder(
+      column: $table.reasonDetailEn, builder: (column) => column);
+
+  GeneratedColumn<String> get reasonDetailAm => $composableBuilder(
+      column: $table.reasonDetailAm, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get questionIdsJson => $composableBuilder(
+      column: $table.questionIdsJson, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+      column: $table.completedAt, builder: (column) => column);
+
+  GeneratedColumn<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds, builder: (column) => column);
+
+  GeneratedColumn<double> get scorePercentage => $composableBuilder(
+      column: $table.scorePercentage, builder: (column) => column);
+
+  GeneratedColumn<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => column);
+
+  GeneratedColumn<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure, builder: (column) => column);
+
+  GeneratedColumn<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => column);
+
+  GeneratedColumn<String> get skill =>
+      $composableBuilder(column: $table.skill, builder: (column) => column);
+}
+
+class $$DbStudyPlanSessionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DbStudyPlanSessionsTable,
+    DbStudyPlanSession,
+    $$DbStudyPlanSessionsTableFilterComposer,
+    $$DbStudyPlanSessionsTableOrderingComposer,
+    $$DbStudyPlanSessionsTableAnnotationComposer,
+    $$DbStudyPlanSessionsTableCreateCompanionBuilder,
+    $$DbStudyPlanSessionsTableUpdateCompanionBuilder,
+    (
+      DbStudyPlanSession,
+      BaseReferences<_$AppDatabase, $DbStudyPlanSessionsTable,
+          DbStudyPlanSession>
+    ),
+    DbStudyPlanSession,
+    PrefetchHooks Function()> {
+  $$DbStudyPlanSessionsTableTableManager(
+      _$AppDatabase db, $DbStudyPlanSessionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DbStudyPlanSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DbStudyPlanSessionsTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DbStudyPlanSessionsTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> planId = const Value.absent(),
+            Value<String> subjectId = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String> sessionType = const Value.absent(),
+            Value<String> titleEn = const Value.absent(),
+            Value<String> titleAm = const Value.absent(),
+            Value<int> questionTarget = const Value.absent(),
+            Value<int> estimatedMinutes = const Value.absent(),
+            Value<double> priorityScore = const Value.absent(),
+            Value<String> reasonCode = const Value.absent(),
+            Value<String> reasonDetailEn = const Value.absent(),
+            Value<String> reasonDetailAm = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String> questionIdsJson = const Value.absent(),
+            Value<DateTime?> completedAt = const Value.absent(),
+            Value<int> timeSpentSeconds = const Value.absent(),
+            Value<double?> scorePercentage = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbStudyPlanSessionsCompanion(
+            id: id,
+            planId: planId,
+            subjectId: subjectId,
+            unitId: unitId,
+            topicId: topicId,
+            sessionType: sessionType,
+            titleEn: titleEn,
+            titleAm: titleAm,
+            questionTarget: questionTarget,
+            estimatedMinutes: estimatedMinutes,
+            priorityScore: priorityScore,
+            reasonCode: reasonCode,
+            reasonDetailEn: reasonDetailEn,
+            reasonDetailAm: reasonDetailAm,
+            status: status,
+            questionIdsJson: questionIdsJson,
+            completedAt: completedAt,
+            timeSpentSeconds: timeSpentSeconds,
+            scorePercentage: scorePercentage,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            contentDomain: contentDomain,
+            skill: skill,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String planId,
+            required String subjectId,
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            required String sessionType,
+            required String titleEn,
+            required String titleAm,
+            Value<int> questionTarget = const Value.absent(),
+            Value<int> estimatedMinutes = const Value.absent(),
+            Value<double> priorityScore = const Value.absent(),
+            required String reasonCode,
+            required String reasonDetailEn,
+            required String reasonDetailAm,
+            Value<String> status = const Value.absent(),
+            Value<String> questionIdsJson = const Value.absent(),
+            Value<DateTime?> completedAt = const Value.absent(),
+            Value<int> timeSpentSeconds = const Value.absent(),
+            Value<double?> scorePercentage = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbStudyPlanSessionsCompanion.insert(
+            id: id,
+            planId: planId,
+            subjectId: subjectId,
+            unitId: unitId,
+            topicId: topicId,
+            sessionType: sessionType,
+            titleEn: titleEn,
+            titleAm: titleAm,
+            questionTarget: questionTarget,
+            estimatedMinutes: estimatedMinutes,
+            priorityScore: priorityScore,
+            reasonCode: reasonCode,
+            reasonDetailEn: reasonDetailEn,
+            reasonDetailAm: reasonDetailAm,
+            status: status,
+            questionIdsJson: questionIdsJson,
+            completedAt: completedAt,
+            timeSpentSeconds: timeSpentSeconds,
+            scorePercentage: scorePercentage,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            contentDomain: contentDomain,
+            skill: skill,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable<$DbStudyPlanSessionsTable, DbStudyPlanSession>(
+                        table),
+                    BaseReferences<_$AppDatabase, $DbStudyPlanSessionsTable,
+                        DbStudyPlanSession>(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DbStudyPlanSessionsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $DbStudyPlanSessionsTable,
+    DbStudyPlanSession,
+    $$DbStudyPlanSessionsTableFilterComposer,
+    $$DbStudyPlanSessionsTableOrderingComposer,
+    $$DbStudyPlanSessionsTableAnnotationComposer,
+    $$DbStudyPlanSessionsTableCreateCompanionBuilder,
+    $$DbStudyPlanSessionsTableUpdateCompanionBuilder,
+    (
+      DbStudyPlanSession,
+      BaseReferences<_$AppDatabase, $DbStudyPlanSessionsTable,
+          DbStudyPlanSession>
+    ),
+    DbStudyPlanSession,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -5139,4 +7358,8 @@ class $AppDatabaseManager {
       $$DbCoinLedgerTableTableManager(_db, _db.dbCoinLedger);
   $$DbSyncQueueTableTableManager get dbSyncQueue =>
       $$DbSyncQueueTableTableManager(_db, _db.dbSyncQueue);
+  $$DbStudyPlansTableTableManager get dbStudyPlans =>
+      $$DbStudyPlansTableTableManager(_db, _db.dbStudyPlans);
+  $$DbStudyPlanSessionsTableTableManager get dbStudyPlanSessions =>
+      $$DbStudyPlanSessionsTableTableManager(_db, _db.dbStudyPlanSessions);
 }

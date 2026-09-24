@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../domain/models/diagram_models.dart';
@@ -160,16 +161,24 @@ class _SvgDiagramViewerState extends State<SvgDiagramViewer> {
                   height: widget.diagram.viewBoxHeight,
                   child: Stack(
                     children: [
-                      // Vector Diagram Painting
-                      CustomPaint(
-                        size: Size(
-                          widget.diagram.viewBoxWidth,
-                          widget.diagram.viewBoxHeight,
+                      // Vector Diagram Painting (real SVG when available, fallback to painter)
+                      if (widget.diagram.rawSvgContent.trim().contains('<svg'))
+                        SvgPicture.string(
+                          widget.diagram.rawSvgContent,
+                          width: widget.diagram.viewBoxWidth,
+                          height: widget.diagram.viewBoxHeight,
+                          fit: BoxFit.contain,
+                        )
+                      else
+                        CustomPaint(
+                          size: Size(
+                            widget.diagram.viewBoxWidth,
+                            widget.diagram.viewBoxHeight,
+                          ),
+                          painter: _VectorDiagramPainter(
+                            svgContent: widget.diagram.rawSvgContent,
+                          ),
                         ),
-                        painter: _VectorDiagramPainter(
-                          svgContent: widget.diagram.rawSvgContent,
-                        ),
-                      ),
 
                       // Interactive Hotspots
                       ...widget.diagram.hotspots.map((h) {

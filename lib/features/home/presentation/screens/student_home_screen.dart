@@ -15,8 +15,10 @@ import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../progress/domain/models/progress_models.dart';
+import '../../../progress/domain/models/study_plan_models.dart';
 import '../../../progress/domain/services/remedial_drill_service.dart';
 import '../../../progress/domain/services/weak_topic_detector.dart';
+import '../../../progress/presentation/widgets/today_study_plan_card.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
@@ -362,6 +364,147 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     }
   }
 
+  Future<void> _startStudyPlanSession(StudyPlanSession session) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    final contentRepo = ref.read(contentRepositoryProvider);
+    final examRepo = ref.read(examRepositoryProvider);
+    final isAmharic = user.preferredLanguage == 'am';
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isAmharic
+              ? 'የ${session.titleAm} ልምምድ በማዘጋጀት ላይ...'
+              : 'Launching ${session.titleEn}...',
+        ),
+      ),
+    );
+
+    final List<Question> sessionQuestions = [];
+
+    // 1. Try loading specific question IDs if provided in the session
+    if (session.questionIds.isNotEmpty) {
+      for (final qId in session.questionIds) {
+        final q = await contentRepo.getQuestionById(qId);
+        if (q != null) sessionQuestions.add(q);
+      }
+    }
+
+    // 2. If question list is insufficient, fetch by topic or subject
+    if (sessionQuestions.length < session.questionTarget) {
+      final isNatural = user.stream.toLowerCase() != 'social';
+      final fallbackQuestions = (await contentRepo.getQuestions(
+        grade: user.grade,
+        subjectId: session.subjectId,
+        topicId: session.topicId,
+        limit: session.questionTarget * 4,
+      ))
+          .where((q) {
+        if (session.examVariant != null && q.examVariant != null) {
+          if (q.examVariant != session.examVariant) return false;
+        }
+        if (session.subjectId == 'math_g12' ||
+            session.subjectId.contains('math')) {
+          if (isNatural &&
+              (q.stream == 'social' ||
+                  q.examVariant == ExamVariantCode.socialScience)) {
+            return false;
+          }
+          if (!isNatural &&
+              (q.stream == 'natural' ||
+                  q.examVariant == ExamVariantCode.naturalScience)) {
+            return false;
+          }
+        }
+        return true;
+      });
+      for (final q in fallbackQuestions) {
+        if (sessionQuestions.length >= session.questionTarget) break;
+        if (!sessionQuestions.any((item) => item.id == q.id)) {
+          sessionQuestions.add(q);
+        }
+      }
+    }
+
+    if (sessionQuestions.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isAmharic
+                  ? 'ለዚህ ርዕስ ጥያቄዎች አልተገኙም። እባክዎ የትምህርት ጥቅሉ መጫኑን ያረጋግጡ።'
+                  : 'No questions found for this session. Please check package installation.',
+            ),
+          ),
+        );
+      }
+      return;
+    }
+
+    final examType = session.sessionType == StudySessionType.mistakeReview
+        ? ExamType.mistakeRetry
+        : (session.sessionType == StudySessionType.mockExam
+            ? ExamType.mockFull
+            : ExamType.practice);
+
+    final exam = Exam(
+      id: 'session_${session.id}_${DateTime.now().millisecondsSinceEpoch}',
+      title: isAmharic ? session.titleAm : session.titleEn,
+      examType: examType,
+      grade: user.grade,
+      stream: user.stream,
+      subjectId: session.subjectId,
+      timeLimitMinutes: session.estimatedMinutes,
+      totalQuestions: sessionQuestions.length,
+      questions: sessionQuestions,
+      createdAt: DateTime.now(),
+    );
+
+    final attempt = ExamEngine.startAttempt(
+      attemptId: 'att_session_${DateTime.now().millisecondsSinceEpoch}',
+      userId: user.id,
+      exam: exam,
+    );
+
+    await examRepo.saveActiveAttempt(attempt);
+
+    if (mounted) {
+      await context
+          .push('/exam_runner', extra: {'exam': exam, 'attempt': attempt});
+      final history = await examRepo.getAttemptHistory(user.id);
+      final completedThis = history
+          .where((a) => a.examId == exam.id && a.isCompleted)
+          .firstOrNull;
+      if (completedThis != null) {
+        await ref
+            .read(todayStudyPlanProvider(user.id).notifier)
+            .markSessionCompleted(
+              session.id,
+              timeSpentSeconds: completedThis.durationSeconds,
+              scorePercentage: completedThis.percentage,
+            );
+        await _loadDashboardData();
+      }
+    }
+  }
+
+  Future<void> _skipStudyPlanSession(StudyPlanSession session) async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    await ref
+        .read(todayStudyPlanProvider(user.id).notifier)
+        .markSessionSkipped(session.id);
+  }
+
+  Future<void> _refreshStudyPlan() async {
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) return;
+    await ref
+        .read(todayStudyPlanProvider(user.id).notifier)
+        .loadOrCreatePlan(forceRegenerate: true);
+  }
+
   Future<void> _startFullOfficialExam(int tabIndex) async {
     final user = ref.read(currentUserProvider).valueOrNull;
     if (user == null) return;
@@ -521,6 +664,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                               // 📚 Section 2: National Exam Subjects
                               _buildSubjectSection(
                                   context, user, isAmharic, isDark),
+                              const SizedBox(height: 32),
+
+                              // 🌟 Section 3: Today's Personalized Study Plan
+                              TodayStudyPlanCard(
+                                studyPlan: ref
+                                    .watch(todayStudyPlanProvider(user.id))
+                                    .valueOrNull,
+                                isLoading: ref
+                                    .watch(todayStudyPlanProvider(user.id))
+                                    .isLoading,
+                                isAmharic: isAmharic,
+                                onStartSession: _startStudyPlanSession,
+                                onSkipSession: _skipStudyPlanSession,
+                                onRefreshPlan: _refreshStudyPlan,
+                              ),
                               const SizedBox(height: 32),
 
                               // Multi-Column Desktop Layout vs Single-Column Mobile for Remaining Tools & Intelligence

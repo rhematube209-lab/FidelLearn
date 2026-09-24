@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../question_bank/domain/services/content_validation_service.dart';
+import '../../domain/models/scientific_asset_manifest.dart';
 import '../../domain/models/subject_models.dart';
 import '../../domain/repositories/content_repository.dart';
 import '../../domain/services/delta_package_service.dart';
@@ -13,6 +15,8 @@ class LocalContentRepository implements ContentRepository {
   bool _isInitialized = false;
 
   final List<ContentPackage> _packages = [];
+  final Map<String, ScientificAssetManifest> _packageAssetManifests = {};
+  final Map<String, Map<String, List<int>>> _packageAssetFiles = {};
   final List<Subject> _subjects = [];
   final List<Unit> _units = [];
   final List<Topic> _topics = [];
@@ -1207,13 +1211,53 @@ class LocalContentRepository implements ContentRepository {
 
   final DeltaPackageService _deltaService = DeltaPackageService();
 
+  /// Registers a package asset manifest and optional binary payload for validation.
+  void registerPackageAssetManifest(
+    String packageId, {
+    required ScientificAssetManifest manifest,
+    Map<String, List<int>>? assetFiles,
+  }) {
+    _packageAssetManifests[packageId] = manifest;
+    if (assetFiles != null) {
+      _packageAssetFiles[packageId] = assetFiles;
+    }
+  }
+
   @override
   Future<void> downloadPackage(String packageId) async {
     await initializeSeedData();
     final index = _packages.indexWhere((p) => p.packageId == packageId);
-    if (index != -1) {
-      _packages[index] = _packages[index].copyWith(isDownloaded: true);
+    if (index == -1) return;
+
+    final pkg = _packages[index];
+    final manifest = _packageAssetManifests[packageId];
+    final files = _packageAssetFiles[packageId];
+
+    // If an asset manifest or files are registered for this package, validate integrity
+    if (manifest != null || files != null) {
+      final pkgQuestions = _questions
+          .where((q) => matchesSubjectId(q.subjectId, pkg.subjectId))
+          .toList();
+
+      final report = ContentValidationService.validatePackageScientificAssets(
+        packageId: packageId,
+        questions: pkgQuestions,
+        manifest: manifest,
+        assetFiles: files,
+      );
+
+      if (!ContentValidationService.canActivatePackage(report)) {
+        final errorDescs = report.issues
+            .where((i) => i.severity == ValidationSeverity.error)
+            .map((i) => i.description)
+            .join('; ');
+        throw PackageActivationFailure(
+          'Package activation blocked for "$packageId": $errorDescs',
+        );
+      }
     }
+
+    _packages[index] = pkg.copyWith(isDownloaded: true);
   }
 
   @override

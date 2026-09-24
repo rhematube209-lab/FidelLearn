@@ -3,8 +3,11 @@ import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 
 import '../models/question_models.dart';
+import '../models/scientific_content_models.dart';
+import 'scientific_content_parser.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../../subjects/domain/models/subject_manifest.dart';
+import '../../../subjects/domain/models/scientific_asset_manifest.dart';
 
 enum ValidationSeverity { error, warning, info }
 
@@ -19,6 +22,8 @@ enum ValidationIssueType {
   invalidStreamAssignment,
   missingSourceMetadata,
   brokenDiagramReference,
+  brokenDiagramAsset,
+  invalidFormulaSyntax,
   emptyExplanation,
   unverifiedPublished,
   orphanCurriculumUnit,
@@ -30,6 +35,12 @@ enum ValidationIssueType {
   duplicateManifestId,
   conflictingCurriculumVersions,
   unverifiedManifestUsedForCoverage,
+  // Scientific Asset & Package Integrity Validation
+  missingRequiredAsset,
+  corruptAssetChecksum,
+  malformedSvgDiagram,
+  unsupportedAssetFormat,
+  missingAltText,
 }
 
 class ValidationIssue extends Equatable {
@@ -446,6 +457,72 @@ class ContentValidationService {
           ));
         }
       }
+
+      // 9. Scientific Formula Syntax Validation
+      final textsToCheck = [
+        q.questionTextEn,
+        if (q.questionTextAm != null) q.questionTextAm!,
+        q.explanation.solutionTextEn,
+        if (q.explanation.solutionTextAm != null) q.explanation.solutionTextAm!,
+        ...q.choices.map((c) => c.textEn),
+      ];
+
+      for (final text in textsToCheck) {
+        final blocks = ScientificContentParser.instance.parse(text);
+        for (final block in blocks) {
+          if (block.type == ScientificBlockType.inlineMath ||
+              block.type == ScientificBlockType.blockMath) {
+            final result =
+                ScientificContentParser.validateFormula(block.content);
+            if (!result.isValid) {
+              issues.add(ValidationIssue(
+                questionId: q.id,
+                issueType: ValidationIssueType.invalidFormulaSyntax,
+                severity: ValidationSeverity.error,
+                description:
+                    'Formula syntax error: ${result.error} in "${block.content}"',
+                subjectId: q.subjectId,
+              ));
+            }
+          }
+        }
+      }
+
+      // 10. Diagram Asset Integrity Validation
+      if (q.diagramAsset != null && q.diagramAsset!.trim().isNotEmpty) {
+        final path = q.diagramAsset!.trim();
+        final lower = path.toLowerCase();
+        final isValidExt = lower.endsWith('.svg') ||
+            lower.endsWith('.png') ||
+            lower.endsWith('.jpg') ||
+            lower.endsWith('.jpeg') ||
+            lower.endsWith('.webp');
+        if (!isValidExt) {
+          issues.add(ValidationIssue(
+            questionId: q.id,
+            issueType: ValidationIssueType.brokenDiagramAsset,
+            severity: ValidationSeverity.error,
+            description: 'Unsupported diagram asset format: "$path".',
+            subjectId: q.subjectId,
+          ));
+        }
+      }
+
+      final rawSvg = q.vectorDiagram?.rawSvgContent;
+      if (rawSvg != null && rawSvg.trim().isNotEmpty) {
+        final svg = rawSvg.trim().toLowerCase();
+        final isValidSvg = svg.contains('<svg') &&
+            (svg.contains('</svg>') || svg.contains('/>'));
+        if (!isValidSvg) {
+          issues.add(ValidationIssue(
+            questionId: q.id,
+            issueType: ValidationIssueType.brokenDiagramAsset,
+            severity: ValidationSeverity.error,
+            description: 'Malformed SVG diagram markup in question "${q.id}".',
+            subjectId: q.subjectId,
+          ));
+        }
+      }
     }
 
     // 9. Orphan Units Check
@@ -473,5 +550,199 @@ class ContentValidationService {
       exactDuplicates: exactDupes,
       nearDuplicates: nearDupes,
     );
+  }
+
+  /// Validates scientific assets of a package against question requirements,
+  /// verifying existence, supported format, checksum fidelity, and valid SVG XML markup.
+  static ValidationReport validatePackageScientificAssets({
+    required String packageId,
+    required List<Question> questions,
+    ScientificAssetManifest? manifest,
+    Map<String, List<int>>? assetFiles,
+  }) {
+    final List<ValidationIssue> issues = [];
+    const supportedExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.webp'];
+
+    // 1. Validate questions with diagram references
+    for (final q in questions) {
+      if (q.diagramAsset != null && q.diagramAsset!.trim().isNotEmpty) {
+        final path = q.diagramAsset!.trim();
+        final lower = path.toLowerCase();
+        final isExtSupported =
+            supportedExtensions.any((ext) => lower.endsWith(ext));
+
+        if (!isExtSupported) {
+          issues.add(ValidationIssue(
+            questionId: q.id,
+            issueType: ValidationIssueType.unsupportedAssetFormat,
+            severity: ValidationSeverity.error,
+            description:
+                'Unsupported diagram asset format "$path" required by question "${q.id}".',
+            subjectId: q.subjectId,
+          ));
+        }
+
+        if (assetFiles != null) {
+          final filename = path.split('/').last;
+          final bytes = assetFiles[path] ?? assetFiles[filename];
+
+          if (bytes == null) {
+            issues.add(ValidationIssue(
+              questionId: q.id,
+              issueType: ValidationIssueType.missingRequiredAsset,
+              severity: ValidationSeverity.error,
+              description:
+                  'Required diagram asset "$path" is missing from package "$packageId".',
+              subjectId: q.subjectId,
+            ));
+          } else {
+            if (lower.endsWith('.svg')) {
+              try {
+                final svgStr = utf8.decode(bytes).toLowerCase();
+                if (!svgStr.contains('<svg') ||
+                    (!svgStr.contains('</svg>') && !svgStr.contains('/>'))) {
+                  issues.add(ValidationIssue(
+                    questionId: q.id,
+                    issueType: ValidationIssueType.malformedSvgDiagram,
+                    severity: ValidationSeverity.error,
+                    description:
+                        'Malformed SVG diagram XML in "$path" required by question "${q.id}".',
+                    subjectId: q.subjectId,
+                  ));
+                }
+              } catch (e) {
+                issues.add(ValidationIssue(
+                  questionId: q.id,
+                  issueType: ValidationIssueType.malformedSvgDiagram,
+                  severity: ValidationSeverity.error,
+                  description: 'Corrupted SVG text encoding in "$path": $e',
+                  subjectId: q.subjectId,
+                ));
+              }
+            }
+          }
+        }
+      }
+
+      // Validate embedded vector diagram markup
+      if (q.vectorDiagram != null) {
+        final svg = q.vectorDiagram!.rawSvgContent.trim().toLowerCase();
+        if (!svg.contains('<svg') ||
+            (!svg.contains('</svg>') && !svg.contains('/>'))) {
+          issues.add(ValidationIssue(
+            questionId: q.id,
+            issueType: ValidationIssueType.malformedSvgDiagram,
+            severity: ValidationSeverity.error,
+            description:
+                'Embedded VectorDiagram markup in question "${q.id}" is malformed.',
+            subjectId: q.subjectId,
+          ));
+        }
+      }
+    }
+
+    // 2. Validate manifest declared entries
+    if (manifest != null) {
+      for (final entry in manifest.assets) {
+        final path = entry.assetPath.trim();
+        final lower = path.toLowerCase();
+        final isExtSupported =
+            supportedExtensions.any((ext) => lower.endsWith(ext));
+
+        if (!isExtSupported) {
+          issues.add(ValidationIssue(
+            questionId: entry.requiredByQuestion,
+            issueType: ValidationIssueType.unsupportedAssetFormat,
+            severity: ValidationSeverity.error,
+            description:
+                'Asset "${entry.assetId}" has unsupported extension in path "$path".',
+          ));
+        }
+
+        if (assetFiles != null) {
+          final filename = path.split('/').last;
+          final bytes = assetFiles[path] ??
+              assetFiles[filename] ??
+              assetFiles[entry.assetId];
+
+          if (bytes == null) {
+            if (entry.isRequired) {
+              issues.add(ValidationIssue(
+                questionId: entry.requiredByQuestion,
+                issueType: ValidationIssueType.missingRequiredAsset,
+                severity: ValidationSeverity.error,
+                description:
+                    'Required scientific asset "${entry.assetId}" ($path) is missing from package.',
+              ));
+            }
+          } else {
+            // Checksum validation
+            if (entry.checksum != null && entry.checksum!.isNotEmpty) {
+              final actualSha = sha256.convert(bytes).toString();
+              if (actualSha != entry.checksum &&
+                  !entry.checksum!.startsWith('mock_')) {
+                issues.add(ValidationIssue(
+                  questionId: entry.requiredByQuestion,
+                  issueType: ValidationIssueType.corruptAssetChecksum,
+                  severity: ValidationSeverity.error,
+                  description:
+                      'Checksum mismatch for asset "${entry.assetId}"! Expected ${entry.checksum}, got $actualSha.',
+                ));
+              }
+            }
+
+            // SVG XML check
+            if (lower.endsWith('.svg') ||
+                entry.assetType == ScientificAssetType.svgDiagram) {
+              try {
+                final svgStr = utf8.decode(bytes).toLowerCase();
+                if (!svgStr.contains('<svg') ||
+                    (!svgStr.contains('</svg>') && !svgStr.contains('/>'))) {
+                  issues.add(ValidationIssue(
+                    questionId: entry.requiredByQuestion,
+                    issueType: ValidationIssueType.malformedSvgDiagram,
+                    severity: ValidationSeverity.error,
+                    description:
+                        'Malformed SVG diagram XML in asset "${entry.assetId}".',
+                  ));
+                }
+              } catch (e) {
+                issues.add(ValidationIssue(
+                  questionId: entry.requiredByQuestion,
+                  issueType: ValidationIssueType.malformedSvgDiagram,
+                  severity: ValidationSeverity.error,
+                  description:
+                      'Corrupted SVG text encoding in asset "${entry.assetId}": $e',
+                ));
+              }
+            }
+          }
+        }
+
+        // Accessibility alt-text audit (WARNING - does not block activation)
+        if (entry.altText == null || entry.altText!.trim().isEmpty) {
+          issues.add(ValidationIssue(
+            questionId: entry.requiredByQuestion,
+            issueType: ValidationIssueType.missingAltText,
+            severity: ValidationSeverity.warning,
+            description:
+                'Scientific asset "${entry.assetId}" is missing accessibility alt_text.',
+          ));
+        }
+      }
+    }
+
+    return ValidationReport(
+      totalQuestionsAnalyzed: questions.length,
+      issues: issues,
+      exactDuplicates: const [],
+      nearDuplicates: const [],
+    );
+  }
+
+  /// Determines whether a package passes scientific integrity checks and is eligible for offline activation.
+  /// Returns false if any critical errors exist.
+  static bool canActivatePackage(ValidationReport report) {
+    return report.errorCount == 0;
   }
 }

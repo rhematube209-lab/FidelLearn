@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../question_bank/presentation/widgets/question_diagram_viewer.dart';
+import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../../subjects/data/repositories/local_content_repository.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../../subjects/domain/services/curriculum_coverage_service.dart';
@@ -364,8 +366,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  q.questionTextEn,
+                ScientificText(
+                  text: q.questionTextEn,
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
@@ -373,11 +375,20 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                 ),
                 if (q.questionTextAm != null) ...[
                   const SizedBox(height: 4),
-                  Text(
-                    q.questionTextAm!,
+                  ScientificText(
+                    text: q.questionTextAm!,
                     style: const TextStyle(
                       fontSize: 13,
                       color: AppTheme.textMuted,
+                    ),
+                  ),
+                ],
+                if (q.diagramAsset != null || q.vectorDiagram != null) ...[
+                  const SizedBox(height: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: QuestionDiagramViewer(
+                      question: q,
                     ),
                   ),
                 ],
@@ -404,17 +415,36 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen>
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: Text(
-                            '(${c.label}) ${c.textEn}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: c.isCorrect
-                                  ? AppTheme.successGreen
-                                  : AppTheme.textMuted,
-                              fontWeight: c.isCorrect
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '(${c.label}) ',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: c.isCorrect
+                                      ? AppTheme.successGreen
+                                      : AppTheme.textMuted,
+                                  fontWeight: c.isCorrect
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                              Expanded(
+                                child: ScientificText(
+                                  text: c.textEn,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: c.isCorrect
+                                        ? AppTheme.successGreen
+                                        : AppTheme.textMuted,
+                                    fontWeight: c.isCorrect
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

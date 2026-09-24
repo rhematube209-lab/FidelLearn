@@ -64,5 +64,17 @@
   "readinessScore": "የዝግጁነት ደረጃ",
   "simplerExplanation": "ቀለል ያለ ማብራሪያ",
   "keyConcept": "ዋና ፅንሰ ሀሳብ እና ቀመር",
-  "commonMistake": "የተለመደ ስህተት"
+  "commonMistake": "የተለመደ ስህተት",
+  "todayStudyPlan": "የዛሬ የጥናት እቅድ",
+  "whyThis": "ለምን ተመረጠ?",
+  "startPractice": "ልምምድ ጀምር",
+  "continueSession": "ቀጥል",
+  "completed": "ተጠናቋል",
+  "dueForReview": "ክለሳ የሚሻ",
+  "weakTopic": "ትኩረት የሚሻ ርዕስ",
+  "recommended": "የተመረጠ",
+  "minutesLabel": "{count} ደቂቃ",
+  "questionsLabel": "{count} ጥያቄዎች",
+  "studyPlanComplete": "የዛሬ የጥናት እቅድ ተጠናቋል!",
+  "studyPlanCompletedSubtitle": "እጅግ በጣም ጥሩ! የዛሬውን ግላዊ የጥናት እቅድ ሙሉ በሙሉ አጠናቀዋል።"
 }

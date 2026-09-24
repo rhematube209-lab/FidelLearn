@@ -6,6 +6,9 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 QueryExecutor openConnection({bool logStatements = false}) {
+  if (Platform.environment.containsKey('FLUTTER_TEST')) {
+    return inMemoryConnection(logStatements: logStatements);
+  }
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'fidel_learn.sqlite'));

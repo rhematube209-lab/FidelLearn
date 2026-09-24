@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fidel_learn/features/question_bank/domain/models/diagram_models.dart';
 import 'package:fidel_learn/features/question_bank/domain/models/question_models.dart';
 import 'package:fidel_learn/features/question_bank/domain/services/content_validation_service.dart';
 
@@ -131,6 +132,57 @@ void main() {
               .any((i) => i.issueType == ValidationIssueType.duplicateId),
           isTrue);
       expect(report.isClean, isFalse);
+    });
+
+    test('flags malformed LaTeX formula syntax as critical error', () {
+      final malformedFormulaQ = validQuestion1.copyWith(
+        id: 'q_bad_formula',
+        questionTextEn:
+            'Evaluate the integral \\( \\int_{0}^{1} \\frac{x^2}{dx \\) carefully.',
+      );
+
+      final report =
+          service.validateQuestionBank(questions: [malformedFormulaQ]);
+      expect(
+        report.issues.any(
+            (i) => i.issueType == ValidationIssueType.invalidFormulaSyntax),
+        isTrue,
+      );
+      expect(report.errorCount, greaterThan(0));
+    });
+
+    test('flags unsupported diagram file format', () {
+      final badAssetQ = validQuestion1.copyWith(
+        id: 'q_bad_asset',
+        diagramAsset: 'assets/diagrams/physics_circuit.bmp',
+      );
+
+      final report = service.validateQuestionBank(questions: [badAssetQ]);
+      expect(
+        report.issues
+            .any((i) => i.issueType == ValidationIssueType.brokenDiagramAsset),
+        isTrue,
+      );
+    });
+
+    test('flags malformed SVG diagram markup', () {
+      final badSvgQ = validQuestion1.copyWith(
+        id: 'q_bad_svg',
+        vectorDiagram: const VectorDiagram(
+          id: 'v1',
+          titleEn: 'Bad Diagram',
+          rawSvgContent: '<div>Not an svg diagram</div>',
+          viewBoxWidth: 100,
+          viewBoxHeight: 100,
+        ),
+      );
+
+      final report = service.validateQuestionBank(questions: [badSvgQ]);
+      expect(
+        report.issues
+            .any((i) => i.issueType == ValidationIssueType.brokenDiagramAsset),
+        isTrue,
+      );
     });
   });
 }

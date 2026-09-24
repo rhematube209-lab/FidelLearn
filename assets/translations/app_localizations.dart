@@ -391,6 +391,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Common Pitfall'**
   String get commonMistake;
+
+  /// No description provided for @todayStudyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Study Plan'**
+  String get todayStudyPlan;
+
+  /// No description provided for @whyThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Why this?'**
+  String get whyThis;
+
+  /// No description provided for @startPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Practice'**
+  String get startPractice;
+
+  /// No description provided for @continueSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueSession;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @dueForReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Due for Review'**
+  String get dueForReview;
+
+  /// No description provided for @weakTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak Topic'**
+  String get weakTopic;
+
+  /// No description provided for @recommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get recommended;
+
+  /// No description provided for @minutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String minutesLabel(int count);
+
+  /// No description provided for @questionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Questions'**
+  String questionsLabel(int count);
+
+  /// No description provided for @studyPlanComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Study Plan Complete!'**
+  String get studyPlanComplete;
+
+  /// No description provided for @studyPlanCompletedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Outstanding work! You have finished all personalized recommendations for today.'**
+  String get studyPlanCompletedSubtitle;
 }
 
 class _AppLocalizationsDelegate

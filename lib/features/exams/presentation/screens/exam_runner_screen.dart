@@ -9,6 +9,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/fidel_option_card.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../question_bank/presentation/widgets/question_diagram_viewer.dart';
+import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/services/exam_engine.dart';
 
@@ -1466,8 +1467,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
-                currentQ.questionTextEn,
+              ScientificText(
+                text: currentQ.questionTextEn,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
@@ -1478,8 +1479,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
               if (currentQ.questionTextAm != null &&
                   currentQ.questionTextAm!.isNotEmpty) ...[
                 const SizedBox(height: 10),
-                Text(
-                  currentQ.questionTextAm!,
+                ScientificText(
+                  text: currentQ.questionTextAm!,
                   style: TextStyle(
                     fontSize: 14.5,
                     color:
@@ -1679,8 +1680,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             ),
           ],
           const SizedBox(height: 12),
-          Text(
-            question.explanation.solutionTextEn,
+          ScientificText(
+            text: question.explanation.solutionTextEn,
             style: TextStyle(
               fontSize: 13.5,
               height: 1.45,
@@ -1697,8 +1698,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                     size: 16, color: AppTheme.accentGold),
                 const SizedBox(width: 6),
                 Expanded(
-                  child: Text(
-                    'Key Concept: ${question.explanation.keyConcept}',
+                  child: ScientificText(
+                    text: 'Key Concept: ${question.explanation.keyConcept}',
                     style: TextStyle(
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,

@@ -12,6 +12,8 @@ part 'app_database.g.dart';
   DbMistakes,
   DbCoinLedger,
   DbSyncQueue,
+  DbStudyPlans,
+  DbStudyPlanSessions,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e]) : super(e ?? impl.constructDb());
@@ -21,7 +23,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -29,7 +31,7 @@ class AppDatabase extends _$AppDatabase {
           await m.createAll();
         },
         onUpgrade: (Migrator m, int from, int to) async {
-          if (from < 2) {
+          if (from < 2 && to >= 2) {
             await m.addColumn(dbMistakes, dbMistakes.unitId);
             await m.addColumn(dbMistakes, dbMistakes.topicId);
             await m.addColumn(dbMistakes, dbMistakes.lastAttemptId);
@@ -63,6 +65,40 @@ class AppDatabase extends _$AppDatabase {
             await customStatement(
               'CREATE UNIQUE INDEX IF NOT EXISTS idx_db_mistakes_user_question ON db_mistakes(user_id, question_id)',
             );
+          }
+
+          if (from < 3 && to >= 3) {
+            await m.createTable(dbStudyPlans);
+            await m.createTable(dbStudyPlanSessions);
+          }
+
+          if (from < 4 && to >= 4) {
+            await m.addColumn(
+                dbStudyPlanSessions, dbStudyPlanSessions.examVariant);
+            await m.addColumn(
+                dbStudyPlanSessions, dbStudyPlanSessions.assessmentStructure);
+            await m.addColumn(
+                dbStudyPlanSessions, dbStudyPlanSessions.contentDomain);
+            await m.addColumn(dbStudyPlanSessions, dbStudyPlanSessions.skill);
+
+            // Safe legacy migration from v3 -> v4:
+            // For unambiguous subjects, backfill assessment structure and variant.
+            // Ambiguous Mathematics sessions are safely left NULL for safe handling.
+            await customStatement('''
+              UPDATE db_study_plan_sessions SET
+                assessment_structure = CASE
+                  WHEN subject_id LIKE '%apt%' THEN 'skillBased'
+                  WHEN subject_id LIKE '%eng%' THEN 'mixed'
+                  ELSE 'curriculum'
+                END,
+                exam_variant = CASE
+                  WHEN subject_id LIKE '%eng%' OR subject_id LIKE '%apt%' THEN 'shared'
+                  WHEN subject_id LIKE '%bio%' OR subject_id LIKE '%phys%' OR subject_id LIKE '%chem%' THEN 'naturalScience'
+                  WHEN subject_id LIKE '%hist%' OR subject_id LIKE '%geo%' OR subject_id LIKE '%econ%' THEN 'socialScience'
+                  ELSE NULL
+                END
+              WHERE assessment_structure IS NULL
+            ''');
           }
         },
       );

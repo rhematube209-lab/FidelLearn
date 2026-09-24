@@ -131,3 +131,52 @@ class DbSyncQueue extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+/// SQLite table for daily personalized study plans
+@DataClassName('DbStudyPlan')
+class DbStudyPlans extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text()();
+  DateTimeColumn get planDate => dateTime()();
+  IntColumn get targetMinutes => integer().withDefault(const Constant(45))();
+  IntColumn get estimatedMinutes => integer().withDefault(const Constant(45))();
+  TextColumn get status => text().withDefault(const Constant(
+      'not_started'))(); // 'not_started' | 'in_progress' | 'completed' | 'skipped'
+  TextColumn get algorithmVersion =>
+      text().withDefault(const Constant('adaptive_planner_v1'))();
+  DateTimeColumn get generatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+/// SQLite table for sessions within a daily study plan
+@DataClassName('DbStudyPlanSession')
+class DbStudyPlanSessions extends Table {
+  TextColumn get id => text()();
+  TextColumn get planId => text()();
+  TextColumn get subjectId => text()();
+  TextColumn get unitId => text().nullable()();
+  TextColumn get topicId => text().nullable()();
+  TextColumn get sessionType => text()();
+  TextColumn get titleEn => text()();
+  TextColumn get titleAm => text()();
+  IntColumn get questionTarget => integer().withDefault(const Constant(10))();
+  IntColumn get estimatedMinutes => integer().withDefault(const Constant(15))();
+  RealColumn get priorityScore => real().withDefault(const Constant(0.0))();
+  TextColumn get reasonCode => text()();
+  TextColumn get reasonDetailEn => text()();
+  TextColumn get reasonDetailAm => text()();
+  TextColumn get status => text().withDefault(const Constant('not_started'))();
+  TextColumn get questionIdsJson => text().withDefault(const Constant('[]'))();
+  DateTimeColumn get completedAt => dateTime().nullable()();
+  IntColumn get timeSpentSeconds => integer().withDefault(const Constant(0))();
+  RealColumn get scorePercentage => real().nullable()();
+  TextColumn get examVariant => text().nullable()();
+  TextColumn get assessmentStructure => text().nullable()();
+  TextColumn get contentDomain => text().nullable()();
+  TextColumn get skill => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
