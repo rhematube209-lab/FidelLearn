@@ -2,55 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../subjects/domain/models/subject_models.dart';
 
+export '../services/exam_preparation_policy.dart'
+    show ExamPreparationPhase, ExamPreparationPolicy;
+
 const String kAdaptivePlannerAlgorithmVersion = 'adaptive_planner_v1.1';
-
-enum ExamPreparationPhase {
-  foundation, // > 60 days
-  consolidation, // 31–60 days
-  intensive, // 15–30 days
-  finalReview; // 0–14 days
-
-  static ExamPreparationPhase fromDays(int? daysUntilExam) {
-    if (daysUntilExam == null || daysUntilExam < 0) {
-      return ExamPreparationPhase.foundation;
-    }
-    if (daysUntilExam <= 14) {
-      return ExamPreparationPhase.finalReview;
-    } else if (daysUntilExam <= 30) {
-      return ExamPreparationPhase.intensive;
-    } else if (daysUntilExam <= 60) {
-      return ExamPreparationPhase.consolidation;
-    } else {
-      return ExamPreparationPhase.foundation;
-    }
-  }
-
-  String get displayNameEn {
-    switch (this) {
-      case ExamPreparationPhase.foundation:
-        return 'Foundation Phase';
-      case ExamPreparationPhase.consolidation:
-        return 'Consolidation Phase';
-      case ExamPreparationPhase.intensive:
-        return 'Intensive Sectional Phase';
-      case ExamPreparationPhase.finalReview:
-        return 'Final Mock & Review Phase';
-    }
-  }
-
-  String get displayNameAm {
-    switch (this) {
-      case ExamPreparationPhase.foundation:
-        return 'የመሰረት ግንባታ ምዕራፍ';
-      case ExamPreparationPhase.consolidation:
-        return 'የትምህርት ይዘት ማጠቃለያ ምዕራፍ';
-      case ExamPreparationPhase.intensive:
-        return 'የትኩረት ማጠናከሪያ ምዕራፍ';
-      case ExamPreparationPhase.finalReview:
-        return 'የመጨረሻ የፈተና ዝግጅት ምዕራፍ';
-    }
-  }
-}
 
 enum StudySessionType {
   weakTopicPractice,

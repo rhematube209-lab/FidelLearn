@@ -148,18 +148,19 @@ The planner executes purely deterministic calculations. Any tie-breaking uses a 
 ## 9. Quality Assurance & Verification Summary
 
 ### Automated Test Suite Execution
-- **Total Automated Tests**: **310 tests** across repository.
-- **Test Pass Rate**: **100% (310 / 310 passed)**.
+- **Total Automated Tests**: **388 tests** across repository.
+- **Test Pass Rate**: **100% (388 / 388 passed)**.
 - **Static Analysis (`flutter analyze`)**: **0 issues found**.
-- **Code Formatting (`dart format`)**: **0 diffs** (194 files verified clean).
+- **Code Formatting (`dart format`)**: **0 diffs** (235 files verified clean).
 
 ### Key Test Suites for Priority 2
 1. `test/unit/adaptive_planner_p2_freeze_test.dart`: 10 dedicated freeze tests (10/10 passed).
-2. `test/unit/study_plan_drift_migration_test.dart`: Drift SQLite schema v3 to v4 migration and legacy backfill (1/1 passed).
-3. `test/unit/adaptive_study_planner_test.dart`: Core adaptive scoring, stream filtering, and balancing (9/9 passed).
-4. `test/unit/study_plan_drift_test.dart`: Drift database persistence and reactive streams (4/4 passed).
-5. `test/integration/adaptive_study_planner_journey_test.dart`: Full end-to-end student study plan lifecycle (1/1 passed).
-6. `test/widget/today_study_plan_card_test.dart`: Home screen study plan widget, track badges, and launch action (5/5 passed).
+2. `test/unit/adaptive_study_planner_hardening_test.dart`: 8 granular track isolation & proximity tests (8/8 passed).
+3. `test/unit/study_plan_drift_migration_test.dart`: Drift SQLite schema v3 to v4 migration and legacy backfill (1/1 passed).
+4. `test/unit/adaptive_study_planner_test.dart`: Core adaptive scoring, stream filtering, and balancing (9/9 passed).
+5. `test/unit/study_plan_drift_test.dart`: Drift database persistence and reactive streams (4/4 passed).
+6. `test/integration/adaptive_study_planner_journey_test.dart`: Full end-to-end student study plan lifecycle (1/1 passed).
+7. `test/widget/today_study_plan_card_test.dart`: Home screen study plan widget, track badges, and launch action (5/5 passed).
 
 ---
 

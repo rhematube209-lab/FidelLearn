@@ -4,6 +4,7 @@ import '../../../exams/domain/models/exam_models.dart';
 import '../../../mistakes/domain/models/mistake_model.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../subjects/domain/models/subject_models.dart';
+import '../../../subjects/domain/services/subject_resolver.dart';
 import '../models/mastery_models.dart';
 import '../models/study_plan_models.dart';
 
@@ -83,10 +84,11 @@ class AdaptiveStudyPlanner {
     }
 
     // 4. Days until National Examination & Canonical Exam Preparation Phase
-    final int? daysUntilExam = settings.targetExamDate.isAfter(now)
-        ? settings.targetExamDate.difference(now).inDays
-        : null;
-    final examPhase = ExamPreparationPhase.fromDays(daysUntilExam);
+    final policy = ExamPreparationPolicy.fromDates(
+      targetExamDate: settings.targetExamDate,
+      currentDate: now,
+    );
+    final int? daysUntilExam = policy.daysUntilExam;
 
     // 5. Build candidate sessions
     final List<StudyPlanSession> candidates = [];
@@ -366,21 +368,7 @@ class AdaptiveStudyPlanner {
           final weaknessWeight =
               (1.0 - (stats.accuracyPercentage / 100.0)) * 40.0;
           final recentErrorRate = stats.recentMistakeRatio * 20.0;
-          final double examWeight;
-          switch (examPhase) {
-            case ExamPreparationPhase.finalReview:
-              examWeight = 20.0;
-              break;
-            case ExamPreparationPhase.intensive:
-              examWeight = 15.0; // Intensive weak area boost
-              break;
-            case ExamPreparationPhase.consolidation:
-              examWeight = 10.0;
-              break;
-            case ExamPreparationPhase.foundation:
-              examWeight = 5.0;
-              break;
-          }
+          final double examWeight = policy.weakTopicProximityWeight;
 
           final priority = weaknessWeight +
               recentErrorRate +
@@ -424,21 +412,7 @@ class AdaptiveStudyPlanner {
         // 2. Curriculum Coverage Gap Check (Never practiced or 0 attempts)
         else if (stats == null || stats.totalAttempts == 0) {
           const coverageWeight = 25.0;
-          final double examWeight;
-          switch (examPhase) {
-            case ExamPreparationPhase.foundation:
-              examWeight = 10.0;
-              break;
-            case ExamPreparationPhase.consolidation:
-              examWeight = 8.0;
-              break;
-            case ExamPreparationPhase.intensive:
-              examWeight = 4.0;
-              break;
-            case ExamPreparationPhase.finalReview:
-              examWeight = 2.0;
-              break;
-          }
+          final double examWeight = policy.coverageProximityWeight;
 
           final priority =
               coverageWeight + examWeight + subjectBalanceBonus + 15.0;
@@ -524,10 +498,7 @@ class AdaptiveStudyPlanner {
 
     // --- C. Timed Mock Recommendation for Approaching Exam ---
     // Canonical policy: activates strictly during finalReview (0–14 days)
-    if (examPhase == ExamPreparationPhase.finalReview &&
-        daysUntilExam != null &&
-        daysUntilExam >= 0 &&
-        settings.dailyBudgetMinutes >= 45) {
+    if (policy.isMockBoostActive && settings.dailyBudgetMinutes >= 45) {
       final mockSubject = resolvedSubjects.first;
       final mockVariant = _resolveVariantForSubject(mockSubject.id, isNatural);
       final mockQuestions = availableQuestions
@@ -678,33 +649,26 @@ class AdaptiveStudyPlanner {
     required int grade,
     required String stream,
   }) {
-    final isNatural = stream.toLowerCase() != 'social';
-    return allSubjects.where((s) {
+    final eligibleTracks = SubjectResolver.resolveEligibleTracks(
+      grade: grade,
+      stream: stream,
+    );
+    final eligibleSubjectIds = eligibleTracks.map((t) => t.subjectId).toSet();
+
+    final filtered = allSubjects.where((s) {
       if (s.grade != grade) return false;
       if (s.scope == SubjectScope.curriculumOnly) {
         return false; // exclude Civics from default primary exam plan
       }
-      final sId = s.id.toLowerCase();
-      if (isNatural) {
-        if (s.stream == 'social' ||
-            sId.contains('hist') ||
-            sId.contains('geo') ||
-            sId.contains('econ') ||
-            sId.contains('math_soc')) {
-          return false;
-        }
-      } else {
-        if (s.stream == 'natural' ||
-            sId.contains('bio') ||
-            sId.contains('phys') ||
-            sId.contains('chem') ||
-            sId.contains('math_nat')) {
-          return false;
-        }
-      }
-      if (s.stream == 'common') return true;
-      return isNatural ? s.stream == 'natural' : s.stream == 'social';
+      return eligibleSubjectIds.contains(s.id);
     }).toList();
+
+    return filtered.isNotEmpty
+        ? filtered
+        : SubjectResolver.resolveSubjectsForStudent(
+            grade: grade,
+            stream: stream,
+          );
   }
 
   ExamVariantCode? _resolveVariantForSubject(String subjectId, bool isNatural) {
