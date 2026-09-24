@@ -231,5 +231,64 @@ void main() {
 
       await db.close();
     });
+
+    test(
+        'Upgrading directly from schema v1 to v6 succeeds without duplicate column error and is idempotent',
+        () async {
+      final db = AppDatabase.inMemory();
+
+      // Drop any existing tables to simulate a clean v1 environment
+      await db.customStatement('DROP TABLE IF EXISTS db_study_plan_sessions');
+      await db.customStatement('DROP TABLE IF EXISTS db_study_plans');
+      await db.customStatement('DROP TABLE IF EXISTS db_mistakes');
+      await db.customStatement('DROP TABLE IF EXISTS db_question_mastery');
+      await db
+          .customStatement('DROP TABLE IF EXISTS db_learning_target_mastery');
+      await db.customStatement('DROP TABLE IF EXISTS db_review_events');
+
+      // 1. Create v1 schema for db_mistakes (original minimal table)
+      await db.customStatement('''
+        CREATE TABLE db_mistakes (
+          id TEXT NOT NULL PRIMARY KEY,
+          user_id TEXT NOT NULL,
+          question_id TEXT NOT NULL,
+          subject_id TEXT NOT NULL,
+          mistake_count INTEGER NOT NULL DEFAULT 1,
+          is_mastered INTEGER NOT NULL DEFAULT 0,
+          last_failed_at INTEGER,
+          mastered_at INTEGER
+        )
+      ''');
+
+      // 2. Execute migration from schema v1 to v6
+      await db.migration.onUpgrade(db.createMigrator(), 1, 6);
+
+      // Verify tables and columns exist
+      final sessionCols = await db
+          .customSelect('PRAGMA table_info("db_study_plan_sessions")')
+          .get();
+      final sessionColNames =
+          sessionCols.map((r) => r.read<String>('name')).toSet();
+      expect(
+          sessionColNames,
+          containsAll([
+            'exam_variant',
+            'assessment_structure',
+            'content_domain',
+            'skill'
+          ]));
+
+      final masteryCols = await db
+          .customSelect('PRAGMA table_info("db_question_mastery")')
+          .get();
+      final masteryColNames =
+          masteryCols.map((r) => r.read<String>('name')).toSet();
+      expect(masteryColNames, contains('evidence_source'));
+
+      // 3. Test idempotency: re-running onUpgrade must not throw duplicate column errors
+      await db.migration.onUpgrade(db.createMigrator(), 1, 6);
+
+      await db.close();
+    });
   });
 }

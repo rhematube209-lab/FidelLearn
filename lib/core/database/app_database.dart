@@ -34,21 +34,34 @@ class AppDatabase extends _$AppDatabase {
           await m.createAll();
         },
         onUpgrade: (Migrator m, int from, int to) async {
+          Future<bool> columnExists(String tableName, String columnName) async {
+            final result =
+                await customSelect('PRAGMA table_info("$tableName")').get();
+            return result.any((row) => row.read<String>('name') == columnName);
+          }
+
+          Future<void> safeAddColumn(
+              TableInfo<Table, Object?> table, GeneratedColumn column) async {
+            if (!await columnExists(table.actualTableName, column.$name)) {
+              await m.addColumn(table, column);
+            }
+          }
+
           if (from < 2 && to >= 2) {
-            await m.addColumn(dbMistakes, dbMistakes.unitId);
-            await m.addColumn(dbMistakes, dbMistakes.topicId);
-            await m.addColumn(dbMistakes, dbMistakes.lastAttemptId);
-            await m.addColumn(dbMistakes, dbMistakes.lastSelectedChoiceId);
-            await m.addColumn(dbMistakes, dbMistakes.firstMissedAt);
-            await m.addColumn(dbMistakes, dbMistakes.lastMissedAt);
-            await m.addColumn(dbMistakes, dbMistakes.lastAttemptAt);
-            await m.addColumn(dbMistakes, dbMistakes.missCount);
-            await m.addColumn(dbMistakes, dbMistakes.retryCount);
-            await m.addColumn(dbMistakes, dbMistakes.correctRetryCount);
-            await m.addColumn(dbMistakes, dbMistakes.masteryStatus);
-            await m.addColumn(dbMistakes, dbMistakes.createdAt);
-            await m.addColumn(dbMistakes, dbMistakes.updatedAt);
-            await m.addColumn(dbMistakes, dbMistakes.syncStatus);
+            await safeAddColumn(dbMistakes, dbMistakes.unitId);
+            await safeAddColumn(dbMistakes, dbMistakes.topicId);
+            await safeAddColumn(dbMistakes, dbMistakes.lastAttemptId);
+            await safeAddColumn(dbMistakes, dbMistakes.lastSelectedChoiceId);
+            await safeAddColumn(dbMistakes, dbMistakes.firstMissedAt);
+            await safeAddColumn(dbMistakes, dbMistakes.lastMissedAt);
+            await safeAddColumn(dbMistakes, dbMistakes.lastAttemptAt);
+            await safeAddColumn(dbMistakes, dbMistakes.missCount);
+            await safeAddColumn(dbMistakes, dbMistakes.retryCount);
+            await safeAddColumn(dbMistakes, dbMistakes.correctRetryCount);
+            await safeAddColumn(dbMistakes, dbMistakes.masteryStatus);
+            await safeAddColumn(dbMistakes, dbMistakes.createdAt);
+            await safeAddColumn(dbMistakes, dbMistakes.updatedAt);
+            await safeAddColumn(dbMistakes, dbMistakes.syncStatus);
 
             // Backfill existing records preserving historic timestamps
             await customStatement('''
@@ -76,13 +89,16 @@ class AppDatabase extends _$AppDatabase {
           }
 
           if (from < 4 && to >= 4) {
-            await m.addColumn(
-                dbStudyPlanSessions, dbStudyPlanSessions.examVariant);
-            await m.addColumn(
-                dbStudyPlanSessions, dbStudyPlanSessions.assessmentStructure);
-            await m.addColumn(
-                dbStudyPlanSessions, dbStudyPlanSessions.contentDomain);
-            await m.addColumn(dbStudyPlanSessions, dbStudyPlanSessions.skill);
+            if (from >= 3) {
+              await safeAddColumn(
+                  dbStudyPlanSessions, dbStudyPlanSessions.examVariant);
+              await safeAddColumn(
+                  dbStudyPlanSessions, dbStudyPlanSessions.assessmentStructure);
+              await safeAddColumn(
+                  dbStudyPlanSessions, dbStudyPlanSessions.contentDomain);
+              await safeAddColumn(
+                  dbStudyPlanSessions, dbStudyPlanSessions.skill);
+            }
 
             // Safe legacy migration from v3 -> v4:
             // For unambiguous subjects, backfill assessment structure and variant.
@@ -167,12 +183,12 @@ class AppDatabase extends _$AppDatabase {
 
           if (from < 6 && to >= 6) {
             if (from >= 5) {
-              await m.addColumn(
+              await safeAddColumn(
                   dbQuestionMastery, dbQuestionMastery.evidenceSource);
-              await m.addColumn(dbLearningTargetMastery,
+              await safeAddColumn(dbLearningTargetMastery,
                   dbLearningTargetMastery.evidenceSource);
-              await m.addColumn(dbReviewEvents, dbReviewEvents.subjectId);
-              await m.addColumn(dbReviewEvents, dbReviewEvents.examVariant);
+              await safeAddColumn(dbReviewEvents, dbReviewEvents.subjectId);
+              await safeAddColumn(dbReviewEvents, dbReviewEvents.examVariant);
             }
 
             // Ensure any legacy migrated mastery rows carry the legacy_migration provenance
