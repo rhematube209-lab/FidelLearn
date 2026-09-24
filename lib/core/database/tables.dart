@@ -180,3 +180,120 @@ class DbStudyPlanSessions extends Table {
   @override
   Set<Column> get primaryKey => {id};
 }
+
+/// SQLite table for question-level mastery states and spaced review dates
+@DataClassName('DbQuestionMasteryRow')
+class DbQuestionMastery extends Table {
+  TextColumn get id => text()(); // userId_questionId
+  TextColumn get userId => text()();
+  TextColumn get questionId => text()();
+  TextColumn get subjectId => text()();
+  TextColumn get examVariant => text().nullable()();
+  TextColumn get assessmentStructure => text().nullable()();
+  TextColumn get unitId => text().nullable()();
+  TextColumn get topicId => text().nullable()();
+  TextColumn get contentDomain => text().nullable()();
+  TextColumn get skill => text().nullable()();
+
+  TextColumn get masteryState => text().withDefault(const Constant(
+      'new'))(); // 'new' | 'learning' | 'improving' | 'mastered' | 'at_risk' | 'relearning'
+  IntColumn get attemptCount => integer().withDefault(const Constant(0))();
+  IntColumn get correctCount => integer().withDefault(const Constant(0))();
+  IntColumn get incorrectCount => integer().withDefault(const Constant(0))();
+  IntColumn get consecutiveCorrect =>
+      integer().withDefault(const Constant(0))();
+
+  RealColumn get stability => real().withDefault(const Constant(1.0))();
+  RealColumn get difficulty => real().withDefault(const Constant(2.0))();
+
+  IntColumn get reviewCount => integer().withDefault(const Constant(0))();
+  IntColumn get lapseCount => integer().withDefault(const Constant(0))();
+
+  DateTimeColumn get lastSeenAt => dateTime().nullable()();
+  DateTimeColumn get lastCorrectAt => dateTime().nullable()();
+  DateTimeColumn get lastIncorrectAt => dateTime().nullable()();
+  DateTimeColumn get nextReviewAt => dateTime().nullable()();
+
+  TextColumn get algorithmVersion =>
+      text().withDefault(const Constant('mastery_engine_v1.0'))();
+  TextColumn get evidenceSource => text()
+      .withDefault(const Constant('native'))(); // 'native' | 'legacy_migration'
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {userId, questionId},
+      ];
+}
+
+/// SQLite table for learning-target level mastery aggregation (Topic / Skill / Domain)
+@DataClassName('DbLearningTargetMasteryRow')
+class DbLearningTargetMastery extends Table {
+  TextColumn get id =>
+      text()(); // userId_targetKey (where targetKey is canonical & variant-qualified)
+  TextColumn get userId => text()();
+  TextColumn get targetKey => text()();
+  TextColumn get subjectId => text()();
+  TextColumn get examVariant => text().nullable()();
+  TextColumn get assessmentStructure => text().nullable()();
+  TextColumn get unitId => text().nullable()();
+  TextColumn get topicId => text().nullable()();
+  TextColumn get contentDomain => text().nullable()();
+  TextColumn get skill => text().nullable()();
+
+  TextColumn get titleEn => text()();
+  TextColumn get titleAm => text()();
+
+  TextColumn get masteryState => text().withDefault(const Constant('new'))();
+  TextColumn get evidenceSource => text()
+      .withDefault(const Constant('native'))(); // 'native' | 'legacy_migration'
+  RealColumn get accuracyPercentage =>
+      real().withDefault(const Constant(0.0))();
+  IntColumn get totalAttempts => integer().withDefault(const Constant(0))();
+  IntColumn get masteredQuestionCount =>
+      integer().withDefault(const Constant(0))();
+  IntColumn get coveredQuestionCount =>
+      integer().withDefault(const Constant(0))();
+  IntColumn get totalAvailableQuestions =>
+      integer().withDefault(const Constant(0))();
+
+  DateTimeColumn get nextReviewAt => dateTime().nullable()();
+  DateTimeColumn get lastPracticedAt => dateTime().nullable()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {userId, targetKey},
+      ];
+}
+
+/// SQLite table for immutable review event history and audit logs
+@DataClassName('DbReviewEventRow')
+class DbReviewEvents extends Table {
+  TextColumn get id => text()();
+  TextColumn get userId => text()();
+  TextColumn get questionId => text()();
+  TextColumn get targetKey => text()();
+  TextColumn get subjectId => text().nullable()();
+  TextColumn get examVariant => text().nullable()();
+  DateTimeColumn get reviewedAt => dateTime()();
+  DateTimeColumn get scheduledAt => dateTime()();
+  BoolColumn get isCorrect => boolean()();
+  IntColumn get timeSpentSeconds => integer().withDefault(const Constant(0))();
+  TextColumn get previousState => text()();
+  TextColumn get newState => text()();
+  IntColumn get previousIntervalDays =>
+      integer().withDefault(const Constant(0))();
+  IntColumn get newIntervalDays => integer().withDefault(const Constant(0))();
+  TextColumn get algorithmVersion =>
+      text().withDefault(const Constant('mastery_engine_v1.0'))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}

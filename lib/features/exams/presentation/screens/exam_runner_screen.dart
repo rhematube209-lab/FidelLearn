@@ -135,6 +135,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             selectedChoiceId: choiceId,
             isCorrect: isCorrect,
             sessionType: widget.exam.examType,
+            question: currentQ,
           );
         } catch (_) {}
       }
@@ -373,6 +374,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             selectedChoiceId: resp.selectedChoiceId,
             isCorrect: resp.isCorrect,
             sessionType: widget.exam.examType,
+            question: q,
+            responseTimeSeconds: resp.timeSpentSeconds,
           );
         } catch (_) {}
       }

@@ -206,7 +206,11 @@ enum RecommendationReasonCode {
   reviewOverdue,
   masteryMaintenance,
   examApproaching,
-  mockDue;
+  mockDue,
+  masteryReviewDue,
+  masteryAtRisk,
+  relearningNeeded,
+  longTermRecall;
 
   static RecommendationReasonCode fromString(String? val) {
     switch (val?.toLowerCase()) {
@@ -225,6 +229,18 @@ enum RecommendationReasonCode {
       case 'mastery_maintenance':
       case 'masterymaintenance':
         return RecommendationReasonCode.masteryMaintenance;
+      case 'mastery_review_due':
+      case 'masteryreviewdue':
+        return RecommendationReasonCode.masteryReviewDue;
+      case 'mastery_at_risk':
+      case 'masteryatrisk':
+        return RecommendationReasonCode.masteryAtRisk;
+      case 'relearning_needed':
+      case 'relearningneeded':
+        return RecommendationReasonCode.relearningNeeded;
+      case 'long_term_recall':
+      case 'longtermrecall':
+        return RecommendationReasonCode.longTermRecall;
       case 'exam_approaching':
       case 'examapproaching':
         return RecommendationReasonCode.examApproaching;
@@ -252,6 +268,14 @@ enum RecommendationReasonCode {
         return 'review_overdue';
       case RecommendationReasonCode.masteryMaintenance:
         return 'mastery_maintenance';
+      case RecommendationReasonCode.masteryReviewDue:
+        return 'mastery_review_due';
+      case RecommendationReasonCode.masteryAtRisk:
+        return 'mastery_at_risk';
+      case RecommendationReasonCode.relearningNeeded:
+        return 'relearning_needed';
+      case RecommendationReasonCode.longTermRecall:
+        return 'long_term_recall';
       case RecommendationReasonCode.examApproaching:
         return 'exam_approaching';
       case RecommendationReasonCode.mockDue:
@@ -273,6 +297,14 @@ enum RecommendationReasonCode {
         return 'Overdue Review';
       case RecommendationReasonCode.masteryMaintenance:
         return 'Mastery Check';
+      case RecommendationReasonCode.masteryReviewDue:
+        return 'Spaced Review Due';
+      case RecommendationReasonCode.masteryAtRisk:
+        return 'Mastery At Risk';
+      case RecommendationReasonCode.relearningNeeded:
+        return 'Relearning Needed';
+      case RecommendationReasonCode.longTermRecall:
+        return 'Long-Term Recall';
       case RecommendationReasonCode.examApproaching:
         return 'Exam Approaching';
       case RecommendationReasonCode.mockDue:
@@ -294,6 +326,14 @@ enum RecommendationReasonCode {
         return 'ያለፈበት ክለሳ';
       case RecommendationReasonCode.masteryMaintenance:
         return 'የብቃት ማረጋገጫ';
+      case RecommendationReasonCode.masteryReviewDue:
+        return 'የተቀጠረ የክለሳ ጊዜ ደርሷል';
+      case RecommendationReasonCode.masteryAtRisk:
+        return 'ክለሳ የሚሻ ብቃት';
+      case RecommendationReasonCode.relearningNeeded:
+        return 'እንደገና መማር የሚያስፈልግ';
+      case RecommendationReasonCode.longTermRecall:
+        return 'የረጅም ጊዜ ማስታወስ';
       case RecommendationReasonCode.examApproaching:
         return 'ፈተና እየደረሰ ነው';
       case RecommendationReasonCode.mockDue:

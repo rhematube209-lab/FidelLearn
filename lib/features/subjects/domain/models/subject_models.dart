@@ -9,13 +9,40 @@ enum SubjectScope {
 enum ExamVariantCode {
   shared, // Taken identically across streams (English, Aptitude)
   naturalScience, // Natural Science specific examination (Math Nat, Physics, Chem, Bio)
-  socialScience, // Social Science specific examination (Math Soc, History, Geo, Econ)
+  socialScience; // Social Science specific examination (Math Soc, History, Geo, Econ)
+
+  static ExamVariantCode fromString(String? val) {
+    switch (val?.toLowerCase().replaceAll('_', '')) {
+      case 'naturalscience':
+      case 'natural':
+        return ExamVariantCode.naturalScience;
+      case 'socialscience':
+      case 'social':
+        return ExamVariantCode.socialScience;
+      case 'shared':
+      default:
+        return ExamVariantCode.shared;
+    }
+  }
 }
 
 enum AssessmentStructure {
   curriculum, // Standard units & topics (Sciences, Social Studies, Math)
   skillBased, // Cognitive domains & skills (Scholastic Aptitude)
-  mixed, // Stimulus reading passages + discrete language skills (English)
+  mixed; // Stimulus reading passages + discrete language skills (English)
+
+  static AssessmentStructure fromString(String? val) {
+    switch (val?.toLowerCase().replaceAll('_', '')) {
+      case 'skillbased':
+      case 'skill':
+        return AssessmentStructure.skillBased;
+      case 'mixed':
+        return AssessmentStructure.mixed;
+      case 'curriculum':
+      default:
+        return AssessmentStructure.curriculum;
+    }
+  }
 }
 
 class SubjectExamVariant extends Equatable {

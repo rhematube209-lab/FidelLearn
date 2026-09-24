@@ -4,6 +4,7 @@ import '../../../exams/domain/models/exam_models.dart';
 import '../../../mistakes/domain/models/mistake_model.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../subjects/domain/models/subject_models.dart';
+import '../models/mastery_models.dart';
 import '../models/study_plan_models.dart';
 
 class AdaptiveStudyPlanner {
@@ -22,6 +23,8 @@ class AdaptiveStudyPlanner {
     required Map<String, List<Unit>> unitsBySubject,
     required Map<String, List<Topic>> topicsByUnit,
     required Set<String> installedSubjectIds,
+    List<QuestionMasteryRecord> questionMasteryRecords = const [],
+    List<LearningTargetMasteryRecord> targetMasteryRecords = const [],
     DateTime? currentDate,
   }) {
     final now = currentDate ?? DateTime.now();
@@ -189,6 +192,123 @@ class AdaptiveStudyPlanner {
             questionIds: eligibleMistakeQuestionIds,
           ),
         );
+      }
+    }
+
+    // --- A2. Spaced Review & Mastery Maintenance Candidates ---
+    if (questionMasteryRecords.isNotEmpty || targetMasteryRecords.isNotEmpty) {
+      final dueQuestionRecords = questionMasteryRecords.where((r) {
+        if (!resolvedSubjectIds.contains(r.subjectId)) return false;
+        // Guarantee Mathematics isolation across tracks
+        if (r.subjectId == 'math_g12' || r.subjectId.contains('math')) {
+          if (isNatural && r.examVariant == ExamVariantCode.socialScience) {
+            return false;
+          }
+          if (!isNatural && r.examVariant == ExamVariantCode.naturalScience) {
+            return false;
+          }
+        }
+        return r.isDueForReview ||
+            r.masteryState == MasteryState.atRisk ||
+            r.masteryState == MasteryState.relearning;
+      }).toList();
+
+      if (dueQuestionRecords.isNotEmpty) {
+        final Map<String, List<QuestionMasteryRecord>> dueBySubject = {};
+        for (final r in dueQuestionRecords) {
+          dueBySubject.putIfAbsent(r.subjectId, () => []).add(r);
+        }
+
+        for (final entry in dueBySubject.entries.take(2)) {
+          final sId = entry.key;
+          final records = entry.value;
+          final subject = resolvedSubjects.firstWhere((s) => s.id == sId,
+              orElse: () => resolvedSubjects.first);
+          final targetVariant = _resolveVariantForSubject(sId, isNatural);
+          final targetStructure = subject.assessmentStructure;
+
+          final eligibleDueQIds = records
+              .map((r) => r.questionId)
+              .where((qId) {
+                final q = availableQuestions
+                    .where((qItem) => qItem.id == qId)
+                    .firstOrNull;
+                if (q == null) return false;
+                return _isQuestionEligibleForStudent(
+                  question: q,
+                  stream: stream,
+                  targetVariant: targetVariant,
+                );
+              })
+              .take(5)
+              .toList();
+
+          if (eligibleDueQIds.isEmpty) continue;
+
+          final hasRelearning =
+              records.any((r) => r.masteryState == MasteryState.relearning);
+          final hasAtRisk =
+              records.any((r) => r.masteryState == MasteryState.atRisk);
+
+          final RecommendationReasonCode reasonCode;
+          final double priorityBoost;
+          if (hasRelearning) {
+            reasonCode = RecommendationReasonCode.relearningNeeded;
+            priorityBoost = 25.0;
+          } else if (hasAtRisk) {
+            reasonCode = RecommendationReasonCode.masteryAtRisk;
+            priorityBoost = 20.0;
+          } else {
+            reasonCode = RecommendationReasonCode.masteryReviewDue;
+            priorityBoost = 15.0;
+          }
+
+          final priority =
+              72.0 + priorityBoost + math.min(10.0, records.length * 2.0);
+
+          final titleEn = (sId == 'math_g12')
+              ? (isNatural
+                  ? 'Mathematics (Natural) Spaced Mastery Recall'
+                  : 'Mathematics (Social) Spaced Mastery Recall')
+              : '${subject.nameEn} Spaced Mastery Recall';
+          final titleAm = (sId == 'math_g12')
+              ? (isNatural
+                  ? 'ሒሳብ (ተፈጥሮ) የተቀጠረ የብቃት ክለሳ'
+                  : 'ሒሳብ (ማህበራዊ) የተቀጠረ የብቃት ክለሳ')
+              : '${subject.nameAm} የተቀጠረ የብቃት ክለሳ';
+
+          final reasonDetailEn = hasRelearning
+              ? 'You missed questions previously in ${subject.nameEn}. A quick relearning review is scheduled today.'
+              : (hasAtRisk
+                  ? 'Knowledge in ${subject.nameEn} is at risk of decay. A spaced review is due today to keep it strong.'
+                  : 'You have ${records.length} questions in ${subject.nameEn} due for spaced review today.');
+
+          final reasonDetailAm = hasRelearning
+              ? 'በ${subject.nameAm} ውስጥ የተሳሳቷቸው ጥያቄዎች አሉ። ዛሬ እንደገና የመማር ክለሳ ተይዞልዎታል።'
+              : (hasAtRisk
+                  ? 'በ${subject.nameAm} ላይ ያካበቱት እውቀት እንዳይረሳ ዛሬ የተቀጠረ ክለሳ ደርሷል።'
+                  : 'በ${subject.nameAm} ውስጥ ዛሬ ${records.length} የተቀጠሩ የክለሳ ጥያቄዎች ደርሰዋል።');
+
+          candidates.add(
+            StudyPlanSession(
+              id: '${planId}_spaced_$sId',
+              planId: planId,
+              subjectId: sId,
+              examVariant: targetVariant,
+              assessmentStructure: targetStructure,
+              sessionType: StudySessionType.masteryMaintenance,
+              titleEn: titleEn,
+              titleAm: titleAm,
+              questionTarget: eligibleDueQIds.length,
+              estimatedMinutes: math.max(6, (eligibleDueQIds.length * 2)),
+              priorityScore: priority,
+              reasonCode: reasonCode,
+              reasonDetailEn: reasonDetailEn,
+              reasonDetailAm: reasonDetailAm,
+              questionIds: eligibleDueQIds,
+            ),
+          );
+        }
       }
     }
 

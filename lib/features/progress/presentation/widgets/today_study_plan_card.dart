@@ -426,13 +426,17 @@ class TodayStudyPlanCard extends StatelessWidget {
     switch (code) {
       case RecommendationReasonCode.weakTopic:
       case RecommendationReasonCode.lowRecentAccuracy:
+      case RecommendationReasonCode.masteryAtRisk:
+      case RecommendationReasonCode.relearningNeeded:
         return FidelBadgeVariant.danger;
       case RecommendationReasonCode.mistakeReview:
       case RecommendationReasonCode.reviewOverdue:
+      case RecommendationReasonCode.masteryReviewDue:
         return FidelBadgeVariant.warning;
       case RecommendationReasonCode.newCurriculum:
         return FidelBadgeVariant.primary;
       case RecommendationReasonCode.masteryMaintenance:
+      case RecommendationReasonCode.longTermRecall:
         return FidelBadgeVariant.success;
       case RecommendationReasonCode.examApproaching:
       case RecommendationReasonCode.mockDue:

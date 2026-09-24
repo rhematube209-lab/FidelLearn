@@ -4979,6 +4979,3023 @@ class DbStudyPlanSessionsCompanion extends UpdateCompanion<DbStudyPlanSession> {
   }
 }
 
+class $DbQuestionMasteryTable extends DbQuestionMastery
+    with TableInfo<$DbQuestionMasteryTable, DbQuestionMasteryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DbQuestionMasteryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _questionIdMeta =
+      const VerificationMeta('questionId');
+  @override
+  late final GeneratedColumn<String> questionId = GeneratedColumn<String>(
+      'question_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _subjectIdMeta =
+      const VerificationMeta('subjectId');
+  @override
+  late final GeneratedColumn<String> subjectId = GeneratedColumn<String>(
+      'subject_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _examVariantMeta =
+      const VerificationMeta('examVariant');
+  @override
+  late final GeneratedColumn<String> examVariant = GeneratedColumn<String>(
+      'exam_variant', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _assessmentStructureMeta =
+      const VerificationMeta('assessmentStructure');
+  @override
+  late final GeneratedColumn<String> assessmentStructure =
+      GeneratedColumn<String>('assessment_structure', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
+  @override
+  late final GeneratedColumn<String> unitId = GeneratedColumn<String>(
+      'unit_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _topicIdMeta =
+      const VerificationMeta('topicId');
+  @override
+  late final GeneratedColumn<String> topicId = GeneratedColumn<String>(
+      'topic_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _contentDomainMeta =
+      const VerificationMeta('contentDomain');
+  @override
+  late final GeneratedColumn<String> contentDomain = GeneratedColumn<String>(
+      'content_domain', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _skillMeta = const VerificationMeta('skill');
+  @override
+  late final GeneratedColumn<String> skill = GeneratedColumn<String>(
+      'skill', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _masteryStateMeta =
+      const VerificationMeta('masteryState');
+  @override
+  late final GeneratedColumn<String> masteryState = GeneratedColumn<String>(
+      'mastery_state', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('new'));
+  static const VerificationMeta _attemptCountMeta =
+      const VerificationMeta('attemptCount');
+  @override
+  late final GeneratedColumn<int> attemptCount = GeneratedColumn<int>(
+      'attempt_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _correctCountMeta =
+      const VerificationMeta('correctCount');
+  @override
+  late final GeneratedColumn<int> correctCount = GeneratedColumn<int>(
+      'correct_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _incorrectCountMeta =
+      const VerificationMeta('incorrectCount');
+  @override
+  late final GeneratedColumn<int> incorrectCount = GeneratedColumn<int>(
+      'incorrect_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _consecutiveCorrectMeta =
+      const VerificationMeta('consecutiveCorrect');
+  @override
+  late final GeneratedColumn<int> consecutiveCorrect = GeneratedColumn<int>(
+      'consecutive_correct', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _stabilityMeta =
+      const VerificationMeta('stability');
+  @override
+  late final GeneratedColumn<double> stability = GeneratedColumn<double>(
+      'stability', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1.0));
+  static const VerificationMeta _difficultyMeta =
+      const VerificationMeta('difficulty');
+  @override
+  late final GeneratedColumn<double> difficulty = GeneratedColumn<double>(
+      'difficulty', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(2.0));
+  static const VerificationMeta _reviewCountMeta =
+      const VerificationMeta('reviewCount');
+  @override
+  late final GeneratedColumn<int> reviewCount = GeneratedColumn<int>(
+      'review_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _lapseCountMeta =
+      const VerificationMeta('lapseCount');
+  @override
+  late final GeneratedColumn<int> lapseCount = GeneratedColumn<int>(
+      'lapse_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _lastSeenAtMeta =
+      const VerificationMeta('lastSeenAt');
+  @override
+  late final GeneratedColumn<DateTime> lastSeenAt = GeneratedColumn<DateTime>(
+      'last_seen_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _lastCorrectAtMeta =
+      const VerificationMeta('lastCorrectAt');
+  @override
+  late final GeneratedColumn<DateTime> lastCorrectAt =
+      GeneratedColumn<DateTime>('last_correct_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _lastIncorrectAtMeta =
+      const VerificationMeta('lastIncorrectAt');
+  @override
+  late final GeneratedColumn<DateTime> lastIncorrectAt =
+      GeneratedColumn<DateTime>('last_incorrect_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _nextReviewAtMeta =
+      const VerificationMeta('nextReviewAt');
+  @override
+  late final GeneratedColumn<DateTime> nextReviewAt = GeneratedColumn<DateTime>(
+      'next_review_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _algorithmVersionMeta =
+      const VerificationMeta('algorithmVersion');
+  @override
+  late final GeneratedColumn<String> algorithmVersion = GeneratedColumn<String>(
+      'algorithm_version', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('mastery_engine_v1.0'));
+  static const VerificationMeta _evidenceSourceMeta =
+      const VerificationMeta('evidenceSource');
+  @override
+  late final GeneratedColumn<String> evidenceSource = GeneratedColumn<String>(
+      'evidence_source', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('native'));
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        questionId,
+        subjectId,
+        examVariant,
+        assessmentStructure,
+        unitId,
+        topicId,
+        contentDomain,
+        skill,
+        masteryState,
+        attemptCount,
+        correctCount,
+        incorrectCount,
+        consecutiveCorrect,
+        stability,
+        difficulty,
+        reviewCount,
+        lapseCount,
+        lastSeenAt,
+        lastCorrectAt,
+        lastIncorrectAt,
+        nextReviewAt,
+        algorithmVersion,
+        evidenceSource,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'db_question_mastery';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DbQuestionMasteryRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('question_id')) {
+      context.handle(
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['question_id']!, _questionIdMeta));
+    } else if (isInserting) {
+      context.missing(_questionIdMeta);
+    }
+    if (data.containsKey('subject_id')) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableOrUnknown(data['subject_id']!, _subjectIdMeta));
+    } else if (isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (data.containsKey('exam_variant')) {
+      context.handle(
+          _examVariantMeta,
+          examVariant.isAcceptableOrUnknown(
+              data['exam_variant']!, _examVariantMeta));
+    }
+    if (data.containsKey('assessment_structure')) {
+      context.handle(
+          _assessmentStructureMeta,
+          assessmentStructure.isAcceptableOrUnknown(
+              data['assessment_structure']!, _assessmentStructureMeta));
+    }
+    if (data.containsKey('unit_id')) {
+      context.handle(_unitIdMeta,
+          unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+    }
+    if (data.containsKey('topic_id')) {
+      context.handle(_topicIdMeta,
+          topicId.isAcceptableOrUnknown(data['topic_id']!, _topicIdMeta));
+    }
+    if (data.containsKey('content_domain')) {
+      context.handle(
+          _contentDomainMeta,
+          contentDomain.isAcceptableOrUnknown(
+              data['content_domain']!, _contentDomainMeta));
+    }
+    if (data.containsKey('skill')) {
+      context.handle(
+          _skillMeta, skill.isAcceptableOrUnknown(data['skill']!, _skillMeta));
+    }
+    if (data.containsKey('mastery_state')) {
+      context.handle(
+          _masteryStateMeta,
+          masteryState.isAcceptableOrUnknown(
+              data['mastery_state']!, _masteryStateMeta));
+    }
+    if (data.containsKey('attempt_count')) {
+      context.handle(
+          _attemptCountMeta,
+          attemptCount.isAcceptableOrUnknown(
+              data['attempt_count']!, _attemptCountMeta));
+    }
+    if (data.containsKey('correct_count')) {
+      context.handle(
+          _correctCountMeta,
+          correctCount.isAcceptableOrUnknown(
+              data['correct_count']!, _correctCountMeta));
+    }
+    if (data.containsKey('incorrect_count')) {
+      context.handle(
+          _incorrectCountMeta,
+          incorrectCount.isAcceptableOrUnknown(
+              data['incorrect_count']!, _incorrectCountMeta));
+    }
+    if (data.containsKey('consecutive_correct')) {
+      context.handle(
+          _consecutiveCorrectMeta,
+          consecutiveCorrect.isAcceptableOrUnknown(
+              data['consecutive_correct']!, _consecutiveCorrectMeta));
+    }
+    if (data.containsKey('stability')) {
+      context.handle(_stabilityMeta,
+          stability.isAcceptableOrUnknown(data['stability']!, _stabilityMeta));
+    }
+    if (data.containsKey('difficulty')) {
+      context.handle(
+          _difficultyMeta,
+          difficulty.isAcceptableOrUnknown(
+              data['difficulty']!, _difficultyMeta));
+    }
+    if (data.containsKey('review_count')) {
+      context.handle(
+          _reviewCountMeta,
+          reviewCount.isAcceptableOrUnknown(
+              data['review_count']!, _reviewCountMeta));
+    }
+    if (data.containsKey('lapse_count')) {
+      context.handle(
+          _lapseCountMeta,
+          lapseCount.isAcceptableOrUnknown(
+              data['lapse_count']!, _lapseCountMeta));
+    }
+    if (data.containsKey('last_seen_at')) {
+      context.handle(
+          _lastSeenAtMeta,
+          lastSeenAt.isAcceptableOrUnknown(
+              data['last_seen_at']!, _lastSeenAtMeta));
+    }
+    if (data.containsKey('last_correct_at')) {
+      context.handle(
+          _lastCorrectAtMeta,
+          lastCorrectAt.isAcceptableOrUnknown(
+              data['last_correct_at']!, _lastCorrectAtMeta));
+    }
+    if (data.containsKey('last_incorrect_at')) {
+      context.handle(
+          _lastIncorrectAtMeta,
+          lastIncorrectAt.isAcceptableOrUnknown(
+              data['last_incorrect_at']!, _lastIncorrectAtMeta));
+    }
+    if (data.containsKey('next_review_at')) {
+      context.handle(
+          _nextReviewAtMeta,
+          nextReviewAt.isAcceptableOrUnknown(
+              data['next_review_at']!, _nextReviewAtMeta));
+    }
+    if (data.containsKey('algorithm_version')) {
+      context.handle(
+          _algorithmVersionMeta,
+          algorithmVersion.isAcceptableOrUnknown(
+              data['algorithm_version']!, _algorithmVersionMeta));
+    }
+    if (data.containsKey('evidence_source')) {
+      context.handle(
+          _evidenceSourceMeta,
+          evidenceSource.isAcceptableOrUnknown(
+              data['evidence_source']!, _evidenceSourceMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, questionId},
+      ];
+  @override
+  DbQuestionMasteryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DbQuestionMasteryRow(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      questionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}question_id'])!,
+      subjectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}subject_id'])!,
+      examVariant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_variant']),
+      assessmentStructure: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}assessment_structure']),
+      unitId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_id']),
+      topicId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic_id']),
+      contentDomain: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content_domain']),
+      skill: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}skill']),
+      masteryState: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mastery_state'])!,
+      attemptCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}attempt_count'])!,
+      correctCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}correct_count'])!,
+      incorrectCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}incorrect_count'])!,
+      consecutiveCorrect: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}consecutive_correct'])!,
+      stability: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}stability'])!,
+      difficulty: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}difficulty'])!,
+      reviewCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}review_count'])!,
+      lapseCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}lapse_count'])!,
+      lastSeenAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}last_seen_at']),
+      lastCorrectAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_correct_at']),
+      lastIncorrectAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_incorrect_at']),
+      nextReviewAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}next_review_at']),
+      algorithmVersion: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}algorithm_version'])!,
+      evidenceSource: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}evidence_source'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $DbQuestionMasteryTable createAlias(String alias) {
+    return $DbQuestionMasteryTable(attachedDatabase, alias);
+  }
+}
+
+class DbQuestionMasteryRow extends DataClass
+    implements Insertable<DbQuestionMasteryRow> {
+  final String id;
+  final String userId;
+  final String questionId;
+  final String subjectId;
+  final String? examVariant;
+  final String? assessmentStructure;
+  final String? unitId;
+  final String? topicId;
+  final String? contentDomain;
+  final String? skill;
+  final String masteryState;
+  final int attemptCount;
+  final int correctCount;
+  final int incorrectCount;
+  final int consecutiveCorrect;
+  final double stability;
+  final double difficulty;
+  final int reviewCount;
+  final int lapseCount;
+  final DateTime? lastSeenAt;
+  final DateTime? lastCorrectAt;
+  final DateTime? lastIncorrectAt;
+  final DateTime? nextReviewAt;
+  final String algorithmVersion;
+  final String evidenceSource;
+  final DateTime updatedAt;
+  const DbQuestionMasteryRow(
+      {required this.id,
+      required this.userId,
+      required this.questionId,
+      required this.subjectId,
+      this.examVariant,
+      this.assessmentStructure,
+      this.unitId,
+      this.topicId,
+      this.contentDomain,
+      this.skill,
+      required this.masteryState,
+      required this.attemptCount,
+      required this.correctCount,
+      required this.incorrectCount,
+      required this.consecutiveCorrect,
+      required this.stability,
+      required this.difficulty,
+      required this.reviewCount,
+      required this.lapseCount,
+      this.lastSeenAt,
+      this.lastCorrectAt,
+      this.lastIncorrectAt,
+      this.nextReviewAt,
+      required this.algorithmVersion,
+      required this.evidenceSource,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['question_id'] = Variable<String>(questionId);
+    map['subject_id'] = Variable<String>(subjectId);
+    if (!nullToAbsent || examVariant != null) {
+      map['exam_variant'] = Variable<String>(examVariant);
+    }
+    if (!nullToAbsent || assessmentStructure != null) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure);
+    }
+    if (!nullToAbsent || unitId != null) {
+      map['unit_id'] = Variable<String>(unitId);
+    }
+    if (!nullToAbsent || topicId != null) {
+      map['topic_id'] = Variable<String>(topicId);
+    }
+    if (!nullToAbsent || contentDomain != null) {
+      map['content_domain'] = Variable<String>(contentDomain);
+    }
+    if (!nullToAbsent || skill != null) {
+      map['skill'] = Variable<String>(skill);
+    }
+    map['mastery_state'] = Variable<String>(masteryState);
+    map['attempt_count'] = Variable<int>(attemptCount);
+    map['correct_count'] = Variable<int>(correctCount);
+    map['incorrect_count'] = Variable<int>(incorrectCount);
+    map['consecutive_correct'] = Variable<int>(consecutiveCorrect);
+    map['stability'] = Variable<double>(stability);
+    map['difficulty'] = Variable<double>(difficulty);
+    map['review_count'] = Variable<int>(reviewCount);
+    map['lapse_count'] = Variable<int>(lapseCount);
+    if (!nullToAbsent || lastSeenAt != null) {
+      map['last_seen_at'] = Variable<DateTime>(lastSeenAt);
+    }
+    if (!nullToAbsent || lastCorrectAt != null) {
+      map['last_correct_at'] = Variable<DateTime>(lastCorrectAt);
+    }
+    if (!nullToAbsent || lastIncorrectAt != null) {
+      map['last_incorrect_at'] = Variable<DateTime>(lastIncorrectAt);
+    }
+    if (!nullToAbsent || nextReviewAt != null) {
+      map['next_review_at'] = Variable<DateTime>(nextReviewAt);
+    }
+    map['algorithm_version'] = Variable<String>(algorithmVersion);
+    map['evidence_source'] = Variable<String>(evidenceSource);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  DbQuestionMasteryCompanion toCompanion(bool nullToAbsent) {
+    return DbQuestionMasteryCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      questionId: Value(questionId),
+      subjectId: Value(subjectId),
+      examVariant: examVariant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examVariant),
+      assessmentStructure: assessmentStructure == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assessmentStructure),
+      unitId:
+          unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      topicId: topicId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(topicId),
+      contentDomain: contentDomain == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentDomain),
+      skill:
+          skill == null && nullToAbsent ? const Value.absent() : Value(skill),
+      masteryState: Value(masteryState),
+      attemptCount: Value(attemptCount),
+      correctCount: Value(correctCount),
+      incorrectCount: Value(incorrectCount),
+      consecutiveCorrect: Value(consecutiveCorrect),
+      stability: Value(stability),
+      difficulty: Value(difficulty),
+      reviewCount: Value(reviewCount),
+      lapseCount: Value(lapseCount),
+      lastSeenAt: lastSeenAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastSeenAt),
+      lastCorrectAt: lastCorrectAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastCorrectAt),
+      lastIncorrectAt: lastIncorrectAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastIncorrectAt),
+      nextReviewAt: nextReviewAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextReviewAt),
+      algorithmVersion: Value(algorithmVersion),
+      evidenceSource: Value(evidenceSource),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory DbQuestionMasteryRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DbQuestionMasteryRow(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      questionId: serializer.fromJson<String>(json['questionId']),
+      subjectId: serializer.fromJson<String>(json['subjectId']),
+      examVariant: serializer.fromJson<String?>(json['examVariant']),
+      assessmentStructure:
+          serializer.fromJson<String?>(json['assessmentStructure']),
+      unitId: serializer.fromJson<String?>(json['unitId']),
+      topicId: serializer.fromJson<String?>(json['topicId']),
+      contentDomain: serializer.fromJson<String?>(json['contentDomain']),
+      skill: serializer.fromJson<String?>(json['skill']),
+      masteryState: serializer.fromJson<String>(json['masteryState']),
+      attemptCount: serializer.fromJson<int>(json['attemptCount']),
+      correctCount: serializer.fromJson<int>(json['correctCount']),
+      incorrectCount: serializer.fromJson<int>(json['incorrectCount']),
+      consecutiveCorrect: serializer.fromJson<int>(json['consecutiveCorrect']),
+      stability: serializer.fromJson<double>(json['stability']),
+      difficulty: serializer.fromJson<double>(json['difficulty']),
+      reviewCount: serializer.fromJson<int>(json['reviewCount']),
+      lapseCount: serializer.fromJson<int>(json['lapseCount']),
+      lastSeenAt: serializer.fromJson<DateTime?>(json['lastSeenAt']),
+      lastCorrectAt: serializer.fromJson<DateTime?>(json['lastCorrectAt']),
+      lastIncorrectAt: serializer.fromJson<DateTime?>(json['lastIncorrectAt']),
+      nextReviewAt: serializer.fromJson<DateTime?>(json['nextReviewAt']),
+      algorithmVersion: serializer.fromJson<String>(json['algorithmVersion']),
+      evidenceSource: serializer.fromJson<String>(json['evidenceSource']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'questionId': serializer.toJson<String>(questionId),
+      'subjectId': serializer.toJson<String>(subjectId),
+      'examVariant': serializer.toJson<String?>(examVariant),
+      'assessmentStructure': serializer.toJson<String?>(assessmentStructure),
+      'unitId': serializer.toJson<String?>(unitId),
+      'topicId': serializer.toJson<String?>(topicId),
+      'contentDomain': serializer.toJson<String?>(contentDomain),
+      'skill': serializer.toJson<String?>(skill),
+      'masteryState': serializer.toJson<String>(masteryState),
+      'attemptCount': serializer.toJson<int>(attemptCount),
+      'correctCount': serializer.toJson<int>(correctCount),
+      'incorrectCount': serializer.toJson<int>(incorrectCount),
+      'consecutiveCorrect': serializer.toJson<int>(consecutiveCorrect),
+      'stability': serializer.toJson<double>(stability),
+      'difficulty': serializer.toJson<double>(difficulty),
+      'reviewCount': serializer.toJson<int>(reviewCount),
+      'lapseCount': serializer.toJson<int>(lapseCount),
+      'lastSeenAt': serializer.toJson<DateTime?>(lastSeenAt),
+      'lastCorrectAt': serializer.toJson<DateTime?>(lastCorrectAt),
+      'lastIncorrectAt': serializer.toJson<DateTime?>(lastIncorrectAt),
+      'nextReviewAt': serializer.toJson<DateTime?>(nextReviewAt),
+      'algorithmVersion': serializer.toJson<String>(algorithmVersion),
+      'evidenceSource': serializer.toJson<String>(evidenceSource),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  DbQuestionMasteryRow copyWith(
+          {String? id,
+          String? userId,
+          String? questionId,
+          String? subjectId,
+          Value<String?> examVariant = const Value.absent(),
+          Value<String?> assessmentStructure = const Value.absent(),
+          Value<String?> unitId = const Value.absent(),
+          Value<String?> topicId = const Value.absent(),
+          Value<String?> contentDomain = const Value.absent(),
+          Value<String?> skill = const Value.absent(),
+          String? masteryState,
+          int? attemptCount,
+          int? correctCount,
+          int? incorrectCount,
+          int? consecutiveCorrect,
+          double? stability,
+          double? difficulty,
+          int? reviewCount,
+          int? lapseCount,
+          Value<DateTime?> lastSeenAt = const Value.absent(),
+          Value<DateTime?> lastCorrectAt = const Value.absent(),
+          Value<DateTime?> lastIncorrectAt = const Value.absent(),
+          Value<DateTime?> nextReviewAt = const Value.absent(),
+          String? algorithmVersion,
+          String? evidenceSource,
+          DateTime? updatedAt}) =>
+      DbQuestionMasteryRow(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        questionId: questionId ?? this.questionId,
+        subjectId: subjectId ?? this.subjectId,
+        examVariant: examVariant.present ? examVariant.value : this.examVariant,
+        assessmentStructure: assessmentStructure.present
+            ? assessmentStructure.value
+            : this.assessmentStructure,
+        unitId: unitId.present ? unitId.value : this.unitId,
+        topicId: topicId.present ? topicId.value : this.topicId,
+        contentDomain:
+            contentDomain.present ? contentDomain.value : this.contentDomain,
+        skill: skill.present ? skill.value : this.skill,
+        masteryState: masteryState ?? this.masteryState,
+        attemptCount: attemptCount ?? this.attemptCount,
+        correctCount: correctCount ?? this.correctCount,
+        incorrectCount: incorrectCount ?? this.incorrectCount,
+        consecutiveCorrect: consecutiveCorrect ?? this.consecutiveCorrect,
+        stability: stability ?? this.stability,
+        difficulty: difficulty ?? this.difficulty,
+        reviewCount: reviewCount ?? this.reviewCount,
+        lapseCount: lapseCount ?? this.lapseCount,
+        lastSeenAt: lastSeenAt.present ? lastSeenAt.value : this.lastSeenAt,
+        lastCorrectAt:
+            lastCorrectAt.present ? lastCorrectAt.value : this.lastCorrectAt,
+        lastIncorrectAt: lastIncorrectAt.present
+            ? lastIncorrectAt.value
+            : this.lastIncorrectAt,
+        nextReviewAt:
+            nextReviewAt.present ? nextReviewAt.value : this.nextReviewAt,
+        algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+        evidenceSource: evidenceSource ?? this.evidenceSource,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  DbQuestionMasteryRow copyWithCompanion(DbQuestionMasteryCompanion data) {
+    return DbQuestionMasteryRow(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
+      subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      examVariant:
+          data.examVariant.present ? data.examVariant.value : this.examVariant,
+      assessmentStructure: data.assessmentStructure.present
+          ? data.assessmentStructure.value
+          : this.assessmentStructure,
+      unitId: data.unitId.present ? data.unitId.value : this.unitId,
+      topicId: data.topicId.present ? data.topicId.value : this.topicId,
+      contentDomain: data.contentDomain.present
+          ? data.contentDomain.value
+          : this.contentDomain,
+      skill: data.skill.present ? data.skill.value : this.skill,
+      masteryState: data.masteryState.present
+          ? data.masteryState.value
+          : this.masteryState,
+      attemptCount: data.attemptCount.present
+          ? data.attemptCount.value
+          : this.attemptCount,
+      correctCount: data.correctCount.present
+          ? data.correctCount.value
+          : this.correctCount,
+      incorrectCount: data.incorrectCount.present
+          ? data.incorrectCount.value
+          : this.incorrectCount,
+      consecutiveCorrect: data.consecutiveCorrect.present
+          ? data.consecutiveCorrect.value
+          : this.consecutiveCorrect,
+      stability: data.stability.present ? data.stability.value : this.stability,
+      difficulty:
+          data.difficulty.present ? data.difficulty.value : this.difficulty,
+      reviewCount:
+          data.reviewCount.present ? data.reviewCount.value : this.reviewCount,
+      lapseCount:
+          data.lapseCount.present ? data.lapseCount.value : this.lapseCount,
+      lastSeenAt:
+          data.lastSeenAt.present ? data.lastSeenAt.value : this.lastSeenAt,
+      lastCorrectAt: data.lastCorrectAt.present
+          ? data.lastCorrectAt.value
+          : this.lastCorrectAt,
+      lastIncorrectAt: data.lastIncorrectAt.present
+          ? data.lastIncorrectAt.value
+          : this.lastIncorrectAt,
+      nextReviewAt: data.nextReviewAt.present
+          ? data.nextReviewAt.value
+          : this.nextReviewAt,
+      algorithmVersion: data.algorithmVersion.present
+          ? data.algorithmVersion.value
+          : this.algorithmVersion,
+      evidenceSource: data.evidenceSource.present
+          ? data.evidenceSource.value
+          : this.evidenceSource,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbQuestionMasteryRow(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('questionId: $questionId, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill, ')
+          ..write('masteryState: $masteryState, ')
+          ..write('attemptCount: $attemptCount, ')
+          ..write('correctCount: $correctCount, ')
+          ..write('incorrectCount: $incorrectCount, ')
+          ..write('consecutiveCorrect: $consecutiveCorrect, ')
+          ..write('stability: $stability, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('reviewCount: $reviewCount, ')
+          ..write('lapseCount: $lapseCount, ')
+          ..write('lastSeenAt: $lastSeenAt, ')
+          ..write('lastCorrectAt: $lastCorrectAt, ')
+          ..write('lastIncorrectAt: $lastIncorrectAt, ')
+          ..write('nextReviewAt: $nextReviewAt, ')
+          ..write('algorithmVersion: $algorithmVersion, ')
+          ..write('evidenceSource: $evidenceSource, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        id,
+        userId,
+        questionId,
+        subjectId,
+        examVariant,
+        assessmentStructure,
+        unitId,
+        topicId,
+        contentDomain,
+        skill,
+        masteryState,
+        attemptCount,
+        correctCount,
+        incorrectCount,
+        consecutiveCorrect,
+        stability,
+        difficulty,
+        reviewCount,
+        lapseCount,
+        lastSeenAt,
+        lastCorrectAt,
+        lastIncorrectAt,
+        nextReviewAt,
+        algorithmVersion,
+        evidenceSource,
+        updatedAt
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbQuestionMasteryRow &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.questionId == this.questionId &&
+          other.subjectId == this.subjectId &&
+          other.examVariant == this.examVariant &&
+          other.assessmentStructure == this.assessmentStructure &&
+          other.unitId == this.unitId &&
+          other.topicId == this.topicId &&
+          other.contentDomain == this.contentDomain &&
+          other.skill == this.skill &&
+          other.masteryState == this.masteryState &&
+          other.attemptCount == this.attemptCount &&
+          other.correctCount == this.correctCount &&
+          other.incorrectCount == this.incorrectCount &&
+          other.consecutiveCorrect == this.consecutiveCorrect &&
+          other.stability == this.stability &&
+          other.difficulty == this.difficulty &&
+          other.reviewCount == this.reviewCount &&
+          other.lapseCount == this.lapseCount &&
+          other.lastSeenAt == this.lastSeenAt &&
+          other.lastCorrectAt == this.lastCorrectAt &&
+          other.lastIncorrectAt == this.lastIncorrectAt &&
+          other.nextReviewAt == this.nextReviewAt &&
+          other.algorithmVersion == this.algorithmVersion &&
+          other.evidenceSource == this.evidenceSource &&
+          other.updatedAt == this.updatedAt);
+}
+
+class DbQuestionMasteryCompanion extends UpdateCompanion<DbQuestionMasteryRow> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> questionId;
+  final Value<String> subjectId;
+  final Value<String?> examVariant;
+  final Value<String?> assessmentStructure;
+  final Value<String?> unitId;
+  final Value<String?> topicId;
+  final Value<String?> contentDomain;
+  final Value<String?> skill;
+  final Value<String> masteryState;
+  final Value<int> attemptCount;
+  final Value<int> correctCount;
+  final Value<int> incorrectCount;
+  final Value<int> consecutiveCorrect;
+  final Value<double> stability;
+  final Value<double> difficulty;
+  final Value<int> reviewCount;
+  final Value<int> lapseCount;
+  final Value<DateTime?> lastSeenAt;
+  final Value<DateTime?> lastCorrectAt;
+  final Value<DateTime?> lastIncorrectAt;
+  final Value<DateTime?> nextReviewAt;
+  final Value<String> algorithmVersion;
+  final Value<String> evidenceSource;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const DbQuestionMasteryCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.questionId = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    this.masteryState = const Value.absent(),
+    this.attemptCount = const Value.absent(),
+    this.correctCount = const Value.absent(),
+    this.incorrectCount = const Value.absent(),
+    this.consecutiveCorrect = const Value.absent(),
+    this.stability = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.reviewCount = const Value.absent(),
+    this.lapseCount = const Value.absent(),
+    this.lastSeenAt = const Value.absent(),
+    this.lastCorrectAt = const Value.absent(),
+    this.lastIncorrectAt = const Value.absent(),
+    this.nextReviewAt = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    this.evidenceSource = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DbQuestionMasteryCompanion.insert({
+    required String id,
+    required String userId,
+    required String questionId,
+    required String subjectId,
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    this.masteryState = const Value.absent(),
+    this.attemptCount = const Value.absent(),
+    this.correctCount = const Value.absent(),
+    this.incorrectCount = const Value.absent(),
+    this.consecutiveCorrect = const Value.absent(),
+    this.stability = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.reviewCount = const Value.absent(),
+    this.lapseCount = const Value.absent(),
+    this.lastSeenAt = const Value.absent(),
+    this.lastCorrectAt = const Value.absent(),
+    this.lastIncorrectAt = const Value.absent(),
+    this.nextReviewAt = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    this.evidenceSource = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        userId = Value(userId),
+        questionId = Value(questionId),
+        subjectId = Value(subjectId),
+        updatedAt = Value(updatedAt);
+  static Insertable<DbQuestionMasteryRow> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? questionId,
+    Expression<String>? subjectId,
+    Expression<String>? examVariant,
+    Expression<String>? assessmentStructure,
+    Expression<String>? unitId,
+    Expression<String>? topicId,
+    Expression<String>? contentDomain,
+    Expression<String>? skill,
+    Expression<String>? masteryState,
+    Expression<int>? attemptCount,
+    Expression<int>? correctCount,
+    Expression<int>? incorrectCount,
+    Expression<int>? consecutiveCorrect,
+    Expression<double>? stability,
+    Expression<double>? difficulty,
+    Expression<int>? reviewCount,
+    Expression<int>? lapseCount,
+    Expression<DateTime>? lastSeenAt,
+    Expression<DateTime>? lastCorrectAt,
+    Expression<DateTime>? lastIncorrectAt,
+    Expression<DateTime>? nextReviewAt,
+    Expression<String>? algorithmVersion,
+    Expression<String>? evidenceSource,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (questionId != null) 'question_id': questionId,
+      if (subjectId != null) 'subject_id': subjectId,
+      if (examVariant != null) 'exam_variant': examVariant,
+      if (assessmentStructure != null)
+        'assessment_structure': assessmentStructure,
+      if (unitId != null) 'unit_id': unitId,
+      if (topicId != null) 'topic_id': topicId,
+      if (contentDomain != null) 'content_domain': contentDomain,
+      if (skill != null) 'skill': skill,
+      if (masteryState != null) 'mastery_state': masteryState,
+      if (attemptCount != null) 'attempt_count': attemptCount,
+      if (correctCount != null) 'correct_count': correctCount,
+      if (incorrectCount != null) 'incorrect_count': incorrectCount,
+      if (consecutiveCorrect != null) 'consecutive_correct': consecutiveCorrect,
+      if (stability != null) 'stability': stability,
+      if (difficulty != null) 'difficulty': difficulty,
+      if (reviewCount != null) 'review_count': reviewCount,
+      if (lapseCount != null) 'lapse_count': lapseCount,
+      if (lastSeenAt != null) 'last_seen_at': lastSeenAt,
+      if (lastCorrectAt != null) 'last_correct_at': lastCorrectAt,
+      if (lastIncorrectAt != null) 'last_incorrect_at': lastIncorrectAt,
+      if (nextReviewAt != null) 'next_review_at': nextReviewAt,
+      if (algorithmVersion != null) 'algorithm_version': algorithmVersion,
+      if (evidenceSource != null) 'evidence_source': evidenceSource,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DbQuestionMasteryCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? userId,
+      Value<String>? questionId,
+      Value<String>? subjectId,
+      Value<String?>? examVariant,
+      Value<String?>? assessmentStructure,
+      Value<String?>? unitId,
+      Value<String?>? topicId,
+      Value<String?>? contentDomain,
+      Value<String?>? skill,
+      Value<String>? masteryState,
+      Value<int>? attemptCount,
+      Value<int>? correctCount,
+      Value<int>? incorrectCount,
+      Value<int>? consecutiveCorrect,
+      Value<double>? stability,
+      Value<double>? difficulty,
+      Value<int>? reviewCount,
+      Value<int>? lapseCount,
+      Value<DateTime?>? lastSeenAt,
+      Value<DateTime?>? lastCorrectAt,
+      Value<DateTime?>? lastIncorrectAt,
+      Value<DateTime?>? nextReviewAt,
+      Value<String>? algorithmVersion,
+      Value<String>? evidenceSource,
+      Value<DateTime>? updatedAt,
+      Value<int>? rowid}) {
+    return DbQuestionMasteryCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      questionId: questionId ?? this.questionId,
+      subjectId: subjectId ?? this.subjectId,
+      examVariant: examVariant ?? this.examVariant,
+      assessmentStructure: assessmentStructure ?? this.assessmentStructure,
+      unitId: unitId ?? this.unitId,
+      topicId: topicId ?? this.topicId,
+      contentDomain: contentDomain ?? this.contentDomain,
+      skill: skill ?? this.skill,
+      masteryState: masteryState ?? this.masteryState,
+      attemptCount: attemptCount ?? this.attemptCount,
+      correctCount: correctCount ?? this.correctCount,
+      incorrectCount: incorrectCount ?? this.incorrectCount,
+      consecutiveCorrect: consecutiveCorrect ?? this.consecutiveCorrect,
+      stability: stability ?? this.stability,
+      difficulty: difficulty ?? this.difficulty,
+      reviewCount: reviewCount ?? this.reviewCount,
+      lapseCount: lapseCount ?? this.lapseCount,
+      lastSeenAt: lastSeenAt ?? this.lastSeenAt,
+      lastCorrectAt: lastCorrectAt ?? this.lastCorrectAt,
+      lastIncorrectAt: lastIncorrectAt ?? this.lastIncorrectAt,
+      nextReviewAt: nextReviewAt ?? this.nextReviewAt,
+      algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+      evidenceSource: evidenceSource ?? this.evidenceSource,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (questionId.present) {
+      map['question_id'] = Variable<String>(questionId.value);
+    }
+    if (subjectId.present) {
+      map['subject_id'] = Variable<String>(subjectId.value);
+    }
+    if (examVariant.present) {
+      map['exam_variant'] = Variable<String>(examVariant.value);
+    }
+    if (assessmentStructure.present) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure.value);
+    }
+    if (unitId.present) {
+      map['unit_id'] = Variable<String>(unitId.value);
+    }
+    if (topicId.present) {
+      map['topic_id'] = Variable<String>(topicId.value);
+    }
+    if (contentDomain.present) {
+      map['content_domain'] = Variable<String>(contentDomain.value);
+    }
+    if (skill.present) {
+      map['skill'] = Variable<String>(skill.value);
+    }
+    if (masteryState.present) {
+      map['mastery_state'] = Variable<String>(masteryState.value);
+    }
+    if (attemptCount.present) {
+      map['attempt_count'] = Variable<int>(attemptCount.value);
+    }
+    if (correctCount.present) {
+      map['correct_count'] = Variable<int>(correctCount.value);
+    }
+    if (incorrectCount.present) {
+      map['incorrect_count'] = Variable<int>(incorrectCount.value);
+    }
+    if (consecutiveCorrect.present) {
+      map['consecutive_correct'] = Variable<int>(consecutiveCorrect.value);
+    }
+    if (stability.present) {
+      map['stability'] = Variable<double>(stability.value);
+    }
+    if (difficulty.present) {
+      map['difficulty'] = Variable<double>(difficulty.value);
+    }
+    if (reviewCount.present) {
+      map['review_count'] = Variable<int>(reviewCount.value);
+    }
+    if (lapseCount.present) {
+      map['lapse_count'] = Variable<int>(lapseCount.value);
+    }
+    if (lastSeenAt.present) {
+      map['last_seen_at'] = Variable<DateTime>(lastSeenAt.value);
+    }
+    if (lastCorrectAt.present) {
+      map['last_correct_at'] = Variable<DateTime>(lastCorrectAt.value);
+    }
+    if (lastIncorrectAt.present) {
+      map['last_incorrect_at'] = Variable<DateTime>(lastIncorrectAt.value);
+    }
+    if (nextReviewAt.present) {
+      map['next_review_at'] = Variable<DateTime>(nextReviewAt.value);
+    }
+    if (algorithmVersion.present) {
+      map['algorithm_version'] = Variable<String>(algorithmVersion.value);
+    }
+    if (evidenceSource.present) {
+      map['evidence_source'] = Variable<String>(evidenceSource.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbQuestionMasteryCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('questionId: $questionId, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill, ')
+          ..write('masteryState: $masteryState, ')
+          ..write('attemptCount: $attemptCount, ')
+          ..write('correctCount: $correctCount, ')
+          ..write('incorrectCount: $incorrectCount, ')
+          ..write('consecutiveCorrect: $consecutiveCorrect, ')
+          ..write('stability: $stability, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('reviewCount: $reviewCount, ')
+          ..write('lapseCount: $lapseCount, ')
+          ..write('lastSeenAt: $lastSeenAt, ')
+          ..write('lastCorrectAt: $lastCorrectAt, ')
+          ..write('lastIncorrectAt: $lastIncorrectAt, ')
+          ..write('nextReviewAt: $nextReviewAt, ')
+          ..write('algorithmVersion: $algorithmVersion, ')
+          ..write('evidenceSource: $evidenceSource, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbLearningTargetMasteryTable extends DbLearningTargetMastery
+    with TableInfo<$DbLearningTargetMasteryTable, DbLearningTargetMasteryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DbLearningTargetMasteryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _targetKeyMeta =
+      const VerificationMeta('targetKey');
+  @override
+  late final GeneratedColumn<String> targetKey = GeneratedColumn<String>(
+      'target_key', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _subjectIdMeta =
+      const VerificationMeta('subjectId');
+  @override
+  late final GeneratedColumn<String> subjectId = GeneratedColumn<String>(
+      'subject_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _examVariantMeta =
+      const VerificationMeta('examVariant');
+  @override
+  late final GeneratedColumn<String> examVariant = GeneratedColumn<String>(
+      'exam_variant', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _assessmentStructureMeta =
+      const VerificationMeta('assessmentStructure');
+  @override
+  late final GeneratedColumn<String> assessmentStructure =
+      GeneratedColumn<String>('assessment_structure', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _unitIdMeta = const VerificationMeta('unitId');
+  @override
+  late final GeneratedColumn<String> unitId = GeneratedColumn<String>(
+      'unit_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _topicIdMeta =
+      const VerificationMeta('topicId');
+  @override
+  late final GeneratedColumn<String> topicId = GeneratedColumn<String>(
+      'topic_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _contentDomainMeta =
+      const VerificationMeta('contentDomain');
+  @override
+  late final GeneratedColumn<String> contentDomain = GeneratedColumn<String>(
+      'content_domain', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _skillMeta = const VerificationMeta('skill');
+  @override
+  late final GeneratedColumn<String> skill = GeneratedColumn<String>(
+      'skill', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _titleEnMeta =
+      const VerificationMeta('titleEn');
+  @override
+  late final GeneratedColumn<String> titleEn = GeneratedColumn<String>(
+      'title_en', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleAmMeta =
+      const VerificationMeta('titleAm');
+  @override
+  late final GeneratedColumn<String> titleAm = GeneratedColumn<String>(
+      'title_am', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _masteryStateMeta =
+      const VerificationMeta('masteryState');
+  @override
+  late final GeneratedColumn<String> masteryState = GeneratedColumn<String>(
+      'mastery_state', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('new'));
+  static const VerificationMeta _evidenceSourceMeta =
+      const VerificationMeta('evidenceSource');
+  @override
+  late final GeneratedColumn<String> evidenceSource = GeneratedColumn<String>(
+      'evidence_source', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('native'));
+  static const VerificationMeta _accuracyPercentageMeta =
+      const VerificationMeta('accuracyPercentage');
+  @override
+  late final GeneratedColumn<double> accuracyPercentage =
+      GeneratedColumn<double>('accuracy_percentage', aliasedName, false,
+          type: DriftSqlType.double,
+          requiredDuringInsert: false,
+          defaultValue: const Constant(0.0));
+  static const VerificationMeta _totalAttemptsMeta =
+      const VerificationMeta('totalAttempts');
+  @override
+  late final GeneratedColumn<int> totalAttempts = GeneratedColumn<int>(
+      'total_attempts', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _masteredQuestionCountMeta =
+      const VerificationMeta('masteredQuestionCount');
+  @override
+  late final GeneratedColumn<int> masteredQuestionCount = GeneratedColumn<int>(
+      'mastered_question_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _coveredQuestionCountMeta =
+      const VerificationMeta('coveredQuestionCount');
+  @override
+  late final GeneratedColumn<int> coveredQuestionCount = GeneratedColumn<int>(
+      'covered_question_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _totalAvailableQuestionsMeta =
+      const VerificationMeta('totalAvailableQuestions');
+  @override
+  late final GeneratedColumn<int> totalAvailableQuestions =
+      GeneratedColumn<int>('total_available_questions', aliasedName, false,
+          type: DriftSqlType.int,
+          requiredDuringInsert: false,
+          defaultValue: const Constant(0));
+  static const VerificationMeta _nextReviewAtMeta =
+      const VerificationMeta('nextReviewAt');
+  @override
+  late final GeneratedColumn<DateTime> nextReviewAt = GeneratedColumn<DateTime>(
+      'next_review_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _lastPracticedAtMeta =
+      const VerificationMeta('lastPracticedAt');
+  @override
+  late final GeneratedColumn<DateTime> lastPracticedAt =
+      GeneratedColumn<DateTime>('last_practiced_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        targetKey,
+        subjectId,
+        examVariant,
+        assessmentStructure,
+        unitId,
+        topicId,
+        contentDomain,
+        skill,
+        titleEn,
+        titleAm,
+        masteryState,
+        evidenceSource,
+        accuracyPercentage,
+        totalAttempts,
+        masteredQuestionCount,
+        coveredQuestionCount,
+        totalAvailableQuestions,
+        nextReviewAt,
+        lastPracticedAt,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'db_learning_target_mastery';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DbLearningTargetMasteryRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('target_key')) {
+      context.handle(_targetKeyMeta,
+          targetKey.isAcceptableOrUnknown(data['target_key']!, _targetKeyMeta));
+    } else if (isInserting) {
+      context.missing(_targetKeyMeta);
+    }
+    if (data.containsKey('subject_id')) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableOrUnknown(data['subject_id']!, _subjectIdMeta));
+    } else if (isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (data.containsKey('exam_variant')) {
+      context.handle(
+          _examVariantMeta,
+          examVariant.isAcceptableOrUnknown(
+              data['exam_variant']!, _examVariantMeta));
+    }
+    if (data.containsKey('assessment_structure')) {
+      context.handle(
+          _assessmentStructureMeta,
+          assessmentStructure.isAcceptableOrUnknown(
+              data['assessment_structure']!, _assessmentStructureMeta));
+    }
+    if (data.containsKey('unit_id')) {
+      context.handle(_unitIdMeta,
+          unitId.isAcceptableOrUnknown(data['unit_id']!, _unitIdMeta));
+    }
+    if (data.containsKey('topic_id')) {
+      context.handle(_topicIdMeta,
+          topicId.isAcceptableOrUnknown(data['topic_id']!, _topicIdMeta));
+    }
+    if (data.containsKey('content_domain')) {
+      context.handle(
+          _contentDomainMeta,
+          contentDomain.isAcceptableOrUnknown(
+              data['content_domain']!, _contentDomainMeta));
+    }
+    if (data.containsKey('skill')) {
+      context.handle(
+          _skillMeta, skill.isAcceptableOrUnknown(data['skill']!, _skillMeta));
+    }
+    if (data.containsKey('title_en')) {
+      context.handle(_titleEnMeta,
+          titleEn.isAcceptableOrUnknown(data['title_en']!, _titleEnMeta));
+    } else if (isInserting) {
+      context.missing(_titleEnMeta);
+    }
+    if (data.containsKey('title_am')) {
+      context.handle(_titleAmMeta,
+          titleAm.isAcceptableOrUnknown(data['title_am']!, _titleAmMeta));
+    } else if (isInserting) {
+      context.missing(_titleAmMeta);
+    }
+    if (data.containsKey('mastery_state')) {
+      context.handle(
+          _masteryStateMeta,
+          masteryState.isAcceptableOrUnknown(
+              data['mastery_state']!, _masteryStateMeta));
+    }
+    if (data.containsKey('evidence_source')) {
+      context.handle(
+          _evidenceSourceMeta,
+          evidenceSource.isAcceptableOrUnknown(
+              data['evidence_source']!, _evidenceSourceMeta));
+    }
+    if (data.containsKey('accuracy_percentage')) {
+      context.handle(
+          _accuracyPercentageMeta,
+          accuracyPercentage.isAcceptableOrUnknown(
+              data['accuracy_percentage']!, _accuracyPercentageMeta));
+    }
+    if (data.containsKey('total_attempts')) {
+      context.handle(
+          _totalAttemptsMeta,
+          totalAttempts.isAcceptableOrUnknown(
+              data['total_attempts']!, _totalAttemptsMeta));
+    }
+    if (data.containsKey('mastered_question_count')) {
+      context.handle(
+          _masteredQuestionCountMeta,
+          masteredQuestionCount.isAcceptableOrUnknown(
+              data['mastered_question_count']!, _masteredQuestionCountMeta));
+    }
+    if (data.containsKey('covered_question_count')) {
+      context.handle(
+          _coveredQuestionCountMeta,
+          coveredQuestionCount.isAcceptableOrUnknown(
+              data['covered_question_count']!, _coveredQuestionCountMeta));
+    }
+    if (data.containsKey('total_available_questions')) {
+      context.handle(
+          _totalAvailableQuestionsMeta,
+          totalAvailableQuestions.isAcceptableOrUnknown(
+              data['total_available_questions']!,
+              _totalAvailableQuestionsMeta));
+    }
+    if (data.containsKey('next_review_at')) {
+      context.handle(
+          _nextReviewAtMeta,
+          nextReviewAt.isAcceptableOrUnknown(
+              data['next_review_at']!, _nextReviewAtMeta));
+    }
+    if (data.containsKey('last_practiced_at')) {
+      context.handle(
+          _lastPracticedAtMeta,
+          lastPracticedAt.isAcceptableOrUnknown(
+              data['last_practiced_at']!, _lastPracticedAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, targetKey},
+      ];
+  @override
+  DbLearningTargetMasteryRow map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DbLearningTargetMasteryRow(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      targetKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}target_key'])!,
+      subjectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}subject_id'])!,
+      examVariant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_variant']),
+      assessmentStructure: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}assessment_structure']),
+      unitId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit_id']),
+      topicId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic_id']),
+      contentDomain: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content_domain']),
+      skill: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}skill']),
+      titleEn: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title_en'])!,
+      titleAm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title_am'])!,
+      masteryState: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mastery_state'])!,
+      evidenceSource: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}evidence_source'])!,
+      accuracyPercentage: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}accuracy_percentage'])!,
+      totalAttempts: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}total_attempts'])!,
+      masteredQuestionCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}mastered_question_count'])!,
+      coveredQuestionCount: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}covered_question_count'])!,
+      totalAvailableQuestions: attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}total_available_questions'])!,
+      nextReviewAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}next_review_at']),
+      lastPracticedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}last_practiced_at']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $DbLearningTargetMasteryTable createAlias(String alias) {
+    return $DbLearningTargetMasteryTable(attachedDatabase, alias);
+  }
+}
+
+class DbLearningTargetMasteryRow extends DataClass
+    implements Insertable<DbLearningTargetMasteryRow> {
+  final String id;
+  final String userId;
+  final String targetKey;
+  final String subjectId;
+  final String? examVariant;
+  final String? assessmentStructure;
+  final String? unitId;
+  final String? topicId;
+  final String? contentDomain;
+  final String? skill;
+  final String titleEn;
+  final String titleAm;
+  final String masteryState;
+  final String evidenceSource;
+  final double accuracyPercentage;
+  final int totalAttempts;
+  final int masteredQuestionCount;
+  final int coveredQuestionCount;
+  final int totalAvailableQuestions;
+  final DateTime? nextReviewAt;
+  final DateTime? lastPracticedAt;
+  final DateTime updatedAt;
+  const DbLearningTargetMasteryRow(
+      {required this.id,
+      required this.userId,
+      required this.targetKey,
+      required this.subjectId,
+      this.examVariant,
+      this.assessmentStructure,
+      this.unitId,
+      this.topicId,
+      this.contentDomain,
+      this.skill,
+      required this.titleEn,
+      required this.titleAm,
+      required this.masteryState,
+      required this.evidenceSource,
+      required this.accuracyPercentage,
+      required this.totalAttempts,
+      required this.masteredQuestionCount,
+      required this.coveredQuestionCount,
+      required this.totalAvailableQuestions,
+      this.nextReviewAt,
+      this.lastPracticedAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['target_key'] = Variable<String>(targetKey);
+    map['subject_id'] = Variable<String>(subjectId);
+    if (!nullToAbsent || examVariant != null) {
+      map['exam_variant'] = Variable<String>(examVariant);
+    }
+    if (!nullToAbsent || assessmentStructure != null) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure);
+    }
+    if (!nullToAbsent || unitId != null) {
+      map['unit_id'] = Variable<String>(unitId);
+    }
+    if (!nullToAbsent || topicId != null) {
+      map['topic_id'] = Variable<String>(topicId);
+    }
+    if (!nullToAbsent || contentDomain != null) {
+      map['content_domain'] = Variable<String>(contentDomain);
+    }
+    if (!nullToAbsent || skill != null) {
+      map['skill'] = Variable<String>(skill);
+    }
+    map['title_en'] = Variable<String>(titleEn);
+    map['title_am'] = Variable<String>(titleAm);
+    map['mastery_state'] = Variable<String>(masteryState);
+    map['evidence_source'] = Variable<String>(evidenceSource);
+    map['accuracy_percentage'] = Variable<double>(accuracyPercentage);
+    map['total_attempts'] = Variable<int>(totalAttempts);
+    map['mastered_question_count'] = Variable<int>(masteredQuestionCount);
+    map['covered_question_count'] = Variable<int>(coveredQuestionCount);
+    map['total_available_questions'] = Variable<int>(totalAvailableQuestions);
+    if (!nullToAbsent || nextReviewAt != null) {
+      map['next_review_at'] = Variable<DateTime>(nextReviewAt);
+    }
+    if (!nullToAbsent || lastPracticedAt != null) {
+      map['last_practiced_at'] = Variable<DateTime>(lastPracticedAt);
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  DbLearningTargetMasteryCompanion toCompanion(bool nullToAbsent) {
+    return DbLearningTargetMasteryCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      targetKey: Value(targetKey),
+      subjectId: Value(subjectId),
+      examVariant: examVariant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examVariant),
+      assessmentStructure: assessmentStructure == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assessmentStructure),
+      unitId:
+          unitId == null && nullToAbsent ? const Value.absent() : Value(unitId),
+      topicId: topicId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(topicId),
+      contentDomain: contentDomain == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contentDomain),
+      skill:
+          skill == null && nullToAbsent ? const Value.absent() : Value(skill),
+      titleEn: Value(titleEn),
+      titleAm: Value(titleAm),
+      masteryState: Value(masteryState),
+      evidenceSource: Value(evidenceSource),
+      accuracyPercentage: Value(accuracyPercentage),
+      totalAttempts: Value(totalAttempts),
+      masteredQuestionCount: Value(masteredQuestionCount),
+      coveredQuestionCount: Value(coveredQuestionCount),
+      totalAvailableQuestions: Value(totalAvailableQuestions),
+      nextReviewAt: nextReviewAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nextReviewAt),
+      lastPracticedAt: lastPracticedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastPracticedAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory DbLearningTargetMasteryRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DbLearningTargetMasteryRow(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      targetKey: serializer.fromJson<String>(json['targetKey']),
+      subjectId: serializer.fromJson<String>(json['subjectId']),
+      examVariant: serializer.fromJson<String?>(json['examVariant']),
+      assessmentStructure:
+          serializer.fromJson<String?>(json['assessmentStructure']),
+      unitId: serializer.fromJson<String?>(json['unitId']),
+      topicId: serializer.fromJson<String?>(json['topicId']),
+      contentDomain: serializer.fromJson<String?>(json['contentDomain']),
+      skill: serializer.fromJson<String?>(json['skill']),
+      titleEn: serializer.fromJson<String>(json['titleEn']),
+      titleAm: serializer.fromJson<String>(json['titleAm']),
+      masteryState: serializer.fromJson<String>(json['masteryState']),
+      evidenceSource: serializer.fromJson<String>(json['evidenceSource']),
+      accuracyPercentage:
+          serializer.fromJson<double>(json['accuracyPercentage']),
+      totalAttempts: serializer.fromJson<int>(json['totalAttempts']),
+      masteredQuestionCount:
+          serializer.fromJson<int>(json['masteredQuestionCount']),
+      coveredQuestionCount:
+          serializer.fromJson<int>(json['coveredQuestionCount']),
+      totalAvailableQuestions:
+          serializer.fromJson<int>(json['totalAvailableQuestions']),
+      nextReviewAt: serializer.fromJson<DateTime?>(json['nextReviewAt']),
+      lastPracticedAt: serializer.fromJson<DateTime?>(json['lastPracticedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'targetKey': serializer.toJson<String>(targetKey),
+      'subjectId': serializer.toJson<String>(subjectId),
+      'examVariant': serializer.toJson<String?>(examVariant),
+      'assessmentStructure': serializer.toJson<String?>(assessmentStructure),
+      'unitId': serializer.toJson<String?>(unitId),
+      'topicId': serializer.toJson<String?>(topicId),
+      'contentDomain': serializer.toJson<String?>(contentDomain),
+      'skill': serializer.toJson<String?>(skill),
+      'titleEn': serializer.toJson<String>(titleEn),
+      'titleAm': serializer.toJson<String>(titleAm),
+      'masteryState': serializer.toJson<String>(masteryState),
+      'evidenceSource': serializer.toJson<String>(evidenceSource),
+      'accuracyPercentage': serializer.toJson<double>(accuracyPercentage),
+      'totalAttempts': serializer.toJson<int>(totalAttempts),
+      'masteredQuestionCount': serializer.toJson<int>(masteredQuestionCount),
+      'coveredQuestionCount': serializer.toJson<int>(coveredQuestionCount),
+      'totalAvailableQuestions':
+          serializer.toJson<int>(totalAvailableQuestions),
+      'nextReviewAt': serializer.toJson<DateTime?>(nextReviewAt),
+      'lastPracticedAt': serializer.toJson<DateTime?>(lastPracticedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  DbLearningTargetMasteryRow copyWith(
+          {String? id,
+          String? userId,
+          String? targetKey,
+          String? subjectId,
+          Value<String?> examVariant = const Value.absent(),
+          Value<String?> assessmentStructure = const Value.absent(),
+          Value<String?> unitId = const Value.absent(),
+          Value<String?> topicId = const Value.absent(),
+          Value<String?> contentDomain = const Value.absent(),
+          Value<String?> skill = const Value.absent(),
+          String? titleEn,
+          String? titleAm,
+          String? masteryState,
+          String? evidenceSource,
+          double? accuracyPercentage,
+          int? totalAttempts,
+          int? masteredQuestionCount,
+          int? coveredQuestionCount,
+          int? totalAvailableQuestions,
+          Value<DateTime?> nextReviewAt = const Value.absent(),
+          Value<DateTime?> lastPracticedAt = const Value.absent(),
+          DateTime? updatedAt}) =>
+      DbLearningTargetMasteryRow(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        targetKey: targetKey ?? this.targetKey,
+        subjectId: subjectId ?? this.subjectId,
+        examVariant: examVariant.present ? examVariant.value : this.examVariant,
+        assessmentStructure: assessmentStructure.present
+            ? assessmentStructure.value
+            : this.assessmentStructure,
+        unitId: unitId.present ? unitId.value : this.unitId,
+        topicId: topicId.present ? topicId.value : this.topicId,
+        contentDomain:
+            contentDomain.present ? contentDomain.value : this.contentDomain,
+        skill: skill.present ? skill.value : this.skill,
+        titleEn: titleEn ?? this.titleEn,
+        titleAm: titleAm ?? this.titleAm,
+        masteryState: masteryState ?? this.masteryState,
+        evidenceSource: evidenceSource ?? this.evidenceSource,
+        accuracyPercentage: accuracyPercentage ?? this.accuracyPercentage,
+        totalAttempts: totalAttempts ?? this.totalAttempts,
+        masteredQuestionCount:
+            masteredQuestionCount ?? this.masteredQuestionCount,
+        coveredQuestionCount: coveredQuestionCount ?? this.coveredQuestionCount,
+        totalAvailableQuestions:
+            totalAvailableQuestions ?? this.totalAvailableQuestions,
+        nextReviewAt:
+            nextReviewAt.present ? nextReviewAt.value : this.nextReviewAt,
+        lastPracticedAt: lastPracticedAt.present
+            ? lastPracticedAt.value
+            : this.lastPracticedAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  DbLearningTargetMasteryRow copyWithCompanion(
+      DbLearningTargetMasteryCompanion data) {
+    return DbLearningTargetMasteryRow(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      targetKey: data.targetKey.present ? data.targetKey.value : this.targetKey,
+      subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      examVariant:
+          data.examVariant.present ? data.examVariant.value : this.examVariant,
+      assessmentStructure: data.assessmentStructure.present
+          ? data.assessmentStructure.value
+          : this.assessmentStructure,
+      unitId: data.unitId.present ? data.unitId.value : this.unitId,
+      topicId: data.topicId.present ? data.topicId.value : this.topicId,
+      contentDomain: data.contentDomain.present
+          ? data.contentDomain.value
+          : this.contentDomain,
+      skill: data.skill.present ? data.skill.value : this.skill,
+      titleEn: data.titleEn.present ? data.titleEn.value : this.titleEn,
+      titleAm: data.titleAm.present ? data.titleAm.value : this.titleAm,
+      masteryState: data.masteryState.present
+          ? data.masteryState.value
+          : this.masteryState,
+      evidenceSource: data.evidenceSource.present
+          ? data.evidenceSource.value
+          : this.evidenceSource,
+      accuracyPercentage: data.accuracyPercentage.present
+          ? data.accuracyPercentage.value
+          : this.accuracyPercentage,
+      totalAttempts: data.totalAttempts.present
+          ? data.totalAttempts.value
+          : this.totalAttempts,
+      masteredQuestionCount: data.masteredQuestionCount.present
+          ? data.masteredQuestionCount.value
+          : this.masteredQuestionCount,
+      coveredQuestionCount: data.coveredQuestionCount.present
+          ? data.coveredQuestionCount.value
+          : this.coveredQuestionCount,
+      totalAvailableQuestions: data.totalAvailableQuestions.present
+          ? data.totalAvailableQuestions.value
+          : this.totalAvailableQuestions,
+      nextReviewAt: data.nextReviewAt.present
+          ? data.nextReviewAt.value
+          : this.nextReviewAt,
+      lastPracticedAt: data.lastPracticedAt.present
+          ? data.lastPracticedAt.value
+          : this.lastPracticedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbLearningTargetMasteryRow(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('targetKey: $targetKey, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill, ')
+          ..write('titleEn: $titleEn, ')
+          ..write('titleAm: $titleAm, ')
+          ..write('masteryState: $masteryState, ')
+          ..write('evidenceSource: $evidenceSource, ')
+          ..write('accuracyPercentage: $accuracyPercentage, ')
+          ..write('totalAttempts: $totalAttempts, ')
+          ..write('masteredQuestionCount: $masteredQuestionCount, ')
+          ..write('coveredQuestionCount: $coveredQuestionCount, ')
+          ..write('totalAvailableQuestions: $totalAvailableQuestions, ')
+          ..write('nextReviewAt: $nextReviewAt, ')
+          ..write('lastPracticedAt: $lastPracticedAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hashAll([
+        id,
+        userId,
+        targetKey,
+        subjectId,
+        examVariant,
+        assessmentStructure,
+        unitId,
+        topicId,
+        contentDomain,
+        skill,
+        titleEn,
+        titleAm,
+        masteryState,
+        evidenceSource,
+        accuracyPercentage,
+        totalAttempts,
+        masteredQuestionCount,
+        coveredQuestionCount,
+        totalAvailableQuestions,
+        nextReviewAt,
+        lastPracticedAt,
+        updatedAt
+      ]);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbLearningTargetMasteryRow &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.targetKey == this.targetKey &&
+          other.subjectId == this.subjectId &&
+          other.examVariant == this.examVariant &&
+          other.assessmentStructure == this.assessmentStructure &&
+          other.unitId == this.unitId &&
+          other.topicId == this.topicId &&
+          other.contentDomain == this.contentDomain &&
+          other.skill == this.skill &&
+          other.titleEn == this.titleEn &&
+          other.titleAm == this.titleAm &&
+          other.masteryState == this.masteryState &&
+          other.evidenceSource == this.evidenceSource &&
+          other.accuracyPercentage == this.accuracyPercentage &&
+          other.totalAttempts == this.totalAttempts &&
+          other.masteredQuestionCount == this.masteredQuestionCount &&
+          other.coveredQuestionCount == this.coveredQuestionCount &&
+          other.totalAvailableQuestions == this.totalAvailableQuestions &&
+          other.nextReviewAt == this.nextReviewAt &&
+          other.lastPracticedAt == this.lastPracticedAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class DbLearningTargetMasteryCompanion
+    extends UpdateCompanion<DbLearningTargetMasteryRow> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> targetKey;
+  final Value<String> subjectId;
+  final Value<String?> examVariant;
+  final Value<String?> assessmentStructure;
+  final Value<String?> unitId;
+  final Value<String?> topicId;
+  final Value<String?> contentDomain;
+  final Value<String?> skill;
+  final Value<String> titleEn;
+  final Value<String> titleAm;
+  final Value<String> masteryState;
+  final Value<String> evidenceSource;
+  final Value<double> accuracyPercentage;
+  final Value<int> totalAttempts;
+  final Value<int> masteredQuestionCount;
+  final Value<int> coveredQuestionCount;
+  final Value<int> totalAvailableQuestions;
+  final Value<DateTime?> nextReviewAt;
+  final Value<DateTime?> lastPracticedAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const DbLearningTargetMasteryCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.targetKey = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    this.titleEn = const Value.absent(),
+    this.titleAm = const Value.absent(),
+    this.masteryState = const Value.absent(),
+    this.evidenceSource = const Value.absent(),
+    this.accuracyPercentage = const Value.absent(),
+    this.totalAttempts = const Value.absent(),
+    this.masteredQuestionCount = const Value.absent(),
+    this.coveredQuestionCount = const Value.absent(),
+    this.totalAvailableQuestions = const Value.absent(),
+    this.nextReviewAt = const Value.absent(),
+    this.lastPracticedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DbLearningTargetMasteryCompanion.insert({
+    required String id,
+    required String userId,
+    required String targetKey,
+    required String subjectId,
+    this.examVariant = const Value.absent(),
+    this.assessmentStructure = const Value.absent(),
+    this.unitId = const Value.absent(),
+    this.topicId = const Value.absent(),
+    this.contentDomain = const Value.absent(),
+    this.skill = const Value.absent(),
+    required String titleEn,
+    required String titleAm,
+    this.masteryState = const Value.absent(),
+    this.evidenceSource = const Value.absent(),
+    this.accuracyPercentage = const Value.absent(),
+    this.totalAttempts = const Value.absent(),
+    this.masteredQuestionCount = const Value.absent(),
+    this.coveredQuestionCount = const Value.absent(),
+    this.totalAvailableQuestions = const Value.absent(),
+    this.nextReviewAt = const Value.absent(),
+    this.lastPracticedAt = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        userId = Value(userId),
+        targetKey = Value(targetKey),
+        subjectId = Value(subjectId),
+        titleEn = Value(titleEn),
+        titleAm = Value(titleAm),
+        updatedAt = Value(updatedAt);
+  static Insertable<DbLearningTargetMasteryRow> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? targetKey,
+    Expression<String>? subjectId,
+    Expression<String>? examVariant,
+    Expression<String>? assessmentStructure,
+    Expression<String>? unitId,
+    Expression<String>? topicId,
+    Expression<String>? contentDomain,
+    Expression<String>? skill,
+    Expression<String>? titleEn,
+    Expression<String>? titleAm,
+    Expression<String>? masteryState,
+    Expression<String>? evidenceSource,
+    Expression<double>? accuracyPercentage,
+    Expression<int>? totalAttempts,
+    Expression<int>? masteredQuestionCount,
+    Expression<int>? coveredQuestionCount,
+    Expression<int>? totalAvailableQuestions,
+    Expression<DateTime>? nextReviewAt,
+    Expression<DateTime>? lastPracticedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (targetKey != null) 'target_key': targetKey,
+      if (subjectId != null) 'subject_id': subjectId,
+      if (examVariant != null) 'exam_variant': examVariant,
+      if (assessmentStructure != null)
+        'assessment_structure': assessmentStructure,
+      if (unitId != null) 'unit_id': unitId,
+      if (topicId != null) 'topic_id': topicId,
+      if (contentDomain != null) 'content_domain': contentDomain,
+      if (skill != null) 'skill': skill,
+      if (titleEn != null) 'title_en': titleEn,
+      if (titleAm != null) 'title_am': titleAm,
+      if (masteryState != null) 'mastery_state': masteryState,
+      if (evidenceSource != null) 'evidence_source': evidenceSource,
+      if (accuracyPercentage != null) 'accuracy_percentage': accuracyPercentage,
+      if (totalAttempts != null) 'total_attempts': totalAttempts,
+      if (masteredQuestionCount != null)
+        'mastered_question_count': masteredQuestionCount,
+      if (coveredQuestionCount != null)
+        'covered_question_count': coveredQuestionCount,
+      if (totalAvailableQuestions != null)
+        'total_available_questions': totalAvailableQuestions,
+      if (nextReviewAt != null) 'next_review_at': nextReviewAt,
+      if (lastPracticedAt != null) 'last_practiced_at': lastPracticedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DbLearningTargetMasteryCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? userId,
+      Value<String>? targetKey,
+      Value<String>? subjectId,
+      Value<String?>? examVariant,
+      Value<String?>? assessmentStructure,
+      Value<String?>? unitId,
+      Value<String?>? topicId,
+      Value<String?>? contentDomain,
+      Value<String?>? skill,
+      Value<String>? titleEn,
+      Value<String>? titleAm,
+      Value<String>? masteryState,
+      Value<String>? evidenceSource,
+      Value<double>? accuracyPercentage,
+      Value<int>? totalAttempts,
+      Value<int>? masteredQuestionCount,
+      Value<int>? coveredQuestionCount,
+      Value<int>? totalAvailableQuestions,
+      Value<DateTime?>? nextReviewAt,
+      Value<DateTime?>? lastPracticedAt,
+      Value<DateTime>? updatedAt,
+      Value<int>? rowid}) {
+    return DbLearningTargetMasteryCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      targetKey: targetKey ?? this.targetKey,
+      subjectId: subjectId ?? this.subjectId,
+      examVariant: examVariant ?? this.examVariant,
+      assessmentStructure: assessmentStructure ?? this.assessmentStructure,
+      unitId: unitId ?? this.unitId,
+      topicId: topicId ?? this.topicId,
+      contentDomain: contentDomain ?? this.contentDomain,
+      skill: skill ?? this.skill,
+      titleEn: titleEn ?? this.titleEn,
+      titleAm: titleAm ?? this.titleAm,
+      masteryState: masteryState ?? this.masteryState,
+      evidenceSource: evidenceSource ?? this.evidenceSource,
+      accuracyPercentage: accuracyPercentage ?? this.accuracyPercentage,
+      totalAttempts: totalAttempts ?? this.totalAttempts,
+      masteredQuestionCount:
+          masteredQuestionCount ?? this.masteredQuestionCount,
+      coveredQuestionCount: coveredQuestionCount ?? this.coveredQuestionCount,
+      totalAvailableQuestions:
+          totalAvailableQuestions ?? this.totalAvailableQuestions,
+      nextReviewAt: nextReviewAt ?? this.nextReviewAt,
+      lastPracticedAt: lastPracticedAt ?? this.lastPracticedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (targetKey.present) {
+      map['target_key'] = Variable<String>(targetKey.value);
+    }
+    if (subjectId.present) {
+      map['subject_id'] = Variable<String>(subjectId.value);
+    }
+    if (examVariant.present) {
+      map['exam_variant'] = Variable<String>(examVariant.value);
+    }
+    if (assessmentStructure.present) {
+      map['assessment_structure'] = Variable<String>(assessmentStructure.value);
+    }
+    if (unitId.present) {
+      map['unit_id'] = Variable<String>(unitId.value);
+    }
+    if (topicId.present) {
+      map['topic_id'] = Variable<String>(topicId.value);
+    }
+    if (contentDomain.present) {
+      map['content_domain'] = Variable<String>(contentDomain.value);
+    }
+    if (skill.present) {
+      map['skill'] = Variable<String>(skill.value);
+    }
+    if (titleEn.present) {
+      map['title_en'] = Variable<String>(titleEn.value);
+    }
+    if (titleAm.present) {
+      map['title_am'] = Variable<String>(titleAm.value);
+    }
+    if (masteryState.present) {
+      map['mastery_state'] = Variable<String>(masteryState.value);
+    }
+    if (evidenceSource.present) {
+      map['evidence_source'] = Variable<String>(evidenceSource.value);
+    }
+    if (accuracyPercentage.present) {
+      map['accuracy_percentage'] = Variable<double>(accuracyPercentage.value);
+    }
+    if (totalAttempts.present) {
+      map['total_attempts'] = Variable<int>(totalAttempts.value);
+    }
+    if (masteredQuestionCount.present) {
+      map['mastered_question_count'] =
+          Variable<int>(masteredQuestionCount.value);
+    }
+    if (coveredQuestionCount.present) {
+      map['covered_question_count'] = Variable<int>(coveredQuestionCount.value);
+    }
+    if (totalAvailableQuestions.present) {
+      map['total_available_questions'] =
+          Variable<int>(totalAvailableQuestions.value);
+    }
+    if (nextReviewAt.present) {
+      map['next_review_at'] = Variable<DateTime>(nextReviewAt.value);
+    }
+    if (lastPracticedAt.present) {
+      map['last_practiced_at'] = Variable<DateTime>(lastPracticedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbLearningTargetMasteryCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('targetKey: $targetKey, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('assessmentStructure: $assessmentStructure, ')
+          ..write('unitId: $unitId, ')
+          ..write('topicId: $topicId, ')
+          ..write('contentDomain: $contentDomain, ')
+          ..write('skill: $skill, ')
+          ..write('titleEn: $titleEn, ')
+          ..write('titleAm: $titleAm, ')
+          ..write('masteryState: $masteryState, ')
+          ..write('evidenceSource: $evidenceSource, ')
+          ..write('accuracyPercentage: $accuracyPercentage, ')
+          ..write('totalAttempts: $totalAttempts, ')
+          ..write('masteredQuestionCount: $masteredQuestionCount, ')
+          ..write('coveredQuestionCount: $coveredQuestionCount, ')
+          ..write('totalAvailableQuestions: $totalAvailableQuestions, ')
+          ..write('nextReviewAt: $nextReviewAt, ')
+          ..write('lastPracticedAt: $lastPracticedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DbReviewEventsTable extends DbReviewEvents
+    with TableInfo<$DbReviewEventsTable, DbReviewEventRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DbReviewEventsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _questionIdMeta =
+      const VerificationMeta('questionId');
+  @override
+  late final GeneratedColumn<String> questionId = GeneratedColumn<String>(
+      'question_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _targetKeyMeta =
+      const VerificationMeta('targetKey');
+  @override
+  late final GeneratedColumn<String> targetKey = GeneratedColumn<String>(
+      'target_key', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _subjectIdMeta =
+      const VerificationMeta('subjectId');
+  @override
+  late final GeneratedColumn<String> subjectId = GeneratedColumn<String>(
+      'subject_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _examVariantMeta =
+      const VerificationMeta('examVariant');
+  @override
+  late final GeneratedColumn<String> examVariant = GeneratedColumn<String>(
+      'exam_variant', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _reviewedAtMeta =
+      const VerificationMeta('reviewedAt');
+  @override
+  late final GeneratedColumn<DateTime> reviewedAt = GeneratedColumn<DateTime>(
+      'reviewed_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _scheduledAtMeta =
+      const VerificationMeta('scheduledAt');
+  @override
+  late final GeneratedColumn<DateTime> scheduledAt = GeneratedColumn<DateTime>(
+      'scheduled_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isCorrectMeta =
+      const VerificationMeta('isCorrect');
+  @override
+  late final GeneratedColumn<bool> isCorrect = GeneratedColumn<bool>(
+      'is_correct', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_correct" IN (0, 1))'));
+  static const VerificationMeta _timeSpentSecondsMeta =
+      const VerificationMeta('timeSpentSeconds');
+  @override
+  late final GeneratedColumn<int> timeSpentSeconds = GeneratedColumn<int>(
+      'time_spent_seconds', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _previousStateMeta =
+      const VerificationMeta('previousState');
+  @override
+  late final GeneratedColumn<String> previousState = GeneratedColumn<String>(
+      'previous_state', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _newStateMeta =
+      const VerificationMeta('newState');
+  @override
+  late final GeneratedColumn<String> newState = GeneratedColumn<String>(
+      'new_state', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _previousIntervalDaysMeta =
+      const VerificationMeta('previousIntervalDays');
+  @override
+  late final GeneratedColumn<int> previousIntervalDays = GeneratedColumn<int>(
+      'previous_interval_days', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _newIntervalDaysMeta =
+      const VerificationMeta('newIntervalDays');
+  @override
+  late final GeneratedColumn<int> newIntervalDays = GeneratedColumn<int>(
+      'new_interval_days', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _algorithmVersionMeta =
+      const VerificationMeta('algorithmVersion');
+  @override
+  late final GeneratedColumn<String> algorithmVersion = GeneratedColumn<String>(
+      'algorithm_version', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('mastery_engine_v1.0'));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        questionId,
+        targetKey,
+        subjectId,
+        examVariant,
+        reviewedAt,
+        scheduledAt,
+        isCorrect,
+        timeSpentSeconds,
+        previousState,
+        newState,
+        previousIntervalDays,
+        newIntervalDays,
+        algorithmVersion
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'db_review_events';
+  @override
+  VerificationContext validateIntegrity(Insertable<DbReviewEventRow> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('question_id')) {
+      context.handle(
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['question_id']!, _questionIdMeta));
+    } else if (isInserting) {
+      context.missing(_questionIdMeta);
+    }
+    if (data.containsKey('target_key')) {
+      context.handle(_targetKeyMeta,
+          targetKey.isAcceptableOrUnknown(data['target_key']!, _targetKeyMeta));
+    } else if (isInserting) {
+      context.missing(_targetKeyMeta);
+    }
+    if (data.containsKey('subject_id')) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableOrUnknown(data['subject_id']!, _subjectIdMeta));
+    }
+    if (data.containsKey('exam_variant')) {
+      context.handle(
+          _examVariantMeta,
+          examVariant.isAcceptableOrUnknown(
+              data['exam_variant']!, _examVariantMeta));
+    }
+    if (data.containsKey('reviewed_at')) {
+      context.handle(
+          _reviewedAtMeta,
+          reviewedAt.isAcceptableOrUnknown(
+              data['reviewed_at']!, _reviewedAtMeta));
+    } else if (isInserting) {
+      context.missing(_reviewedAtMeta);
+    }
+    if (data.containsKey('scheduled_at')) {
+      context.handle(
+          _scheduledAtMeta,
+          scheduledAt.isAcceptableOrUnknown(
+              data['scheduled_at']!, _scheduledAtMeta));
+    } else if (isInserting) {
+      context.missing(_scheduledAtMeta);
+    }
+    if (data.containsKey('is_correct')) {
+      context.handle(_isCorrectMeta,
+          isCorrect.isAcceptableOrUnknown(data['is_correct']!, _isCorrectMeta));
+    } else if (isInserting) {
+      context.missing(_isCorrectMeta);
+    }
+    if (data.containsKey('time_spent_seconds')) {
+      context.handle(
+          _timeSpentSecondsMeta,
+          timeSpentSeconds.isAcceptableOrUnknown(
+              data['time_spent_seconds']!, _timeSpentSecondsMeta));
+    }
+    if (data.containsKey('previous_state')) {
+      context.handle(
+          _previousStateMeta,
+          previousState.isAcceptableOrUnknown(
+              data['previous_state']!, _previousStateMeta));
+    } else if (isInserting) {
+      context.missing(_previousStateMeta);
+    }
+    if (data.containsKey('new_state')) {
+      context.handle(_newStateMeta,
+          newState.isAcceptableOrUnknown(data['new_state']!, _newStateMeta));
+    } else if (isInserting) {
+      context.missing(_newStateMeta);
+    }
+    if (data.containsKey('previous_interval_days')) {
+      context.handle(
+          _previousIntervalDaysMeta,
+          previousIntervalDays.isAcceptableOrUnknown(
+              data['previous_interval_days']!, _previousIntervalDaysMeta));
+    }
+    if (data.containsKey('new_interval_days')) {
+      context.handle(
+          _newIntervalDaysMeta,
+          newIntervalDays.isAcceptableOrUnknown(
+              data['new_interval_days']!, _newIntervalDaysMeta));
+    }
+    if (data.containsKey('algorithm_version')) {
+      context.handle(
+          _algorithmVersionMeta,
+          algorithmVersion.isAcceptableOrUnknown(
+              data['algorithm_version']!, _algorithmVersionMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DbReviewEventRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DbReviewEventRow(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      questionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}question_id'])!,
+      targetKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}target_key'])!,
+      subjectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}subject_id']),
+      examVariant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_variant']),
+      reviewedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}reviewed_at'])!,
+      scheduledAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}scheduled_at'])!,
+      isCorrect: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_correct'])!,
+      timeSpentSeconds: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}time_spent_seconds'])!,
+      previousState: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}previous_state'])!,
+      newState: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}new_state'])!,
+      previousIntervalDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}previous_interval_days'])!,
+      newIntervalDays: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}new_interval_days'])!,
+      algorithmVersion: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}algorithm_version'])!,
+    );
+  }
+
+  @override
+  $DbReviewEventsTable createAlias(String alias) {
+    return $DbReviewEventsTable(attachedDatabase, alias);
+  }
+}
+
+class DbReviewEventRow extends DataClass
+    implements Insertable<DbReviewEventRow> {
+  final String id;
+  final String userId;
+  final String questionId;
+  final String targetKey;
+  final String? subjectId;
+  final String? examVariant;
+  final DateTime reviewedAt;
+  final DateTime scheduledAt;
+  final bool isCorrect;
+  final int timeSpentSeconds;
+  final String previousState;
+  final String newState;
+  final int previousIntervalDays;
+  final int newIntervalDays;
+  final String algorithmVersion;
+  const DbReviewEventRow(
+      {required this.id,
+      required this.userId,
+      required this.questionId,
+      required this.targetKey,
+      this.subjectId,
+      this.examVariant,
+      required this.reviewedAt,
+      required this.scheduledAt,
+      required this.isCorrect,
+      required this.timeSpentSeconds,
+      required this.previousState,
+      required this.newState,
+      required this.previousIntervalDays,
+      required this.newIntervalDays,
+      required this.algorithmVersion});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['question_id'] = Variable<String>(questionId);
+    map['target_key'] = Variable<String>(targetKey);
+    if (!nullToAbsent || subjectId != null) {
+      map['subject_id'] = Variable<String>(subjectId);
+    }
+    if (!nullToAbsent || examVariant != null) {
+      map['exam_variant'] = Variable<String>(examVariant);
+    }
+    map['reviewed_at'] = Variable<DateTime>(reviewedAt);
+    map['scheduled_at'] = Variable<DateTime>(scheduledAt);
+    map['is_correct'] = Variable<bool>(isCorrect);
+    map['time_spent_seconds'] = Variable<int>(timeSpentSeconds);
+    map['previous_state'] = Variable<String>(previousState);
+    map['new_state'] = Variable<String>(newState);
+    map['previous_interval_days'] = Variable<int>(previousIntervalDays);
+    map['new_interval_days'] = Variable<int>(newIntervalDays);
+    map['algorithm_version'] = Variable<String>(algorithmVersion);
+    return map;
+  }
+
+  DbReviewEventsCompanion toCompanion(bool nullToAbsent) {
+    return DbReviewEventsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      questionId: Value(questionId),
+      targetKey: Value(targetKey),
+      subjectId: subjectId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subjectId),
+      examVariant: examVariant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examVariant),
+      reviewedAt: Value(reviewedAt),
+      scheduledAt: Value(scheduledAt),
+      isCorrect: Value(isCorrect),
+      timeSpentSeconds: Value(timeSpentSeconds),
+      previousState: Value(previousState),
+      newState: Value(newState),
+      previousIntervalDays: Value(previousIntervalDays),
+      newIntervalDays: Value(newIntervalDays),
+      algorithmVersion: Value(algorithmVersion),
+    );
+  }
+
+  factory DbReviewEventRow.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DbReviewEventRow(
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      questionId: serializer.fromJson<String>(json['questionId']),
+      targetKey: serializer.fromJson<String>(json['targetKey']),
+      subjectId: serializer.fromJson<String?>(json['subjectId']),
+      examVariant: serializer.fromJson<String?>(json['examVariant']),
+      reviewedAt: serializer.fromJson<DateTime>(json['reviewedAt']),
+      scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
+      isCorrect: serializer.fromJson<bool>(json['isCorrect']),
+      timeSpentSeconds: serializer.fromJson<int>(json['timeSpentSeconds']),
+      previousState: serializer.fromJson<String>(json['previousState']),
+      newState: serializer.fromJson<String>(json['newState']),
+      previousIntervalDays:
+          serializer.fromJson<int>(json['previousIntervalDays']),
+      newIntervalDays: serializer.fromJson<int>(json['newIntervalDays']),
+      algorithmVersion: serializer.fromJson<String>(json['algorithmVersion']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<String>(userId),
+      'questionId': serializer.toJson<String>(questionId),
+      'targetKey': serializer.toJson<String>(targetKey),
+      'subjectId': serializer.toJson<String?>(subjectId),
+      'examVariant': serializer.toJson<String?>(examVariant),
+      'reviewedAt': serializer.toJson<DateTime>(reviewedAt),
+      'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
+      'isCorrect': serializer.toJson<bool>(isCorrect),
+      'timeSpentSeconds': serializer.toJson<int>(timeSpentSeconds),
+      'previousState': serializer.toJson<String>(previousState),
+      'newState': serializer.toJson<String>(newState),
+      'previousIntervalDays': serializer.toJson<int>(previousIntervalDays),
+      'newIntervalDays': serializer.toJson<int>(newIntervalDays),
+      'algorithmVersion': serializer.toJson<String>(algorithmVersion),
+    };
+  }
+
+  DbReviewEventRow copyWith(
+          {String? id,
+          String? userId,
+          String? questionId,
+          String? targetKey,
+          Value<String?> subjectId = const Value.absent(),
+          Value<String?> examVariant = const Value.absent(),
+          DateTime? reviewedAt,
+          DateTime? scheduledAt,
+          bool? isCorrect,
+          int? timeSpentSeconds,
+          String? previousState,
+          String? newState,
+          int? previousIntervalDays,
+          int? newIntervalDays,
+          String? algorithmVersion}) =>
+      DbReviewEventRow(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        questionId: questionId ?? this.questionId,
+        targetKey: targetKey ?? this.targetKey,
+        subjectId: subjectId.present ? subjectId.value : this.subjectId,
+        examVariant: examVariant.present ? examVariant.value : this.examVariant,
+        reviewedAt: reviewedAt ?? this.reviewedAt,
+        scheduledAt: scheduledAt ?? this.scheduledAt,
+        isCorrect: isCorrect ?? this.isCorrect,
+        timeSpentSeconds: timeSpentSeconds ?? this.timeSpentSeconds,
+        previousState: previousState ?? this.previousState,
+        newState: newState ?? this.newState,
+        previousIntervalDays: previousIntervalDays ?? this.previousIntervalDays,
+        newIntervalDays: newIntervalDays ?? this.newIntervalDays,
+        algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+      );
+  DbReviewEventRow copyWithCompanion(DbReviewEventsCompanion data) {
+    return DbReviewEventRow(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
+      targetKey: data.targetKey.present ? data.targetKey.value : this.targetKey,
+      subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      examVariant:
+          data.examVariant.present ? data.examVariant.value : this.examVariant,
+      reviewedAt:
+          data.reviewedAt.present ? data.reviewedAt.value : this.reviewedAt,
+      scheduledAt:
+          data.scheduledAt.present ? data.scheduledAt.value : this.scheduledAt,
+      isCorrect: data.isCorrect.present ? data.isCorrect.value : this.isCorrect,
+      timeSpentSeconds: data.timeSpentSeconds.present
+          ? data.timeSpentSeconds.value
+          : this.timeSpentSeconds,
+      previousState: data.previousState.present
+          ? data.previousState.value
+          : this.previousState,
+      newState: data.newState.present ? data.newState.value : this.newState,
+      previousIntervalDays: data.previousIntervalDays.present
+          ? data.previousIntervalDays.value
+          : this.previousIntervalDays,
+      newIntervalDays: data.newIntervalDays.present
+          ? data.newIntervalDays.value
+          : this.newIntervalDays,
+      algorithmVersion: data.algorithmVersion.present
+          ? data.algorithmVersion.value
+          : this.algorithmVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbReviewEventRow(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('questionId: $questionId, ')
+          ..write('targetKey: $targetKey, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('isCorrect: $isCorrect, ')
+          ..write('timeSpentSeconds: $timeSpentSeconds, ')
+          ..write('previousState: $previousState, ')
+          ..write('newState: $newState, ')
+          ..write('previousIntervalDays: $previousIntervalDays, ')
+          ..write('newIntervalDays: $newIntervalDays, ')
+          ..write('algorithmVersion: $algorithmVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      userId,
+      questionId,
+      targetKey,
+      subjectId,
+      examVariant,
+      reviewedAt,
+      scheduledAt,
+      isCorrect,
+      timeSpentSeconds,
+      previousState,
+      newState,
+      previousIntervalDays,
+      newIntervalDays,
+      algorithmVersion);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DbReviewEventRow &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.questionId == this.questionId &&
+          other.targetKey == this.targetKey &&
+          other.subjectId == this.subjectId &&
+          other.examVariant == this.examVariant &&
+          other.reviewedAt == this.reviewedAt &&
+          other.scheduledAt == this.scheduledAt &&
+          other.isCorrect == this.isCorrect &&
+          other.timeSpentSeconds == this.timeSpentSeconds &&
+          other.previousState == this.previousState &&
+          other.newState == this.newState &&
+          other.previousIntervalDays == this.previousIntervalDays &&
+          other.newIntervalDays == this.newIntervalDays &&
+          other.algorithmVersion == this.algorithmVersion);
+}
+
+class DbReviewEventsCompanion extends UpdateCompanion<DbReviewEventRow> {
+  final Value<String> id;
+  final Value<String> userId;
+  final Value<String> questionId;
+  final Value<String> targetKey;
+  final Value<String?> subjectId;
+  final Value<String?> examVariant;
+  final Value<DateTime> reviewedAt;
+  final Value<DateTime> scheduledAt;
+  final Value<bool> isCorrect;
+  final Value<int> timeSpentSeconds;
+  final Value<String> previousState;
+  final Value<String> newState;
+  final Value<int> previousIntervalDays;
+  final Value<int> newIntervalDays;
+  final Value<String> algorithmVersion;
+  final Value<int> rowid;
+  const DbReviewEventsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.questionId = const Value.absent(),
+    this.targetKey = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.reviewedAt = const Value.absent(),
+    this.scheduledAt = const Value.absent(),
+    this.isCorrect = const Value.absent(),
+    this.timeSpentSeconds = const Value.absent(),
+    this.previousState = const Value.absent(),
+    this.newState = const Value.absent(),
+    this.previousIntervalDays = const Value.absent(),
+    this.newIntervalDays = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DbReviewEventsCompanion.insert({
+    required String id,
+    required String userId,
+    required String questionId,
+    required String targetKey,
+    this.subjectId = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    required DateTime reviewedAt,
+    required DateTime scheduledAt,
+    required bool isCorrect,
+    this.timeSpentSeconds = const Value.absent(),
+    required String previousState,
+    required String newState,
+    this.previousIntervalDays = const Value.absent(),
+    this.newIntervalDays = const Value.absent(),
+    this.algorithmVersion = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        userId = Value(userId),
+        questionId = Value(questionId),
+        targetKey = Value(targetKey),
+        reviewedAt = Value(reviewedAt),
+        scheduledAt = Value(scheduledAt),
+        isCorrect = Value(isCorrect),
+        previousState = Value(previousState),
+        newState = Value(newState);
+  static Insertable<DbReviewEventRow> custom({
+    Expression<String>? id,
+    Expression<String>? userId,
+    Expression<String>? questionId,
+    Expression<String>? targetKey,
+    Expression<String>? subjectId,
+    Expression<String>? examVariant,
+    Expression<DateTime>? reviewedAt,
+    Expression<DateTime>? scheduledAt,
+    Expression<bool>? isCorrect,
+    Expression<int>? timeSpentSeconds,
+    Expression<String>? previousState,
+    Expression<String>? newState,
+    Expression<int>? previousIntervalDays,
+    Expression<int>? newIntervalDays,
+    Expression<String>? algorithmVersion,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (questionId != null) 'question_id': questionId,
+      if (targetKey != null) 'target_key': targetKey,
+      if (subjectId != null) 'subject_id': subjectId,
+      if (examVariant != null) 'exam_variant': examVariant,
+      if (reviewedAt != null) 'reviewed_at': reviewedAt,
+      if (scheduledAt != null) 'scheduled_at': scheduledAt,
+      if (isCorrect != null) 'is_correct': isCorrect,
+      if (timeSpentSeconds != null) 'time_spent_seconds': timeSpentSeconds,
+      if (previousState != null) 'previous_state': previousState,
+      if (newState != null) 'new_state': newState,
+      if (previousIntervalDays != null)
+        'previous_interval_days': previousIntervalDays,
+      if (newIntervalDays != null) 'new_interval_days': newIntervalDays,
+      if (algorithmVersion != null) 'algorithm_version': algorithmVersion,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DbReviewEventsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? userId,
+      Value<String>? questionId,
+      Value<String>? targetKey,
+      Value<String?>? subjectId,
+      Value<String?>? examVariant,
+      Value<DateTime>? reviewedAt,
+      Value<DateTime>? scheduledAt,
+      Value<bool>? isCorrect,
+      Value<int>? timeSpentSeconds,
+      Value<String>? previousState,
+      Value<String>? newState,
+      Value<int>? previousIntervalDays,
+      Value<int>? newIntervalDays,
+      Value<String>? algorithmVersion,
+      Value<int>? rowid}) {
+    return DbReviewEventsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      questionId: questionId ?? this.questionId,
+      targetKey: targetKey ?? this.targetKey,
+      subjectId: subjectId ?? this.subjectId,
+      examVariant: examVariant ?? this.examVariant,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      scheduledAt: scheduledAt ?? this.scheduledAt,
+      isCorrect: isCorrect ?? this.isCorrect,
+      timeSpentSeconds: timeSpentSeconds ?? this.timeSpentSeconds,
+      previousState: previousState ?? this.previousState,
+      newState: newState ?? this.newState,
+      previousIntervalDays: previousIntervalDays ?? this.previousIntervalDays,
+      newIntervalDays: newIntervalDays ?? this.newIntervalDays,
+      algorithmVersion: algorithmVersion ?? this.algorithmVersion,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (questionId.present) {
+      map['question_id'] = Variable<String>(questionId.value);
+    }
+    if (targetKey.present) {
+      map['target_key'] = Variable<String>(targetKey.value);
+    }
+    if (subjectId.present) {
+      map['subject_id'] = Variable<String>(subjectId.value);
+    }
+    if (examVariant.present) {
+      map['exam_variant'] = Variable<String>(examVariant.value);
+    }
+    if (reviewedAt.present) {
+      map['reviewed_at'] = Variable<DateTime>(reviewedAt.value);
+    }
+    if (scheduledAt.present) {
+      map['scheduled_at'] = Variable<DateTime>(scheduledAt.value);
+    }
+    if (isCorrect.present) {
+      map['is_correct'] = Variable<bool>(isCorrect.value);
+    }
+    if (timeSpentSeconds.present) {
+      map['time_spent_seconds'] = Variable<int>(timeSpentSeconds.value);
+    }
+    if (previousState.present) {
+      map['previous_state'] = Variable<String>(previousState.value);
+    }
+    if (newState.present) {
+      map['new_state'] = Variable<String>(newState.value);
+    }
+    if (previousIntervalDays.present) {
+      map['previous_interval_days'] = Variable<int>(previousIntervalDays.value);
+    }
+    if (newIntervalDays.present) {
+      map['new_interval_days'] = Variable<int>(newIntervalDays.value);
+    }
+    if (algorithmVersion.present) {
+      map['algorithm_version'] = Variable<String>(algorithmVersion.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DbReviewEventsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('questionId: $questionId, ')
+          ..write('targetKey: $targetKey, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('scheduledAt: $scheduledAt, ')
+          ..write('isCorrect: $isCorrect, ')
+          ..write('timeSpentSeconds: $timeSpentSeconds, ')
+          ..write('previousState: $previousState, ')
+          ..write('newState: $newState, ')
+          ..write('previousIntervalDays: $previousIntervalDays, ')
+          ..write('newIntervalDays: $newIntervalDays, ')
+          ..write('algorithmVersion: $algorithmVersion, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4992,6 +8009,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DbStudyPlansTable dbStudyPlans = $DbStudyPlansTable(this);
   late final $DbStudyPlanSessionsTable dbStudyPlanSessions =
       $DbStudyPlanSessionsTable(this);
+  late final $DbQuestionMasteryTable dbQuestionMastery =
+      $DbQuestionMasteryTable(this);
+  late final $DbLearningTargetMasteryTable dbLearningTargetMastery =
+      $DbLearningTargetMasteryTable(this);
+  late final $DbReviewEventsTable dbReviewEvents = $DbReviewEventsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5004,7 +8026,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         dbCoinLedger,
         dbSyncQueue,
         dbStudyPlans,
-        dbStudyPlanSessions
+        dbStudyPlanSessions,
+        dbQuestionMastery,
+        dbLearningTargetMastery,
+        dbReviewEvents
       ];
 }
 
@@ -7342,6 +10367,1316 @@ typedef $$DbStudyPlanSessionsTableProcessedTableManager = ProcessedTableManager<
     ),
     DbStudyPlanSession,
     PrefetchHooks Function()>;
+typedef $$DbQuestionMasteryTableCreateCompanionBuilder
+    = DbQuestionMasteryCompanion Function({
+  required String id,
+  required String userId,
+  required String questionId,
+  required String subjectId,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  Value<String> masteryState,
+  Value<int> attemptCount,
+  Value<int> correctCount,
+  Value<int> incorrectCount,
+  Value<int> consecutiveCorrect,
+  Value<double> stability,
+  Value<double> difficulty,
+  Value<int> reviewCount,
+  Value<int> lapseCount,
+  Value<DateTime?> lastSeenAt,
+  Value<DateTime?> lastCorrectAt,
+  Value<DateTime?> lastIncorrectAt,
+  Value<DateTime?> nextReviewAt,
+  Value<String> algorithmVersion,
+  Value<String> evidenceSource,
+  required DateTime updatedAt,
+  Value<int> rowid,
+});
+typedef $$DbQuestionMasteryTableUpdateCompanionBuilder
+    = DbQuestionMasteryCompanion Function({
+  Value<String> id,
+  Value<String> userId,
+  Value<String> questionId,
+  Value<String> subjectId,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  Value<String> masteryState,
+  Value<int> attemptCount,
+  Value<int> correctCount,
+  Value<int> incorrectCount,
+  Value<int> consecutiveCorrect,
+  Value<double> stability,
+  Value<double> difficulty,
+  Value<int> reviewCount,
+  Value<int> lapseCount,
+  Value<DateTime?> lastSeenAt,
+  Value<DateTime?> lastCorrectAt,
+  Value<DateTime?> lastIncorrectAt,
+  Value<DateTime?> nextReviewAt,
+  Value<String> algorithmVersion,
+  Value<String> evidenceSource,
+  Value<DateTime> updatedAt,
+  Value<int> rowid,
+});
+
+class $$DbQuestionMasteryTableFilterComposer
+    extends Composer<_$AppDatabase, $DbQuestionMasteryTable> {
+  $$DbQuestionMasteryTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get masteryState => $composableBuilder(
+      column: $table.masteryState, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get attemptCount => $composableBuilder(
+      column: $table.attemptCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get correctCount => $composableBuilder(
+      column: $table.correctCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get incorrectCount => $composableBuilder(
+      column: $table.incorrectCount,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get consecutiveCorrect => $composableBuilder(
+      column: $table.consecutiveCorrect,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get stability => $composableBuilder(
+      column: $table.stability, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get difficulty => $composableBuilder(
+      column: $table.difficulty, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get reviewCount => $composableBuilder(
+      column: $table.reviewCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get lapseCount => $composableBuilder(
+      column: $table.lapseCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastSeenAt => $composableBuilder(
+      column: $table.lastSeenAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastCorrectAt => $composableBuilder(
+      column: $table.lastCorrectAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastIncorrectAt => $composableBuilder(
+      column: $table.lastIncorrectAt,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+}
+
+class $$DbQuestionMasteryTableOrderingComposer
+    extends Composer<_$AppDatabase, $DbQuestionMasteryTable> {
+  $$DbQuestionMasteryTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get masteryState => $composableBuilder(
+      column: $table.masteryState,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get attemptCount => $composableBuilder(
+      column: $table.attemptCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get correctCount => $composableBuilder(
+      column: $table.correctCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get incorrectCount => $composableBuilder(
+      column: $table.incorrectCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get consecutiveCorrect => $composableBuilder(
+      column: $table.consecutiveCorrect,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get stability => $composableBuilder(
+      column: $table.stability, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get difficulty => $composableBuilder(
+      column: $table.difficulty, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get reviewCount => $composableBuilder(
+      column: $table.reviewCount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get lapseCount => $composableBuilder(
+      column: $table.lapseCount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastSeenAt => $composableBuilder(
+      column: $table.lastSeenAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastCorrectAt => $composableBuilder(
+      column: $table.lastCorrectAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastIncorrectAt => $composableBuilder(
+      column: $table.lastIncorrectAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DbQuestionMasteryTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DbQuestionMasteryTable> {
+  $$DbQuestionMasteryTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => column);
+
+  GeneratedColumn<String> get subjectId =>
+      $composableBuilder(column: $table.subjectId, builder: (column) => column);
+
+  GeneratedColumn<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => column);
+
+  GeneratedColumn<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure, builder: (column) => column);
+
+  GeneratedColumn<String> get unitId =>
+      $composableBuilder(column: $table.unitId, builder: (column) => column);
+
+  GeneratedColumn<String> get topicId =>
+      $composableBuilder(column: $table.topicId, builder: (column) => column);
+
+  GeneratedColumn<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => column);
+
+  GeneratedColumn<String> get skill =>
+      $composableBuilder(column: $table.skill, builder: (column) => column);
+
+  GeneratedColumn<String> get masteryState => $composableBuilder(
+      column: $table.masteryState, builder: (column) => column);
+
+  GeneratedColumn<int> get attemptCount => $composableBuilder(
+      column: $table.attemptCount, builder: (column) => column);
+
+  GeneratedColumn<int> get correctCount => $composableBuilder(
+      column: $table.correctCount, builder: (column) => column);
+
+  GeneratedColumn<int> get incorrectCount => $composableBuilder(
+      column: $table.incorrectCount, builder: (column) => column);
+
+  GeneratedColumn<int> get consecutiveCorrect => $composableBuilder(
+      column: $table.consecutiveCorrect, builder: (column) => column);
+
+  GeneratedColumn<double> get stability =>
+      $composableBuilder(column: $table.stability, builder: (column) => column);
+
+  GeneratedColumn<double> get difficulty => $composableBuilder(
+      column: $table.difficulty, builder: (column) => column);
+
+  GeneratedColumn<int> get reviewCount => $composableBuilder(
+      column: $table.reviewCount, builder: (column) => column);
+
+  GeneratedColumn<int> get lapseCount => $composableBuilder(
+      column: $table.lapseCount, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastSeenAt => $composableBuilder(
+      column: $table.lastSeenAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastCorrectAt => $composableBuilder(
+      column: $table.lastCorrectAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastIncorrectAt => $composableBuilder(
+      column: $table.lastIncorrectAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt, builder: (column) => column);
+
+  GeneratedColumn<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion, builder: (column) => column);
+
+  GeneratedColumn<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$DbQuestionMasteryTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DbQuestionMasteryTable,
+    DbQuestionMasteryRow,
+    $$DbQuestionMasteryTableFilterComposer,
+    $$DbQuestionMasteryTableOrderingComposer,
+    $$DbQuestionMasteryTableAnnotationComposer,
+    $$DbQuestionMasteryTableCreateCompanionBuilder,
+    $$DbQuestionMasteryTableUpdateCompanionBuilder,
+    (
+      DbQuestionMasteryRow,
+      BaseReferences<_$AppDatabase, $DbQuestionMasteryTable,
+          DbQuestionMasteryRow>
+    ),
+    DbQuestionMasteryRow,
+    PrefetchHooks Function()> {
+  $$DbQuestionMasteryTableTableManager(
+      _$AppDatabase db, $DbQuestionMasteryTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DbQuestionMasteryTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DbQuestionMasteryTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DbQuestionMasteryTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String> questionId = const Value.absent(),
+            Value<String> subjectId = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            Value<String> masteryState = const Value.absent(),
+            Value<int> attemptCount = const Value.absent(),
+            Value<int> correctCount = const Value.absent(),
+            Value<int> incorrectCount = const Value.absent(),
+            Value<int> consecutiveCorrect = const Value.absent(),
+            Value<double> stability = const Value.absent(),
+            Value<double> difficulty = const Value.absent(),
+            Value<int> reviewCount = const Value.absent(),
+            Value<int> lapseCount = const Value.absent(),
+            Value<DateTime?> lastSeenAt = const Value.absent(),
+            Value<DateTime?> lastCorrectAt = const Value.absent(),
+            Value<DateTime?> lastIncorrectAt = const Value.absent(),
+            Value<DateTime?> nextReviewAt = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            Value<String> evidenceSource = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbQuestionMasteryCompanion(
+            id: id,
+            userId: userId,
+            questionId: questionId,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            unitId: unitId,
+            topicId: topicId,
+            contentDomain: contentDomain,
+            skill: skill,
+            masteryState: masteryState,
+            attemptCount: attemptCount,
+            correctCount: correctCount,
+            incorrectCount: incorrectCount,
+            consecutiveCorrect: consecutiveCorrect,
+            stability: stability,
+            difficulty: difficulty,
+            reviewCount: reviewCount,
+            lapseCount: lapseCount,
+            lastSeenAt: lastSeenAt,
+            lastCorrectAt: lastCorrectAt,
+            lastIncorrectAt: lastIncorrectAt,
+            nextReviewAt: nextReviewAt,
+            algorithmVersion: algorithmVersion,
+            evidenceSource: evidenceSource,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String userId,
+            required String questionId,
+            required String subjectId,
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            Value<String> masteryState = const Value.absent(),
+            Value<int> attemptCount = const Value.absent(),
+            Value<int> correctCount = const Value.absent(),
+            Value<int> incorrectCount = const Value.absent(),
+            Value<int> consecutiveCorrect = const Value.absent(),
+            Value<double> stability = const Value.absent(),
+            Value<double> difficulty = const Value.absent(),
+            Value<int> reviewCount = const Value.absent(),
+            Value<int> lapseCount = const Value.absent(),
+            Value<DateTime?> lastSeenAt = const Value.absent(),
+            Value<DateTime?> lastCorrectAt = const Value.absent(),
+            Value<DateTime?> lastIncorrectAt = const Value.absent(),
+            Value<DateTime?> nextReviewAt = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            Value<String> evidenceSource = const Value.absent(),
+            required DateTime updatedAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbQuestionMasteryCompanion.insert(
+            id: id,
+            userId: userId,
+            questionId: questionId,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            unitId: unitId,
+            topicId: topicId,
+            contentDomain: contentDomain,
+            skill: skill,
+            masteryState: masteryState,
+            attemptCount: attemptCount,
+            correctCount: correctCount,
+            incorrectCount: incorrectCount,
+            consecutiveCorrect: consecutiveCorrect,
+            stability: stability,
+            difficulty: difficulty,
+            reviewCount: reviewCount,
+            lapseCount: lapseCount,
+            lastSeenAt: lastSeenAt,
+            lastCorrectAt: lastCorrectAt,
+            lastIncorrectAt: lastIncorrectAt,
+            nextReviewAt: nextReviewAt,
+            algorithmVersion: algorithmVersion,
+            evidenceSource: evidenceSource,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable<$DbQuestionMasteryTable, DbQuestionMasteryRow>(
+                        table),
+                    BaseReferences<_$AppDatabase, $DbQuestionMasteryTable,
+                        DbQuestionMasteryRow>(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DbQuestionMasteryTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $DbQuestionMasteryTable,
+    DbQuestionMasteryRow,
+    $$DbQuestionMasteryTableFilterComposer,
+    $$DbQuestionMasteryTableOrderingComposer,
+    $$DbQuestionMasteryTableAnnotationComposer,
+    $$DbQuestionMasteryTableCreateCompanionBuilder,
+    $$DbQuestionMasteryTableUpdateCompanionBuilder,
+    (
+      DbQuestionMasteryRow,
+      BaseReferences<_$AppDatabase, $DbQuestionMasteryTable,
+          DbQuestionMasteryRow>
+    ),
+    DbQuestionMasteryRow,
+    PrefetchHooks Function()>;
+typedef $$DbLearningTargetMasteryTableCreateCompanionBuilder
+    = DbLearningTargetMasteryCompanion Function({
+  required String id,
+  required String userId,
+  required String targetKey,
+  required String subjectId,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  required String titleEn,
+  required String titleAm,
+  Value<String> masteryState,
+  Value<String> evidenceSource,
+  Value<double> accuracyPercentage,
+  Value<int> totalAttempts,
+  Value<int> masteredQuestionCount,
+  Value<int> coveredQuestionCount,
+  Value<int> totalAvailableQuestions,
+  Value<DateTime?> nextReviewAt,
+  Value<DateTime?> lastPracticedAt,
+  required DateTime updatedAt,
+  Value<int> rowid,
+});
+typedef $$DbLearningTargetMasteryTableUpdateCompanionBuilder
+    = DbLearningTargetMasteryCompanion Function({
+  Value<String> id,
+  Value<String> userId,
+  Value<String> targetKey,
+  Value<String> subjectId,
+  Value<String?> examVariant,
+  Value<String?> assessmentStructure,
+  Value<String?> unitId,
+  Value<String?> topicId,
+  Value<String?> contentDomain,
+  Value<String?> skill,
+  Value<String> titleEn,
+  Value<String> titleAm,
+  Value<String> masteryState,
+  Value<String> evidenceSource,
+  Value<double> accuracyPercentage,
+  Value<int> totalAttempts,
+  Value<int> masteredQuestionCount,
+  Value<int> coveredQuestionCount,
+  Value<int> totalAvailableQuestions,
+  Value<DateTime?> nextReviewAt,
+  Value<DateTime?> lastPracticedAt,
+  Value<DateTime> updatedAt,
+  Value<int> rowid,
+});
+
+class $$DbLearningTargetMasteryTableFilterComposer
+    extends Composer<_$AppDatabase, $DbLearningTargetMasteryTable> {
+  $$DbLearningTargetMasteryTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get targetKey => $composableBuilder(
+      column: $table.targetKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get titleEn => $composableBuilder(
+      column: $table.titleEn, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get titleAm => $composableBuilder(
+      column: $table.titleAm, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get masteryState => $composableBuilder(
+      column: $table.masteryState, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get accuracyPercentage => $composableBuilder(
+      column: $table.accuracyPercentage,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get totalAttempts => $composableBuilder(
+      column: $table.totalAttempts, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get masteredQuestionCount => $composableBuilder(
+      column: $table.masteredQuestionCount,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get coveredQuestionCount => $composableBuilder(
+      column: $table.coveredQuestionCount,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get totalAvailableQuestions => $composableBuilder(
+      column: $table.totalAvailableQuestions,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get lastPracticedAt => $composableBuilder(
+      column: $table.lastPracticedAt,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+}
+
+class $$DbLearningTargetMasteryTableOrderingComposer
+    extends Composer<_$AppDatabase, $DbLearningTargetMasteryTable> {
+  $$DbLearningTargetMasteryTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get targetKey => $composableBuilder(
+      column: $table.targetKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unitId => $composableBuilder(
+      column: $table.unitId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topicId => $composableBuilder(
+      column: $table.topicId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get skill => $composableBuilder(
+      column: $table.skill, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get titleEn => $composableBuilder(
+      column: $table.titleEn, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get titleAm => $composableBuilder(
+      column: $table.titleAm, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get masteryState => $composableBuilder(
+      column: $table.masteryState,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get accuracyPercentage => $composableBuilder(
+      column: $table.accuracyPercentage,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get totalAttempts => $composableBuilder(
+      column: $table.totalAttempts,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get masteredQuestionCount => $composableBuilder(
+      column: $table.masteredQuestionCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get coveredQuestionCount => $composableBuilder(
+      column: $table.coveredQuestionCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get totalAvailableQuestions => $composableBuilder(
+      column: $table.totalAvailableQuestions,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get lastPracticedAt => $composableBuilder(
+      column: $table.lastPracticedAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DbLearningTargetMasteryTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DbLearningTargetMasteryTable> {
+  $$DbLearningTargetMasteryTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get targetKey =>
+      $composableBuilder(column: $table.targetKey, builder: (column) => column);
+
+  GeneratedColumn<String> get subjectId =>
+      $composableBuilder(column: $table.subjectId, builder: (column) => column);
+
+  GeneratedColumn<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => column);
+
+  GeneratedColumn<String> get assessmentStructure => $composableBuilder(
+      column: $table.assessmentStructure, builder: (column) => column);
+
+  GeneratedColumn<String> get unitId =>
+      $composableBuilder(column: $table.unitId, builder: (column) => column);
+
+  GeneratedColumn<String> get topicId =>
+      $composableBuilder(column: $table.topicId, builder: (column) => column);
+
+  GeneratedColumn<String> get contentDomain => $composableBuilder(
+      column: $table.contentDomain, builder: (column) => column);
+
+  GeneratedColumn<String> get skill =>
+      $composableBuilder(column: $table.skill, builder: (column) => column);
+
+  GeneratedColumn<String> get titleEn =>
+      $composableBuilder(column: $table.titleEn, builder: (column) => column);
+
+  GeneratedColumn<String> get titleAm =>
+      $composableBuilder(column: $table.titleAm, builder: (column) => column);
+
+  GeneratedColumn<String> get masteryState => $composableBuilder(
+      column: $table.masteryState, builder: (column) => column);
+
+  GeneratedColumn<String> get evidenceSource => $composableBuilder(
+      column: $table.evidenceSource, builder: (column) => column);
+
+  GeneratedColumn<double> get accuracyPercentage => $composableBuilder(
+      column: $table.accuracyPercentage, builder: (column) => column);
+
+  GeneratedColumn<int> get totalAttempts => $composableBuilder(
+      column: $table.totalAttempts, builder: (column) => column);
+
+  GeneratedColumn<int> get masteredQuestionCount => $composableBuilder(
+      column: $table.masteredQuestionCount, builder: (column) => column);
+
+  GeneratedColumn<int> get coveredQuestionCount => $composableBuilder(
+      column: $table.coveredQuestionCount, builder: (column) => column);
+
+  GeneratedColumn<int> get totalAvailableQuestions => $composableBuilder(
+      column: $table.totalAvailableQuestions, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get nextReviewAt => $composableBuilder(
+      column: $table.nextReviewAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get lastPracticedAt => $composableBuilder(
+      column: $table.lastPracticedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$DbLearningTargetMasteryTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DbLearningTargetMasteryTable,
+    DbLearningTargetMasteryRow,
+    $$DbLearningTargetMasteryTableFilterComposer,
+    $$DbLearningTargetMasteryTableOrderingComposer,
+    $$DbLearningTargetMasteryTableAnnotationComposer,
+    $$DbLearningTargetMasteryTableCreateCompanionBuilder,
+    $$DbLearningTargetMasteryTableUpdateCompanionBuilder,
+    (
+      DbLearningTargetMasteryRow,
+      BaseReferences<_$AppDatabase, $DbLearningTargetMasteryTable,
+          DbLearningTargetMasteryRow>
+    ),
+    DbLearningTargetMasteryRow,
+    PrefetchHooks Function()> {
+  $$DbLearningTargetMasteryTableTableManager(
+      _$AppDatabase db, $DbLearningTargetMasteryTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DbLearningTargetMasteryTableFilterComposer(
+                  $db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DbLearningTargetMasteryTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DbLearningTargetMasteryTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String> targetKey = const Value.absent(),
+            Value<String> subjectId = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            Value<String> titleEn = const Value.absent(),
+            Value<String> titleAm = const Value.absent(),
+            Value<String> masteryState = const Value.absent(),
+            Value<String> evidenceSource = const Value.absent(),
+            Value<double> accuracyPercentage = const Value.absent(),
+            Value<int> totalAttempts = const Value.absent(),
+            Value<int> masteredQuestionCount = const Value.absent(),
+            Value<int> coveredQuestionCount = const Value.absent(),
+            Value<int> totalAvailableQuestions = const Value.absent(),
+            Value<DateTime?> nextReviewAt = const Value.absent(),
+            Value<DateTime?> lastPracticedAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbLearningTargetMasteryCompanion(
+            id: id,
+            userId: userId,
+            targetKey: targetKey,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            unitId: unitId,
+            topicId: topicId,
+            contentDomain: contentDomain,
+            skill: skill,
+            titleEn: titleEn,
+            titleAm: titleAm,
+            masteryState: masteryState,
+            evidenceSource: evidenceSource,
+            accuracyPercentage: accuracyPercentage,
+            totalAttempts: totalAttempts,
+            masteredQuestionCount: masteredQuestionCount,
+            coveredQuestionCount: coveredQuestionCount,
+            totalAvailableQuestions: totalAvailableQuestions,
+            nextReviewAt: nextReviewAt,
+            lastPracticedAt: lastPracticedAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String userId,
+            required String targetKey,
+            required String subjectId,
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> assessmentStructure = const Value.absent(),
+            Value<String?> unitId = const Value.absent(),
+            Value<String?> topicId = const Value.absent(),
+            Value<String?> contentDomain = const Value.absent(),
+            Value<String?> skill = const Value.absent(),
+            required String titleEn,
+            required String titleAm,
+            Value<String> masteryState = const Value.absent(),
+            Value<String> evidenceSource = const Value.absent(),
+            Value<double> accuracyPercentage = const Value.absent(),
+            Value<int> totalAttempts = const Value.absent(),
+            Value<int> masteredQuestionCount = const Value.absent(),
+            Value<int> coveredQuestionCount = const Value.absent(),
+            Value<int> totalAvailableQuestions = const Value.absent(),
+            Value<DateTime?> nextReviewAt = const Value.absent(),
+            Value<DateTime?> lastPracticedAt = const Value.absent(),
+            required DateTime updatedAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbLearningTargetMasteryCompanion.insert(
+            id: id,
+            userId: userId,
+            targetKey: targetKey,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            assessmentStructure: assessmentStructure,
+            unitId: unitId,
+            topicId: topicId,
+            contentDomain: contentDomain,
+            skill: skill,
+            titleEn: titleEn,
+            titleAm: titleAm,
+            masteryState: masteryState,
+            evidenceSource: evidenceSource,
+            accuracyPercentage: accuracyPercentage,
+            totalAttempts: totalAttempts,
+            masteredQuestionCount: masteredQuestionCount,
+            coveredQuestionCount: coveredQuestionCount,
+            totalAvailableQuestions: totalAvailableQuestions,
+            nextReviewAt: nextReviewAt,
+            lastPracticedAt: lastPracticedAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable<$DbLearningTargetMasteryTable,
+                        DbLearningTargetMasteryRow>(table),
+                    BaseReferences<_$AppDatabase, $DbLearningTargetMasteryTable,
+                        DbLearningTargetMasteryRow>(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DbLearningTargetMasteryTableProcessedTableManager
+    = ProcessedTableManager<
+        _$AppDatabase,
+        $DbLearningTargetMasteryTable,
+        DbLearningTargetMasteryRow,
+        $$DbLearningTargetMasteryTableFilterComposer,
+        $$DbLearningTargetMasteryTableOrderingComposer,
+        $$DbLearningTargetMasteryTableAnnotationComposer,
+        $$DbLearningTargetMasteryTableCreateCompanionBuilder,
+        $$DbLearningTargetMasteryTableUpdateCompanionBuilder,
+        (
+          DbLearningTargetMasteryRow,
+          BaseReferences<_$AppDatabase, $DbLearningTargetMasteryTable,
+              DbLearningTargetMasteryRow>
+        ),
+        DbLearningTargetMasteryRow,
+        PrefetchHooks Function()>;
+typedef $$DbReviewEventsTableCreateCompanionBuilder = DbReviewEventsCompanion
+    Function({
+  required String id,
+  required String userId,
+  required String questionId,
+  required String targetKey,
+  Value<String?> subjectId,
+  Value<String?> examVariant,
+  required DateTime reviewedAt,
+  required DateTime scheduledAt,
+  required bool isCorrect,
+  Value<int> timeSpentSeconds,
+  required String previousState,
+  required String newState,
+  Value<int> previousIntervalDays,
+  Value<int> newIntervalDays,
+  Value<String> algorithmVersion,
+  Value<int> rowid,
+});
+typedef $$DbReviewEventsTableUpdateCompanionBuilder = DbReviewEventsCompanion
+    Function({
+  Value<String> id,
+  Value<String> userId,
+  Value<String> questionId,
+  Value<String> targetKey,
+  Value<String?> subjectId,
+  Value<String?> examVariant,
+  Value<DateTime> reviewedAt,
+  Value<DateTime> scheduledAt,
+  Value<bool> isCorrect,
+  Value<int> timeSpentSeconds,
+  Value<String> previousState,
+  Value<String> newState,
+  Value<int> previousIntervalDays,
+  Value<int> newIntervalDays,
+  Value<String> algorithmVersion,
+  Value<int> rowid,
+});
+
+class $$DbReviewEventsTableFilterComposer
+    extends Composer<_$AppDatabase, $DbReviewEventsTable> {
+  $$DbReviewEventsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get targetKey => $composableBuilder(
+      column: $table.targetKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get reviewedAt => $composableBuilder(
+      column: $table.reviewedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get scheduledAt => $composableBuilder(
+      column: $table.scheduledAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isCorrect => $composableBuilder(
+      column: $table.isCorrect, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get previousState => $composableBuilder(
+      column: $table.previousState, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get newState => $composableBuilder(
+      column: $table.newState, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get previousIntervalDays => $composableBuilder(
+      column: $table.previousIntervalDays,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get newIntervalDays => $composableBuilder(
+      column: $table.newIntervalDays,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnFilters(column));
+}
+
+class $$DbReviewEventsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DbReviewEventsTable> {
+  $$DbReviewEventsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get targetKey => $composableBuilder(
+      column: $table.targetKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get subjectId => $composableBuilder(
+      column: $table.subjectId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get reviewedAt => $composableBuilder(
+      column: $table.reviewedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get scheduledAt => $composableBuilder(
+      column: $table.scheduledAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isCorrect => $composableBuilder(
+      column: $table.isCorrect, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get previousState => $composableBuilder(
+      column: $table.previousState,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get newState => $composableBuilder(
+      column: $table.newState, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get previousIntervalDays => $composableBuilder(
+      column: $table.previousIntervalDays,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get newIntervalDays => $composableBuilder(
+      column: $table.newIntervalDays,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion,
+      builder: (column) => ColumnOrderings(column));
+}
+
+class $$DbReviewEventsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DbReviewEventsTable> {
+  $$DbReviewEventsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get questionId => $composableBuilder(
+      column: $table.questionId, builder: (column) => column);
+
+  GeneratedColumn<String> get targetKey =>
+      $composableBuilder(column: $table.targetKey, builder: (column) => column);
+
+  GeneratedColumn<String> get subjectId =>
+      $composableBuilder(column: $table.subjectId, builder: (column) => column);
+
+  GeneratedColumn<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get reviewedAt => $composableBuilder(
+      column: $table.reviewedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get scheduledAt => $composableBuilder(
+      column: $table.scheduledAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isCorrect =>
+      $composableBuilder(column: $table.isCorrect, builder: (column) => column);
+
+  GeneratedColumn<int> get timeSpentSeconds => $composableBuilder(
+      column: $table.timeSpentSeconds, builder: (column) => column);
+
+  GeneratedColumn<String> get previousState => $composableBuilder(
+      column: $table.previousState, builder: (column) => column);
+
+  GeneratedColumn<String> get newState =>
+      $composableBuilder(column: $table.newState, builder: (column) => column);
+
+  GeneratedColumn<int> get previousIntervalDays => $composableBuilder(
+      column: $table.previousIntervalDays, builder: (column) => column);
+
+  GeneratedColumn<int> get newIntervalDays => $composableBuilder(
+      column: $table.newIntervalDays, builder: (column) => column);
+
+  GeneratedColumn<String> get algorithmVersion => $composableBuilder(
+      column: $table.algorithmVersion, builder: (column) => column);
+}
+
+class $$DbReviewEventsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DbReviewEventsTable,
+    DbReviewEventRow,
+    $$DbReviewEventsTableFilterComposer,
+    $$DbReviewEventsTableOrderingComposer,
+    $$DbReviewEventsTableAnnotationComposer,
+    $$DbReviewEventsTableCreateCompanionBuilder,
+    $$DbReviewEventsTableUpdateCompanionBuilder,
+    (
+      DbReviewEventRow,
+      BaseReferences<_$AppDatabase, $DbReviewEventsTable, DbReviewEventRow>
+    ),
+    DbReviewEventRow,
+    PrefetchHooks Function()> {
+  $$DbReviewEventsTableTableManager(
+      _$AppDatabase db, $DbReviewEventsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DbReviewEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DbReviewEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DbReviewEventsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<String> questionId = const Value.absent(),
+            Value<String> targetKey = const Value.absent(),
+            Value<String?> subjectId = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<DateTime> reviewedAt = const Value.absent(),
+            Value<DateTime> scheduledAt = const Value.absent(),
+            Value<bool> isCorrect = const Value.absent(),
+            Value<int> timeSpentSeconds = const Value.absent(),
+            Value<String> previousState = const Value.absent(),
+            Value<String> newState = const Value.absent(),
+            Value<int> previousIntervalDays = const Value.absent(),
+            Value<int> newIntervalDays = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbReviewEventsCompanion(
+            id: id,
+            userId: userId,
+            questionId: questionId,
+            targetKey: targetKey,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            reviewedAt: reviewedAt,
+            scheduledAt: scheduledAt,
+            isCorrect: isCorrect,
+            timeSpentSeconds: timeSpentSeconds,
+            previousState: previousState,
+            newState: newState,
+            previousIntervalDays: previousIntervalDays,
+            newIntervalDays: newIntervalDays,
+            algorithmVersion: algorithmVersion,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String userId,
+            required String questionId,
+            required String targetKey,
+            Value<String?> subjectId = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            required DateTime reviewedAt,
+            required DateTime scheduledAt,
+            required bool isCorrect,
+            Value<int> timeSpentSeconds = const Value.absent(),
+            required String previousState,
+            required String newState,
+            Value<int> previousIntervalDays = const Value.absent(),
+            Value<int> newIntervalDays = const Value.absent(),
+            Value<String> algorithmVersion = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DbReviewEventsCompanion.insert(
+            id: id,
+            userId: userId,
+            questionId: questionId,
+            targetKey: targetKey,
+            subjectId: subjectId,
+            examVariant: examVariant,
+            reviewedAt: reviewedAt,
+            scheduledAt: scheduledAt,
+            isCorrect: isCorrect,
+            timeSpentSeconds: timeSpentSeconds,
+            previousState: previousState,
+            newState: newState,
+            previousIntervalDays: previousIntervalDays,
+            newIntervalDays: newIntervalDays,
+            algorithmVersion: algorithmVersion,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable<$DbReviewEventsTable, DbReviewEventRow>(table),
+                    BaseReferences<_$AppDatabase, $DbReviewEventsTable,
+                        DbReviewEventRow>(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DbReviewEventsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $DbReviewEventsTable,
+    DbReviewEventRow,
+    $$DbReviewEventsTableFilterComposer,
+    $$DbReviewEventsTableOrderingComposer,
+    $$DbReviewEventsTableAnnotationComposer,
+    $$DbReviewEventsTableCreateCompanionBuilder,
+    $$DbReviewEventsTableUpdateCompanionBuilder,
+    (
+      DbReviewEventRow,
+      BaseReferences<_$AppDatabase, $DbReviewEventsTable, DbReviewEventRow>
+    ),
+    DbReviewEventRow,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -7362,4 +11697,11 @@ class $AppDatabaseManager {
       $$DbStudyPlansTableTableManager(_db, _db.dbStudyPlans);
   $$DbStudyPlanSessionsTableTableManager get dbStudyPlanSessions =>
       $$DbStudyPlanSessionsTableTableManager(_db, _db.dbStudyPlanSessions);
+  $$DbQuestionMasteryTableTableManager get dbQuestionMastery =>
+      $$DbQuestionMasteryTableTableManager(_db, _db.dbQuestionMastery);
+  $$DbLearningTargetMasteryTableTableManager get dbLearningTargetMastery =>
+      $$DbLearningTargetMasteryTableTableManager(
+          _db, _db.dbLearningTargetMastery);
+  $$DbReviewEventsTableTableManager get dbReviewEvents =>
+      $$DbReviewEventsTableTableManager(_db, _db.dbReviewEvents);
 }

@@ -50,6 +50,10 @@ import '../../features/progress/domain/models/study_plan_models.dart';
 import '../../features/progress/domain/repositories/study_plan_repository.dart';
 import '../../features/progress/data/repositories/drift_study_plan_repository.dart';
 import '../../features/progress/domain/services/adaptive_study_planner.dart';
+import '../../features/progress/domain/repositories/mastery_repository.dart';
+import '../../features/progress/data/repositories/drift_mastery_repository.dart';
+import '../../features/progress/domain/services/spaced_repetition_scheduler.dart';
+import '../../features/progress/domain/services/mastery_engine_service.dart';
 import '../../features/question_bank/domain/models/question_models.dart';
 import '../../features/subjects/domain/models/subject_models.dart';
 
@@ -180,9 +184,33 @@ final mistakeRepositoryProvider = Provider<MistakeRepository>((ref) {
   return DriftMistakeRepository(db: db, syncQueue: queue);
 });
 
+final masteryRepositoryProvider = Provider<MasteryRepository>((ref) {
+  final db = ref.watch(appDatabaseProvider);
+  return DriftMasteryRepository(db: db);
+});
+
+final spacedRepetitionSchedulerProvider =
+    Provider<SpacedRepetitionScheduler>((ref) {
+  return const SpacedRepetitionScheduler();
+});
+
+final masteryEngineServiceProvider = Provider<MasteryEngineService>((ref) {
+  final repo = ref.watch(masteryRepositoryProvider);
+  final scheduler = ref.watch(spacedRepetitionSchedulerProvider);
+  return MasteryEngineService(masteryRepo: repo, scheduler: scheduler);
+});
+
+final dueReviewsCountProvider =
+    FutureProvider.family<int, String>((ref, userId) async {
+  final repo = ref.watch(masteryRepositoryProvider);
+  final due = await repo.getDueQuestionReviews(userId);
+  return due.length;
+});
+
 final mistakeOutcomeServiceProvider = Provider<MistakeOutcomeService>((ref) {
   final mistakeRepo = ref.watch(mistakeRepositoryProvider);
-  return MistakeOutcomeService(mistakeRepo);
+  final masteryEngine = ref.watch(masteryEngineServiceProvider);
+  return MistakeOutcomeService(mistakeRepo, masteryEngine);
 });
 
 final mistakeCountsStreamProvider =
@@ -653,6 +681,10 @@ class TodayStudyPlanNotifier extends StateNotifier<AsyncValue<StudyPlan?>> {
       final installedIds =
           packages.where((p) => p.isDownloaded).map((p) => p.subjectId).toSet();
 
+      final masteryRepo = _ref.read(masteryRepositoryProvider);
+      final questionMastery = await masteryRepo.getQuestionMasteryList(_userId);
+      final targetMastery = await masteryRepo.getTargetMasteryList(_userId);
+
       final plan = _planner.generateDailyPlan(
         userId: _userId,
         grade: grade,
@@ -665,6 +697,8 @@ class TodayStudyPlanNotifier extends StateNotifier<AsyncValue<StudyPlan?>> {
         unitsBySubject: unitsBySub,
         topicsByUnit: topicsByUnit,
         installedSubjectIds: installedIds,
+        questionMasteryRecords: questionMastery,
+        targetMasteryRecords: targetMastery,
       );
 
       await _studyPlanRepo.saveStudyPlan(plan);

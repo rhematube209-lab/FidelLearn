@@ -1,10 +1,13 @@
 import '../../../exams/domain/models/exam_models.dart';
+import '../../../progress/domain/services/mastery_engine_service.dart';
+import '../../../question_bank/domain/models/question_models.dart';
 import '../repositories/mistake_repository.dart';
 
 class MistakeOutcomeService {
   final MistakeRepository _mistakeRepo;
+  final MasteryEngineService? _masteryEngine;
 
-  const MistakeOutcomeService(this._mistakeRepo);
+  const MistakeOutcomeService(this._mistakeRepo, [this._masteryEngine]);
 
   /// Centralized handler for processing question outcomes across all session types
   /// (normal exams, practice, immediate feedback, mistake retry, adaptive practice).
@@ -20,6 +23,9 @@ class MistakeOutcomeService {
     required String? selectedChoiceId,
     required bool isCorrect,
     required ExamType sessionType,
+    Question? question,
+    int responseTimeSeconds = 0,
+    DateTime? targetExamDate,
   }) async {
     // If student skipped the question without selecting an answer, do not record as wrong choice
     if (selectedChoiceId == null) return;
@@ -65,6 +71,21 @@ class MistakeOutcomeService {
           );
         }
       }
+    }
+
+    // Trigger deterministic Mastery Engine and Spaced Repetition update
+    final engine = _masteryEngine;
+    if (engine != null && question != null) {
+      try {
+        await engine.processQuestionOutcome(
+          userId: userId,
+          question: question,
+          isCorrect: isCorrect,
+          attemptId: attemptId,
+          responseTimeSeconds: responseTimeSeconds,
+          targetExamDate: targetExamDate,
+        );
+      } catch (_) {}
     }
   }
 }

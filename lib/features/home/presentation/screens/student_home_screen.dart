@@ -19,6 +19,7 @@ import '../../../progress/domain/models/study_plan_models.dart';
 import '../../../progress/domain/services/remedial_drill_service.dart';
 import '../../../progress/domain/services/weak_topic_detector.dart';
 import '../../../progress/presentation/widgets/today_study_plan_card.dart';
+import '../../../progress/presentation/widgets/reviews_due_banner.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
@@ -665,6 +666,40 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                               _buildSubjectSection(
                                   context, user, isAmharic, isDark),
                               const SizedBox(height: 32),
+
+                              // 🔔 Spaced Repetition Due Reviews Banner
+                              Builder(builder: (context) {
+                                final dueCount = ref
+                                        .watch(dueReviewsCountProvider(user.id))
+                                        .valueOrNull ??
+                                    0;
+                                if (dueCount <= 0) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: ReviewsDueBanner(
+                                    dueCount: dueCount,
+                                    isAmharic: isAmharic,
+                                    onReviewNow: () {
+                                      final plan = ref
+                                          .read(todayStudyPlanProvider(user.id))
+                                          .valueOrNull;
+                                      final spacedSession = plan?.sessions
+                                          .where((s) =>
+                                              s.sessionType ==
+                                              StudySessionType
+                                                  .masteryMaintenance)
+                                          .firstOrNull;
+                                      if (spacedSession != null) {
+                                        _startStudyPlanSession(spacedSession);
+                                      } else {
+                                        _refreshStudyPlan();
+                                      }
+                                    },
+                                  ),
+                                );
+                              }),
 
                               // 🌟 Section 3: Today's Personalized Study Plan
                               TodayStudyPlanCard(
