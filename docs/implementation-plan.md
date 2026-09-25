@@ -21,8 +21,8 @@ The platform engineering milestones follow a strict, phased hardening schedule:
 | **Post-P0 Validation** | **Architecture & Track Isolation Validation**<br>Cross-track isolation (0% Math Natural/Social leakage), Civics excluded from national exam calculations, bilingual ARB completeness. | **PASS** |
 | **Priority 2 (P2)** | **Adaptive Learning & Personalized Study Planner**<br>Deterministic multi-factor prioritization, non-destructive Drift schema v4, native support for English (`mixed`) and Aptitude (`skillBased`), canonical 4-phase exam proximity engine, bilingual 'Why This?' audit explanations. | **FROZEN** (`adaptive_planner_v1.1`) |
 | **Priority 3 (P3)** | **Advanced Scientific Rendering Engine**<br>Offline-first high-fidelity LaTeX/KaTeX equation rendering, scalable vector diagrams (SVG), chemical reaction equations & ionic charges, responsive data tables, fullscreen zoom/pan viewer, 100% offline package asset integrity gate. | **FROZEN** (`priority-3-scientific-rendering-v1.0.0`) |
-| **Priority 4 (P4)** | **Mastery + Intelligent Spaced Repetition**<br>SuperMemo-2 (SM-2) memory decay scheduling, multi-tier mastery progression (`needsReview` → `improving` → `mastered`), adaptive retention intervals. | **NEXT PRIORITY** (Planned) |
-| **Priority 5 (P5)** | **ESSLCE Full Exam Simulation**<br>True-to-life national entrance exam simulation, strict booklet timing, randomized booklet permutations, proctored lock-down modes. | Planned |
+| **Priority 4 (P4)** | **Mastery + Intelligent Spaced Repetition**<br>SuperMemo-2 (SM-2) memory decay scheduling, multi-tier mastery progression (`needsReview` → `improving` → `mastered`), adaptive retention intervals. | **FROZEN** (`priority-4-mastery-spaced-repetition-v1.0.0`) |
+| **Priority 5 (P5)** | **ESSLCE Full Exam Simulation**<br>True-to-life national entrance exam simulation, strict booklet timing, randomized booklet permutations, proctored lock-down modes. | **NEXT PRIORITY** (Planned) |
 
 ---
 
