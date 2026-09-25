@@ -24,6 +24,28 @@ class DbExamAttempts extends Table {
       text()(); // Serialized Map<String, UserResponse>
   DateTimeColumn get createdAt => dateTime()();
 
+  // Priority 5 National Exam Simulation fields
+  TextColumn get examMode => text().withDefault(const Constant('practice'))();
+  TextColumn get sourceType =>
+      text().withDefault(const Constant('generated_simulation'))();
+  TextColumn get examVariant => text().nullable()();
+  TextColumn get blueprintVersion => text().nullable()();
+  IntColumn get simulationSeed => integer().nullable()();
+  TextColumn get questionOrderJson => text().nullable()();
+  IntColumn get timeLimitSeconds => integer().withDefault(const Constant(0))();
+  BoolColumn get autoSubmitted =>
+      boolean().withDefault(const Constant(false))();
+  IntColumn get historicalYear => integer().nullable()();
+  BoolColumn get timerIntegrityWarning =>
+      boolean().withDefault(const Constant(false))();
+
+  // Priority 5 Hardening: Content snapshot, integrity, outcome guard & scoring policy
+  TextColumn get packageSnapshotJson => text().nullable()();
+  TextColumn get examIntegrityHash => text().nullable()();
+  DateTimeColumn get outcomesProcessedAt => dateTime().nullable()();
+  TextColumn get scoringPolicy =>
+      text().withDefault(const Constant('standard_uniform_v1'))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

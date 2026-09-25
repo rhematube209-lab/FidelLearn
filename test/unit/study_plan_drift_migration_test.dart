@@ -300,7 +300,8 @@ void main() {
       await db.customStatement('DROP TABLE IF EXISTS db_study_plans');
       await db.customStatement('DROP TABLE IF EXISTS db_mistakes');
       await db.customStatement('DROP TABLE IF EXISTS db_question_mastery');
-      await db.customStatement('DROP TABLE IF EXISTS db_learning_target_mastery');
+      await db
+          .customStatement('DROP TABLE IF EXISTS db_learning_target_mastery');
       await db.customStatement('DROP TABLE IF EXISTS db_review_events');
 
       await db.customStatement('''

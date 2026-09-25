@@ -26,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -227,6 +227,33 @@ class AppDatabase extends _$AppDatabase {
                 SELECT user_id || '_' || question_id FROM db_mistakes
               );
             ''');
+          }
+
+          if (from < 7 && to >= 7) {
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.examMode);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.sourceType);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.examVariant);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.blueprintVersion);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.simulationSeed);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.questionOrderJson);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.timeLimitSeconds);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.autoSubmitted);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.historicalYear);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.timerIntegrityWarning);
+          }
+
+          if (from < 8 && to >= 8) {
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.packageSnapshotJson);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.examIntegrityHash);
+            await safeAddColumn(
+                dbExamAttempts, dbExamAttempts.outcomesProcessedAt);
+            await safeAddColumn(dbExamAttempts, dbExamAttempts.scoringPolicy);
           }
         },
       );

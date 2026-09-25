@@ -11,18 +11,21 @@ import '../../../question_bank/domain/models/question_models.dart';
 import '../../../question_bank/presentation/widgets/question_diagram_viewer.dart';
 import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../domain/models/exam_models.dart';
+import '../../domain/services/authoritative_exam_timer.dart';
 import '../../domain/services/exam_engine.dart';
 
 class ExamRunnerScreen extends ConsumerStatefulWidget {
   final Exam exam;
   final ExamAttempt initialAttempt;
   final bool showInstantFeedback;
+  final NationalExamPolicy? policy;
 
   const ExamRunnerScreen({
     super.key,
     required this.exam,
     required this.initialAttempt,
     this.showInstantFeedback = false,
+    this.policy,
   });
 
   @override
@@ -32,7 +35,12 @@ class ExamRunnerScreen extends ConsumerStatefulWidget {
 class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   late ExamAttempt _attempt;
   int _currentIndex = 0;
-  Timer? _timer;
+  late final NationalExamPolicy _policy =
+      widget.policy ?? NationalExamPolicy.fromMode(widget.exam.examMode);
+  late final bool _effectiveShowFeedback =
+      !_policy.hideInstantFeedback && widget.showInstantFeedback;
+  late final AuthoritativeExamTimer _authoritativeTimer;
+  StreamSubscription<int>? _timerSubscription;
   late int _remainingSeconds;
   int _elapsedSeconds = 0;
   bool _isSubmitting = false;
@@ -43,30 +51,78 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   void initState() {
     super.initState();
     _attempt = widget.initialAttempt;
-    _remainingSeconds =
+    final totalSec =
         widget.exam.isTimed ? widget.exam.timeLimitMinutes * 60 : 0;
-    _startTimer();
+    _authoritativeTimer = AuthoritativeExamTimer(
+      startTime: _attempt.startTime,
+      totalDurationSeconds: totalSec,
+      policy: _policy,
+      initialIntegrityWarning: _attempt.timerIntegrityWarning,
+      lastActiveTime: DateTime.now(),
+    );
+    _remainingSeconds = _authoritativeTimer.getRemainingSeconds();
+    _elapsedSeconds = _authoritativeTimer.getElapsedSeconds();
+
+    // If already expired while app was closed, auto-submit promptly (Section 27)
+    if (_authoritativeTimer.isExpired && widget.exam.isTimed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _autoSubmitOnTimeExpired();
+      });
+    } else {
+      _startTimer();
+    }
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _authoritativeTimer.start();
+    _timerSubscription = _authoritativeTimer.ticks.listen((remaining) {
       if (!mounted) return;
+      final prevRemaining = _remainingSeconds;
       setState(() {
-        _elapsedSeconds++;
-        if (widget.exam.isTimed) {
-          if (_remainingSeconds > 0) {
-            _remainingSeconds--;
-          } else {
-            _timer?.cancel();
-            _autoSubmitOnTimeExpired();
-          }
-        }
+        _remainingSeconds = remaining;
+        _elapsedSeconds = _authoritativeTimer.getElapsedSeconds();
       });
-      // 💾 Periodic 15-second Auto-Save Crash Resilience
-      if (_elapsedSeconds % 15 == 0) {
+
+      // Warning thresholds (e.g. 30, 10, 5, 1 minute remaining)
+      final warningMin = AuthoritativeExamTimer.checkWarningThreshold(
+        previousRemaining: prevRemaining,
+        currentRemaining: remaining,
+        thresholdsMinutes: _policy.warningThresholdMinutes,
+      );
+      if (warningMin != null) {
+        _showTimerWarning(warningMin);
+      }
+
+      if (_policy.autoSubmitOnExpiry && remaining <= 0 && widget.exam.isTimed) {
+        _authoritativeTimer.stop();
+        _autoSubmitOnTimeExpired();
+      }
+
+      // Periodic 15-second Auto-Save
+      if (_elapsedSeconds > 0 && _elapsedSeconds % 15 == 0) {
         _performAutoSave();
       }
     });
+  }
+
+  void _showTimerWarning(int minutes) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.timer_outlined, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              '$minutes ${minutes == 1 ? 'minute' : 'minutes'} remaining in examination.',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        backgroundColor: minutes <= 5 ? AppTheme.danger : AppTheme.accentGold,
+        duration: const Duration(seconds: 4),
+      ),
+    );
   }
 
   Future<void> _performAutoSave() async {
@@ -83,7 +139,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _timerSubscription?.cancel();
+    _authoritativeTimer.dispose();
     super.dispose();
   }
 
@@ -112,8 +169,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     final examRepo = ref.read(examRepositoryProvider);
     await examRepo.saveActiveAttempt(_attempt);
 
-    // Immediate persistence for instant feedback practice or mistake retry
-    if (widget.showInstantFeedback ||
+    // Immediate persistence only for non-exam instant feedback practice or mistake retry
+    if (_effectiveShowFeedback ||
         widget.exam.examType == ExamType.mistakeRetry) {
       final user = ref.read(currentUserProvider).valueOrNull;
       final userId = user?.id ?? 'guest_student';
@@ -340,62 +397,27 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
   Future<void> _performSubmission() async {
     if (_isSubmitting) return;
     setState(() => _isSubmitting = true);
-    _timer?.cancel();
+    await _timerSubscription?.cancel();
+    _authoritativeTimer.stop();
 
     try {
-      final finishedAttempt = ExamEngine.submitAttempt(
-        currentAttempt: _attempt,
-        questions: widget.exam.questions,
-        totalDurationSeconds: _elapsedSeconds,
-      );
-
-      final examRepo = ref.read(examRepositoryProvider);
-      await examRepo.saveCompletedAttempt(finishedAttempt);
-
-      // Process question outcomes (automatic mistake capture & mastery updates)
       final user = ref.read(currentUserProvider).valueOrNull;
       final userId = user?.id ?? 'guest_student';
-      final outcomeService = ref.read(mistakeOutcomeServiceProvider);
-      final qMap = {for (final q in widget.exam.questions) q.id: q};
+      final submissionService = ref.read(examSubmissionServiceProvider);
 
-      for (final resp in finishedAttempt.responses.values) {
-        if (resp.selectedChoiceId == null) continue;
-        final q = qMap[resp.questionId];
-        if (q == null || !q.isScorable) continue;
-
-        try {
-          await outcomeService.processQuestionOutcome(
-            userId: userId,
-            questionId: q.id,
-            subjectId: q.subjectId,
-            unitId: q.unitId,
-            topicId: q.topicId,
-            attemptId: finishedAttempt.id,
-            selectedChoiceId: resp.selectedChoiceId,
-            isCorrect: resp.isCorrect,
-            sessionType: widget.exam.examType,
-            question: q,
-            responseTimeSeconds: resp.timeSpentSeconds,
-          );
-        } catch (_) {}
-      }
-
-      // Award Study Coins for completed exam
-      if (user != null) {
-        final earnedCoins = (finishedAttempt.score * 2).clamp(5, 50);
-        ref.read(coinLedgerProvider.notifier).awardCoins(
-              userId: user.id,
-              amount: earnedCoins,
-              reason: 'Completed exam: ${widget.exam.title}',
-              idempotencyKey: 'exam_${finishedAttempt.id}',
-              relatedEntityId: finishedAttempt.id,
-            );
-      }
+      final finalizedAttempt = await submissionService.finalizeSubmission(
+        currentAttempt: _attempt,
+        exam: widget.exam,
+        totalDurationSeconds: _elapsedSeconds,
+        userId: userId,
+        isAutoSubmitted: _authoritativeTimer.isExpired,
+        timerIntegrityWarning: _authoritativeTimer.timerIntegrityWarning,
+      );
 
       if (mounted) {
-        context.go('/results/${finishedAttempt.id}', extra: {
+        context.go('/results/${finalizedAttempt.id}', extra: {
           'exam': widget.exam,
-          'attempt': finishedAttempt,
+          'attempt': finalizedAttempt,
         });
       }
     } catch (e) {
@@ -412,19 +434,28 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
     await _performAutoSave();
     if (!mounted) return;
 
+    final isStrict = _policy.isStrictExam;
+
     final shouldExit = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(Icons.pause_circle_outline_rounded,
-                color: AppTheme.brandStrong, size: 24),
-            SizedBox(width: 8),
-            Text('Pause & Exit Exam?'),
+            Icon(
+              isStrict
+                  ? Icons.warning_amber_rounded
+                  : Icons.pause_circle_outline_rounded,
+              color: isStrict ? AppTheme.accentGold : AppTheme.brandStrong,
+              size: 24,
+            ),
+            const SizedBox(width: 8),
+            Text(isStrict ? 'Exit Exam Screen?' : 'Pause & Exit Exam?'),
           ],
         ),
-        content: const Text(
-          'Your progress has been auto-saved to offline storage. You can resume this attempt anytime from your subject dashboard.',
+        content: Text(
+          isStrict
+              ? 'Your answers are auto-saved offline. However, this is an official National Exam session: the timer will CONTINUE RUNNING while you are away.'
+              : 'Your progress has been auto-saved to offline storage. You can resume this attempt anytime from your subject dashboard.',
         ),
         actions: [
           TextButton(
@@ -998,26 +1029,33 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
 
   Widget _buildTimerBadge(bool isDark) {
     final timerText = widget.exam.isTimed
-        ? '${(_remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(_remainingSeconds % 60).toString().padLeft(2, '0')}'
-        : '${(_elapsedSeconds ~/ 60).toString().padLeft(2, '0')}:${(_elapsedSeconds % 60).toString().padLeft(2, '0')}';
+        ? AuthoritativeExamTimer.formatDuration(_remainingSeconds)
+        : AuthoritativeExamTimer.formatDuration(_elapsedSeconds);
+
+    final isUrgent =
+        widget.exam.isTimed && _remainingSeconds <= 300; // <= 5 min
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0x336366F1) : const Color(0xFFEDE9FE),
+        color: isUrgent
+            ? AppTheme.danger.withValues(alpha: 0.15)
+            : (isDark ? const Color(0x336366F1) : const Color(0xFFEDE9FE)),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark ? const Color(0x666366F1) : const Color(0xFFC4B5FD),
+          color: isUrgent
+              ? AppTheme.danger
+              : (isDark ? const Color(0x666366F1) : const Color(0xFFC4B5FD)),
           width: 1.2,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
+          Icon(
             Icons.access_time_rounded,
             size: 15,
-            color: Color(0xFF6366F1),
+            color: isUrgent ? AppTheme.danger : const Color(0xFF6366F1),
           ),
           const SizedBox(width: 5),
           Text(
@@ -1025,7 +1063,11 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 12.5,
-              color: isDark ? const Color(0xFFA5B4FC) : const Color(0xFF4F46E5),
+              color: isUrgent
+                  ? AppTheme.danger
+                  : (isDark
+                      ? const Color(0xFFA5B4FC)
+                      : const Color(0xFF4F46E5)),
             ),
           ),
         ],
@@ -1055,7 +1097,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           backgroundColor: isDark ? AppTheme.darkSurface : Colors.white,
           elevation: 0,
           scrolledUnderElevation: 0,
-          leadingWidth: 175,
+          leadingWidth: 215,
           leading: Padding(
             padding: const EdgeInsets.only(left: 4.0),
             child: Row(
@@ -1469,6 +1511,53 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
                   ),
                 ],
               ),
+              if (currentQ.readingPassage != null) ...[
+                const SizedBox(height: 14),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0x1F6366F1)
+                        : const Color(0xFFEEF2FF),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0x336366F1)
+                          : const Color(0xFFC7D2FE),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.menu_book_rounded,
+                              size: 16, color: AppTheme.brand),
+                          const SizedBox(width: 6),
+                          Text(
+                            currentQ.readingPassage!.title.isNotEmpty
+                                ? currentQ.readingPassage!.title
+                                : 'Reading Passage / Context Stimulus',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        currentQ.readingPassage!.body,
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.45,
+                          color:
+                              isDark ? AppTheme.darkText : AppTheme.lightText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 16),
               ScientificText(
                 text: currentQ.questionTextEn,
@@ -1522,8 +1611,7 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           final isSelected = currentResp?.selectedChoiceId == choice.id;
           FidelOptionState state = FidelOptionState.unselected;
 
-          if (widget.showInstantFeedback &&
-              currentResp?.selectedChoiceId != null) {
+          if (_effectiveShowFeedback && currentResp?.selectedChoiceId != null) {
             if (choice.isCorrect) {
               state = FidelOptionState.correct;
             } else if (isSelected) {
@@ -1542,8 +1630,8 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
           );
         }),
 
-        // ⚡ Immediate Feedback Solution Card
-        if (widget.showInstantFeedback &&
+        // ⚡ Immediate Feedback Solution Card (strictly hidden during National Exams)
+        if (_effectiveShowFeedback &&
             currentResp?.selectedChoiceId != null) ...[
           const SizedBox(height: 18),
           _buildInstantExplanationCard(currentQ, currentResp!, isDark),

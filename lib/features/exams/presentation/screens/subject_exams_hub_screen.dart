@@ -7,8 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/fidel_badge.dart';
+import '../../../../core/errors/failures.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../exams/domain/services/exam_engine.dart';
+import '../../../exams/domain/services/historical_paper_completeness_service.dart';
+import '../../../exams/domain/services/national_exam_blueprint_registry.dart';
+import '../../../exams/domain/services/national_exam_simulation_generator.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../../../subjects/data/repositories/local_content_repository.dart';
 import '../../../subjects/domain/models/subject_models.dart';
@@ -1686,21 +1690,28 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         examYear: yearInfo.ethiopianYear,
       );
 
-      // 2. If year-tagged questions are limited in offline seed, gracefully sample from subject pool
-      if (questions.isEmpty) {
-        questions = await contentRepo.getQuestions(
-          grade: subject.grade,
-          subjectId: subject.id,
-          limit: yearInfo.standardQuestionCount,
-        );
-      }
+      final userVariant = (user.stream.toLowerCase() == 'social')
+          ? ExamVariantCode.socialScience
+          : ExamVariantCode.naturalScience;
 
-      if (questions.isEmpty) {
+      const completenessService = HistoricalPaperCompletenessService();
+      final assessment = completenessService.assessPaper(
+        subjectId: subject.id,
+        year: yearInfo.ethiopianYear,
+        examVariant: userVariant,
+        candidateQuestions: questions,
+        customExpectedCount: yearInfo.standardQuestionCount > 0
+            ? yearInfo.standardQuestionCount
+            : null,
+      );
+
+      if (assessment.completenessStatus ==
+          HistoricalCompletenessStatus.unavailable) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'No exam questions found for ${subject.nameEn} ${yearInfo.ethiopianYear} E.C. Please download the subject package in Manage Packages.',
+                'No verified digitized questions found for ${subject.nameEn} ${yearInfo.ethiopianYear} E.C. Please download the subject package in Manage Packages.',
               ),
               backgroundColor: AppTheme.accentGold,
             ),
@@ -1709,40 +1720,74 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
         return;
       }
 
-      // Cap at standard question count
-      final examQuestions =
-          questions.take(yearInfo.standardQuestionCount).toList();
+      // If partial, check with user whether to study in practice mode (never pretend it is complete)
+      if (assessment.completenessStatus ==
+              HistoricalCompletenessStatus.verifiedPartial &&
+          isTimed) {
+        if (!mounted) return;
+        final proceedAsPractice = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Row(
+              children: [
+                Icon(Icons.info_outline_rounded,
+                    color: AppTheme.accentGold, size: 24),
+                SizedBox(width: 8),
+                Text('Partial Historical Paper'),
+              ],
+            ),
+            content: Text(
+              'Official ${yearInfo.ethiopianYear} E.C. archive has ${assessment.actualVerifiedCount} of ${assessment.expectedQuestionCount} verified questions.\n\n'
+              'Strict national-exam mode is reserved for complete papers. Would you like to study these verified questions in Practice Mode instead?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.brandStrong,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Study Practice Mode'),
+              ),
+            ],
+          ),
+        );
+        if (proceedAsPractice != true || !mounted) return;
+      }
 
-      final examTitle =
-          '${yearInfo.ethiopianYear} E.C. (${yearInfo.gregorianYear}) ${subject.nameEn} National Exam';
-
-      final exam = Exam(
-        id: 'nat_exam_${subject.id}_${yearInfo.ethiopianYear}_${DateTime.now().millisecondsSinceEpoch}',
-        title: examTitle,
-        examType: ExamType.mockFull,
-        grade: subject.grade,
+      final isStrict = assessment.isEligibleForStrictNationalExam && isTimed;
+      final exam = completenessService.createHistoricalExam(
+        assessment: assessment,
+        isStrictExamMode: isStrict,
         stream: user.stream,
-        subjectId: subject.id,
-        timeLimitMinutes: isTimed ? yearInfo.standardTimeMinutes : 0,
-        totalQuestions: examQuestions.length,
-        questions: examQuestions,
-        createdAt: DateTime.now(),
       );
-
-      final attempt = ExamEngine.startAttempt(
-        attemptId: 'att_nat_${DateTime.now().millisecondsSinceEpoch}',
-        userId: user.id,
-        exam: exam,
-      );
-
-      await examRepo.saveActiveAttempt(attempt);
 
       if (mounted) {
-        await context.push('/exam_runner', extra: {
-          'exam': exam,
-          'attempt': attempt,
-          'showInstantFeedback': showInstantFeedback,
-        });
+        if (isStrict) {
+          await context.push('/pre_exam_check', extra: {
+            'exam': exam,
+            'policy': NationalExamPolicy.historicalPaper,
+          });
+        } else {
+          final attempt = ExamEngine.startAttempt(
+            attemptId: 'att_hist_${DateTime.now().millisecondsSinceEpoch}',
+            userId: user.id,
+            exam: exam,
+          );
+          await examRepo.saveActiveAttempt(attempt);
+          if (mounted) {
+            await context.push('/exam_runner', extra: {
+              'exam': exam,
+              'attempt': attempt,
+              'showInstantFeedback': showInstantFeedback,
+              'policy': NationalExamPolicy.practice,
+            });
+          }
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -1756,6 +1801,243 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
     } finally {
       if (mounted) setState(() => _isLaunching = false);
     }
+  }
+
+  Future<void> _launchBlueprintSimulation(
+    Subject subject,
+    _SubjectHubTheme hubTheme,
+  ) async {
+    if (_isLaunching) return;
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please sign in to begin exam simulation.')),
+      );
+      return;
+    }
+
+    setState(() => _isLaunching = true);
+
+    try {
+      final userVariant = (user.stream.toLowerCase() == 'social')
+          ? ExamVariantCode.socialScience
+          : ExamVariantCode.naturalScience;
+
+      final bp = NationalExamBlueprintRegistry.getBlueprint(
+        subjectId: subject.id,
+        examVariant: userVariant,
+      );
+
+      if (bp == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'No national exam blueprint defined for ${subject.nameEn}.'),
+              backgroundColor: AppTheme.accentGold,
+            ),
+          );
+        }
+        return;
+      }
+
+      final contentRepo = ref.read(contentRepositoryProvider);
+      final allPool = await contentRepo.getQuestions(
+        grade: 12,
+        subjectId: subject.id,
+        limit: 300,
+      );
+
+      const generator = NationalExamSimulationGenerator();
+      final seed = DateTime.now().millisecondsSinceEpoch % 100000;
+      final simulationExam = generator.generateSimulation(
+        blueprint: bp,
+        questionPool: allPool,
+        seed: seed,
+      );
+
+      if (mounted) {
+        await context.push('/pre_exam_check', extra: {
+          'exam': simulationExam,
+          'policy': NationalExamPolicy.nationalSimulation,
+        });
+      }
+    } on SimulationSufficiencyFailure catch (e) {
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            title: const Row(
+              children: [
+                Icon(Icons.inventory_2_outlined, color: AppTheme.accentGold),
+                SizedBox(width: 8),
+                Text('Content Gap Detected'),
+              ],
+            ),
+            content: Text(
+              'Simulation generation requires ${e.requiredCount} verified questions for partition "${e.partitionName}", '
+              'but only ${e.availableCount} verified questions are installed locally.\n\n'
+              'Please download the latest subject package in Manage Packages.',
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to generate simulation: $e'),
+            backgroundColor: AppTheme.danger,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLaunching = false);
+    }
+  }
+
+  Widget _buildNationalSimulationBanner(
+    BuildContext context,
+    Subject subject,
+    _SubjectHubTheme hubTheme,
+    bool isWide,
+    bool isAmharic,
+    bool isDark,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkSurface : AppTheme.lightSurface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: isWide
+          ? Row(
+              children: [
+                Expanded(
+                  child: _buildSimulationBannerText(subject, isAmharic, isDark),
+                ),
+                const SizedBox(width: 24),
+                _buildSimulationCTAButton(subject, hubTheme),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildSimulationBannerText(subject, isAmharic, isDark),
+                const SizedBox(height: 16),
+                _buildSimulationCTAButton(subject, hubTheme),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildSimulationBannerText(
+    Subject subject,
+    bool isAmharic,
+    bool isDark,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const FidelBadge(
+              text: 'ESSLCE SIMULATION MODE',
+              variant: FidelBadgeVariant.gold,
+              isSmall: true,
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: AppTheme.green.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.offline_pin_rounded,
+                      size: 13, color: AppTheme.green),
+                  SizedBox(width: 4),
+                  Text(
+                    'Deterministic Blueprint',
+                    style: TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          isAmharic
+              ? 'የ12ኛ ክፍል ሀገር አቀፍ ፈተና ሲሙሌሽን (ESSLCE)'
+              : 'Full National Exam Simulation (ESSLCE)',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          isAmharic
+              ? 'በይፋዊ የትምህርት ክፍፍል ሚዛን የተዘጋጀ፣ በጊዜ የተገደበ፣ መልሶች ሳይታዩ በፈተና አዳራሽ ድባብ የሚሰጥ ሙሉ የፈተና ልምምድ።'
+              : 'Sit a complete, timed Grade 12 national exam under authentic test conditions: authoritative timer, hidden explanations, offline autosave, and detailed post-exam breakdown.',
+          style: TextStyle(
+            fontSize: 12.5,
+            height: 1.4,
+            color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSimulationCTAButton(
+    Subject subject,
+    _SubjectHubTheme hubTheme,
+  ) {
+    return ElevatedButton.icon(
+      onPressed: _isLaunching
+          ? null
+          : () => _launchBlueprintSimulation(subject, hubTheme),
+      icon: const Icon(Icons.rocket_launch_rounded, size: 18),
+      label: const Text(
+        'Sit Exam Simulation',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: hubTheme.accentColor,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 2,
+      ),
+    );
   }
 
   _SubjectHubTheme _getHubTheme(Subject subject) {
@@ -1863,6 +2145,16 @@ class _SubjectExamsHubScreenState extends ConsumerState<SubjectExamsHubScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
+                                // Pathway 0: Full ESSLCE National Exam Simulation Banner
+                                _buildNationalSimulationBanner(
+                                  context,
+                                  subject,
+                                  hubTheme,
+                                  isWide,
+                                  isAmharic,
+                                  isDark,
+                                ),
+
                                 // Pathway 1: Previous Years National Exams Header & Controls
                                 _buildPastYearsSectionHeader(
                                   context,

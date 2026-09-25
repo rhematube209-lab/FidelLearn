@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../subjects/domain/models/subject_models.dart';
+import 'exam_mode.dart';
+
+export 'exam_mode.dart';
 
 enum ExamType {
   practice,
@@ -51,9 +55,17 @@ class Exam extends Equatable {
   final String id;
   final String title;
   final ExamType examType;
+  final ExamMode examMode;
+  final ExamSourceType sourceType;
   final int grade;
   final String stream;
   final String? subjectId;
+  final ExamVariantCode? examVariant;
+  final String? blueprintVersion;
+  final int? simulationSeed;
+  final int? historicalYear;
+  final HistoricalCompletenessStatus? completenessStatus;
+  final List<ExamSection>? sections;
   final int timeLimitMinutes; // 0 for untimed
   final int totalQuestions;
   final List<Question> questions;
@@ -63,9 +75,17 @@ class Exam extends Equatable {
     required this.id,
     required this.title,
     required this.examType,
+    this.examMode = ExamMode.practice,
+    this.sourceType = ExamSourceType.generatedSimulation,
     required this.grade,
     required this.stream,
     this.subjectId,
+    this.examVariant,
+    this.blueprintVersion,
+    this.simulationSeed,
+    this.historicalYear,
+    this.completenessStatus,
+    this.sections,
     required this.timeLimitMinutes,
     required this.totalQuestions,
     required this.questions,
@@ -79,9 +99,17 @@ class Exam extends Equatable {
         id,
         title,
         examType,
+        examMode,
+        sourceType,
         grade,
         stream,
         subjectId,
+        examVariant,
+        blueprintVersion,
+        simulationSeed,
+        historicalYear,
+        completenessStatus,
+        sections,
         timeLimitMinutes,
         totalQuestions,
         questions,
@@ -155,6 +183,20 @@ class ExamAttempt extends Equatable {
   final String examId;
   final String examTitle;
   final String subjectId;
+  final ExamMode examMode;
+  final ExamSourceType sourceType;
+  final ExamVariantCode? examVariant;
+  final String? blueprintVersion;
+  final int? simulationSeed;
+  final List<String>? questionOrder;
+  final int timeLimitSeconds;
+  final bool autoSubmitted;
+  final int? historicalYear;
+  final bool timerIntegrityWarning;
+  final Map<String, String>? packageSnapshot;
+  final String? examIntegrityHash;
+  final DateTime? outcomesProcessedAt;
+  final String scoringPolicy;
   final DateTime startTime;
   final DateTime? endTime;
   final int durationSeconds;
@@ -174,6 +216,20 @@ class ExamAttempt extends Equatable {
     required this.examId,
     required this.examTitle,
     required this.subjectId,
+    this.examMode = ExamMode.practice,
+    this.sourceType = ExamSourceType.generatedSimulation,
+    this.examVariant,
+    this.blueprintVersion,
+    this.simulationSeed,
+    this.questionOrder,
+    this.timeLimitSeconds = 0,
+    this.autoSubmitted = false,
+    this.historicalYear,
+    this.timerIntegrityWarning = false,
+    this.packageSnapshot,
+    this.examIntegrityHash,
+    this.outcomesProcessedAt,
+    this.scoringPolicy = 'standard_uniform_v1',
     required this.startTime,
     this.endTime,
     required this.durationSeconds,
@@ -199,6 +255,20 @@ class ExamAttempt extends Equatable {
     bool? isCompleted,
     Map<String, UserResponse>? responses,
     String? syncStatus,
+    ExamMode? examMode,
+    ExamSourceType? sourceType,
+    ExamVariantCode? examVariant,
+    String? blueprintVersion,
+    int? simulationSeed,
+    List<String>? questionOrder,
+    int? timeLimitSeconds,
+    bool? autoSubmitted,
+    int? historicalYear,
+    bool? timerIntegrityWarning,
+    Map<String, String>? packageSnapshot,
+    String? examIntegrityHash,
+    DateTime? outcomesProcessedAt,
+    String? scoringPolicy,
   }) {
     return ExamAttempt(
       id: id,
@@ -206,6 +276,21 @@ class ExamAttempt extends Equatable {
       examId: examId,
       examTitle: examTitle,
       subjectId: subjectId,
+      examMode: examMode ?? this.examMode,
+      sourceType: sourceType ?? this.sourceType,
+      examVariant: examVariant ?? this.examVariant,
+      blueprintVersion: blueprintVersion ?? this.blueprintVersion,
+      simulationSeed: simulationSeed ?? this.simulationSeed,
+      questionOrder: questionOrder ?? this.questionOrder,
+      timeLimitSeconds: timeLimitSeconds ?? this.timeLimitSeconds,
+      autoSubmitted: autoSubmitted ?? this.autoSubmitted,
+      historicalYear: historicalYear ?? this.historicalYear,
+      timerIntegrityWarning:
+          timerIntegrityWarning ?? this.timerIntegrityWarning,
+      packageSnapshot: packageSnapshot ?? this.packageSnapshot,
+      examIntegrityHash: examIntegrityHash ?? this.examIntegrityHash,
+      outcomesProcessedAt: outcomesProcessedAt ?? this.outcomesProcessedAt,
+      scoringPolicy: scoringPolicy ?? this.scoringPolicy,
       startTime: startTime,
       endTime: endTime ?? this.endTime,
       durationSeconds: durationSeconds ?? this.durationSeconds,
@@ -228,6 +313,21 @@ class ExamAttempt extends Equatable {
       'exam_id': examId,
       'exam_title': examTitle,
       'subject_id': subjectId,
+      'exam_mode': examMode.name,
+      'source_type': sourceType.name,
+      if (examVariant != null) 'exam_variant': examVariant!.name,
+      if (blueprintVersion != null) 'blueprint_version': blueprintVersion,
+      if (simulationSeed != null) 'simulation_seed': simulationSeed,
+      if (questionOrder != null) 'question_order': questionOrder,
+      'time_limit_seconds': timeLimitSeconds,
+      'auto_submitted': autoSubmitted,
+      if (historicalYear != null) 'historical_year': historicalYear,
+      'timer_integrity_warning': timerIntegrityWarning,
+      if (packageSnapshot != null) 'package_snapshot': packageSnapshot,
+      if (examIntegrityHash != null) 'exam_integrity_hash': examIntegrityHash,
+      if (outcomesProcessedAt != null)
+        'outcomes_processed_at': outcomesProcessedAt!.toIso8601String(),
+      'scoring_policy': scoringPolicy,
       'start_time': startTime.toIso8601String(),
       'end_time': endTime?.toIso8601String(),
       'duration_seconds': durationSeconds,
@@ -256,6 +356,25 @@ class ExamAttempt extends Equatable {
       examId: json['exam_id'] as String,
       examTitle: json['exam_title'] as String? ?? 'Practice Exam',
       subjectId: json['subject_id'] as String? ?? 'math_g12',
+      examMode: ExamMode.fromString(json['exam_mode'] as String?),
+      sourceType: ExamSourceType.fromString(json['source_type'] as String?),
+      examVariant: json['exam_variant'] != null
+          ? ExamVariantCode.fromString(json['exam_variant'] as String)
+          : null,
+      blueprintVersion: json['blueprint_version'] as String?,
+      simulationSeed: json['simulation_seed'] as int?,
+      questionOrder: (json['question_order'] as List<dynamic>?)?.cast<String>(),
+      timeLimitSeconds: json['time_limit_seconds'] as int? ?? 0,
+      autoSubmitted: json['auto_submitted'] as bool? ?? false,
+      historicalYear: json['historical_year'] as int?,
+      timerIntegrityWarning: json['timer_integrity_warning'] as bool? ?? false,
+      packageSnapshot: (json['package_snapshot'] as Map<String, dynamic>?)
+          ?.map((k, v) => MapEntry(k, v.toString())),
+      examIntegrityHash: json['exam_integrity_hash'] as String?,
+      outcomesProcessedAt: json['outcomes_processed_at'] != null
+          ? DateTime.tryParse(json['outcomes_processed_at'] as String)
+          : null,
+      scoringPolicy: json['scoring_policy'] as String? ?? 'standard_uniform_v1',
       startTime: DateTime.parse(json['start_time'] as String),
       endTime: json['end_time'] != null
           ? DateTime.parse(json['end_time'] as String)
@@ -280,6 +399,20 @@ class ExamAttempt extends Equatable {
         examId,
         examTitle,
         subjectId,
+        examMode,
+        sourceType,
+        examVariant,
+        blueprintVersion,
+        simulationSeed,
+        questionOrder,
+        timeLimitSeconds,
+        autoSubmitted,
+        historicalYear,
+        timerIntegrityWarning,
+        packageSnapshot,
+        examIntegrityHash,
+        outcomesProcessedAt,
+        scoringPolicy,
         startTime,
         endTime,
         durationSeconds,

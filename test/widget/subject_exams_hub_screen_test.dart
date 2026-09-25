@@ -178,6 +178,10 @@ void main() {
     expect(find.textContaining('Start ('), findsNWidgets(5));
     expect(find.text('Start Exam'), findsNothing);
 
+    // Ensure download button is scrolled into view in SingleChildScrollView
+    await tester.ensureVisible(find.text('Download').first);
+    await tester.pumpAndSettle();
+
     // Tap the first download button (for 2012 E.C.)
     await tester.tap(find.text('Download').first);
     await tester.pump(); // Enter downloading state

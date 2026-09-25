@@ -102,3 +102,50 @@ class StorageFailure extends Failure {
 class NotFoundFailure extends Failure {
   const NotFoundFailure(super.message, [super.code]);
 }
+
+class SimulationSufficiencyFailure extends Failure {
+  final String subjectId;
+  final String partitionName;
+  final int requiredCount;
+  final int availableCount;
+
+  const SimulationSufficiencyFailure({
+    required this.subjectId,
+    required this.partitionName,
+    required this.requiredCount,
+    required this.availableCount,
+  }) : super(
+          'Insufficient verified questions for simulation "$subjectId" partition "$partitionName": '
+          'required $requiredCount, available $availableCount.',
+        );
+
+  @override
+  List<Object?> get props => [
+        message,
+        code,
+        subjectId,
+        partitionName,
+        requiredCount,
+        availableCount,
+      ];
+}
+
+class HistoricalIncompleteFailure extends Failure {
+  final String paperTitle;
+  final int expectedCount;
+  final int verifiedCount;
+
+  const HistoricalIncompleteFailure({
+    required this.paperTitle,
+    required this.expectedCount,
+    required this.verifiedCount,
+  }) : super(
+          'Historical paper "$paperTitle" is incomplete: '
+          'expected $expectedCount questions, but only $verifiedCount are verified. '
+          'Cannot be launched as a strict full national exam.',
+        );
+
+  @override
+  List<Object?> get props =>
+      [message, code, paperTitle, expectedCount, verifiedCount];
+}

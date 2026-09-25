@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import '../../../../core/database/app_database.dart';
 import '../../../../core/sync/models/sync_models.dart';
 import '../../../../core/sync/repositories/sync_queue_repository.dart';
+import '../../../subjects/domain/models/subject_models.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/repositories/exam_repository.dart';
 
@@ -81,6 +82,24 @@ class DriftExamRepository implements ExamRepository {
             syncStatus: attempt.syncStatus,
             responsesJson: responsesMapJson,
             createdAt: attempt.startTime,
+            examMode: attempt.examMode.name,
+            sourceType: attempt.sourceType.name,
+            examVariant: attempt.examVariant?.name,
+            blueprintVersion: attempt.blueprintVersion,
+            simulationSeed: attempt.simulationSeed,
+            questionOrderJson: attempt.questionOrder != null
+                ? jsonEncode(attempt.questionOrder)
+                : null,
+            timeLimitSeconds: attempt.timeLimitSeconds,
+            autoSubmitted: attempt.autoSubmitted,
+            historicalYear: attempt.historicalYear,
+            timerIntegrityWarning: attempt.timerIntegrityWarning,
+            packageSnapshotJson: attempt.packageSnapshot != null
+                ? jsonEncode(attempt.packageSnapshot)
+                : null,
+            examIntegrityHash: attempt.examIntegrityHash,
+            outcomesProcessedAt: attempt.outcomesProcessedAt,
+            scoringPolicy: attempt.scoringPolicy,
           ),
           mode: InsertMode.insertOrReplace,
         );
@@ -109,12 +128,45 @@ class DriftExamRepository implements ExamRepository {
       );
     } catch (_) {}
 
+    List<String>? questionOrder;
+    if (row.questionOrderJson != null) {
+      try {
+        questionOrder = (jsonDecode(row.questionOrderJson!) as List<dynamic>)
+            .cast<String>();
+      } catch (_) {}
+    }
+
+    Map<String, String>? packageSnapshot;
+    if (row.packageSnapshotJson != null) {
+      try {
+        final rawMap =
+            jsonDecode(row.packageSnapshotJson!) as Map<String, dynamic>;
+        packageSnapshot = rawMap.map((k, v) => MapEntry(k, v.toString()));
+      } catch (_) {}
+    }
+
     return ExamAttempt(
       id: row.id,
       userId: row.userId,
       examId: row.examId,
       examTitle: row.examTitle,
       subjectId: row.subjectId,
+      examMode: ExamMode.fromString(row.examMode),
+      sourceType: ExamSourceType.fromString(row.sourceType),
+      examVariant: row.examVariant != null
+          ? ExamVariantCode.fromString(row.examVariant!)
+          : null,
+      blueprintVersion: row.blueprintVersion,
+      simulationSeed: row.simulationSeed,
+      questionOrder: questionOrder,
+      timeLimitSeconds: row.timeLimitSeconds,
+      autoSubmitted: row.autoSubmitted,
+      historicalYear: row.historicalYear,
+      timerIntegrityWarning: row.timerIntegrityWarning,
+      packageSnapshot: packageSnapshot,
+      examIntegrityHash: row.examIntegrityHash,
+      outcomesProcessedAt: row.outcomesProcessedAt,
+      scoringPolicy: row.scoringPolicy,
       startTime: row.startTime,
       endTime: row.endTime,
       durationSeconds: row.durationSeconds,

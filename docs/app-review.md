@@ -215,9 +215,9 @@ graph TD
 | **Priority 0 (P0)** | **Grade 12 Launch Curriculum & Architecture Freeze**<br>Canonical 9 subjects / 10 tracks matrix, unified Mathematics dual-variant model, non-destructive Drift/Supabase schemas, bilingual ARB strings. | **FROZEN** (`p0-grade12-schema-freeze-v1.0.0`) |
 | **Post-P0 Validation** | **Architecture & Track Isolation Validation**<br>Strict cross-track isolation (0% Math Natural/Social leakage), Civics excluded from national exam calculations, bilingual ARB completeness. | **PASS** |
 | **Priority 2 (P2)** | **Adaptive Learning & Personalized Study Planner**<br>Deterministic multi-factor prioritization, non-destructive Drift schema v4, native support for English (`mixed`) and Aptitude (`skillBased`), canonical 4-phase exam proximity engine, bilingual 'Why This?' audit explanations. | **FROZEN** (`adaptive_planner_v1.1`) |
-| **Priority 3 (P3)** | **Advanced Scientific Rendering**<br>Offline-first high-fidelity LaTeX/KaTeX equation rendering, scalable vector diagrams (SVG/Canvas), chemical formulas and reaction equations, sub-microsecond offline render cache. *(Note: Teacher/School portals were completed in MVP Phase 4).* | **NEXT PRIORITY** (Planned) |
-| **Priority 4 (P4)** | **Mastery + Intelligent Spaced Repetition**<br>SuperMemo-2 (SM-2) memory decay scheduling, multi-tier mastery progression (`needsReview` → `improving` → `mastered`), adaptive retention intervals. | Planned |
-| **Priority 5 (P5)** | **ESSLCE Full Exam Simulation**<br>True-to-life national entrance exam simulation, strict booklet timing, randomized booklet permutations, proctored lock-down modes. | Planned |
+| **Priority 3 (P3)** | **Advanced Scientific Rendering**<br>Offline-first high-fidelity LaTeX/KaTeX equation rendering, scalable vector diagrams (SVG/Canvas), chemical formulas and reaction equations, sub-microsecond offline render cache. | **FROZEN** (`priority-3-scientific-rendering-v1.0.0`) |
+| **Priority 4 (P4)** | **Mastery + Intelligent Spaced Repetition**<br>Deterministic memory decay scheduling (`fidel_spaced_v1.0`), multi-tier mastery progression (`needsReview` → `improving` → `mastered`), adaptive retention intervals. | **FROZEN** (`priority-4-mastery-spaced-repetition-v1.0.0`) |
+| **Priority 5 (P5)** | **ESSLCE National Exam Simulation**<br>True-to-life national entrance exam simulation, authoritative wall-clock timing, deterministic blueprint generation, interruption recovery, post-exam review. | **FROZEN** (`priority-5-national-exam-simulation-v1.0.0`) |
 
 ---
 

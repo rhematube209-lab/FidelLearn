@@ -13,6 +13,7 @@ import '../../features/challenges/data/repositories/local_challenge_repository.d
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
 import '../../features/exams/data/repositories/drift_exam_repository.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
+import '../../features/exams/domain/services/exam_submission_service.dart';
 import '../../features/mistakes/domain/models/mistake_model.dart';
 import '../../features/mistakes/domain/repositories/mistake_repository.dart';
 import '../../features/mistakes/domain/services/mistake_outcome_service.dart';
@@ -562,6 +563,17 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
     }
   }
 }
+
+final examSubmissionServiceProvider = Provider<ExamSubmissionService>((ref) {
+  final examRepo = ref.watch(examRepositoryProvider);
+  final outcomeService = ref.watch(mistakeOutcomeServiceProvider);
+  final coinNotifier = ref.watch(coinLedgerProvider.notifier);
+  return ExamSubmissionService(
+    examRepo: examRepo,
+    outcomeService: outcomeService,
+    coinNotifier: coinNotifier,
+  );
+});
 
 // --- Adaptive Study Planner & Today's Plan State ---
 final studyPlanRepositoryProvider = Provider<StudyPlanRepository>((ref) {

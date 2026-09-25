@@ -133,6 +133,106 @@ class $DbExamAttemptsTable extends DbExamAttempts
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _examModeMeta =
+      const VerificationMeta('examMode');
+  @override
+  late final GeneratedColumn<String> examMode = GeneratedColumn<String>(
+      'exam_mode', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('practice'));
+  static const VerificationMeta _sourceTypeMeta =
+      const VerificationMeta('sourceType');
+  @override
+  late final GeneratedColumn<String> sourceType = GeneratedColumn<String>(
+      'source_type', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('generated_simulation'));
+  static const VerificationMeta _examVariantMeta =
+      const VerificationMeta('examVariant');
+  @override
+  late final GeneratedColumn<String> examVariant = GeneratedColumn<String>(
+      'exam_variant', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _blueprintVersionMeta =
+      const VerificationMeta('blueprintVersion');
+  @override
+  late final GeneratedColumn<String> blueprintVersion = GeneratedColumn<String>(
+      'blueprint_version', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _simulationSeedMeta =
+      const VerificationMeta('simulationSeed');
+  @override
+  late final GeneratedColumn<int> simulationSeed = GeneratedColumn<int>(
+      'simulation_seed', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _questionOrderJsonMeta =
+      const VerificationMeta('questionOrderJson');
+  @override
+  late final GeneratedColumn<String> questionOrderJson =
+      GeneratedColumn<String>('question_order_json', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _timeLimitSecondsMeta =
+      const VerificationMeta('timeLimitSeconds');
+  @override
+  late final GeneratedColumn<int> timeLimitSeconds = GeneratedColumn<int>(
+      'time_limit_seconds', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _autoSubmittedMeta =
+      const VerificationMeta('autoSubmitted');
+  @override
+  late final GeneratedColumn<bool> autoSubmitted = GeneratedColumn<bool>(
+      'auto_submitted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("auto_submitted" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _historicalYearMeta =
+      const VerificationMeta('historicalYear');
+  @override
+  late final GeneratedColumn<int> historicalYear = GeneratedColumn<int>(
+      'historical_year', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _timerIntegrityWarningMeta =
+      const VerificationMeta('timerIntegrityWarning');
+  @override
+  late final GeneratedColumn<bool> timerIntegrityWarning =
+      GeneratedColumn<bool>('timer_integrity_warning', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'CHECK ("timer_integrity_warning" IN (0, 1))'),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _packageSnapshotJsonMeta =
+      const VerificationMeta('packageSnapshotJson');
+  @override
+  late final GeneratedColumn<String> packageSnapshotJson =
+      GeneratedColumn<String>('package_snapshot_json', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _examIntegrityHashMeta =
+      const VerificationMeta('examIntegrityHash');
+  @override
+  late final GeneratedColumn<String> examIntegrityHash =
+      GeneratedColumn<String>('exam_integrity_hash', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _outcomesProcessedAtMeta =
+      const VerificationMeta('outcomesProcessedAt');
+  @override
+  late final GeneratedColumn<DateTime> outcomesProcessedAt =
+      GeneratedColumn<DateTime>('outcomes_processed_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _scoringPolicyMeta =
+      const VerificationMeta('scoringPolicy');
+  @override
+  late final GeneratedColumn<String> scoringPolicy = GeneratedColumn<String>(
+      'scoring_policy', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('standard_uniform_v1'));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -152,7 +252,21 @@ class $DbExamAttemptsTable extends DbExamAttempts
         isCompleted,
         syncStatus,
         responsesJson,
-        createdAt
+        createdAt,
+        examMode,
+        sourceType,
+        examVariant,
+        blueprintVersion,
+        simulationSeed,
+        questionOrderJson,
+        timeLimitSeconds,
+        autoSubmitted,
+        historicalYear,
+        timerIntegrityWarning,
+        packageSnapshotJson,
+        examIntegrityHash,
+        outcomesProcessedAt,
+        scoringPolicy
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -269,6 +383,88 @@ class $DbExamAttemptsTable extends DbExamAttempts
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (data.containsKey('exam_mode')) {
+      context.handle(_examModeMeta,
+          examMode.isAcceptableOrUnknown(data['exam_mode']!, _examModeMeta));
+    }
+    if (data.containsKey('source_type')) {
+      context.handle(
+          _sourceTypeMeta,
+          sourceType.isAcceptableOrUnknown(
+              data['source_type']!, _sourceTypeMeta));
+    }
+    if (data.containsKey('exam_variant')) {
+      context.handle(
+          _examVariantMeta,
+          examVariant.isAcceptableOrUnknown(
+              data['exam_variant']!, _examVariantMeta));
+    }
+    if (data.containsKey('blueprint_version')) {
+      context.handle(
+          _blueprintVersionMeta,
+          blueprintVersion.isAcceptableOrUnknown(
+              data['blueprint_version']!, _blueprintVersionMeta));
+    }
+    if (data.containsKey('simulation_seed')) {
+      context.handle(
+          _simulationSeedMeta,
+          simulationSeed.isAcceptableOrUnknown(
+              data['simulation_seed']!, _simulationSeedMeta));
+    }
+    if (data.containsKey('question_order_json')) {
+      context.handle(
+          _questionOrderJsonMeta,
+          questionOrderJson.isAcceptableOrUnknown(
+              data['question_order_json']!, _questionOrderJsonMeta));
+    }
+    if (data.containsKey('time_limit_seconds')) {
+      context.handle(
+          _timeLimitSecondsMeta,
+          timeLimitSeconds.isAcceptableOrUnknown(
+              data['time_limit_seconds']!, _timeLimitSecondsMeta));
+    }
+    if (data.containsKey('auto_submitted')) {
+      context.handle(
+          _autoSubmittedMeta,
+          autoSubmitted.isAcceptableOrUnknown(
+              data['auto_submitted']!, _autoSubmittedMeta));
+    }
+    if (data.containsKey('historical_year')) {
+      context.handle(
+          _historicalYearMeta,
+          historicalYear.isAcceptableOrUnknown(
+              data['historical_year']!, _historicalYearMeta));
+    }
+    if (data.containsKey('timer_integrity_warning')) {
+      context.handle(
+          _timerIntegrityWarningMeta,
+          timerIntegrityWarning.isAcceptableOrUnknown(
+              data['timer_integrity_warning']!, _timerIntegrityWarningMeta));
+    }
+    if (data.containsKey('package_snapshot_json')) {
+      context.handle(
+          _packageSnapshotJsonMeta,
+          packageSnapshotJson.isAcceptableOrUnknown(
+              data['package_snapshot_json']!, _packageSnapshotJsonMeta));
+    }
+    if (data.containsKey('exam_integrity_hash')) {
+      context.handle(
+          _examIntegrityHashMeta,
+          examIntegrityHash.isAcceptableOrUnknown(
+              data['exam_integrity_hash']!, _examIntegrityHashMeta));
+    }
+    if (data.containsKey('outcomes_processed_at')) {
+      context.handle(
+          _outcomesProcessedAtMeta,
+          outcomesProcessedAt.isAcceptableOrUnknown(
+              data['outcomes_processed_at']!, _outcomesProcessedAtMeta));
+    }
+    if (data.containsKey('scoring_policy')) {
+      context.handle(
+          _scoringPolicyMeta,
+          scoringPolicy.isAcceptableOrUnknown(
+              data['scoring_policy']!, _scoringPolicyMeta));
+    }
     return context;
   }
 
@@ -314,6 +510,36 @@ class $DbExamAttemptsTable extends DbExamAttempts
           .read(DriftSqlType.string, data['${effectivePrefix}responses_json'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      examMode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_mode'])!,
+      sourceType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}source_type'])!,
+      examVariant: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}exam_variant']),
+      blueprintVersion: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}blueprint_version']),
+      simulationSeed: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}simulation_seed']),
+      questionOrderJson: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}question_order_json']),
+      timeLimitSeconds: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}time_limit_seconds'])!,
+      autoSubmitted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}auto_submitted'])!,
+      historicalYear: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}historical_year']),
+      timerIntegrityWarning: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool,
+          data['${effectivePrefix}timer_integrity_warning'])!,
+      packageSnapshotJson: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}package_snapshot_json']),
+      examIntegrityHash: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}exam_integrity_hash']),
+      outcomesProcessedAt: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}outcomes_processed_at']),
+      scoringPolicy: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}scoring_policy'])!,
     );
   }
 
@@ -342,6 +568,20 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
   final String syncStatus;
   final String responsesJson;
   final DateTime createdAt;
+  final String examMode;
+  final String sourceType;
+  final String? examVariant;
+  final String? blueprintVersion;
+  final int? simulationSeed;
+  final String? questionOrderJson;
+  final int timeLimitSeconds;
+  final bool autoSubmitted;
+  final int? historicalYear;
+  final bool timerIntegrityWarning;
+  final String? packageSnapshotJson;
+  final String? examIntegrityHash;
+  final DateTime? outcomesProcessedAt;
+  final String scoringPolicy;
   const DbExamAttempt(
       {required this.id,
       required this.userId,
@@ -360,7 +600,21 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
       required this.isCompleted,
       required this.syncStatus,
       required this.responsesJson,
-      required this.createdAt});
+      required this.createdAt,
+      required this.examMode,
+      required this.sourceType,
+      this.examVariant,
+      this.blueprintVersion,
+      this.simulationSeed,
+      this.questionOrderJson,
+      required this.timeLimitSeconds,
+      required this.autoSubmitted,
+      this.historicalYear,
+      required this.timerIntegrityWarning,
+      this.packageSnapshotJson,
+      this.examIntegrityHash,
+      this.outcomesProcessedAt,
+      required this.scoringPolicy});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -384,6 +638,36 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
     map['sync_status'] = Variable<String>(syncStatus);
     map['responses_json'] = Variable<String>(responsesJson);
     map['created_at'] = Variable<DateTime>(createdAt);
+    map['exam_mode'] = Variable<String>(examMode);
+    map['source_type'] = Variable<String>(sourceType);
+    if (!nullToAbsent || examVariant != null) {
+      map['exam_variant'] = Variable<String>(examVariant);
+    }
+    if (!nullToAbsent || blueprintVersion != null) {
+      map['blueprint_version'] = Variable<String>(blueprintVersion);
+    }
+    if (!nullToAbsent || simulationSeed != null) {
+      map['simulation_seed'] = Variable<int>(simulationSeed);
+    }
+    if (!nullToAbsent || questionOrderJson != null) {
+      map['question_order_json'] = Variable<String>(questionOrderJson);
+    }
+    map['time_limit_seconds'] = Variable<int>(timeLimitSeconds);
+    map['auto_submitted'] = Variable<bool>(autoSubmitted);
+    if (!nullToAbsent || historicalYear != null) {
+      map['historical_year'] = Variable<int>(historicalYear);
+    }
+    map['timer_integrity_warning'] = Variable<bool>(timerIntegrityWarning);
+    if (!nullToAbsent || packageSnapshotJson != null) {
+      map['package_snapshot_json'] = Variable<String>(packageSnapshotJson);
+    }
+    if (!nullToAbsent || examIntegrityHash != null) {
+      map['exam_integrity_hash'] = Variable<String>(examIntegrityHash);
+    }
+    if (!nullToAbsent || outcomesProcessedAt != null) {
+      map['outcomes_processed_at'] = Variable<DateTime>(outcomesProcessedAt);
+    }
+    map['scoring_policy'] = Variable<String>(scoringPolicy);
     return map;
   }
 
@@ -409,6 +693,36 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
       syncStatus: Value(syncStatus),
       responsesJson: Value(responsesJson),
       createdAt: Value(createdAt),
+      examMode: Value(examMode),
+      sourceType: Value(sourceType),
+      examVariant: examVariant == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examVariant),
+      blueprintVersion: blueprintVersion == null && nullToAbsent
+          ? const Value.absent()
+          : Value(blueprintVersion),
+      simulationSeed: simulationSeed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(simulationSeed),
+      questionOrderJson: questionOrderJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(questionOrderJson),
+      timeLimitSeconds: Value(timeLimitSeconds),
+      autoSubmitted: Value(autoSubmitted),
+      historicalYear: historicalYear == null && nullToAbsent
+          ? const Value.absent()
+          : Value(historicalYear),
+      timerIntegrityWarning: Value(timerIntegrityWarning),
+      packageSnapshotJson: packageSnapshotJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(packageSnapshotJson),
+      examIntegrityHash: examIntegrityHash == null && nullToAbsent
+          ? const Value.absent()
+          : Value(examIntegrityHash),
+      outcomesProcessedAt: outcomesProcessedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(outcomesProcessedAt),
+      scoringPolicy: Value(scoringPolicy),
     );
   }
 
@@ -434,6 +748,25 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
       responsesJson: serializer.fromJson<String>(json['responsesJson']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      examMode: serializer.fromJson<String>(json['examMode']),
+      sourceType: serializer.fromJson<String>(json['sourceType']),
+      examVariant: serializer.fromJson<String?>(json['examVariant']),
+      blueprintVersion: serializer.fromJson<String?>(json['blueprintVersion']),
+      simulationSeed: serializer.fromJson<int?>(json['simulationSeed']),
+      questionOrderJson:
+          serializer.fromJson<String?>(json['questionOrderJson']),
+      timeLimitSeconds: serializer.fromJson<int>(json['timeLimitSeconds']),
+      autoSubmitted: serializer.fromJson<bool>(json['autoSubmitted']),
+      historicalYear: serializer.fromJson<int?>(json['historicalYear']),
+      timerIntegrityWarning:
+          serializer.fromJson<bool>(json['timerIntegrityWarning']),
+      packageSnapshotJson:
+          serializer.fromJson<String?>(json['packageSnapshotJson']),
+      examIntegrityHash:
+          serializer.fromJson<String?>(json['examIntegrityHash']),
+      outcomesProcessedAt:
+          serializer.fromJson<DateTime?>(json['outcomesProcessedAt']),
+      scoringPolicy: serializer.fromJson<String>(json['scoringPolicy']),
     );
   }
   @override
@@ -458,6 +791,20 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
       'syncStatus': serializer.toJson<String>(syncStatus),
       'responsesJson': serializer.toJson<String>(responsesJson),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'examMode': serializer.toJson<String>(examMode),
+      'sourceType': serializer.toJson<String>(sourceType),
+      'examVariant': serializer.toJson<String?>(examVariant),
+      'blueprintVersion': serializer.toJson<String?>(blueprintVersion),
+      'simulationSeed': serializer.toJson<int?>(simulationSeed),
+      'questionOrderJson': serializer.toJson<String?>(questionOrderJson),
+      'timeLimitSeconds': serializer.toJson<int>(timeLimitSeconds),
+      'autoSubmitted': serializer.toJson<bool>(autoSubmitted),
+      'historicalYear': serializer.toJson<int?>(historicalYear),
+      'timerIntegrityWarning': serializer.toJson<bool>(timerIntegrityWarning),
+      'packageSnapshotJson': serializer.toJson<String?>(packageSnapshotJson),
+      'examIntegrityHash': serializer.toJson<String?>(examIntegrityHash),
+      'outcomesProcessedAt': serializer.toJson<DateTime?>(outcomesProcessedAt),
+      'scoringPolicy': serializer.toJson<String>(scoringPolicy),
     };
   }
 
@@ -479,7 +826,21 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
           bool? isCompleted,
           String? syncStatus,
           String? responsesJson,
-          DateTime? createdAt}) =>
+          DateTime? createdAt,
+          String? examMode,
+          String? sourceType,
+          Value<String?> examVariant = const Value.absent(),
+          Value<String?> blueprintVersion = const Value.absent(),
+          Value<int?> simulationSeed = const Value.absent(),
+          Value<String?> questionOrderJson = const Value.absent(),
+          int? timeLimitSeconds,
+          bool? autoSubmitted,
+          Value<int?> historicalYear = const Value.absent(),
+          bool? timerIntegrityWarning,
+          Value<String?> packageSnapshotJson = const Value.absent(),
+          Value<String?> examIntegrityHash = const Value.absent(),
+          Value<DateTime?> outcomesProcessedAt = const Value.absent(),
+          String? scoringPolicy}) =>
       DbExamAttempt(
         id: id ?? this.id,
         userId: userId ?? this.userId,
@@ -499,6 +860,33 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
         syncStatus: syncStatus ?? this.syncStatus,
         responsesJson: responsesJson ?? this.responsesJson,
         createdAt: createdAt ?? this.createdAt,
+        examMode: examMode ?? this.examMode,
+        sourceType: sourceType ?? this.sourceType,
+        examVariant: examVariant.present ? examVariant.value : this.examVariant,
+        blueprintVersion: blueprintVersion.present
+            ? blueprintVersion.value
+            : this.blueprintVersion,
+        simulationSeed:
+            simulationSeed.present ? simulationSeed.value : this.simulationSeed,
+        questionOrderJson: questionOrderJson.present
+            ? questionOrderJson.value
+            : this.questionOrderJson,
+        timeLimitSeconds: timeLimitSeconds ?? this.timeLimitSeconds,
+        autoSubmitted: autoSubmitted ?? this.autoSubmitted,
+        historicalYear:
+            historicalYear.present ? historicalYear.value : this.historicalYear,
+        timerIntegrityWarning:
+            timerIntegrityWarning ?? this.timerIntegrityWarning,
+        packageSnapshotJson: packageSnapshotJson.present
+            ? packageSnapshotJson.value
+            : this.packageSnapshotJson,
+        examIntegrityHash: examIntegrityHash.present
+            ? examIntegrityHash.value
+            : this.examIntegrityHash,
+        outcomesProcessedAt: outcomesProcessedAt.present
+            ? outcomesProcessedAt.value
+            : this.outcomesProcessedAt,
+        scoringPolicy: scoringPolicy ?? this.scoringPolicy,
       );
   DbExamAttempt copyWithCompanion(DbExamAttemptsCompanion data) {
     return DbExamAttempt(
@@ -535,6 +923,44 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
           ? data.responsesJson.value
           : this.responsesJson,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      examMode: data.examMode.present ? data.examMode.value : this.examMode,
+      sourceType:
+          data.sourceType.present ? data.sourceType.value : this.sourceType,
+      examVariant:
+          data.examVariant.present ? data.examVariant.value : this.examVariant,
+      blueprintVersion: data.blueprintVersion.present
+          ? data.blueprintVersion.value
+          : this.blueprintVersion,
+      simulationSeed: data.simulationSeed.present
+          ? data.simulationSeed.value
+          : this.simulationSeed,
+      questionOrderJson: data.questionOrderJson.present
+          ? data.questionOrderJson.value
+          : this.questionOrderJson,
+      timeLimitSeconds: data.timeLimitSeconds.present
+          ? data.timeLimitSeconds.value
+          : this.timeLimitSeconds,
+      autoSubmitted: data.autoSubmitted.present
+          ? data.autoSubmitted.value
+          : this.autoSubmitted,
+      historicalYear: data.historicalYear.present
+          ? data.historicalYear.value
+          : this.historicalYear,
+      timerIntegrityWarning: data.timerIntegrityWarning.present
+          ? data.timerIntegrityWarning.value
+          : this.timerIntegrityWarning,
+      packageSnapshotJson: data.packageSnapshotJson.present
+          ? data.packageSnapshotJson.value
+          : this.packageSnapshotJson,
+      examIntegrityHash: data.examIntegrityHash.present
+          ? data.examIntegrityHash.value
+          : this.examIntegrityHash,
+      outcomesProcessedAt: data.outcomesProcessedAt.present
+          ? data.outcomesProcessedAt.value
+          : this.outcomesProcessedAt,
+      scoringPolicy: data.scoringPolicy.present
+          ? data.scoringPolicy.value
+          : this.scoringPolicy,
     );
   }
 
@@ -558,31 +984,60 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
           ..write('isCompleted: $isCompleted, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('responsesJson: $responsesJson, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('examMode: $examMode, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('blueprintVersion: $blueprintVersion, ')
+          ..write('simulationSeed: $simulationSeed, ')
+          ..write('questionOrderJson: $questionOrderJson, ')
+          ..write('timeLimitSeconds: $timeLimitSeconds, ')
+          ..write('autoSubmitted: $autoSubmitted, ')
+          ..write('historicalYear: $historicalYear, ')
+          ..write('timerIntegrityWarning: $timerIntegrityWarning, ')
+          ..write('packageSnapshotJson: $packageSnapshotJson, ')
+          ..write('examIntegrityHash: $examIntegrityHash, ')
+          ..write('outcomesProcessedAt: $outcomesProcessedAt, ')
+          ..write('scoringPolicy: $scoringPolicy')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      userId,
-      examId,
-      examTitle,
-      subjectId,
-      startTime,
-      endTime,
-      durationSeconds,
-      totalQuestions,
-      score,
-      percentage,
-      correctCount,
-      incorrectCount,
-      skippedCount,
-      isCompleted,
-      syncStatus,
-      responsesJson,
-      createdAt);
+  int get hashCode => Object.hashAll([
+        id,
+        userId,
+        examId,
+        examTitle,
+        subjectId,
+        startTime,
+        endTime,
+        durationSeconds,
+        totalQuestions,
+        score,
+        percentage,
+        correctCount,
+        incorrectCount,
+        skippedCount,
+        isCompleted,
+        syncStatus,
+        responsesJson,
+        createdAt,
+        examMode,
+        sourceType,
+        examVariant,
+        blueprintVersion,
+        simulationSeed,
+        questionOrderJson,
+        timeLimitSeconds,
+        autoSubmitted,
+        historicalYear,
+        timerIntegrityWarning,
+        packageSnapshotJson,
+        examIntegrityHash,
+        outcomesProcessedAt,
+        scoringPolicy
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -604,7 +1059,21 @@ class DbExamAttempt extends DataClass implements Insertable<DbExamAttempt> {
           other.isCompleted == this.isCompleted &&
           other.syncStatus == this.syncStatus &&
           other.responsesJson == this.responsesJson &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.examMode == this.examMode &&
+          other.sourceType == this.sourceType &&
+          other.examVariant == this.examVariant &&
+          other.blueprintVersion == this.blueprintVersion &&
+          other.simulationSeed == this.simulationSeed &&
+          other.questionOrderJson == this.questionOrderJson &&
+          other.timeLimitSeconds == this.timeLimitSeconds &&
+          other.autoSubmitted == this.autoSubmitted &&
+          other.historicalYear == this.historicalYear &&
+          other.timerIntegrityWarning == this.timerIntegrityWarning &&
+          other.packageSnapshotJson == this.packageSnapshotJson &&
+          other.examIntegrityHash == this.examIntegrityHash &&
+          other.outcomesProcessedAt == this.outcomesProcessedAt &&
+          other.scoringPolicy == this.scoringPolicy);
 }
 
 class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
@@ -626,6 +1095,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
   final Value<String> syncStatus;
   final Value<String> responsesJson;
   final Value<DateTime> createdAt;
+  final Value<String> examMode;
+  final Value<String> sourceType;
+  final Value<String?> examVariant;
+  final Value<String?> blueprintVersion;
+  final Value<int?> simulationSeed;
+  final Value<String?> questionOrderJson;
+  final Value<int> timeLimitSeconds;
+  final Value<bool> autoSubmitted;
+  final Value<int?> historicalYear;
+  final Value<bool> timerIntegrityWarning;
+  final Value<String?> packageSnapshotJson;
+  final Value<String?> examIntegrityHash;
+  final Value<DateTime?> outcomesProcessedAt;
+  final Value<String> scoringPolicy;
   final Value<int> rowid;
   const DbExamAttemptsCompanion({
     this.id = const Value.absent(),
@@ -646,6 +1129,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
     this.syncStatus = const Value.absent(),
     this.responsesJson = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.examMode = const Value.absent(),
+    this.sourceType = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.blueprintVersion = const Value.absent(),
+    this.simulationSeed = const Value.absent(),
+    this.questionOrderJson = const Value.absent(),
+    this.timeLimitSeconds = const Value.absent(),
+    this.autoSubmitted = const Value.absent(),
+    this.historicalYear = const Value.absent(),
+    this.timerIntegrityWarning = const Value.absent(),
+    this.packageSnapshotJson = const Value.absent(),
+    this.examIntegrityHash = const Value.absent(),
+    this.outcomesProcessedAt = const Value.absent(),
+    this.scoringPolicy = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   DbExamAttemptsCompanion.insert({
@@ -667,6 +1164,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
     this.syncStatus = const Value.absent(),
     required String responsesJson,
     required DateTime createdAt,
+    this.examMode = const Value.absent(),
+    this.sourceType = const Value.absent(),
+    this.examVariant = const Value.absent(),
+    this.blueprintVersion = const Value.absent(),
+    this.simulationSeed = const Value.absent(),
+    this.questionOrderJson = const Value.absent(),
+    this.timeLimitSeconds = const Value.absent(),
+    this.autoSubmitted = const Value.absent(),
+    this.historicalYear = const Value.absent(),
+    this.timerIntegrityWarning = const Value.absent(),
+    this.packageSnapshotJson = const Value.absent(),
+    this.examIntegrityHash = const Value.absent(),
+    this.outcomesProcessedAt = const Value.absent(),
+    this.scoringPolicy = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         userId = Value(userId),
@@ -695,6 +1206,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
     Expression<String>? syncStatus,
     Expression<String>? responsesJson,
     Expression<DateTime>? createdAt,
+    Expression<String>? examMode,
+    Expression<String>? sourceType,
+    Expression<String>? examVariant,
+    Expression<String>? blueprintVersion,
+    Expression<int>? simulationSeed,
+    Expression<String>? questionOrderJson,
+    Expression<int>? timeLimitSeconds,
+    Expression<bool>? autoSubmitted,
+    Expression<int>? historicalYear,
+    Expression<bool>? timerIntegrityWarning,
+    Expression<String>? packageSnapshotJson,
+    Expression<String>? examIntegrityHash,
+    Expression<DateTime>? outcomesProcessedAt,
+    Expression<String>? scoringPolicy,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -716,6 +1241,23 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
       if (syncStatus != null) 'sync_status': syncStatus,
       if (responsesJson != null) 'responses_json': responsesJson,
       if (createdAt != null) 'created_at': createdAt,
+      if (examMode != null) 'exam_mode': examMode,
+      if (sourceType != null) 'source_type': sourceType,
+      if (examVariant != null) 'exam_variant': examVariant,
+      if (blueprintVersion != null) 'blueprint_version': blueprintVersion,
+      if (simulationSeed != null) 'simulation_seed': simulationSeed,
+      if (questionOrderJson != null) 'question_order_json': questionOrderJson,
+      if (timeLimitSeconds != null) 'time_limit_seconds': timeLimitSeconds,
+      if (autoSubmitted != null) 'auto_submitted': autoSubmitted,
+      if (historicalYear != null) 'historical_year': historicalYear,
+      if (timerIntegrityWarning != null)
+        'timer_integrity_warning': timerIntegrityWarning,
+      if (packageSnapshotJson != null)
+        'package_snapshot_json': packageSnapshotJson,
+      if (examIntegrityHash != null) 'exam_integrity_hash': examIntegrityHash,
+      if (outcomesProcessedAt != null)
+        'outcomes_processed_at': outcomesProcessedAt,
+      if (scoringPolicy != null) 'scoring_policy': scoringPolicy,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -739,6 +1281,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
       Value<String>? syncStatus,
       Value<String>? responsesJson,
       Value<DateTime>? createdAt,
+      Value<String>? examMode,
+      Value<String>? sourceType,
+      Value<String?>? examVariant,
+      Value<String?>? blueprintVersion,
+      Value<int?>? simulationSeed,
+      Value<String?>? questionOrderJson,
+      Value<int>? timeLimitSeconds,
+      Value<bool>? autoSubmitted,
+      Value<int?>? historicalYear,
+      Value<bool>? timerIntegrityWarning,
+      Value<String?>? packageSnapshotJson,
+      Value<String?>? examIntegrityHash,
+      Value<DateTime?>? outcomesProcessedAt,
+      Value<String>? scoringPolicy,
       Value<int>? rowid}) {
     return DbExamAttemptsCompanion(
       id: id ?? this.id,
@@ -759,6 +1315,21 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
       syncStatus: syncStatus ?? this.syncStatus,
       responsesJson: responsesJson ?? this.responsesJson,
       createdAt: createdAt ?? this.createdAt,
+      examMode: examMode ?? this.examMode,
+      sourceType: sourceType ?? this.sourceType,
+      examVariant: examVariant ?? this.examVariant,
+      blueprintVersion: blueprintVersion ?? this.blueprintVersion,
+      simulationSeed: simulationSeed ?? this.simulationSeed,
+      questionOrderJson: questionOrderJson ?? this.questionOrderJson,
+      timeLimitSeconds: timeLimitSeconds ?? this.timeLimitSeconds,
+      autoSubmitted: autoSubmitted ?? this.autoSubmitted,
+      historicalYear: historicalYear ?? this.historicalYear,
+      timerIntegrityWarning:
+          timerIntegrityWarning ?? this.timerIntegrityWarning,
+      packageSnapshotJson: packageSnapshotJson ?? this.packageSnapshotJson,
+      examIntegrityHash: examIntegrityHash ?? this.examIntegrityHash,
+      outcomesProcessedAt: outcomesProcessedAt ?? this.outcomesProcessedAt,
+      scoringPolicy: scoringPolicy ?? this.scoringPolicy,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -820,6 +1391,51 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (examMode.present) {
+      map['exam_mode'] = Variable<String>(examMode.value);
+    }
+    if (sourceType.present) {
+      map['source_type'] = Variable<String>(sourceType.value);
+    }
+    if (examVariant.present) {
+      map['exam_variant'] = Variable<String>(examVariant.value);
+    }
+    if (blueprintVersion.present) {
+      map['blueprint_version'] = Variable<String>(blueprintVersion.value);
+    }
+    if (simulationSeed.present) {
+      map['simulation_seed'] = Variable<int>(simulationSeed.value);
+    }
+    if (questionOrderJson.present) {
+      map['question_order_json'] = Variable<String>(questionOrderJson.value);
+    }
+    if (timeLimitSeconds.present) {
+      map['time_limit_seconds'] = Variable<int>(timeLimitSeconds.value);
+    }
+    if (autoSubmitted.present) {
+      map['auto_submitted'] = Variable<bool>(autoSubmitted.value);
+    }
+    if (historicalYear.present) {
+      map['historical_year'] = Variable<int>(historicalYear.value);
+    }
+    if (timerIntegrityWarning.present) {
+      map['timer_integrity_warning'] =
+          Variable<bool>(timerIntegrityWarning.value);
+    }
+    if (packageSnapshotJson.present) {
+      map['package_snapshot_json'] =
+          Variable<String>(packageSnapshotJson.value);
+    }
+    if (examIntegrityHash.present) {
+      map['exam_integrity_hash'] = Variable<String>(examIntegrityHash.value);
+    }
+    if (outcomesProcessedAt.present) {
+      map['outcomes_processed_at'] =
+          Variable<DateTime>(outcomesProcessedAt.value);
+    }
+    if (scoringPolicy.present) {
+      map['scoring_policy'] = Variable<String>(scoringPolicy.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -847,6 +1463,20 @@ class DbExamAttemptsCompanion extends UpdateCompanion<DbExamAttempt> {
           ..write('syncStatus: $syncStatus, ')
           ..write('responsesJson: $responsesJson, ')
           ..write('createdAt: $createdAt, ')
+          ..write('examMode: $examMode, ')
+          ..write('sourceType: $sourceType, ')
+          ..write('examVariant: $examVariant, ')
+          ..write('blueprintVersion: $blueprintVersion, ')
+          ..write('simulationSeed: $simulationSeed, ')
+          ..write('questionOrderJson: $questionOrderJson, ')
+          ..write('timeLimitSeconds: $timeLimitSeconds, ')
+          ..write('autoSubmitted: $autoSubmitted, ')
+          ..write('historicalYear: $historicalYear, ')
+          ..write('timerIntegrityWarning: $timerIntegrityWarning, ')
+          ..write('packageSnapshotJson: $packageSnapshotJson, ')
+          ..write('examIntegrityHash: $examIntegrityHash, ')
+          ..write('outcomesProcessedAt: $outcomesProcessedAt, ')
+          ..write('scoringPolicy: $scoringPolicy, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8053,6 +8683,20 @@ typedef $$DbExamAttemptsTableCreateCompanionBuilder = DbExamAttemptsCompanion
   Value<String> syncStatus,
   required String responsesJson,
   required DateTime createdAt,
+  Value<String> examMode,
+  Value<String> sourceType,
+  Value<String?> examVariant,
+  Value<String?> blueprintVersion,
+  Value<int?> simulationSeed,
+  Value<String?> questionOrderJson,
+  Value<int> timeLimitSeconds,
+  Value<bool> autoSubmitted,
+  Value<int?> historicalYear,
+  Value<bool> timerIntegrityWarning,
+  Value<String?> packageSnapshotJson,
+  Value<String?> examIntegrityHash,
+  Value<DateTime?> outcomesProcessedAt,
+  Value<String> scoringPolicy,
   Value<int> rowid,
 });
 typedef $$DbExamAttemptsTableUpdateCompanionBuilder = DbExamAttemptsCompanion
@@ -8075,6 +8719,20 @@ typedef $$DbExamAttemptsTableUpdateCompanionBuilder = DbExamAttemptsCompanion
   Value<String> syncStatus,
   Value<String> responsesJson,
   Value<DateTime> createdAt,
+  Value<String> examMode,
+  Value<String> sourceType,
+  Value<String?> examVariant,
+  Value<String?> blueprintVersion,
+  Value<int?> simulationSeed,
+  Value<String?> questionOrderJson,
+  Value<int> timeLimitSeconds,
+  Value<bool> autoSubmitted,
+  Value<int?> historicalYear,
+  Value<bool> timerIntegrityWarning,
+  Value<String?> packageSnapshotJson,
+  Value<String?> examIntegrityHash,
+  Value<DateTime?> outcomesProcessedAt,
+  Value<String> scoringPolicy,
   Value<int> rowid,
 });
 
@@ -8143,6 +8801,57 @@ class $$DbExamAttemptsTableFilterComposer
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examMode => $composableBuilder(
+      column: $table.examMode, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sourceType => $composableBuilder(
+      column: $table.sourceType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get blueprintVersion => $composableBuilder(
+      column: $table.blueprintVersion,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get simulationSeed => $composableBuilder(
+      column: $table.simulationSeed,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get questionOrderJson => $composableBuilder(
+      column: $table.questionOrderJson,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timeLimitSeconds => $composableBuilder(
+      column: $table.timeLimitSeconds,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get autoSubmitted => $composableBuilder(
+      column: $table.autoSubmitted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get historicalYear => $composableBuilder(
+      column: $table.historicalYear,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get timerIntegrityWarning => $composableBuilder(
+      column: $table.timerIntegrityWarning,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get packageSnapshotJson => $composableBuilder(
+      column: $table.packageSnapshotJson,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get examIntegrityHash => $composableBuilder(
+      column: $table.examIntegrityHash,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get outcomesProcessedAt => $composableBuilder(
+      column: $table.outcomesProcessedAt,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get scoringPolicy => $composableBuilder(
+      column: $table.scoringPolicy, builder: (column) => ColumnFilters(column));
 }
 
 class $$DbExamAttemptsTableOrderingComposer
@@ -8213,6 +8922,59 @@ class $$DbExamAttemptsTableOrderingComposer
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examMode => $composableBuilder(
+      column: $table.examMode, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sourceType => $composableBuilder(
+      column: $table.sourceType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get blueprintVersion => $composableBuilder(
+      column: $table.blueprintVersion,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get simulationSeed => $composableBuilder(
+      column: $table.simulationSeed,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get questionOrderJson => $composableBuilder(
+      column: $table.questionOrderJson,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timeLimitSeconds => $composableBuilder(
+      column: $table.timeLimitSeconds,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get autoSubmitted => $composableBuilder(
+      column: $table.autoSubmitted,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get historicalYear => $composableBuilder(
+      column: $table.historicalYear,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get timerIntegrityWarning => $composableBuilder(
+      column: $table.timerIntegrityWarning,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get packageSnapshotJson => $composableBuilder(
+      column: $table.packageSnapshotJson,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get examIntegrityHash => $composableBuilder(
+      column: $table.examIntegrityHash,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get outcomesProcessedAt => $composableBuilder(
+      column: $table.outcomesProcessedAt,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get scoringPolicy => $composableBuilder(
+      column: $table.scoringPolicy,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$DbExamAttemptsTableAnnotationComposer
@@ -8277,6 +9039,48 @@ class $$DbExamAttemptsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get examMode =>
+      $composableBuilder(column: $table.examMode, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceType => $composableBuilder(
+      column: $table.sourceType, builder: (column) => column);
+
+  GeneratedColumn<String> get examVariant => $composableBuilder(
+      column: $table.examVariant, builder: (column) => column);
+
+  GeneratedColumn<String> get blueprintVersion => $composableBuilder(
+      column: $table.blueprintVersion, builder: (column) => column);
+
+  GeneratedColumn<int> get simulationSeed => $composableBuilder(
+      column: $table.simulationSeed, builder: (column) => column);
+
+  GeneratedColumn<String> get questionOrderJson => $composableBuilder(
+      column: $table.questionOrderJson, builder: (column) => column);
+
+  GeneratedColumn<int> get timeLimitSeconds => $composableBuilder(
+      column: $table.timeLimitSeconds, builder: (column) => column);
+
+  GeneratedColumn<bool> get autoSubmitted => $composableBuilder(
+      column: $table.autoSubmitted, builder: (column) => column);
+
+  GeneratedColumn<int> get historicalYear => $composableBuilder(
+      column: $table.historicalYear, builder: (column) => column);
+
+  GeneratedColumn<bool> get timerIntegrityWarning => $composableBuilder(
+      column: $table.timerIntegrityWarning, builder: (column) => column);
+
+  GeneratedColumn<String> get packageSnapshotJson => $composableBuilder(
+      column: $table.packageSnapshotJson, builder: (column) => column);
+
+  GeneratedColumn<String> get examIntegrityHash => $composableBuilder(
+      column: $table.examIntegrityHash, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get outcomesProcessedAt => $composableBuilder(
+      column: $table.outcomesProcessedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get scoringPolicy => $composableBuilder(
+      column: $table.scoringPolicy, builder: (column) => column);
 }
 
 class $$DbExamAttemptsTableTableManager extends RootTableManager<
@@ -8324,6 +9128,20 @@ class $$DbExamAttemptsTableTableManager extends RootTableManager<
             Value<String> syncStatus = const Value.absent(),
             Value<String> responsesJson = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
+            Value<String> examMode = const Value.absent(),
+            Value<String> sourceType = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> blueprintVersion = const Value.absent(),
+            Value<int?> simulationSeed = const Value.absent(),
+            Value<String?> questionOrderJson = const Value.absent(),
+            Value<int> timeLimitSeconds = const Value.absent(),
+            Value<bool> autoSubmitted = const Value.absent(),
+            Value<int?> historicalYear = const Value.absent(),
+            Value<bool> timerIntegrityWarning = const Value.absent(),
+            Value<String?> packageSnapshotJson = const Value.absent(),
+            Value<String?> examIntegrityHash = const Value.absent(),
+            Value<DateTime?> outcomesProcessedAt = const Value.absent(),
+            Value<String> scoringPolicy = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               DbExamAttemptsCompanion(
@@ -8345,6 +9163,20 @@ class $$DbExamAttemptsTableTableManager extends RootTableManager<
             syncStatus: syncStatus,
             responsesJson: responsesJson,
             createdAt: createdAt,
+            examMode: examMode,
+            sourceType: sourceType,
+            examVariant: examVariant,
+            blueprintVersion: blueprintVersion,
+            simulationSeed: simulationSeed,
+            questionOrderJson: questionOrderJson,
+            timeLimitSeconds: timeLimitSeconds,
+            autoSubmitted: autoSubmitted,
+            historicalYear: historicalYear,
+            timerIntegrityWarning: timerIntegrityWarning,
+            packageSnapshotJson: packageSnapshotJson,
+            examIntegrityHash: examIntegrityHash,
+            outcomesProcessedAt: outcomesProcessedAt,
+            scoringPolicy: scoringPolicy,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -8366,6 +9198,20 @@ class $$DbExamAttemptsTableTableManager extends RootTableManager<
             Value<String> syncStatus = const Value.absent(),
             required String responsesJson,
             required DateTime createdAt,
+            Value<String> examMode = const Value.absent(),
+            Value<String> sourceType = const Value.absent(),
+            Value<String?> examVariant = const Value.absent(),
+            Value<String?> blueprintVersion = const Value.absent(),
+            Value<int?> simulationSeed = const Value.absent(),
+            Value<String?> questionOrderJson = const Value.absent(),
+            Value<int> timeLimitSeconds = const Value.absent(),
+            Value<bool> autoSubmitted = const Value.absent(),
+            Value<int?> historicalYear = const Value.absent(),
+            Value<bool> timerIntegrityWarning = const Value.absent(),
+            Value<String?> packageSnapshotJson = const Value.absent(),
+            Value<String?> examIntegrityHash = const Value.absent(),
+            Value<DateTime?> outcomesProcessedAt = const Value.absent(),
+            Value<String> scoringPolicy = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               DbExamAttemptsCompanion.insert(
@@ -8387,6 +9233,20 @@ class $$DbExamAttemptsTableTableManager extends RootTableManager<
             syncStatus: syncStatus,
             responsesJson: responsesJson,
             createdAt: createdAt,
+            examMode: examMode,
+            sourceType: sourceType,
+            examVariant: examVariant,
+            blueprintVersion: blueprintVersion,
+            simulationSeed: simulationSeed,
+            questionOrderJson: questionOrderJson,
+            timeLimitSeconds: timeLimitSeconds,
+            autoSubmitted: autoSubmitted,
+            historicalYear: historicalYear,
+            timerIntegrityWarning: timerIntegrityWarning,
+            packageSnapshotJson: packageSnapshotJson,
+            examIntegrityHash: examIntegrityHash,
+            outcomesProcessedAt: outcomesProcessedAt,
+            scoringPolicy: scoringPolicy,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

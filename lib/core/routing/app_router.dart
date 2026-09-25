@@ -16,6 +16,7 @@ import '../../features/exam_ghost/presentation/screens/exam_ghost_screen.dart';
 import '../../features/exams/domain/models/exam_models.dart';
 import '../../features/exams/presentation/screens/exam_builder_screen.dart';
 import '../../features/exams/presentation/screens/exam_runner_screen.dart';
+import '../../features/exams/presentation/screens/pre_exam_check_screen.dart';
 import '../../features/exams/presentation/screens/subject_exams_hub_screen.dart';
 import '../../features/home/presentation/screens/student_home_screen.dart';
 import '../../features/mistakes/presentation/screens/mistakes_screen.dart';
@@ -99,6 +100,15 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
           },
         ),
         GoRoute(
+          path: '/pre_exam_check',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            final exam = extra?['exam'] as Exam;
+            final policy = extra?['policy'] as NationalExamPolicy?;
+            return PreExamCheckScreen(exam: exam, policy: policy);
+          },
+        ),
+        GoRoute(
           path: '/exam_runner',
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>?;
@@ -106,10 +116,12 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
             final attempt = extra?['attempt'] as ExamAttempt;
             final showInstantFeedback =
                 extra?['showInstantFeedback'] as bool? ?? false;
+            final policy = extra?['policy'] as NationalExamPolicy?;
             return ExamRunnerScreen(
               exam: exam,
               initialAttempt: attempt,
               showInstantFeedback: showInstantFeedback,
+              policy: policy,
             );
           },
         ),

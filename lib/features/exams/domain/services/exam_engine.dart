@@ -1,17 +1,47 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import '../../../question_bank/domain/models/question_models.dart';
 import '../models/exam_models.dart';
 
 class ExamEngine {
   ExamEngine._();
 
-  /// Starts a new active attempt
+  /// Calculates a deterministic SHA-256 fingerprint for the exam composition and content snapshot
+  static String calculateIntegrityHash({
+    required String examId,
+    required String? blueprintVersion,
+    required int? seed,
+    required List<String> questionIds,
+    Map<String, String>? packageSnapshot,
+    Map<String, int>? contentVersions,
+  }) {
+    final payload = [
+      examId,
+      blueprintVersion ?? 'unversioned',
+      seed?.toString() ?? 'none',
+      questionIds.join(','),
+      packageSnapshot?.entries.map((e) => '${e.key}:${e.value}').join(';') ??
+          '',
+      contentVersions?.entries.map((e) => '${e.key}:${e.value}').join(';') ??
+          '',
+    ].join('|');
+    return sha256.convert(utf8.encode(payload)).toString();
+  }
+
+  /// Starts a new active attempt with an immutable content snapshot
   static ExamAttempt startAttempt({
     required String attemptId,
     required String userId,
     required Exam exam,
+    Map<String, String>? packageSnapshot,
   }) {
     final Map<String, UserResponse> initialResponses = {};
+    final questionIds = <String>[];
+    final Map<String, int> contentVersions = {};
+
     for (final q in exam.questions) {
+      questionIds.add(q.id);
+      contentVersions[q.id] = q.contentVersion;
       initialResponses[q.id] = UserResponse(
         questionId: q.id,
         selectedChoiceId: null,
@@ -21,12 +51,39 @@ class ExamEngine {
       );
     }
 
+    final resolvedPkgSnapshot = packageSnapshot ??
+        {
+          if (exam.subjectId != null) exam.subjectId!: '1.0.0',
+        };
+
+    final integrityHash = calculateIntegrityHash(
+      examId: exam.id,
+      blueprintVersion: exam.blueprintVersion,
+      seed: exam.simulationSeed,
+      questionIds: questionIds,
+      packageSnapshot: resolvedPkgSnapshot,
+      contentVersions: contentVersions,
+    );
+
     return ExamAttempt(
       id: attemptId,
       userId: userId,
       examId: exam.id,
       examTitle: exam.title,
       subjectId: exam.subjectId ?? 'unknown',
+      examMode: exam.examMode,
+      sourceType: exam.sourceType,
+      examVariant: exam.examVariant,
+      blueprintVersion: exam.blueprintVersion,
+      simulationSeed: exam.simulationSeed,
+      questionOrder: questionIds,
+      timeLimitSeconds: exam.isTimed ? exam.timeLimitMinutes * 60 : 0,
+      autoSubmitted: false,
+      historicalYear: exam.historicalYear,
+      timerIntegrityWarning: false,
+      packageSnapshot: resolvedPkgSnapshot,
+      examIntegrityHash: integrityHash,
+      scoringPolicy: 'standard_uniform_v1',
       startTime: DateTime.now(),
       durationSeconds: 0,
       totalQuestions: exam.totalQuestions,
