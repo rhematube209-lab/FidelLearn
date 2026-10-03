@@ -1,9 +1,10 @@
 # P9 — Assignments + Intervention System Hardening & Freeze
 
 **Milestone**: Priority 9 (P9) — Assignments + Intervention System  
-**Status**: **P9 FINAL FREEZE BASELINE APPROVED**  
-**Date**: October 2, 2026  
-**Baseline Git Commit**: HEAD  
+**Status**: **P9 FINAL PRODUCTION FREEZE APPROVED**  
+**Date**: October 3, 2026  
+**Baseline Git Commit**: `6cd051d79a58378624bfb541716c530ef5447ab4`  
+**Baseline Git Tag**: `priority-9-assignments-interventions-v1.0.0`  
 **Drift SQLite Schema Version**: `v9`  
 **Supabase PostgreSQL Migration Baseline**: `supabase/migrations/20260925030000_p9_assignments_interventions.sql`  
 
@@ -398,5 +399,5 @@ The authoritative production milestones for FidelLearn are permanently designate
 
 The P9 Assignments + Intervention System fulfills all security, privacy, provenance, and offline-first integrity requirements:
 
-$$\text{P9 FINAL FREEZE BASELINE APPROVED}$$
+$$\text{P9 FINAL PRODUCTION FREEZE APPROVED}$$
 
