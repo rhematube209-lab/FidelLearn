@@ -172,68 +172,174 @@ void main() {
       expect(attempt.percentage, 100.0);
     });
 
-    test('3. Offline deadline and lateness policy evaluation (5-case matrix)',
+    test(
+        '3. Offline deadline and absolute-time integrity evaluation (8-case matrix)',
         () {
       final dueAt = DateTime.utc(2026, 9, 25, 17, 0, 0);
 
-      // Case 1: Normal online (completed before due -> on time)
-      final onlineCompleted = DateTime.utc(2026, 9, 25, 16, 45, 0);
-      final onlineReceived = DateTime.utc(2026, 9, 25, 16, 45, 5);
-      final bool case1Late = onlineCompleted.isAfter(dueAt);
-      expect(case1Late, isFalse);
-      expect(onlineReceived.isBefore(dueAt), isTrue);
+      // Case 1: Normal online submission (server-authoritative time -> verified)
+      final onlineResult = DeadlineAdjudicator.adjudicate(
+        isOnline: true,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+      );
+      expect(onlineResult.integrityLevel, DeadlineIntegrityLevel.verified);
+      expect(onlineResult.isLate, isFalse);
+      expect(onlineResult.recipientStatus, AssignmentRecipientStatus.submitted);
+      expect(onlineResult.reviewRequired, isFalse);
+      expect(onlineResult.statusLabelEn, 'On Time');
 
-      // Case 2: Offline + valid clock (completed before due, received after due -> on time)
-      final offlineCompletedOnTime = DateTime.utc(2026, 9, 25, 16, 45, 0);
-      final delayedServerReceived = DateTime.utc(2026, 9, 25, 20, 0, 0);
-      final bool case2Late = offlineCompletedOnTime.isAfter(dueAt);
-      expect(case2Late, isFalse,
+      // Case 2: Offline + Trusted Server Anchor (16:00 anchor + 45 min monotonic = 16:45 UTC, synced at 20:00)
+      // Completed before deadline -> verified on-time despite delayed synchronization
+      final offlineTrustedAnchorOnTime = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+        trustedAnchorUtc: DateTime.utc(2026, 9, 25, 16, 0, 0),
+        trustedAnchorMonotonicMs: 100000,
+        completionMonotonicMs: 100000 + (45 * 60 * 1000), // 45 min later
+      );
+      expect(offlineTrustedAnchorOnTime.integrityLevel,
+          DeadlineIntegrityLevel.verified);
+      expect(offlineTrustedAnchorOnTime.isLate, isFalse);
+      expect(offlineTrustedAnchorOnTime.recipientStatus,
+          AssignmentRecipientStatus.submitted);
+      expect(offlineTrustedAnchorOnTime.statusLabelEn, 'On Time');
+      expect(offlineTrustedAnchorOnTime.estimatedCompletionUtc,
+          DateTime.utc(2026, 9, 25, 16, 45, 0));
+
+      // Case 3: Offline + Trusted Server Anchor Late (16:00 anchor + 80 min monotonic = 17:20 UTC)
+      // Completed after deadline with allow_late_submission = true -> verified late
+      final offlineTrustedAnchorLate = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 17, 20, 0),
+        trustedAnchorUtc: DateTime.utc(2026, 9, 25, 16, 0, 0),
+        trustedAnchorMonotonicMs: 100000,
+        completionMonotonicMs: 100000 + (80 * 60 * 1000), // 80 min later
+      );
+      expect(offlineTrustedAnchorLate.integrityLevel,
+          DeadlineIntegrityLevel.verified);
+      expect(offlineTrustedAnchorLate.isLate, isTrue);
+      expect(offlineTrustedAnchorLate.recipientStatus,
+          AssignmentRecipientStatus.late);
+      expect(offlineTrustedAnchorLate.statusLabelEn, 'Late Submission');
+
+      // Case 4: Offline + No Trusted Anchor (local completion = 16:45, due = 17:00, received = 20:00)
+      // Must NOT gain false on-time certainty -> unverified, isLate = null
+      final offlineNoAnchor = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+      );
+      expect(offlineNoAnchor.integrityLevel, DeadlineIntegrityLevel.unverified);
+      expect(offlineNoAnchor.isLate, isNull,
+          reason: 'Cannot assert on-time without trusted server-time anchor');
+      expect(
+          offlineNoAnchor.recipientStatus, AssignmentRecipientStatus.submitted);
+      expect(offlineNoAnchor.submissionAccepted, isTrue,
+          reason: 'Student work is never discarded');
+      expect(offlineNoAnchor.statusLabelEn,
+          'Submission Received — Deadline Timing Unverified');
+
+      // Case 5: Clock Manipulation Before Attempt (Pre-shifted Clock)
+      // Actual UTC: 20:00, Due: 17:00. Device clock manually set to 16:00 before attempt begins.
+      // Clock remains completely stable during the entire attempt. Monotonic session timer shows NO jump.
+      // Result: monotonic session valid, BUT absolute deadline timing cannot be verified!
+      final preShiftedClockResult = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 30, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 30, 0),
+        // No valid server anchor from session start
+        trustedAnchorUtc: null,
+        timerIntegrityWarning:
+            false, // Session timer detected no anomaly during attempt
+        wallClockShiftDetected: false,
+      );
+      expect(preShiftedClockResult.integrityLevel,
+          DeadlineIntegrityLevel.unverified);
+      expect(preShiftedClockResult.isLate, isNull,
           reason:
-              'Network delay must not penalize student who completed on time');
-      expect(delayedServerReceived.isAfter(dueAt), isTrue);
+              'Attempt with pre-shifted clock must NOT incorrectly gain an on-time classification');
+      expect(preShiftedClockResult.recipientStatus,
+          AssignmentRecipientStatus.submitted);
 
-      // Case 3: Offline + valid clock (completed after due, late allowed = true -> late)
-      final offlineCompletedLate = DateTime.utc(2026, 9, 25, 17, 20, 0);
-      final bool case3Late = offlineCompletedLate.isAfter(dueAt);
-      expect(case3Late, isTrue);
+      // Case 6: Clock Anomaly during attempt (timerIntegrityWarning = true -> anomaly)
+      final clockAnomalyResult = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+        timerIntegrityWarning: true,
+      );
+      expect(clockAnomalyResult.integrityLevel, DeadlineIntegrityLevel.anomaly);
+      expect(clockAnomalyResult.isLate, isNull);
+      expect(clockAnomalyResult.reviewRequired, isTrue);
+      expect(clockAnomalyResult.submissionAccepted, isTrue,
+          reason: 'Student answers and scores are permanently preserved');
+      expect(clockAnomalyResult.statusLabelEn,
+          'Submission Received — Clock Anomaly Detected');
 
-      // Case 4: Offline + clock anomaly (timerIntegrityWarning = true -> submission accepted, deadline unverified)
-      const bool timerIntegrityWarning = true;
-      final studentAttemptPreserved = {
-        'attempt_id': 'att_clock_anomaly_01',
-        'score': 28,
-        'percentage': 93.3,
-        'responses': {'q1': 'c1', 'q2': 'c2'},
-        'timer_integrity_warning': timerIntegrityWarning,
-        'deadline_integrity': 'unverified',
-        'submission_accepted': true,
-      };
-      expect(studentAttemptPreserved['submission_accepted'], isTrue,
-          reason: 'Clock uncertainty must never destroy student work');
-      expect(studentAttemptPreserved['deadline_integrity'], 'unverified');
-      expect(studentAttemptPreserved['score'], 28);
+      // Case 7: Monotonic Continuity Loss (counter reset / device reboot)
+      // Fails safe to unverified; never falls back silently to raw wall-clock time
+      final brokenContinuityResult = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: true,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+        trustedAnchorUtc: DateTime.utc(2026, 9, 25, 16, 0, 0),
+        trustedAnchorMonotonicMs: 500000,
+        completionMonotonicMs: 10000, // Counter reset (device reboot)
+      );
+      expect(brokenContinuityResult.integrityLevel,
+          DeadlineIntegrityLevel.unverified);
+      expect(brokenContinuityResult.isLate, isNull,
+          reason:
+              'Lost monotonic continuity must never fall back silently to raw wall-clock');
 
-      // Case 5: Late prohibited (allow_late_submission = false)
-      // Server records work without deleting attempt evidence
-      const bool allowLateSubmission = false;
-      final String finalStatus =
-          !allowLateSubmission && offlineCompletedLate.isAfter(dueAt)
-              ? 'submitted'
-              : 'late';
-      expect(finalStatus, 'submitted',
-          reason: 'Late prohibited submissions still record submitted state');
+      // Case 8: Late Prohibited Policy (allow_late_submission = false) with unverified timing
+      // Flags "Deadline Review Required" without deleting the attempt or silently approving it
+      final lateProhibitedUnverified = DeadlineAdjudicator.adjudicate(
+        isOnline: false,
+        serverReceivedAt: DateTime.utc(2026, 9, 25, 20, 0, 0),
+        dueAt: dueAt,
+        allowLateSubmission: false,
+        localCompletedAt: DateTime.utc(2026, 9, 25, 16, 45, 0),
+      );
+      expect(lateProhibitedUnverified.integrityLevel,
+          DeadlineIntegrityLevel.unverified);
+      expect(lateProhibitedUnverified.reviewRequired, isTrue);
+      expect(lateProhibitedUnverified.recipientStatus,
+          AssignmentRecipientStatus.submitted);
+      expect(lateProhibitedUnverified.submissionAccepted, isTrue);
+      expect(
+          lateProhibitedUnverified.statusLabelEn, 'Deadline Review Required');
     });
 
     test(
         '4. Authoritative P5 provenance dimension matrix with normalization helper',
         () {
-      // Dimension 1: Targeted Practice (assignment_type: targetedPractice, exam_mode: practice, source_type: generatedSimulation)
+      // Dimension 1: Targeted Practice with ordinary curriculum questions
+      // assignment_type: targetedPractice, exam_mode: practice, source_type: null (NOT generatedSimulation!)
       final targetedPracticeExam = Exam(
         id: 'asgn_tp_01',
         title: 'Targeted Remedial',
         examType: ExamType.teacherAssigned,
         examMode: ExamMode.practice,
-        sourceType: ExamSourceType.generatedSimulation,
+        sourceType:
+            null, // Ordinary curriculum questions have no canonical single source
         grade: 12,
         stream: 'natural',
         totalQuestions: 10,
@@ -243,24 +349,27 @@ void main() {
       );
       expect(targetedPracticeExam.examType, ExamType.teacherAssigned);
       expect(targetedPracticeExam.examMode, ExamMode.practice);
-      expect(
-          targetedPracticeExam.sourceType, ExamSourceType.generatedSimulation);
+      expect(targetedPracticeExam.sourceType, isNull,
+          reason:
+              'Ordinary targeted practice must not be falsely labeled as generatedSimulation');
       expect(
         ExamProvenanceHelper.resolveProvenanceLabel(
-          sourceType: targetedPracticeExam.sourceType.toDbString(),
+          sourceType: targetedPracticeExam.sourceType?.toDbString(),
           examMode: targetedPracticeExam.examMode.toDbString(),
           examType: targetedPracticeExam.examType.toDbString(),
         ),
         'Teacher Assignment',
       );
 
-      // Dimension 2: Custom Question Set (assignment_type: customQuestionSet, exam_mode: custom, source_type: generatedSimulation)
+      // Dimension 2: Custom Question Set with mixed provenance
+      // assignment_type: customQuestionSet, exam_mode: custom, source_type: null
       final customSetExam = Exam(
         id: 'asgn_cs_01',
         title: 'Selected Calculus Set',
         examType: ExamType.teacherAssigned,
         examMode: ExamMode.custom,
-        sourceType: ExamSourceType.generatedSimulation,
+        sourceType:
+            null, // Mixed questions have item-level origin preserved in snapshots
         grade: 12,
         stream: 'natural',
         totalQuestions: 15,
@@ -270,17 +379,20 @@ void main() {
       );
       expect(customSetExam.examType, ExamType.teacherAssigned);
       expect(customSetExam.examMode, ExamMode.custom);
-      expect(customSetExam.sourceType, ExamSourceType.generatedSimulation);
+      expect(customSetExam.sourceType, isNull,
+          reason:
+              'Custom mixed sets must not falsely claim single-source origin');
       expect(
         ExamProvenanceHelper.resolveProvenanceLabel(
-          sourceType: customSetExam.sourceType.toDbString(),
+          sourceType: customSetExam.sourceType?.toDbString(),
           examMode: customSetExam.examMode.toDbString(),
           examType: customSetExam.examType.toDbString(),
         ),
         'Custom Exam',
       );
 
-      // Dimension 3: National Simulation (assignment_type: simulation, exam_mode: nationalSimulation, source_type: generatedSimulation)
+      // Dimension 3: ESSLCE National Simulation
+      // assignment_type: simulation, exam_mode: nationalSimulation, source_type: generatedSimulation
       final simulationExam = Exam(
         id: 'asgn_sim_01',
         title: 'Class Mock Simulation',
@@ -299,14 +411,15 @@ void main() {
       expect(simulationExam.sourceType, ExamSourceType.generatedSimulation);
       expect(
         ExamProvenanceHelper.resolveProvenanceLabel(
-          sourceType: simulationExam.sourceType.toDbString(),
+          sourceType: simulationExam.sourceType?.toDbString(),
           examMode: simulationExam.examMode.toDbString(),
           examType: simulationExam.examType.toDbString(),
         ),
         'FidelLearn ESSLCE Simulation',
       );
 
-      // Dimension 4: Official Historical Paper (source_type: officialHistoricalPaper, exam_mode: historicalPaper)
+      // Dimension 4: Official Historical Paper assigned by teacher
+      // source_type: officialHistoricalPaper, exam_mode: historicalPaper
       final historicalPaperExam = Exam(
         id: 'asgn_hist_01',
         title: 'Official 2014 Physics Paper',
@@ -326,19 +439,20 @@ void main() {
           ExamSourceType.officialHistoricalPaper);
       expect(
         ExamProvenanceHelper.resolveProvenanceLabel(
-          sourceType: historicalPaperExam.sourceType.toDbString(),
+          sourceType: historicalPaperExam.sourceType?.toDbString(),
           examMode: historicalPaperExam.examMode.toDbString(),
           examType: historicalPaperExam.examType.toDbString(),
         ),
         'Official Historical Paper',
       );
 
-      // Dimension 5: Verified Model Paper (source_type: verifiedModelPaper, exam_mode: custom)
+      // Dimension 5: Verified Model Paper assigned by teacher
+      // source_type: verifiedModelPaper, exam_mode: practice
       final modelPaperExam = Exam(
         id: 'asgn_model_01',
         title: 'Verified 2026 Model Exam',
         examType: ExamType.teacherAssigned,
-        examMode: ExamMode.custom,
+        examMode: ExamMode.practice,
         sourceType: ExamSourceType.verifiedModelPaper,
         grade: 12,
         stream: 'natural',
@@ -348,11 +462,11 @@ void main() {
         createdAt: DateTime.utc(2026, 1, 1),
       );
       expect(modelPaperExam.examType, ExamType.teacherAssigned);
-      expect(modelPaperExam.examMode, ExamMode.custom);
+      expect(modelPaperExam.examMode, ExamMode.practice);
       expect(modelPaperExam.sourceType, ExamSourceType.verifiedModelPaper);
       expect(
         ExamProvenanceHelper.resolveProvenanceLabel(
-          sourceType: modelPaperExam.sourceType.toDbString(),
+          sourceType: modelPaperExam.sourceType?.toDbString(),
           examMode: modelPaperExam.examMode.toDbString(),
           examType: modelPaperExam.examType.toDbString(),
         ),

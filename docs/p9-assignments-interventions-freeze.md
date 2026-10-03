@@ -163,13 +163,13 @@ Assignments serve as administrative delivery envelopes around core assessment en
 
 | P9 Assignment | `assignment_type` | `exam_type` (Context) | `exam_mode` | `source_type` | Provenance Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Targeted Practice** | `targetedPractice` | `teacherAssigned` | `practice` | `generatedSimulation` | General curriculum practice items; defaults to canonical P5 `generatedSimulation`. |
-| **Custom Question Set** | `customQuestionSet` | `teacherAssigned` | `custom` | `generatedSimulation` (or underlying source) | Teacher-selected question set; inherits source type of items if official or model paper. |
+| **Targeted Practice** | `targetedPractice` | `teacherAssigned` | `practice` | `NULL` (or actual uniform origin) | General curriculum items; does **not** falsely assign `generatedSimulation`. |
+| **Custom Question Set** | `customQuestionSet` | `teacherAssigned` | `custom` | `NULL` (or actual uniform origin) | Curated selection; mixed-origin question sets preserve item-level origin in snapshots. |
 | **Simulation** | `simulation` | `teacherAssigned` | `nationalSimulation` | `generatedSimulation` | Strictly timed national simulation rules; preserves blueprint version, variant, and seed. |
-| **Historical Paper** | `customQuestionSet` | `teacherAssigned` | `historicalPaper` | `officialHistoricalPaper` | Teacher-assigned context does **not** erase `officialHistoricalPaper` source provenance. |
-| **Verified Model** | `customQuestionSet` | `teacherAssigned` | `custom` | `verifiedModelPaper` | Teacher-assigned context does **not** erase `verifiedModelPaper` source provenance. |
+| **Historical Paper** | `customQuestionSet` (or applicable) | `teacherAssigned` | `historicalPaper` | `officialHistoricalPaper` | Teacher-assigned context does **not** erase `officialHistoricalPaper` source provenance. |
+| **Verified Model** | `customQuestionSet` (or applicable) | `teacherAssigned` | `practice` (or `custom`) | `verifiedModelPaper` | Teacher-assigned context does **not** erase `verifiedModelPaper` source provenance. |
 
-> **Canonical Discipline Note**: P9 does **not** invent `curriculumPractice`, `remedialDrill`, `timedMock`, or `untimedMock`. P9 assignment types (`targetedPractice`, `customQuestionSet`, `simulation`) remain in `assignment_type`, and pedagogical subtypes (e.g. Remedial Drill, Topic Quiz) are UI/targeting strategies, not `source_type` enum values.
+> **Canonical Discipline Note**: P9 does **not** invent `curriculumPractice`, `remedialDrill`, `timedMock`, or `untimedMock`. P9 assignment types (`targetedPractice`, `customQuestionSet`, `simulation`) remain in `assignment_type`, and pedagogical subtypes (e.g. Remedial Drill, Topic Quiz) are UI/targeting strategies, not `source_type` enum values. Where no canonical P5 single source applies, `source_type = NULL`.
 
 ### 5.2 P7 / P8 / P9 Provenance Parity
 Cross-milestone consistency is enforced via the central `ExamProvenanceHelper.resolveProvenanceLabel()`:
@@ -190,7 +190,7 @@ Cross-milestone consistency is enforced via the central `ExamProvenanceHelper.re
 
 ---
 
-## 7. Offline Deadline Integrity & Clock Anomaly Policy
+## 7. Offline Deadline Integrity & Absolute-Time Trust Levels
 
 ### 7.1 Precise Timestamp Field Definitions
 To decouple student exam execution from network latency, FidelLearn strictly separates the following four timestamp fields:
@@ -202,26 +202,33 @@ To decouple student exam execution from network latency, FidelLearn strictly sep
 | `attempt_completed_at` / `submitted_at` | Local completion time when exam session ended | Authoritative client execution timestamp |
 | `server_received_at` / `synced_at` | Timestamp when server receives sync payload | Server authoritative receipt timestamp |
 
-### 7.2 Conceptual Distinction: `completed_at` vs `received_at`
-The platform explicitly differentiates between:
-- `completed_at`: The actual time the student finalized their answers offline.
-- `received_at`: The timestamp when connectivity was restored and the sync queue payload arrived at the Supabase backend.
+### 7.2 Explicit Deadline Trust Levels
+FidelLearn defines three explicit deadline trust levels in `DeadlineIntegrityLevel`:
+1. **`verified`**: The system possesses sufficient trusted absolute-time evidence:
+   - Online completion with server-authoritative timestamps, OR
+   - Offline completion anchored to a trusted server-time anchor (`trusted_server_utc` + valid `monotonic_elapsed`).
+2. **`unverified`**: Offline absolute completion time cannot be anchored confidently to trusted UTC (no trusted anchor, anchor expired, or monotonic continuity lost/reset).
+3. **`anomaly`**: Explicit clock or timer inconsistency detected (`timerIntegrityWarning` or backward wall-clock shift).
 
-### 7.3 Offline Deadline Adjudication Matrix (5 Tested Cases)
+> **Crucial Invariant**: $\text{No detected anomaly} \neq \text{Verified absolute UTC}$. A student who manually rolls back device time before starting an attempt will experience a completely stable monotonic session timer during the attempt, but the absolute completion time remains **unverified** without a trusted server-time anchor.
 
-| Scenario | Local Completion | Deadline | Cloud Sync Time | Clock Integrity | Final Status & Adjudication |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **1. Normal Online** | 16:45 | 17:00 | 16:45 | Valid | **On Time**: Completed and received before deadline. |
-| **2. Offline + Valid Clock** | 16:45 | 17:00 | 20:00 | Valid | **On Time**: Completed before deadline; network delay does not penalize student. |
-| **3. Offline + Valid Clock (Late)** | 17:20 | 17:00 | 20:00 | Valid | **Late**: Completed after deadline; accepted if `allow_late_submission = true`. |
-| **4. Offline + Clock Anomaly** | 16:45* | 17:00 | 20:00 | Anomaly (`timerIntegrityWarning`) | **Accepted + Deadline Timing Unverified**: Absolute completion time cannot be trusted; student work is preserved and flagged for teacher oversight. |
-| **5. Late Prohibited Policy** | 17:20 | 17:00 | 20:00 | Valid (`allow_late = false`) | **Submitted**: Work accepted and recorded; score preserved; late flag prevents silent deletion. |
+### 7.3 Offline Deadline Adjudication Matrix (8 Tested Cases)
 
-### 7.4 Clock Integrity & Student Data Preservation Invariant
-1. **Monotonic Timer Limitations**: The monotonic timer proves elapsed session duration, but without a persistent trusted server-time anchor in offline mode, it cannot reconstruct absolute UTC completion time.
-2. **Honest Reporting**: If clock divergence or backward time shifts occur (`timerIntegrityWarning = true`), the system refuses to falsely certify completion as "on time". Instead, the deadline status is recorded as `deadline_integrity = 'unverified'`.
-3. **Student Work is NEVER Discarded**: Clock uncertainty never destroys a student's locally completed assignment. Answers, attempt records, scores, and completion payloads are preserved completely and synced to the cloud.
-4. **Auditability**: Both local completion time and `server_received_at` are permanently stored side-by-side to provide full auditability for delayed or anomalous submissions.
+| Scenario | Local Device Time | Deadline | Cloud Sync Time | Timing Anchor & Integrity | Final Status & Trust Level |
+| :--- | :---: | :---: | :---: | :--- | :--- |
+| **1. Normal Online** | 16:45 | 17:00 | 16:45 | Server authoritative | **On Time (`verified`)**: Evaluated against server UTC. |
+| **2. Offline + Trusted Anchor (On Time)** | 16:45 | 17:00 | 20:00 | 16:00 Anchor + 45m Monotonic = 16:45 UTC | **On Time (`verified`)**: Confidently verified on time; delayed sync does not penalize student. |
+| **3. Offline + Trusted Anchor (Late)** | 17:20 | 17:00 | 20:00 | 16:00 Anchor + 80m Monotonic = 17:20 UTC | **Late (`verified`)**: Confidently verified late; accepted under `allow_late_submission = true`. |
+| **4. Offline + No Trusted Anchor** | 16:45 | 17:00 | 20:00 | No server anchor available | **Submission Accepted (`unverified`)**: Cannot assert on-time or late with false certainty. Neutral label: *Submission Received — Deadline Timing Unverified*. |
+| **5. Pre-shifted Clock Before Attempt** | 16:30 | 17:00 | 20:30 | Clock set back before attempt; timer stable | **Submission Accepted (`unverified`)**: Monotonic session stable, but cannot gain false on-time certification. |
+| **6. Clock Anomaly During Session** | 16:45* | 17:00 | 20:00 | Anomaly (`timerIntegrityWarning = true`) | **Submission Accepted (`anomaly`)**: Flagged for teacher review; responses and scores permanently preserved. |
+| **7. Monotonic Continuity Loss** | 16:45 | 17:00 | 20:00 | Counter reset / device reboot | **Submission Accepted (`unverified`)**: Fails safe; never falls back silently to raw wall-clock time. |
+| **8. Late Prohibited Policy** | 16:45 | 17:00 | 20:00 | Unverified timing (`allow_late = false`) | **Deadline Review Required (`unverified`)**: Work accepted and recorded; score preserved; never deleted. |
+
+### 7.4 Student Data Preservation & Teacher UI Invariants
+1. **Timing Uncertainty $\neq$ Discard Student Work**: Clock anomalies, missing anchors, or late flags **never** delete student responses, attempt records, or calculated scores.
+2. **Neutral Teacher-Facing Status**: When timing is unverified, teacher UI displays a neutral status (*"Submission received — Deadline timing could not be verified"*), avoiding false accusations of misconduct.
+3. **Auditability**: Local completion timestamp and `server_received_at` are stored side-by-side in perpetuity.
 
 ---
 

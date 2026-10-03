@@ -74,29 +74,35 @@ class _StudentAssignmentDetailScreenState
         detail['assignment_type'] as String?,
       );
 
-      final ExamMode resolvedMode = switch (asgnType) {
-        AssignmentType.simulation => ExamMode.nationalSimulation,
-        AssignmentType.customQuestionSet => ExamMode.custom,
-        _ => ExamMode.practice,
-      };
+      final bool allOfficial = resolvedQuestions.isNotEmpty &&
+          resolvedQuestions.every((q) =>
+              q.provenance?.provenanceType ==
+                  SourceProvenanceType.officialNeaeaPaper ||
+              q.provenance?.provenanceType ==
+                  SourceProvenanceType.nationalArchive);
+      final bool allModel = resolvedQuestions.isNotEmpty &&
+          resolvedQuestions.every((q) =>
+              q.provenance?.provenanceType ==
+              SourceProvenanceType.educatorModelExam);
 
-      final bool allOfficial = resolvedQuestions.every((q) =>
-          q.provenance?.provenanceType ==
-              SourceProvenanceType.officialNeaeaPaper ||
-          q.provenance?.provenanceType == SourceProvenanceType.nationalArchive);
-      final bool allModel = resolvedQuestions.every((q) =>
-          q.provenance?.provenanceType ==
-          SourceProvenanceType.educatorModelExam);
+      final ExamMode resolvedMode;
+      final ExamSourceType? resolvedSourceType;
 
-      final ExamSourceType resolvedSourceType;
       if (asgnType == AssignmentType.simulation) {
+        resolvedMode = ExamMode.nationalSimulation;
         resolvedSourceType = ExamSourceType.generatedSimulation;
       } else if (allOfficial) {
+        resolvedMode = ExamMode.historicalPaper;
         resolvedSourceType = ExamSourceType.officialHistoricalPaper;
       } else if (allModel) {
+        resolvedMode = ExamMode.practice;
         resolvedSourceType = ExamSourceType.verifiedModelPaper;
+      } else if (asgnType == AssignmentType.customQuestionSet) {
+        resolvedMode = ExamMode.custom;
+        resolvedSourceType = null;
       } else {
-        resolvedSourceType = ExamSourceType.generatedSimulation;
+        resolvedMode = ExamMode.practice;
+        resolvedSourceType = null;
       }
 
       final exam = Exam(

@@ -547,12 +547,22 @@ class _RecipientTile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  recipient.status.labelEn,
+                  recipient.deadlineIntegrity ==
+                          DeadlineIntegrityLevel.unverified
+                      ? 'Timing Unverified'
+                      : (recipient.deadlineIntegrity ==
+                              DeadlineIntegrityLevel.anomaly
+                          ? 'Clock Anomaly'
+                          : recipient.status.labelEn),
                   style: TextStyle(
                     fontSize: 11,
+                    fontWeight: FontWeight.w500,
                     color: recipient.status == AssignmentRecipientStatus.late
                         ? AppTheme.danger
-                        : AppTheme.green,
+                        : (recipient.deadlineIntegrity !=
+                                DeadlineIntegrityLevel.verified
+                            ? AppTheme.accent
+                            : AppTheme.green),
                   ),
                 ),
               ],

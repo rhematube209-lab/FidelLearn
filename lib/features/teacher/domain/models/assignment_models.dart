@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
 
+import 'deadline_integrity_models.dart';
+
+export 'deadline_integrity_models.dart';
+
 /// Taxonomy of assignments supported in FidelLearn P9.
 enum AssignmentType {
   targetedPractice,
@@ -357,6 +361,7 @@ class AssignmentRecipient extends Equatable {
   final String? schoolStudentId;
   final DateTime assignedAt;
   final AssignmentRecipientStatus status;
+  final DeadlineIntegrityLevel deadlineIntegrity;
   final String? attemptId;
   final DateTime? startedAt;
   final DateTime? submittedAt;
@@ -371,6 +376,7 @@ class AssignmentRecipient extends Equatable {
     this.schoolStudentId,
     required this.assignedAt,
     required this.status,
+    this.deadlineIntegrity = DeadlineIntegrityLevel.verified,
     this.attemptId,
     this.startedAt,
     this.submittedAt,
@@ -394,6 +400,7 @@ class AssignmentRecipient extends Equatable {
       'school_student_id': schoolStudentId,
       'assigned_at': assignedAt.toIso8601String(),
       'status': status.dbValue,
+      'deadline_integrity': deadlineIntegrity.dbValue,
       'attempt_id': attemptId,
       'started_at': startedAt?.toIso8601String(),
       'submitted_at': submittedAt?.toIso8601String(),
@@ -414,6 +421,9 @@ class AssignmentRecipient extends Equatable {
           : DateTime.now(),
       status: AssignmentRecipientStatus.fromString(
         json['status'] as String? ?? 'assigned',
+      ),
+      deadlineIntegrity: DeadlineIntegrityLevel.fromString(
+        json['deadline_integrity'] as String?,
       ),
       attemptId: json['attempt_id'] as String?,
       startedAt: json['started_at'] != null
@@ -436,6 +446,7 @@ class AssignmentRecipient extends Equatable {
         schoolStudentId,
         assignedAt,
         status,
+        deadlineIntegrity,
         attemptId,
         startedAt,
         submittedAt,
@@ -516,6 +527,7 @@ class StudentAssignment extends Equatable {
   final double? percentage;
   final DateTime? submittedAt;
   final bool isOfflineReady;
+  final DeadlineIntegrityLevel deadlineIntegrity;
 
   const StudentAssignment({
     required this.assignmentId,
@@ -540,6 +552,7 @@ class StudentAssignment extends Equatable {
     this.percentage,
     this.submittedAt,
     this.isOfflineReady = false,
+    this.deadlineIntegrity = DeadlineIntegrityLevel.verified,
   });
 
   bool get isTimed => timeLimitMinutes > 0;
@@ -564,6 +577,7 @@ class StudentAssignment extends Equatable {
   StudentAssignment copyWith({
     bool? isOfflineReady,
     AssignmentRecipientStatus? studentStatus,
+    DeadlineIntegrityLevel? deadlineIntegrity,
     String? attemptId,
     int? score,
     double? percentage,
@@ -583,6 +597,7 @@ class StudentAssignment extends Equatable {
       assignmentType: assignmentType,
       assignmentStatus: assignmentStatus,
       studentStatus: studentStatus ?? this.studentStatus,
+      deadlineIntegrity: deadlineIntegrity ?? this.deadlineIntegrity,
       dueAt: dueAt,
       allowLateSubmission: allowLateSubmission,
       timeLimitMinutes: timeLimitMinutes,
@@ -616,6 +631,9 @@ class StudentAssignment extends Equatable {
       studentStatus: AssignmentRecipientStatus.fromString(
         json['student_status'] as String? ?? 'assigned',
       ),
+      deadlineIntegrity: DeadlineIntegrityLevel.fromString(
+        json['deadline_integrity'] as String?,
+      ),
       dueAt: json['due_at'] != null
           ? DateTime.parse(json['due_at'] as String)
           : null,
@@ -647,6 +665,7 @@ class StudentAssignment extends Equatable {
         assignmentType,
         assignmentStatus,
         studentStatus,
+        deadlineIntegrity,
         dueAt,
         allowLateSubmission,
         timeLimitMinutes,

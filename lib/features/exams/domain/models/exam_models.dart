@@ -56,7 +56,7 @@ class Exam extends Equatable {
   final String title;
   final ExamType examType;
   final ExamMode examMode;
-  final ExamSourceType sourceType;
+  final ExamSourceType? sourceType;
   final int grade;
   final String stream;
   final String? subjectId;
@@ -76,7 +76,7 @@ class Exam extends Equatable {
     required this.title,
     required this.examType,
     this.examMode = ExamMode.practice,
-    this.sourceType = ExamSourceType.generatedSimulation,
+    this.sourceType,
     required this.grade,
     required this.stream,
     this.subjectId,
@@ -184,7 +184,7 @@ class ExamAttempt extends Equatable {
   final String examTitle;
   final String subjectId;
   final ExamMode examMode;
-  final ExamSourceType sourceType;
+  final ExamSourceType? sourceType;
   final ExamVariantCode? examVariant;
   final String? blueprintVersion;
   final int? simulationSeed;
@@ -217,7 +217,7 @@ class ExamAttempt extends Equatable {
     required this.examTitle,
     required this.subjectId,
     this.examMode = ExamMode.practice,
-    this.sourceType = ExamSourceType.generatedSimulation,
+    this.sourceType,
     this.examVariant,
     this.blueprintVersion,
     this.simulationSeed,
@@ -314,7 +314,7 @@ class ExamAttempt extends Equatable {
       'exam_title': examTitle,
       'subject_id': subjectId,
       'exam_mode': examMode.name,
-      'source_type': sourceType.name,
+      if (sourceType != null) 'source_type': sourceType!.toDbString(),
       if (examVariant != null) 'exam_variant': examVariant!.name,
       if (blueprintVersion != null) 'blueprint_version': blueprintVersion,
       if (simulationSeed != null) 'simulation_seed': simulationSeed,
@@ -357,7 +357,9 @@ class ExamAttempt extends Equatable {
       examTitle: json['exam_title'] as String? ?? 'Practice Exam',
       subjectId: json['subject_id'] as String? ?? 'math_g12',
       examMode: ExamMode.fromString(json['exam_mode'] as String?),
-      sourceType: ExamSourceType.fromString(json['source_type'] as String?),
+      sourceType: json['source_type'] != null
+          ? ExamSourceType.tryFromString(json['source_type'] as String?)
+          : null,
       examVariant: json['exam_variant'] != null
           ? ExamVariantCode.fromString(json['exam_variant'] as String)
           : null,

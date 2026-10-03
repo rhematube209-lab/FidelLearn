@@ -51,8 +51,8 @@ enum ExamSourceType {
   verifiedModelPaper,
   generatedSimulation;
 
-  static ExamSourceType fromString(String? val) {
-    if (val == null) return ExamSourceType.generatedSimulation;
+  static ExamSourceType? tryFromString(String? val) {
+    if (val == null || val.trim().isEmpty) return null;
     switch (val.toLowerCase().trim()) {
       case 'officialhistoricalpaper':
       case 'official_historical_paper':
@@ -63,9 +63,14 @@ enum ExamSourceType {
         return ExamSourceType.verifiedModelPaper;
       case 'generatedsimulation':
       case 'generated_simulation':
-      default:
         return ExamSourceType.generatedSimulation;
+      default:
+        return null;
     }
+  }
+
+  static ExamSourceType fromString(String? val) {
+    return tryFromString(val) ?? ExamSourceType.generatedSimulation;
   }
 
   String toDbString() {
@@ -83,11 +88,12 @@ enum ExamSourceType {
 /// Authoritative helper for normalizing P5 provenance labels across P7, P8, and P9.
 class ExamProvenanceHelper {
   static String resolveProvenanceLabel({
-    required String sourceType,
+    required String? sourceType,
     required String examMode,
     required String examType,
   }) {
-    final normalizedSource = sourceType.toLowerCase().replaceAll('_', '');
+    final normalizedSource =
+        sourceType?.toLowerCase().replaceAll('_', '') ?? '';
     final normalizedMode = examMode.toLowerCase().replaceAll('_', '');
 
     if (normalizedSource == 'officialhistoricalpaper' ||

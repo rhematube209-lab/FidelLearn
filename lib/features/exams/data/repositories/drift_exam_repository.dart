@@ -83,7 +83,7 @@ class DriftExamRepository implements ExamRepository {
             responsesJson: responsesMapJson,
             createdAt: attempt.startTime,
             examMode: attempt.examMode.name,
-            sourceType: attempt.sourceType.name,
+            sourceType: attempt.sourceType?.name ?? '',
             examVariant: attempt.examVariant?.name,
             blueprintVersion: attempt.blueprintVersion,
             simulationSeed: attempt.simulationSeed,
@@ -152,7 +152,7 @@ class DriftExamRepository implements ExamRepository {
       examTitle: row.examTitle,
       subjectId: row.subjectId,
       examMode: ExamMode.fromString(row.examMode),
-      sourceType: ExamSourceType.fromString(row.sourceType),
+      sourceType: ExamSourceType.tryFromString(row.sourceType),
       examVariant: row.examVariant != null
           ? ExamVariantCode.fromString(row.examVariant!)
           : null,
