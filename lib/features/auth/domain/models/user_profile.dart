@@ -2,7 +2,19 @@ import 'package:equatable/equatable.dart';
 
 enum UserRole {
   student,
+
+  /// Deprecated legacy global role. Institutional authority is tenant-scoped
+  /// via [SchoolMembership.role] and enforced by Supabase RLS.
+  /// Global teacher claim grants zero tenant authority.
+  @Deprecated(
+      'Institutional authority is tenant-scoped via SchoolMembership. Global role grants no tenant data access.')
   teacher,
+
+  /// Deprecated legacy global role. Institutional authority is tenant-scoped
+  /// via [SchoolMembership.role] and enforced by Supabase RLS.
+  /// Global schoolAdmin claim grants zero tenant authority.
+  @Deprecated(
+      'Institutional authority is tenant-scoped via SchoolMembership. Global role grants no tenant data access.')
   schoolAdmin,
   platformAdmin;
 

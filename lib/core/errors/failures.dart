@@ -149,3 +149,74 @@ class HistoricalIncompleteFailure extends Failure {
   List<Object?> get props =>
       [message, code, paperTitle, expectedCount, verifiedCount];
 }
+
+// =============================================================================
+// P6 Institutional & Multi-Tenant Failures
+// =============================================================================
+
+class SchoolNotFoundFailure extends Failure {
+  final String schoolId;
+
+  const SchoolNotFoundFailure(this.schoolId)
+      : super('School with ID "$schoolId" was not found.', 'SCHOOL_NOT_FOUND');
+
+  @override
+  List<Object?> get props => [message, code, schoolId];
+}
+
+class MembershipNotFoundFailure extends Failure {
+  final String? schoolId;
+  final String? userId;
+
+  const MembershipNotFoundFailure([this.schoolId, this.userId])
+      : super(
+          'No institutional membership found${schoolId != null ? ' for school "$schoolId"' : ''}.',
+          'MEMBERSHIP_NOT_FOUND',
+        );
+
+  @override
+  List<Object?> get props => [message, code, schoolId, userId];
+}
+
+class MembershipInactiveFailure extends Failure {
+  final String? schoolId;
+  final String status;
+
+  const MembershipInactiveFailure(this.status, [this.schoolId])
+      : super(
+          'Institutional membership is not active (status: $status).',
+          'MEMBERSHIP_INACTIVE',
+        );
+
+  @override
+  List<Object?> get props => [message, code, status, schoolId];
+}
+
+class PermissionDeniedFailure extends Failure {
+  const PermissionDeniedFailure([
+    super.message = 'You do not have permission to perform this action.',
+    super.code = 'PERMISSION_DENIED',
+  ]);
+}
+
+class InvitationExpiredFailure extends Failure {
+  const InvitationExpiredFailure([
+    super.message = 'This school invitation code has expired.',
+    super.code = 'INVITATION_EXPIRED',
+  ]);
+}
+
+class InvitationInvalidFailure extends Failure {
+  const InvitationInvalidFailure([
+    super.message =
+        'The school invitation code is invalid or has already been used.',
+    super.code = 'INVITATION_INVALID',
+  ]);
+}
+
+class TenantValidationFailure extends Failure {
+  const TenantValidationFailure(
+    super.message, [
+    super.code = 'TENANT_VALIDATION_ERROR',
+  ]);
+}

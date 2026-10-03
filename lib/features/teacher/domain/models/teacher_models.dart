@@ -1,47 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-class Classroom extends Equatable {
-  final String id;
-  final String name;
-  final int grade;
-  final String stream;
-  final int studentCount;
-  final String teacherId;
-
-  const Classroom({
-    required this.id,
-    required this.name,
-    required this.grade,
-    required this.stream,
-    required this.studentCount,
-    required this.teacherId,
-  });
-
-  factory Classroom.fromJson(Map<String, dynamic> json) {
-    return Classroom(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      grade: json['grade'] as int? ?? 12,
-      stream: json['stream'] as String? ?? 'natural',
-      studentCount: json['student_count'] as int? ?? 0,
-      teacherId: json['teacher_id'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'grade': grade,
-      'stream': stream,
-      'student_count': studentCount,
-      'teacher_id': teacherId,
-    };
-  }
-
-  @override
-  List<Object?> get props => [id, name, grade, stream, studentCount, teacherId];
-}
+export '../../../school/domain/models/tenant_models.dart' show Classroom;
 
 class ClassAssignment extends Equatable {
   final String id;

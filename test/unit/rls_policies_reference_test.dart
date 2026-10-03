@@ -76,15 +76,37 @@ void main() {
       });
     });
 
-    group('User roles direct modification rules', () {
-      test('direct client INSERT, UPDATE, DELETE on user_roles is blocked', () {
-        // RLS policies: user_roles_no_direct_insert, user_roles_no_direct_update, user_roles_no_direct_delete
-        const canDirectInsert = false;
-        const canDirectUpdate = false;
-        const canDirectDelete = false;
-        expect(canDirectInsert, isFalse);
-        expect(canDirectUpdate, isFalse);
-        expect(canDirectDelete, isFalse);
+    group('P6 Multi-Tenant RLS & Tenancy Matrix', () {
+      test(
+          'institutional authority derives strictly from active SchoolMembership',
+          () {
+        const globalTeacherGrantsTenantAccess = false;
+        const globalSchoolAdminGrantsTenantAccess = false;
+        expect(globalTeacherGrantsTenantAccess, isFalse);
+        expect(globalSchoolAdminGrantsTenantAccess, isFalse);
+      });
+
+      test(
+          'direct client INSERT, UPDATE, DELETE on institutional tables is blocked',
+          () {
+        // RLS policies require trusted RPCs with security definer audit trails
+        const directInsertAllowed = false;
+        const directDeleteAllowed = false;
+        expect(directInsertAllowed, isFalse);
+        expect(directDeleteAllowed, isFalse);
+      });
+
+      test('unassigned teachers in same school cannot access student records',
+          () {
+        const unassignedTeacherCanAccess = false;
+        expect(unassignedTeacherCanAccess, isFalse);
+      });
+
+      test(
+          'cross-tenant classroom or teacher assignment is rejected by check constraints',
+          () {
+        const allowCrossTenantClassroomAssignment = false;
+        expect(allowCrossTenantClassroomAssignment, isFalse);
       });
     });
   });

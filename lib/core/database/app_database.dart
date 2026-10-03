@@ -26,12 +26,61 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) async {
           await m.createAll();
+          await customStatement('''
+            CREATE TABLE IF NOT EXISTS db_learning_assignments (
+              id TEXT PRIMARY KEY,
+              school_id TEXT NOT NULL,
+              classroom_id TEXT NOT NULL,
+              classroom_name TEXT,
+              teacher_user_id TEXT NOT NULL,
+              teacher_name TEXT,
+              subject_id TEXT NOT NULL,
+              exam_variant TEXT,
+              title TEXT NOT NULL,
+              instructions TEXT,
+              assignment_type TEXT NOT NULL,
+              status TEXT NOT NULL,
+              due_at INTEGER,
+              allow_late_submission INTEGER NOT NULL DEFAULT 1,
+              time_limit_minutes INTEGER NOT NULL DEFAULT 0,
+              total_questions INTEGER NOT NULL DEFAULT 0,
+              content_hash TEXT,
+              question_ids_json TEXT NOT NULL DEFAULT '[]',
+              created_at INTEGER NOT NULL,
+              published_at INTEGER,
+              synced_at INTEGER NOT NULL
+            );
+          ''');
+
+          await customStatement('''
+            CREATE TABLE IF NOT EXISTS db_assignment_recipients (
+              id TEXT PRIMARY KEY,
+              assignment_id TEXT NOT NULL,
+              student_user_id TEXT NOT NULL,
+              assigned_at INTEGER NOT NULL,
+              status TEXT NOT NULL,
+              attempt_id TEXT,
+              started_at INTEGER,
+              submitted_at INTEGER,
+              score INTEGER,
+              percentage REAL,
+              sync_status TEXT NOT NULL DEFAULT 'synced',
+              UNIQUE(assignment_id, student_user_id)
+            );
+          ''');
+
+          await customStatement(
+            'CREATE INDEX IF NOT EXISTS idx_learning_assignments_subject ON db_learning_assignments(subject_id);',
+          );
+          await customStatement(
+            'CREATE INDEX IF NOT EXISTS idx_assignment_recipients_student ON db_assignment_recipients(student_user_id, status);',
+          );
         },
         onUpgrade: (Migrator m, int from, int to) async {
           Future<bool> columnExists(String tableName, String columnName) async {
@@ -254,6 +303,58 @@ class AppDatabase extends _$AppDatabase {
             await safeAddColumn(
                 dbExamAttempts, dbExamAttempts.outcomesProcessedAt);
             await safeAddColumn(dbExamAttempts, dbExamAttempts.scoringPolicy);
+          }
+
+          if (from < 9 && to >= 9) {
+            await customStatement('''
+              CREATE TABLE IF NOT EXISTS db_learning_assignments (
+                id TEXT PRIMARY KEY,
+                school_id TEXT NOT NULL,
+                classroom_id TEXT NOT NULL,
+                classroom_name TEXT,
+                teacher_user_id TEXT NOT NULL,
+                teacher_name TEXT,
+                subject_id TEXT NOT NULL,
+                exam_variant TEXT,
+                title TEXT NOT NULL,
+                instructions TEXT,
+                assignment_type TEXT NOT NULL,
+                status TEXT NOT NULL,
+                due_at INTEGER,
+                allow_late_submission INTEGER NOT NULL DEFAULT 1,
+                time_limit_minutes INTEGER NOT NULL DEFAULT 0,
+                total_questions INTEGER NOT NULL DEFAULT 0,
+                content_hash TEXT,
+                question_ids_json TEXT NOT NULL DEFAULT '[]',
+                created_at INTEGER NOT NULL,
+                published_at INTEGER,
+                synced_at INTEGER NOT NULL
+              );
+            ''');
+
+            await customStatement('''
+              CREATE TABLE IF NOT EXISTS db_assignment_recipients (
+                id TEXT PRIMARY KEY,
+                assignment_id TEXT NOT NULL,
+                student_user_id TEXT NOT NULL,
+                assigned_at INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                attempt_id TEXT,
+                started_at INTEGER,
+                submitted_at INTEGER,
+                score INTEGER,
+                percentage REAL,
+                sync_status TEXT NOT NULL DEFAULT 'synced',
+                UNIQUE(assignment_id, student_user_id)
+              );
+            ''');
+
+            await customStatement(
+              'CREATE INDEX IF NOT EXISTS idx_learning_assignments_subject ON db_learning_assignments(subject_id);',
+            );
+            await customStatement(
+              'CREATE INDEX IF NOT EXISTS idx_assignment_recipients_student ON db_assignment_recipients(student_user_id, status);',
+            );
           }
         },
       );

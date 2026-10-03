@@ -3,11 +3,14 @@ import 'dart:io' as io;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/auth/domain/models/user_profile.dart';
+import '../../features/school/domain/models/tenant_models.dart';
 
 class AuthSessionStorage {
   static const String _keyRememberMe = 'fidel_remember_me';
   static const String _keySavedUser = 'fidel_saved_user_profile';
   static const String _keySavedPhone = 'fidel_saved_phone_number';
+  static const String _keyCachedSchoolContext = 'fidel_cached_school_context';
+  static const String _keyActiveSchoolId = 'fidel_active_school_id';
 
   // In-memory fallback for test environments or platform channel failures
   static final Map<String, String> _memoryStore = {};
@@ -110,6 +113,72 @@ class AuthSessionStorage {
     if (prefs != null) {
       await prefs.remove(_keySavedUser);
       await prefs.setBool(_keyRememberMe, false);
+    }
+
+    // Completely purge institutional context upon logout to prevent cross-account leaks
+    await clearSchoolContext();
+  }
+
+  /// Save lightweight cached institutional snapshot for offline display
+  Future<void> saveCachedSchoolContext(CachedSchoolContext context) async {
+    final jsonStr = jsonEncode(context.toJson());
+    _memoryStore[_keyCachedSchoolContext] = jsonStr;
+
+    final prefs = await _getPrefs();
+    if (prefs != null) {
+      await prefs.setString(_keyCachedSchoolContext, jsonStr);
+    }
+  }
+
+  /// Retrieve cached institutional snapshot if available
+  Future<CachedSchoolContext?> getCachedSchoolContext() async {
+    String? jsonStr;
+    final prefs = await _getPrefs();
+    if (prefs != null) {
+      jsonStr = prefs.getString(_keyCachedSchoolContext);
+    }
+    jsonStr ??= _memoryStore[_keyCachedSchoolContext];
+
+    if (jsonStr != null && jsonStr.isNotEmpty) {
+      try {
+        final map = jsonDecode(jsonStr) as Map<String, dynamic>;
+        return CachedSchoolContext.fromJson(map);
+      } catch (e) {
+        debugPrint(
+            'AuthSessionStorage error parsing cached school context: $e');
+      }
+    }
+    return null;
+  }
+
+  /// Save preferred or last-active school ID for multi-school users
+  Future<void> saveActiveSchoolId(String schoolId) async {
+    _memoryStore[_keyActiveSchoolId] = schoolId;
+    final prefs = await _getPrefs();
+    if (prefs != null) {
+      await prefs.setString(_keyActiveSchoolId, schoolId);
+    }
+  }
+
+  /// Retrieve last-active school ID
+  Future<String?> getActiveSchoolId() async {
+    final prefs = await _getPrefs();
+    if (prefs != null) {
+      final id = prefs.getString(_keyActiveSchoolId);
+      if (id != null && id.isNotEmpty) return id;
+    }
+    return _memoryStore[_keyActiveSchoolId];
+  }
+
+  /// Clear institutional context (e.g. on logout, user switch, or membership revocation)
+  Future<void> clearSchoolContext() async {
+    _memoryStore.remove(_keyCachedSchoolContext);
+    _memoryStore.remove(_keyActiveSchoolId);
+
+    final prefs = await _getPrefs();
+    if (prefs != null) {
+      await prefs.remove(_keyCachedSchoolContext);
+      await prefs.remove(_keyActiveSchoolId);
     }
   }
 }

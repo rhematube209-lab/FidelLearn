@@ -21,6 +21,7 @@ import '../../../progress/domain/services/weak_topic_detector.dart';
 import '../../../progress/presentation/widgets/today_study_plan_card.dart';
 import '../../../progress/presentation/widgets/reviews_due_banner.dart';
 import '../../../subjects/domain/models/subject_models.dart';
+import '../../../teacher/presentation/widgets/due_assignments_banner.dart';
 
 class StudentHomeScreen extends ConsumerStatefulWidget {
   const StudentHomeScreen({super.key});
@@ -700,6 +701,9 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                   ),
                                 );
                               }),
+
+                              // 🌟 Section 2.5: Teacher Due Assignments Banner
+                              DueAssignmentsBanner(isAmharic: isAmharic),
 
                               // 🌟 Section 3: Today's Personalized Study Plan
                               TodayStudyPlanCard(

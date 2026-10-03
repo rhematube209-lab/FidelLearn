@@ -105,11 +105,13 @@ class AppTheme {
   static const Color surfaceLight = lightSurface;
   static const Color textDark = lightText;
   static const Color textMuted = lightMuted;
+  static const Color lightTextMuted = lightMuted;
 
   static const Color bgDark = darkBg;
   static const Color surfaceDark = darkSurface;
   static const Color textLight = darkText;
   static const Color textMutedDark = darkMuted;
+  static const Color darkTextMuted = darkMuted;
 
   static const Color successGreen = green;
   static const Color errorRed = danger;

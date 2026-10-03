@@ -24,10 +24,15 @@ import '../../features/subjects/data/repositories/supabase_content_repository.da
 import '../../features/subjects/domain/repositories/content_repository.dart';
 import '../../features/admin/data/repositories/local_admin_repository.dart';
 import '../../features/admin/domain/repositories/admin_repository.dart';
-import '../../features/school/data/repositories/local_school_repository.dart';
+import '../../features/school/data/repositories/supabase_school_repository.dart';
 import '../../features/school/domain/repositories/school_repository.dart';
+import '../../features/school/domain/repositories/classroom_repository.dart';
+import '../../features/school/data/repositories/supabase_classroom_repository.dart';
 import '../../features/teacher/data/repositories/local_teacher_repository.dart';
+import '../../features/teacher/data/repositories/local_teacher_portal_repository.dart';
+import '../../features/teacher/data/repositories/supabase_teacher_portal_repository.dart';
 import '../../features/teacher/domain/repositories/teacher_repository.dart';
+import '../../features/teacher/domain/repositories/teacher_portal_repository.dart';
 import '../../features/p2p_transfer/data/repositories/local_p2p_repository.dart';
 import '../../features/challenges/domain/services/offline_challenge_qr_service.dart';
 import '../../features/subjects/domain/services/delta_package_service.dart';
@@ -234,8 +239,22 @@ final teacherRepositoryProvider = Provider<TeacherRepository>((ref) {
   return LocalTeacherRepository();
 });
 
+final teacherPortalRepositoryProvider =
+    Provider<TeacherPortalRepository>((ref) {
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseTeacherPortalRepository();
+    } catch (_) {}
+  }
+  return LocalTeacherPortalRepository();
+});
+
 final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
-  return LocalSchoolRepository();
+  return SupabaseSchoolRepository();
+});
+
+final classroomRepositoryProvider = Provider<ClassroomRepository>((ref) {
+  return SupabaseClassroomRepository();
 });
 
 final adminRepositoryProvider = Provider<AdminRepository>((ref) {

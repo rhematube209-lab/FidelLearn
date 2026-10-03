@@ -80,6 +80,47 @@ enum ExamSourceType {
   }
 }
 
+/// Authoritative helper for normalizing P5 provenance labels across P7, P8, and P9.
+class ExamProvenanceHelper {
+  static String resolveProvenanceLabel({
+    required String sourceType,
+    required String examMode,
+    required String examType,
+  }) {
+    final normalizedSource = sourceType.toLowerCase().replaceAll('_', '');
+    final normalizedMode = examMode.toLowerCase().replaceAll('_', '');
+
+    if (normalizedSource == 'officialhistoricalpaper' ||
+        normalizedSource == 'officialpastexam' ||
+        normalizedSource == 'officialpastpaper' ||
+        normalizedMode == 'historicalpaper') {
+      return 'Official Historical Paper';
+    }
+    if (normalizedSource == 'verifiedmodelpaper' ||
+        normalizedSource == 'verifiedmodel' ||
+        normalizedSource == 'modelexam') {
+      return 'Verified Model Exam';
+    }
+    if (normalizedMode == 'nationalsimulation' ||
+        (normalizedSource == 'generatedsimulation' &&
+            examType == 'mock_full')) {
+      return 'FidelLearn ESSLCE Simulation';
+    }
+    if (normalizedMode == 'custom' || examType == 'custom_builder') {
+      return 'Custom Exam';
+    }
+    if (examType == 'unit_test') {
+      return 'Unit Test';
+    }
+    if (examType == 'teacher_assigned' ||
+        normalizedSource == 'teachercustom' ||
+        normalizedSource == 'teacherassignment') {
+      return 'Teacher Assignment';
+    }
+    return 'Practice';
+  }
+}
+
 /// Verified completeness status for historical national papers
 enum HistoricalCompletenessStatus {
   verifiedComplete,

@@ -13,21 +13,29 @@ class LocalTeacherRepository implements TeacherRepository {
     final now = DateTime.now();
 
     _classrooms.addAll([
-      const Classroom(
+      Classroom(
         id: 'cls_12A',
+        schoolId: '11111111-1111-1111-1111-111111111111',
         name: 'Grade 12 Natural - Section A',
         grade: 12,
-        stream: 'natural',
+        stream: 'naturalScience',
+        section: 'A',
+        academicYear: '2026/27',
         studentCount: 48,
-        teacherId: 'teacher_1',
+        createdAt: now,
+        updatedAt: now,
       ),
-      const Classroom(
+      Classroom(
         id: 'cls_12B',
+        schoolId: '11111111-1111-1111-1111-111111111111',
         name: 'Grade 12 Social - Section B',
         grade: 12,
-        stream: 'social',
+        stream: 'socialScience',
+        section: 'B',
+        academicYear: '2026/27',
         studentCount: 42,
-        teacherId: 'teacher_1',
+        createdAt: now,
+        updatedAt: now,
       ),
     ]);
 
@@ -51,7 +59,7 @@ class LocalTeacherRepository implements TeacherRepository {
 
   @override
   Future<List<Classroom>> getTeacherClassrooms(String teacherId) async {
-    return _classrooms.where((c) => c.teacherId == teacherId).toList();
+    return _classrooms;
   }
 
   @override

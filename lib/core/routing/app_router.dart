@@ -9,9 +9,18 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/bookmarks/presentation/screens/bookmarks_screen.dart';
 import '../../features/challenges/presentation/screens/challenges_screen.dart';
 import '../../features/school/presentation/screens/school_admin_dashboard_screen.dart';
-import '../../features/teacher/domain/models/teacher_models.dart';
 import '../../features/teacher/presentation/screens/create_assignment_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_assignment_center_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_assignment_detail_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_intervention_center_screen.dart';
+import '../../features/teacher/presentation/screens/student_assignment_inbox_screen.dart';
+import '../../features/teacher/presentation/screens/student_assignment_detail_screen.dart';
 import '../../features/teacher/presentation/screens/teacher_dashboard_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_home_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_class_detail_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_class_roster_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_attention_screen.dart';
+import '../../features/teacher/presentation/screens/teacher_student_summary_screen.dart';
 import '../../features/exam_ghost/presentation/screens/exam_ghost_screen.dart';
 import '../../features/exams/domain/models/exam_models.dart';
 import '../../features/exams/presentation/screens/exam_builder_screen.dart';
@@ -32,13 +41,16 @@ import '../../features/rewards/presentation/screens/rewards_screen.dart';
 import '../../features/subjects/presentation/screens/subjects_screen.dart';
 import '../../features/p2p_transfer/presentation/screens/p2p_sharing_screen.dart';
 
+import '../../features/school/presentation/providers/active_school_context_provider.dart';
+import '../../features/school/presentation/screens/school_leadership_home_screen.dart';
+
 final routerProvider = Provider<GoRouter>((ref) {
-  return createAppRouter();
+  return createAppRouter(ref: ref);
 });
 
 final appRouter = createAppRouter();
 
-GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
+GoRouter createAppRouter({String initialLocation = '/', Ref? ref}) => GoRouter(
       initialLocation: initialLocation,
       routes: [
         GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
@@ -168,6 +180,17 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
           builder: (context, state) => const ProgressScreen(),
         ),
         GoRoute(
+          path: '/assignments',
+          builder: (context, state) => const StudentAssignmentInboxScreen(),
+        ),
+        GoRoute(
+          path: '/assignment/:assignmentId',
+          builder: (context, state) {
+            final assignmentId = state.pathParameters['assignmentId']!;
+            return StudentAssignmentDetailScreen(assignmentId: assignmentId);
+          },
+        ),
+        GoRoute(
           path: '/exam_ghost/:examId',
           builder: (context, state) {
             final examId = state.pathParameters['examId'] ?? '';
@@ -180,17 +203,148 @@ GoRouter createAppRouter({String initialLocation = '/'}) => GoRouter(
         ),
         GoRoute(
           path: '/teacher',
+          builder: (context, state) => const TeacherHomeScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/home',
+          builder: (context, state) => const TeacherHomeScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/legacy_dashboard',
           builder: (context, state) => const TeacherDashboardScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/assignments',
+          builder: (context, state) => const TeacherAssignmentCenterScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/assignment/new',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>?;
+            return CreateAssignmentScreen(
+              initialClassroomId: extra?['classroomId'] as String?,
+              initialSubjectId: extra?['subjectId'] as String?,
+              initialExamVariant: extra?['examVariant'] as String?,
+              initialStudentUserId: extra?['studentUserId'] as String?,
+              initialTopicId: extra?['topicId'] as String?,
+            );
+          },
         ),
         GoRoute(
           path: '/teacher/create_assignment',
           builder: (context, state) {
-            final classroom = state.extra as Classroom?;
-            return CreateAssignmentScreen(classroom: classroom);
+            final extra = state.extra as Map<String, dynamic>?;
+            return CreateAssignmentScreen(
+              initialClassroomId: extra?['classroomId'] as String?,
+              initialSubjectId: extra?['subjectId'] as String?,
+              initialExamVariant: extra?['examVariant'] as String?,
+              initialStudentUserId: extra?['studentUserId'] as String?,
+              initialTopicId: extra?['topicId'] as String?,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/teacher/assignment/:assignmentId',
+          builder: (context, state) {
+            final assignmentId = state.pathParameters['assignmentId']!;
+            return TeacherAssignmentDetailScreen(assignmentId: assignmentId);
+          },
+        ),
+        GoRoute(
+          path: '/teacher/interventions',
+          builder: (context, state) => const TeacherInterventionCenterScreen(),
+        ),
+        GoRoute(
+          path: '/teacher/class/:classroomId/:subjectId',
+          builder: (context, state) {
+            final classroomId = state.pathParameters['classroomId']!;
+            final subjectId = state.pathParameters['subjectId']!;
+            final extra = state.extra as Map<String, dynamic>?;
+            return TeacherClassDetailScreen(
+              classroomId: classroomId,
+              subjectId: subjectId,
+              classroomName:
+                  extra?['classroomName'] as String? ?? 'Class Detail',
+              subjectName: extra?['subjectName'] as String? ?? 'Subject',
+              examVariant: extra?['examVariant'] as String?,
+              enrolledCount: extra?['enrolledCount'] as int? ?? 0,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/teacher/class/:classroomId/:subjectId/roster',
+          builder: (context, state) {
+            final classroomId = state.pathParameters['classroomId']!;
+            final subjectId = state.pathParameters['subjectId']!;
+            final extra = state.extra as Map<String, dynamic>?;
+            return TeacherClassRosterScreen(
+              classroomId: classroomId,
+              subjectId: subjectId,
+              classroomName: extra?['classroomName'] as String?,
+              subjectName: extra?['subjectName'] as String?,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/teacher/class/:classroomId/:subjectId/attention',
+          builder: (context, state) {
+            final classroomId = state.pathParameters['classroomId']!;
+            final subjectId = state.pathParameters['subjectId']!;
+            final extra = state.extra as Map<String, dynamic>?;
+            return TeacherAttentionScreen(
+              classroomId: classroomId,
+              subjectId: subjectId,
+              classroomName: extra?['classroomName'] as String?,
+              subjectName: extra?['subjectName'] as String?,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/teacher/class/:classroomId/:subjectId/student/:studentId',
+          builder: (context, state) {
+            final classroomId = state.pathParameters['classroomId']!;
+            final subjectId = state.pathParameters['subjectId']!;
+            final studentId = state.pathParameters['studentId']!;
+            final extra = state.extra as Map<String, dynamic>?;
+            return TeacherStudentSummaryScreen(
+              classroomId: classroomId,
+              subjectId: subjectId,
+              studentId: studentId,
+              studentName: extra?['studentName'] as String?,
+              schoolStudentId: extra?['schoolStudentId'] as String?,
+              subjectName: extra?['subjectName'] as String?,
+              classroomName: extra?['classroomName'] as String?,
+            );
           },
         ),
         GoRoute(
           path: '/school',
+          redirect: (context, state) {
+            if (ref != null) {
+              final schoolContext = ref.read(activeSchoolContextProvider);
+              if (!schoolContext.isSchoolAdmin) {
+                return '/home';
+              }
+            }
+            return null;
+          },
+          builder: (context, state) => const SchoolLeadershipHomeScreen(),
+        ),
+        GoRoute(
+          path: '/school/home',
+          redirect: (context, state) {
+            if (ref != null) {
+              final schoolContext = ref.read(activeSchoolContextProvider);
+              if (!schoolContext.isSchoolAdmin) {
+                return '/home';
+              }
+            }
+            return null;
+          },
+          builder: (context, state) => const SchoolLeadershipHomeScreen(),
+        ),
+        GoRoute(
+          path: '/school/legacy_dashboard',
           builder: (context, state) => const SchoolAdminDashboardScreen(),
         ),
         GoRoute(

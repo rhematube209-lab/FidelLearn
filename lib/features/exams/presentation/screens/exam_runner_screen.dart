@@ -13,6 +13,7 @@ import '../../../question_bank/presentation/widgets/scientific_text.dart';
 import '../../domain/models/exam_models.dart';
 import '../../domain/services/authoritative_exam_timer.dart';
 import '../../domain/services/exam_engine.dart';
+import '../../../teacher/presentation/providers/assignment_providers.dart';
 
 class ExamRunnerScreen extends ConsumerStatefulWidget {
   final Exam exam;
@@ -413,6 +414,23 @@ class _ExamRunnerScreenState extends ConsumerState<ExamRunnerScreen> {
         isAutoSubmitted: _authoritativeTimer.isExpired,
         timerIntegrityWarning: _authoritativeTimer.timerIntegrityWarning,
       );
+
+      if (widget.exam.examType == ExamType.teacherAssigned &&
+          widget.exam.id.startsWith('assignment_')) {
+        try {
+          final assignmentId = widget.exam.id.replaceFirst('assignment_', '');
+          final assignmentRepo = ref.read(studentAssignmentRepositoryProvider);
+          await assignmentRepo.submitAssignment(
+            assignmentId: assignmentId,
+            attemptId: finalizedAttempt.id,
+            score: finalizedAttempt.score,
+            percentage: finalizedAttempt.percentage,
+            submittedAt: DateTime.now().toUtc(),
+          );
+        } catch (e) {
+          debugPrint('Notice: assignment recipient submission sync: $e');
+        }
+      }
 
       if (mounted) {
         context.go('/results/${finalizedAttempt.id}', extra: {
