@@ -126,6 +126,11 @@ class _SchoolLeadershipHomeScreenState
       ),
       actions: [
         IconButton(
+          icon: const Icon(Icons.analytics_outlined, color: Colors.white70),
+          tooltip: 'Institutional Reports Hub',
+          onPressed: () => context.push('/school/reports'),
+        ),
+        IconButton(
           icon: const Icon(Icons.refresh_rounded, color: Colors.white70),
           tooltip: 'Refresh analytics',
           onPressed: () {

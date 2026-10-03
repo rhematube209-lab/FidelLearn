@@ -43,6 +43,9 @@ import '../../features/p2p_transfer/presentation/screens/p2p_sharing_screen.dart
 
 import '../../features/school/presentation/providers/active_school_context_provider.dart';
 import '../../features/school/presentation/screens/school_leadership_home_screen.dart';
+import '../../features/school/domain/models/institutional_reporting_models.dart';
+import '../../features/school/presentation/screens/reports_hub_screen.dart';
+import '../../features/school/presentation/screens/report_preview_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return createAppRouter(ref: ref);
@@ -346,6 +349,56 @@ GoRouter createAppRouter({String initialLocation = '/', Ref? ref}) => GoRouter(
         GoRoute(
           path: '/school/legacy_dashboard',
           builder: (context, state) => const SchoolAdminDashboardScreen(),
+        ),
+        GoRoute(
+          path: '/school/reports',
+          redirect: (context, state) {
+            if (ref != null) {
+              final schoolContext = ref.read(activeSchoolContextProvider);
+              if (!schoolContext.isSchoolAdmin) {
+                return '/home';
+              }
+            }
+            return null;
+          },
+          builder: (context, state) =>
+              const ReportsHubScreen(isTeacherView: false),
+        ),
+        GoRoute(
+          path: '/school/reports/preview',
+          redirect: (context, state) {
+            if (ref != null) {
+              final schoolContext = ref.read(activeSchoolContextProvider);
+              if (!schoolContext.isSchoolAdmin && !schoolContext.isTeacher) {
+                return '/home';
+              }
+            }
+            return null;
+          },
+          builder: (context, state) {
+            final typeStr = state.uri.queryParameters['type'];
+            final schoolId = state.uri.queryParameters['schoolId'] ?? '';
+            final extraReport = state.extra as ExecutiveReport?;
+            return ReportPreviewScreen(
+              schoolId: schoolId,
+              reportType: InstitutionalReportType.fromString(typeStr),
+              passedExecutiveReport: extraReport,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/teacher/reports',
+          redirect: (context, state) {
+            if (ref != null) {
+              final schoolContext = ref.read(activeSchoolContextProvider);
+              if (!schoolContext.isTeacher && !schoolContext.isSchoolAdmin) {
+                return '/home';
+              }
+            }
+            return null;
+          },
+          builder: (context, state) =>
+              const ReportsHubScreen(isTeacherView: true),
         ),
         GoRoute(
           path: '/admin',
