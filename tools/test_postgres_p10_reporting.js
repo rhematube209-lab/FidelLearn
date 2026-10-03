@@ -553,7 +553,9 @@ async function run() {
   const aRow = assignReport.rows[0];
   assert(aRow.publication_cohort === 6, `Publication cohort: expected 6, got ${aRow.publication_cohort}`);
   assert(aRow.required_denominator === 5, `Required completion denominator (cohort - excused): expected 5, got ${aRow.required_denominator}`);
-  assert(aRow.submitted_count === 4, `Submitted count: expected 4, got ${aRow.submitted_count}`);
+  assert(aRow.submitted_count === 2, `Submitted count: expected 2, got ${aRow.submitted_count}`);
+  assert(aRow.completed_count === 1, `Completed count: expected 1, got ${aRow.completed_count}`);
+  assert(parseFloat(aRow.completion_rate) === 60.00, `Completion rate: expected 60.00, got ${aRow.completion_rate}`);
   assert(aRow.verified_on_time_count === 1, `Verified on-time count: expected 1, got ${aRow.verified_on_time_count}`);
   assert(aRow.verified_late_count === 1, `Verified late count: expected 1, got ${aRow.verified_late_count}`);
   assert(parseFloat(aRow.verified_on_time_rate) === 50.00, `Verified on-time rate: expected 50.00, got ${aRow.verified_on_time_rate}`);
@@ -679,6 +681,251 @@ async function run() {
   assert(exec.populations.active_enrolled_students === 6, `Active enrolled students: expected 6, got ${exec.populations.active_enrolled_students}`);
   assert(exec.populations.students_with_academic_evidence === 5, `Students with academic evidence: expected 5, got ${exec.populations.students_with_academic_evidence}`);
   assert(exec.assignment_follow_through.verified_on_time_rate === 50.00, `Executive verified on-time rate: expected 50.00, got ${exec.assignment_follow_through.verified_on_time_rate}`);
+
+  // =========================================================================
+  // CANONICAL FREEZE CORRECTION VERIFICATION SUITE
+  // =========================================================================
+  console.log('\n[9/9] Running Final P10 Canonical Freeze Verification Tests...');
+
+  // Test 23: Freshness vs Academic Activity Separation (Prompt Issues 1-7)
+  await asSuperuser();
+  const fStudentA = 'ea000001-0000-0000-0000-000000000001';
+  const fStudentB = 'ea000002-0000-0000-0000-000000000002';
+  const fStudentC = 'ea000003-0000-0000-0000-000000000003';
+  await db.exec(`
+    INSERT INTO auth.users (id, phone) VALUES 
+      ('${fStudentA}', '+251910000091'),
+      ('${fStudentB}', '+251910000092'),
+      ('${fStudentC}', '+251910000093')
+    ON CONFLICT (id) DO NOTHING;
+
+    INSERT INTO public.profiles (id, display_name, phone_number, grade, stream, preferred_language) VALUES 
+      ('${fStudentA}', 'Freshness Student A', '+251910000091', 12, 'natural', 'en'),
+      ('${fStudentB}', 'Freshness Student B', '+251910000092', 12, 'natural', 'en'),
+      ('${fStudentC}', 'Freshness Student C', '+251910000093', 12, 'natural', 'en')
+    ON CONFLICT (id) DO NOTHING;
+
+    INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES 
+      ('${schoolAId}', '${fStudentA}', 'student', 'active'),
+      ('${schoolAId}', '${fStudentB}', 'student', 'active'),
+      ('${schoolAId}', '${fStudentC}', 'student', 'active')
+    ON CONFLICT DO NOTHING;
+
+    INSERT INTO public.classroom_memberships (classroom_id, user_id, role, status) VALUES 
+      ('${classA}', '${fStudentA}', 'student', 'active'),
+      ('${classA}', '${fStudentB}', 'student', 'active'),
+      ('${classA}', '${fStudentC}', 'student', 'active')
+    ON CONFLICT DO NOTHING;
+
+    -- Student A: activity 10 days ago, server sync created today
+    INSERT INTO public.attempts (
+      id, user_id, exam_id, total_questions, score, percentage, is_completed,
+      start_time, end_time, created_at
+    ) VALUES (
+      'ea911111-1111-1111-1111-111111111111', '${fStudentA}', '${examPhysics}', 50, 42, 84.0, true,
+      NOW() - INTERVAL '10 days', NOW() - INTERVAL '10 days', NOW()
+    );
+
+    -- Student B: activity yesterday, sync confirmed 8 days ago
+    INSERT INTO public.attempts (
+      id, user_id, exam_id, total_questions, score, percentage, is_completed,
+      start_time, end_time, created_at
+    ) VALUES (
+      'ea922222-2222-2222-2222-222222222222', '${fStudentB}', '${examPhysics}', 50, 38, 76.0, true,
+      NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day', NOW() - INTERVAL '8 days'
+    );
+    -- Student C: never synced (0 attempts, 0 mistakes)
+  `);
+
+  await asUser(adminA);
+  const repA = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentA}') AS res;`)).rows[0].res;
+  const repB = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentB}') AS res;`)).rows[0].res;
+  const repC = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentC}') AS res;`)).rows[0].res;
+
+  assert(repA.sync_freshness === 'fresh', `Student A sync_freshness: expected fresh (synced today), got ${repA.sync_freshness}`);
+  assert(repA.last_successful_sync !== null, 'Student A has last_successful_sync');
+  assert(repA.last_cloud_academic_activity !== null, 'Student A has last_cloud_academic_activity');
+  assert(repB.sync_freshness === 'stale', `Student B sync_freshness: expected stale (synced 8 days ago), got ${repB.sync_freshness}`);
+  assert(repC.sync_freshness === 'unknown', `Student C sync_freshness: expected unknown (never synced), got ${repC.sync_freshness}`);
+  assert(repC.last_successful_sync === null, 'Student C has NULL last_successful_sync');
+  assert(repC.last_cloud_academic_activity === null, 'Student C has NULL last_cloud_academic_activity');
+
+  const dataCov = (await db.query(`SELECT public.get_data_coverage_report('${schoolAId}', '2026') AS res;`)).rows[0].res;
+  assert(dataCov.unknown_sync_count >= 1, `Data coverage unknown_sync_count: expected >= 1, got ${dataCov.unknown_sync_count}`);
+  assert(dataCov.methodological_notice.includes('Missing cloud evidence must not be interpreted as lack of study'), 'Data coverage contains exact offline disclaimer');
+
+  // Test 24: Active Student Enrollment Canonical Source & Deduplication (Prompt Issues 8-12)
+  await asSuperuser();
+  const dStudent1 = 'ea000004-0000-0000-0000-000000000004';
+  const dStudentInactive = 'ea000005-0000-0000-0000-000000000005';
+  await db.exec(`
+    INSERT INTO auth.users (id, phone) VALUES 
+      ('${dStudent1}', '+251910000081'),
+      ('${dStudentInactive}', '+251910000082')
+    ON CONFLICT (id) DO NOTHING;
+
+    INSERT INTO public.profiles (id, display_name, phone_number, grade, stream, preferred_language) VALUES 
+      ('${dStudent1}', 'Multi-Enrolled Student', '+251910000081', 12, 'natural', 'en'),
+      ('${dStudentInactive}', 'Transferred Student', '+251910000082', 12, 'natural', 'en')
+    ON CONFLICT (id) DO NOTHING;
+
+    INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES 
+      ('${schoolAId}', '${dStudent1}', 'student', 'active'),
+      ('${schoolAId}', '${dStudentInactive}', 'student', 'active')
+    ON CONFLICT DO NOTHING;
+
+    -- dStudent1 enrolled in TWO classrooms in School A
+    INSERT INTO public.classroom_memberships (classroom_id, user_id, role, status) VALUES 
+      ('${classA}', '${dStudent1}', 'student', 'active'),
+      ('${classC}', '${dStudent1}', 'student', 'active'),
+      -- dStudentInactive has inactive/transferred status
+      ('${classA}', '${dStudentInactive}', 'student', 'inactive')
+    ON CONFLICT DO NOTHING;
+
+    -- dStudentInactive has historical attempt
+    INSERT INTO public.attempts (
+      id, user_id, exam_id, total_questions, score, percentage, is_completed, start_time, end_time, created_at
+    ) VALUES (
+      'ea888888-8888-8888-8888-888888888888', '${dStudentInactive}', '${examPhysics}', 50, 45, 90.0, true, NOW() - INTERVAL '20 days', NOW() - INTERVAL '20 days', NOW() - INTERVAL '20 days'
+    );
+  `);
+
+  await asUser(adminA);
+  const execDedupe = (await db.query(`SELECT public.get_institutional_executive_report('${schoolAId}', '2026') AS res;`)).rows[0].res;
+  // Multi-enrolled student must be deduplicated (counted exactly once), inactive student must be excluded
+  // Prior active students: 6 initial (studentA1..A6) + 3 freshness (fStudentA, fStudentB, fStudentC) + 1 (dStudent1) = 10 active
+  assert(execDedupe.populations.active_enrolled_students === 10, `Active enrolled students deduplicated: expected 10, got ${execDedupe.populations.active_enrolled_students}`);
+
+  // Test 25: Teacher Coverage Denominator — 24 slots for 2 Nat + 2 Soc (Prompt Issues 13-18)
+  await asSuperuser();
+  const classA2 = 'cc222222-2222-2222-2222-222222222222';
+  await db.query(`
+    INSERT INTO public.classrooms (id, school_id, name, grade, stream, section, academic_year, status)
+    VALUES ('${classA2}', '${schoolAId}', '12-B Natural', 12, 'naturalScience', 'B', '2026', 'active')
+    ON CONFLICT (id) DO NOTHING;
+  `);
+
+  await asUser(adminA);
+  const cov24Res = (await db.query(`SELECT public.get_teacher_coverage_report('${schoolAId}', '2026') AS res;`)).rows[0].res;
+  // 2 Natural (classA, classA2) + 2 Social (classC, classD) = 4 * 6 = 24 required slots
+  assert(cov24Res.total_slots === 24, `Teacher coverage required slots: expected exactly 24 (4 classes * 6 stream subjects), got ${cov24Res.total_slots}`);
+
+  // Verify Natural classes have only Natural primary curriculum and Social classes have only Social
+  const natSlots = cov24Res.slots.filter(s => s.classroom_id === classA);
+  assert(natSlots.length === 6, `Natural classA slots count: expected 6, got ${natSlots.length}`);
+  const natSubjectIds = natSlots.map(s => s.subject_id);
+  assert(natSubjectIds.includes('physics_g12'), 'Natural class includes physics_g12');
+  assert(natSubjectIds.includes('chemistry_g12'), 'Natural class includes chemistry_g12');
+  assert(natSubjectIds.includes('biology_g12'), 'Natural class includes biology_g12');
+  assert(!natSubjectIds.includes('history_g12'), 'Natural class excludes history_g12');
+  assert(!natSubjectIds.includes('geography_g12'), 'Natural class excludes geography_g12');
+  assert(!natSubjectIds.includes('economics_g12'), 'Natural class excludes economics_g12');
+  assert(!natSubjectIds.includes('civics_g12'), 'Natural class excludes civics_g12');
+  const natMath = natSlots.find(s => s.subject_id === 'math_g12');
+  assert(natMath.exam_variant === 'naturalScience', 'Natural math slot requires naturalScience variant');
+
+  const socSlots = cov24Res.slots.filter(s => s.classroom_id === classC);
+  assert(socSlots.length === 6, `Social classC slots count: expected 6, got ${socSlots.length}`);
+  const socSubjectIds = socSlots.map(s => s.subject_id);
+  assert(socSubjectIds.includes('history_g12'), 'Social class includes history_g12');
+  assert(socSubjectIds.includes('geography_g12'), 'Social class includes geography_g12');
+  assert(socSubjectIds.includes('economics_g12'), 'Social class includes economics_g12');
+  assert(!socSubjectIds.includes('physics_g12'), 'Social class excludes physics_g12');
+  assert(!socSubjectIds.includes('civics_g12'), 'Social class excludes civics_g12');
+  const socMath = socSlots.find(s => s.subject_id === 'math_g12');
+  assert(socMath.exam_variant === 'socialScience', 'Social math slot requires socialScience variant');
+
+  // Test 26: P9 Assignment Completion Regression (Prompt Issues 19-23)
+  // Fixture: requiredForCompletion = 10 (cohort 11 with 1 excused), submitted = 4, completed = 3, inProgress = 2, assigned = 1
+  await asSuperuser();
+  const assignRegression = 'aa999999-9999-9999-9999-999999999999';
+  await db.query(`
+    INSERT INTO public.learning_assignments (
+      id, school_id, classroom_id, teacher_user_id, subject_id, exam_variant,
+      title, assignment_type, status, due_at, created_at
+    ) VALUES (
+      '${assignRegression}', '${schoolAId}', '${classA}', '${teacherA}', 'physics_g12', NULL,
+      'P9 Completion Regression Fixture', 'targetedPractice', 'published', NOW() + INTERVAL '3 days', NOW() - INTERVAL '1 day'
+    );
+  `);
+
+  // Seed 11 dummy student profiles for assignment recipients
+  const regStudents = [];
+  for (let i = 1; i <= 11; i++) {
+    const sId = `ba${i.toString().padStart(2, '0')}0000-0000-0000-0000-000000000000`;
+    regStudents.push(sId);
+    await db.exec(`
+      INSERT INTO auth.users (id, phone) VALUES ('${sId}', '+2519200000${i.toString().padStart(2, '0')}') ON CONFLICT (id) DO NOTHING;
+      INSERT INTO public.profiles (id, display_name, phone_number, grade, stream, preferred_language) VALUES ('${sId}', 'Reg Student ${i}', '+2519200000${i.toString().padStart(2, '0')}', 12, 'natural', 'en') ON CONFLICT (id) DO NOTHING;
+      INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES ('${schoolAId}', '${sId}', 'student', 'active') ON CONFLICT DO NOTHING;
+      INSERT INTO public.classroom_memberships (classroom_id, user_id, role, status) VALUES ('${classA}', '${sId}', 'student', 'active') ON CONFLICT DO NOTHING;
+    `);
+  }
+
+  // 4 submitted, 3 completed, 2 inProgress, 1 assigned, 1 excused -> total 11
+  await db.exec(`
+    INSERT INTO public.learning_assignment_recipients (assignment_id, student_user_id, status, deadline_integrity, percentage) VALUES 
+      ('${assignRegression}', '${regStudents[0]}', 'submitted', 'verified', 80.0),
+      ('${assignRegression}', '${regStudents[1]}', 'submitted', 'verified', 85.0),
+      ('${assignRegression}', '${regStudents[2]}', 'submitted', 'verified', 70.0),
+      ('${assignRegression}', '${regStudents[3]}', 'submitted', 'unverified', 65.0),
+      ('${assignRegression}', '${regStudents[4]}', 'completed', 'verified', 90.0),
+      ('${assignRegression}', '${regStudents[5]}', 'completed', 'verified', 95.0),
+      ('${assignRegression}', '${regStudents[6]}', 'completed', 'verified', 88.0),
+      ('${assignRegression}', '${regStudents[7]}', 'inProgress', 'verified', NULL),
+      ('${assignRegression}', '${regStudents[8]}', 'inProgress', 'verified', NULL),
+      ('${assignRegression}', '${regStudents[9]}', 'assigned', 'verified', NULL),
+      ('${assignRegression}', '${regStudents[10]}', 'excused', 'verified', NULL);
+  `);
+
+  await asUser(adminA);
+  const regReport = await db.query(`
+    SELECT * FROM public.get_assignment_outcomes_report('${schoolAId}', '2026', NULL, NULL, '${classA}', 'physics_g12');
+  `);
+  const regRow = regReport.rows.find(r => r.assignment_id === assignRegression);
+  assert(regRow !== undefined, 'Regression assignment found in outcomes report');
+  assert(regRow.publication_cohort === 11, `Publication cohort: expected 11, got ${regRow.publication_cohort}`);
+  assert(regRow.required_denominator === 10, `Required denominator (11 - 1 excused): expected 10, got ${regRow.required_denominator}`);
+  assert(regRow.submitted_count === 4, `Submitted count: expected 4, got ${regRow.submitted_count}`);
+  assert(regRow.completed_count === 3, `Completed count: expected 3, got ${regRow.completed_count}`);
+  assert(regRow.excused_count === 1, `Excused count: expected 1, got ${regRow.excused_count}`);
+  // completion numerator = submitted (4) + completed (3) = 7 -> completion rate = 7 / 10 = 70.00%
+  assert(parseFloat(regRow.completion_rate) === 70.00, `Completion rate: expected exactly 70.00%, got ${regRow.completion_rate}`);
+
+  // Test 27: Canonical Audit Table Verification — public.audit_log (Prompt Issues 24-26)
+  await asUser(adminA);
+  await db.exec(`
+    SELECT public.record_institutional_report_audit(
+      '${schoolAId}',
+      '${runId}',
+      'institutional_report_exported',
+      '{"file_format": "pdf", "section_count": 6}'::jsonb
+    );
+    SELECT public.record_institutional_report_audit(
+      '${schoolAId}',
+      '${runId}',
+      'institutional_report_downloaded',
+      '{"bytes": 1048576, "file_name": "school_report.pdf"}'::jsonb
+    );
+  `);
+
+  await asSuperuser();
+  const auditEntries = await db.query(`
+    SELECT * FROM public.audit_log 
+    WHERE target_table = 'institutional_report_runs' AND target_id = '${runId}'
+    ORDER BY created_at ASC;
+  `);
+  assert(auditEntries.rows.length === 3, `Audit log entries in public.audit_log: expected 3, got ${auditEntries.rows.length}`);
+  const actions = auditEntries.rows.map(r => r.action);
+  assert(actions.includes('institutional_report_generated'), 'public.audit_log includes institutional_report_generated');
+  assert(actions.includes('institutional_report_exported'), 'public.audit_log includes institutional_report_exported');
+  assert(actions.includes('institutional_report_downloaded'), 'public.audit_log includes institutional_report_downloaded');
+  // Verify zero sensitive student PII in metadata
+  for (const entry of auditEntries.rows) {
+    const metaStr = JSON.stringify(entry.metadata);
+    assert(!metaStr.includes('student_name'), 'Audit metadata does NOT contain student_name');
+    assert(!metaStr.includes('+251'), 'Audit metadata does NOT contain student phone numbers');
+  }
 
 
   console.log('\n=============================================================================');

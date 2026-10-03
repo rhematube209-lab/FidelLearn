@@ -18,12 +18,15 @@ This hardening pass reconciles all reporting implementations with frozen contrac
 2. **Authority & Role Boundaries**: Every PostgreSQL reporting function executes as `SECURITY DEFINER` with fixed `SET search_path = public, pg_temp` and calls `validate_report_authority(...)`. Students are strictly denied access to all institutional reporting endpoints. Teachers are bounded to their assigned classrooms and subjects. Cross-tenant leakage is mathematically impossible under tenant isolation.
 3. **P5 Provenance Normalization**: Reports preserve canonical exam provenance (`officialHistoricalPaper`, `verifiedModelPaper`, `generatedSimulation`, `nationalSimulation`, `custom`, `unit_test`, `teacher_assigned`) via `ExamProvenanceHelper` across P7, P8, P9, and P10.
 4. **Non-Causal Academic Evidence**: Post-intervention score changes are reported strictly as observed academic longitudinal evidence with pre- and post-intervention sample counts and confidence tiers (`sufficient`, `limited`, `insufficient`). Causation is explicitly disclaimed in all UI screens, CSV headers, printable summaries, and PDF documents.
-5. **Separation of Enrollment and Active Evidence**: Institutional reports cleanly split `active_enrolled_students` (active school memberships) from `students_with_academic_evidence` (students with at least one synchronized exam attempt during the window).
-6. **Strict Timeliness Denominators**: Timeliness percentages are derived strictly from verified timing anchors:
+5. **Active Student Enrollment Canonical Source**: Active student population is derived strictly from distinct active student enrollments in active classrooms (`public.classroom_memberships cm JOIN public.classrooms c ON c.id = cm.classroom_id`). Multi-classroom enrollments are strictly deduplicated by student UUID (`COUNT(DISTINCT cm.user_id)`). Transferred/inactive students and students without active classroom memberships are excluded from active enrollment totals.
+6. **Teacher Coverage Denominator**: Staffing coverage required slots are derived from classroom stream requirements: 6 primary subjects for Natural Science (English, Aptitude, Physics, Chemistry, Biology, and Mathematics with `exam_variant = 'naturalScience'`) and 6 primary subjects for Social Science (English, Aptitude, History, Geography, Economics, and Mathematics with `exam_variant = 'socialScience'`). Civics is supplementary and excluded from primary ESSLCE staffing requirements. A school with 2 Natural and 2 Social classrooms has exactly $4 \times 6 = 24$ required instructional slots.
+7. **P9 Assignment Completion Rate Integrity**: Adheres strictly to frozen P9 semantics: $\text{completionRate} = \frac{\text{submitted} + \text{completed}}{\text{requiredForCompletion}}$, where $\text{requiredForCompletion} = \text{publication\_cohort} + \text{audited additions} - \text{excused}$.
+8. **Strict Timeliness Denominators**: Timeliness percentages are derived strictly from verified timing anchors:
    $$\text{Verified On-Time Rate} = \frac{\text{verified\_on\_time}}{\text{verified\_on\_time} + \text{verified\_late}}$$
    Unverified timing records and device clock anomalies are accounted for and reported as discrete indicators, never mixed into rate denominators.
-7. **Standards-Compliant PDF Binary Generation**: Pure Dart PDF 1.4 generation produces valid binary `%PDF-1.4...%%EOF` artifacts with cryptographic SHA-256 integrity checksums.
-8. **Device-Local P4 Mastery Non-Fabrication**: P4 adaptive spaced mastery and national readiness scores remain device-local and are never synthesized or faked into cloud institutional reports.
+9. **Standards-Compliant PDF Binary Generation**: Pure Dart PDF 1.4 generation produces valid binary `%PDF-1.4...%%EOF` artifacts with cryptographic SHA-256 integrity checksums.
+10. **Device-Local P4 Mastery Non-Fabrication**: P4 adaptive spaced mastery and national readiness scores remain device-local and are never synthesized or faked into cloud institutional reports.
+11. **Canonical Audit Ledger**: All institutional report generation, export, and download events are logged to the canonical audit ledger `public.audit_log` (singular, established in `20260924000000_production_hardening.sql`) with actor UUID, action, and sanitised metadata containing zero student PII.
 
 ---
 
@@ -34,8 +37,11 @@ All P10 functions and models reference the frozen tenant architecture:
 | Domain Entity | Canonical PostgreSQL Table | Description |
 | :--- | :--- | :--- |
 | School Membership | `public.school_memberships` | Authoritative tenant affiliation (`school_admin`, `teacher`, `student`, `staff`). Status: `active`, `suspended`, `transferred`. |
-| Classroom Cohort | `public.classroom_memberships` | Student classroom assignment with academic stream (`natural`, `social`, `common`) and enrollment status (`active`, `transferred`, `dropped`). |
+| Classroom Cohort | `public.classroom_memberships` | Student classroom assignment with academic stream (`natural`, `social`, `common`) and enrollment status (`active`, `transferred`, `dropped`). Authoritative source for active student enrollment counts. |
 | Instructional Slot | `public.teacher_subject_assignments` | Teacher-subject-classroom assignments. Forms the basis for instructional coverage and teacher authorization scoping. |
+| Audit Trail Ledger | `public.audit_log` | Canonical immutable security and reporting event ledger (`institutional_report_generated`, `institutional_report_exported`, `institutional_report_downloaded`). |
+
+Documentation and code comments have been audited to ensure zero references to deprecated legacy structures (`audit_logs`, `classroom_students`, `school_teachers`).
 
 Documentation and code comments have been audited to ensure zero references to deprecated legacy structures.
 
@@ -160,13 +166,18 @@ The `AssessmentReportRow.provenanceLabel` delegates directly to `ExamProvenanceH
 - **Mandatory Non-Causal Footnote**:
   > *"Observed change reflects academic performance recorded after intervention completion. Causation is not established."*
 
-### 5.4 Synchronization Freshness
-Derived from real academic sync evidence (`attempts.created_at`, `mistake_records.last_failed_at`), reusing frozen P7/P8 policy:
-- $\le 2$ days: **Fresh**
-- $3$ to $7$ days: **Moderate**
-- $8$ to $14$ days: **Stale**
-- $> 14$ days: **Very Stale**
-- Missing / zero activity: **Unknown**
+### 5.4 Synchronization Freshness vs Cloud Academic Activity Separation
+Frozen institutional semantics distinguish `last_activity` (academic exercise) from `last_synced` (device-server synchronization):
+- **Cloud Academic Evidence Recency**: Derived strictly from server-recorded academic activity timestamps (`attempts.start_time`, `mistake_records.last_failed_at`).
+- **Device Synchronization Freshness**: Derived from server synchronization confirmation timestamps (`attempts.created_at`, `profiles.last_synced_at`).
+- **Freshness Classification**:
+  - $\le 2$ days: **Fresh**
+  - $3$ to $7$ days: **Moderate**
+  - $8$ to $14$ days: **Stale**
+  - $> 14$ days: **Very Stale**
+  - Missing / zero activity: **Unknown**
+- **Mandatory Offline Methodological Notice**:
+  > *"Missing cloud evidence must not be interpreted as lack of study; students may be practicing actively offline."*
 
 Fresh Data Coverage Rate is calculated as:
 $$\text{Fresh Coverage Rate} = \frac{\text{fresh\_sync} + \text{moderate\_sync}}{\text{active\_enrolled\_students}} \times 100$$
@@ -178,6 +189,20 @@ Any cohort, section, or subject aggregation cell representing fewer than 5 uniqu
 - `privacy_suppressed = true`
 - CSV export label: `[SUPPRESSED n<5]`
 - PDF export label: `Suppressed (n<5 for Privacy)`
+
+### 5.6 Teacher Coverage Denominator
+Staffing required slots are derived dynamically from active classroom stream requirements:
+- **Natural Science Classrooms (6 slots)**: English (`english_g12`), Aptitude (`aptitude_g12`), Physics (`physics_g12`), Chemistry (`chemistry_g12`), Biology (`biology_g12`), and Mathematics (`math_g12` with `exam_variant = 'naturalScience'`).
+- **Social Science Classrooms (6 slots)**: English (`english_g12`), Aptitude (`aptitude_g12`), History (`history_g12`), Geography (`geography_g12`), Economics (`economics_g12`), and Mathematics (`math_g12` with `exam_variant = 'socialScience'`).
+- **Civics Exclusion**: Civics (`civics_g12`) is supplementary and strictly excluded from primary ESSLCE staffing requirements.
+- **Formula**: For a school with $N$ active Natural classrooms and $S$ active Social classrooms:
+  $$\text{Total Required Slots} = (N \times 6) + (S \times 6)$$
+  Example: 2 Natural + 2 Social classrooms = $4 \times 6 = 24$ required instructional slots.
+
+### 5.7 P9 Assignment Completion Rate Integrity
+Adheres strictly to frozen P9 assignment contract definitions:
+$$\text{Completion Rate} = \frac{\text{submitted} + \text{completed}}{\text{requiredForCompletion}} \times 100$$
+where $\text{requiredForCompletion} = \text{publication\_cohort} + \text{audited additions} - \text{excused}$.
 
 ---
 
@@ -217,8 +242,8 @@ Any cohort, section, or subject aggregation cell representing fewer than 5 uniqu
 | PostgreSQL P7 Teacher Portal | `tools/test_postgres_p7_teacher_portal.js` | 20 | **PASS** |
 | PostgreSQL P8 School Leadership | `tools/test_postgres_p8_leadership.js` | 16 | **PASS** |
 | PostgreSQL P9 Assignments + Interventions | `tools/test_postgres_p9_assignments.js` | 23 | **PASS** |
-| PostgreSQL P10 Institutional Reporting | `tools/test_postgres_p10_reporting.js` | 52 | **PASS** |
-| **Total PostgreSQL RPC Checks** | | **135** | **100% PASS** |
+| PostgreSQL P10 Institutional Reporting | `tools/test_postgres_p10_reporting.js` | 98 | **PASS** |
+| **Total PostgreSQL RPC Checks** | | **181** | **100% PASS** |
 | Flutter Full Suite Regression | `flutter test` | 555 | **555 / 555 PASS** |
 | Flutter Analyzer | `flutter analyze --no-pub` | 300 files | **0 issues** |
 | Dart Code Formatter | `dart format --output=none --set-exit-if-changed` | 300 files | **0 changes (Clean)** |

@@ -389,6 +389,7 @@ DECLARE
     v_assign_required INT := 0;
     v_assign_submitted INT := 0;
     v_assign_completed INT := 0;
+    v_assign_completion_numerator INT := 0;
     v_assign_on_time_verified INT := 0;
     v_assign_late_verified INT := 0;
     v_assign_unverified INT := 0;
@@ -402,6 +403,7 @@ DECLARE
     v_moderate_count INT := 0;
     v_stale_count INT := 0;
     v_very_stale_count INT := 0;
+    v_unknown_count INT := 0;
     
     v_teacher_coverage NUMERIC := 0.0;
     v_as_of TIMESTAMPTZ := TIMEZONE('utc', NOW());
@@ -419,17 +421,30 @@ BEGIN
     v_end := COALESCE(p_period_end, TIMEZONE('utc', NOW()));
     v_start := COALESCE(p_period_start, v_end - INTERVAL '90 days');
 
-    -- Student populations
+    -- Student populations: canonical source is distinct active student classroom_memberships
+    WITH student_streams AS (
+        SELECT 
+            cm.user_id,
+            COALESCE(p.stream, (ARRAY_AGG(c.stream))[1]) AS stream
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.profiles p ON p.id = cm.user_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
+        GROUP BY cm.user_id, p.stream
+    )
     SELECT 
-        COUNT(*)::INT,
-        COUNT(CASE WHEN p.stream = 'natural' THEN 1 END)::INT,
-        COUNT(CASE WHEN p.stream = 'social' THEN 1 END)::INT
+        COUNT(DISTINCT user_id)::INT,
+        COUNT(DISTINCT CASE WHEN stream IN ('natural', 'naturalScience') THEN user_id END)::INT,
+        COUNT(DISTINCT CASE WHEN stream IN ('social', 'socialScience') THEN user_id END)::INT
     INTO v_student_count, v_natural_count, v_social_count
-    FROM public.school_memberships sm
-    JOIN public.profiles p ON p.id = sm.user_id
-    WHERE sm.school_id = p_school_id
-      AND sm.role = 'student'
-      AND sm.status = 'active';
+    FROM student_streams;
 
     -- Teacher count
     SELECT COUNT(DISTINCT sm.user_id)::INT INTO v_teacher_count
@@ -447,9 +462,17 @@ BEGIN
 
     -- Assessment performance & participation (all assessments in date window, latest completed attempt per student per exam)
     WITH eligible_students AS (
-        SELECT sm.user_id AS student_uid
-        FROM public.school_memberships sm
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+        SELECT DISTINCT cm.user_id AS student_uid
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
     ),
     latest_attempts AS (
         SELECT DISTINCT ON (a.user_id, a.exam_id)
@@ -476,9 +499,17 @@ BEGIN
 
     -- National Simulation performance
     WITH eligible_students AS (
-        SELECT sm.user_id AS student_uid
-        FROM public.school_memberships sm
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+        SELECT DISTINCT cm.user_id AS student_uid
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
     ),
     latest_sims AS (
         SELECT DISTINCT ON (a.user_id, a.exam_id)
@@ -521,13 +552,14 @@ BEGIN
     )
     SELECT
         COUNT(CASE WHEN status != 'excused' THEN 1 END)::INT,
-        COUNT(CASE WHEN status IN ('submitted', 'completed', 'late') THEN 1 END)::INT,
-        COUNT(CASE WHEN status IN ('completed', 'submitted') THEN 1 END)::INT,
+        COUNT(CASE WHEN status = 'submitted' THEN 1 END)::INT,
+        COUNT(CASE WHEN status = 'completed' THEN 1 END)::INT,
+        COUNT(CASE WHEN status IN ('submitted', 'completed') THEN 1 END)::INT,
         COUNT(CASE WHEN status IN ('submitted', 'completed') AND deadline_integrity = 'verified' THEN 1 END)::INT,
         COUNT(CASE WHEN status = 'late' AND deadline_integrity = 'verified' THEN 1 END)::INT,
         COUNT(CASE WHEN deadline_integrity = 'unverified' THEN 1 END)::INT,
         COUNT(CASE WHEN deadline_integrity = 'anomaly' THEN 1 END)::INT
-    INTO v_assign_required, v_assign_submitted, v_assign_completed, v_assign_on_time_verified, v_assign_late_verified, v_assign_unverified, v_assign_anomaly
+    INTO v_assign_required, v_assign_submitted, v_assign_completed, v_assign_completion_numerator, v_assign_on_time_verified, v_assign_late_verified, v_assign_unverified, v_assign_anomaly
     FROM recip_stats;
 
     -- Intervention summary
@@ -576,14 +608,26 @@ BEGIN
           AND a.created_at <= si.completed_at + INTERVAL '30 days'
     );
 
-    -- Data Freshness Distribution based on actual academic evidence (attempts & mistake records)
-    WITH student_freshness AS (
+    -- Data Freshness / Academic Evidence Recency Distribution
+    WITH active_enrolled AS (
+        SELECT DISTINCT cm.user_id
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
+    ),
+    student_freshness AS (
         SELECT 
-            sm.user_id,
-            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = sm.user_id) AS last_attempt_at,
-            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = sm.user_id) AS last_mistake_at
-        FROM public.school_memberships sm
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+            ae.user_id,
+            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_attempt_at,
+            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = ae.user_id) AS last_mistake_at
+        FROM active_enrolled ae
     ),
     sync_dates AS (
         SELECT 
@@ -595,26 +639,80 @@ BEGIN
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '2 days' THEN 1 END)::INT,
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '7 days' AND last_sync < NOW() - INTERVAL '2 days' THEN 1 END)::INT,
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '14 days' AND last_sync < NOW() - INTERVAL '7 days' THEN 1 END)::INT,
-        COUNT(CASE WHEN last_sync < NOW() - INTERVAL '14 days' THEN 1 END)::INT
-    INTO v_fresh_count, v_moderate_count, v_stale_count, v_very_stale_count
+        COUNT(CASE WHEN last_sync < NOW() - INTERVAL '14 days' THEN 1 END)::INT,
+        COUNT(CASE WHEN last_sync IS NULL THEN 1 END)::INT
+    INTO v_fresh_count, v_moderate_count, v_stale_count, v_very_stale_count, v_unknown_count
     FROM sync_dates;
 
-    -- Teacher assignment coverage
+    -- Teacher assignment coverage based on valid curriculum slots (NOT Cartesian product)
+    WITH active_classes AS (
+        SELECT
+            c.id AS cid,
+            CASE
+                WHEN c.stream IN ('natural', 'naturalScience') THEN 'naturalScience'
+                WHEN c.stream IN ('social', 'socialScience') THEN 'socialScience'
+                ELSE c.stream
+            END AS cstream
+        FROM public.classrooms c
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+    ),
+    stream_curriculum AS (
+        -- Natural Science: 6 primary ESSLCE subjects
+        SELECT 'naturalScience'::TEXT AS stream, 'english_g12'::TEXT AS subject_id, NULL::TEXT AS exam_variant
+        UNION ALL
+        SELECT 'naturalScience', 'math_g12', 'naturalScience'
+        UNION ALL
+        SELECT 'naturalScience', 'aptitude_g12', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'physics_g12', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'chemistry_g12', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'biology_g12', NULL
+        -- Social Science: 6 primary ESSLCE subjects
+        UNION ALL
+        SELECT 'socialScience', 'english_g12', NULL
+        UNION ALL
+        SELECT 'socialScience', 'math_g12', 'socialScience'
+        UNION ALL
+        SELECT 'socialScience', 'aptitude_g12', NULL
+        UNION ALL
+        SELECT 'socialScience', 'history_g12', NULL
+        UNION ALL
+        SELECT 'socialScience', 'geography_g12', NULL
+        UNION ALL
+        SELECT 'socialScience', 'economics_g12', NULL
+    ),
+    required_slots AS (
+        SELECT
+            ac.cid AS classroom_id,
+            sc.subject_id,
+            sc.exam_variant
+        FROM active_classes ac
+        JOIN stream_curriculum sc ON sc.stream = ac.cstream
+    ),
+    assigned_slots AS (
+        SELECT rs.classroom_id, rs.subject_id, rs.exam_variant
+        FROM required_slots rs
+        JOIN public.teacher_subject_assignments tsa
+            ON tsa.classroom_id = rs.classroom_id
+           AND tsa.subject_id = rs.subject_id
+           AND tsa.school_id = p_school_id
+           AND tsa.status = 'active'
+           AND (
+               (rs.exam_variant IS NULL AND (tsa.exam_variant IS NULL OR tsa.exam_variant = 'shared'))
+               OR (rs.exam_variant IS NOT NULL AND tsa.exam_variant = rs.exam_variant)
+           )
+    )
     SELECT 
         CASE 
-            WHEN COUNT(*) > 0 THEN ROUND((COUNT(tsa.teacher_user_id)::NUMERIC / COUNT(*)::NUMERIC) * 100.0, 2)
+            WHEN (SELECT COUNT(*) FROM required_slots) > 0 THEN 
+                ROUND(((SELECT COUNT(*) FROM assigned_slots)::NUMERIC / (SELECT COUNT(*) FROM required_slots)::NUMERIC) * 100.0, 2)
             ELSE 100.0
         END
-    INTO v_teacher_coverage
-    FROM public.classrooms c
-    CROSS JOIN public.subjects s
-    LEFT JOIN public.teacher_subject_assignments tsa 
-        ON tsa.classroom_id = c.id AND tsa.subject_id = s.id AND tsa.school_id = p_school_id
-    WHERE c.school_id = p_school_id 
-      AND c.academic_year = v_year 
-      AND c.status = 'active'
-      AND s.grade = 12
-      AND s.id != 'civics_g12';
+    INTO v_teacher_coverage;
 
     RETURN jsonb_build_object(
         'school_id', p_school_id,
@@ -649,7 +747,8 @@ BEGIN
             'required_for_completion', v_assign_required,
             'submitted_count', v_assign_submitted,
             'completed_count', v_assign_completed,
-            'completion_rate', CASE WHEN v_assign_required > 0 THEN ROUND((v_assign_submitted::NUMERIC / v_assign_required::NUMERIC) * 100.0, 2) ELSE 0.0 END,
+            'completion_numerator', v_assign_completion_numerator,
+            'completion_rate', CASE WHEN v_assign_required > 0 THEN ROUND((v_assign_completion_numerator::NUMERIC / v_assign_required::NUMERIC) * 100.0, 2) ELSE 0.0 END,
             'verified_on_time_count', v_assign_on_time_verified,
             'verified_late_count', v_assign_late_verified,
             'verified_on_time_rate', CASE WHEN (v_assign_on_time_verified + v_assign_late_verified) > 0 THEN ROUND((v_assign_on_time_verified::NUMERIC / (v_assign_on_time_verified + v_assign_late_verified)::NUMERIC) * 100.0, 2) ELSE NULL END,
@@ -673,8 +772,9 @@ BEGIN
             'moderate_count', v_moderate_count,
             'stale_count', v_stale_count,
             'very_stale_count', v_very_stale_count,
+            'unknown_count', v_unknown_count,
             'fresh_data_coverage_rate', CASE WHEN v_student_count > 0 THEN ROUND(((v_fresh_count + v_moderate_count)::NUMERIC / v_student_count::NUMERIC) * 100.0, 2) ELSE 0.0 END,
-            'freshness_caveat', 'Stale synchronization indicates lack of recent device connectivity, NOT absence of offline student study.'
+            'freshness_caveat', 'Stale synchronization reflects offline mobile usage patterns in network-constrained environments. Missing cloud evidence must not be interpreted as lack of study. No recent cloud evidence ≠ No student study, and No recent academic event ≠ No device synchronization.'
         )
     );
 END;
@@ -733,10 +833,18 @@ BEGIN
 
     RETURN QUERY
     WITH school_students AS (
-        SELECT sm.user_id, p.stream
-        FROM public.school_memberships sm
-        JOIN public.profiles p ON p.id = sm.user_id
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+        SELECT DISTINCT cm.user_id, COALESCE(c.stream, p.stream) AS stream
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.profiles p ON p.id = cm.user_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
     ),
     defined_subjects AS (
         -- Standard subjects
@@ -920,10 +1028,18 @@ BEGIN
         SELECT 'social' AS s_code, 'Social Science' AS s_label
     ),
     stream_students AS (
-        SELECT sm.user_id, p.stream
-        FROM public.school_memberships sm
-        JOIN public.profiles p ON p.id = sm.user_id
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+        SELECT DISTINCT cm.user_id, COALESCE(c.stream, p.stream) AS stream
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.profiles p ON p.id = cm.user_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
     ),
     latest_assessments AS (
         SELECT DISTINCT ON (a.user_id, a.exam_id)
@@ -1180,15 +1296,34 @@ BEGIN
     v_end := COALESCE(p_period_end, TIMEZONE('utc', NOW()));
     v_start := COALESCE(p_period_start, v_end - INTERVAL '90 days');
 
-    SELECT COUNT(*)::INT INTO v_total_eligible
-    FROM public.school_memberships sm
-    WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active';
+    WITH active_enrolled AS (
+        SELECT DISTINCT cm.user_id
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
+    )
+    SELECT COUNT(*)::INT INTO v_total_eligible FROM active_enrolled;
 
     RETURN QUERY
     WITH school_students AS (
-        SELECT sm.user_id
-        FROM public.school_memberships sm
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+        SELECT DISTINCT cm.user_id
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
     ),
     target_exams AS (
         SELECT e.id, e.title, e.subject_id, e.exam_variant, e.source_type, e.exam_mode, e.exam_type
@@ -1341,8 +1476,9 @@ BEGIN
             r.assignment_id,
             COUNT(*)::INT AS total_assigned,
             COUNT(CASE WHEN r.status != 'excused' THEN 1 END)::INT AS req_denominator,
-            COUNT(CASE WHEN r.status IN ('submitted', 'completed', 'late') THEN 1 END)::INT AS sub_count,
-            COUNT(CASE WHEN r.status IN ('completed', 'submitted') THEN 1 END)::INT AS comp_count,
+            COUNT(CASE WHEN r.status = 'submitted' THEN 1 END)::INT AS sub_count,
+            COUNT(CASE WHEN r.status = 'completed' THEN 1 END)::INT AS comp_count,
+            COUNT(CASE WHEN r.status IN ('submitted', 'completed') THEN 1 END)::INT AS completed_numerator,
             COUNT(CASE WHEN r.status = 'excused' THEN 1 END)::INT AS exc_count,
             COUNT(CASE WHEN r.status IN ('submitted', 'completed') AND COALESCE(r.deadline_integrity, 'verified') = 'verified' THEN 1 END)::INT AS on_time_ver,
             COUNT(CASE WHEN r.status = 'late' AND COALESCE(r.deadline_integrity, 'verified') = 'verified' THEN 1 END)::INT AS late_ver,
@@ -1374,7 +1510,7 @@ BEGIN
         COALESCE(ra.anomaly_cnt, 0) AS clock_anomaly_count,
         CASE
             WHEN COALESCE(ra.req_denominator, 0) > 0 THEN
-                ROUND((COALESCE(ra.sub_count, 0)::NUMERIC / ra.req_denominator::NUMERIC) * 100.0, 2)
+                ROUND((COALESCE(ra.completed_numerator, 0)::NUMERIC / ra.req_denominator::NUMERIC) * 100.0, 2)
             ELSE 0.0
         END AS completion_rate,
         CASE
@@ -1725,6 +1861,7 @@ DECLARE
     v_mod INT := 0;
     v_stale INT := 0;
     v_very_stale INT := 0;
+    v_unknown INT := 0;
     v_timing_unverified INT := 0;
     v_clock_anomaly INT := 0;
     v_as_of TIMESTAMPTZ := TIMEZONE('utc', NOW());
@@ -1737,17 +1874,41 @@ BEGIN
     v_end := COALESCE(p_period_end, TIMEZONE('utc', NOW()));
     v_start := COALESCE(p_period_start, v_end - INTERVAL '90 days');
 
-    SELECT COUNT(*)::INT INTO v_total_students
-    FROM public.school_memberships sm
-    WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active';
+    -- Canonical active enrolled students
+    WITH active_enrolled AS (
+        SELECT DISTINCT cm.user_id
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
+    )
+    SELECT COUNT(*)::INT INTO v_total_students FROM active_enrolled;
 
-    WITH student_sync AS (
+    WITH active_enrolled AS (
+        SELECT DISTINCT cm.user_id
+        FROM public.classroom_memberships cm
+        JOIN public.classrooms c ON c.id = cm.classroom_id
+        JOIN public.school_memberships sm ON sm.user_id = cm.user_id AND sm.school_id = c.school_id
+        WHERE c.school_id = p_school_id
+          AND c.academic_year = v_year
+          AND c.status = 'active'
+          AND cm.role = 'student'
+          AND cm.status = 'active'
+          AND sm.role = 'student'
+          AND sm.status = 'active'
+    ),
+    student_sync AS (
         SELECT
-            sm.user_id,
-            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = sm.user_id) AS last_attempt_at,
-            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = sm.user_id) AS last_mistake_at
-        FROM public.school_memberships sm
-        WHERE sm.school_id = p_school_id AND sm.role = 'student' AND sm.status = 'active'
+            ae.user_id,
+            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_attempt_at,
+            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = ae.user_id) AS last_mistake_at
+        FROM active_enrolled ae
     ),
     sync_dates AS (
         SELECT
@@ -1759,8 +1920,9 @@ BEGIN
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '2 days' THEN 1 END)::INT,
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '7 days' AND last_sync < NOW() - INTERVAL '2 days' THEN 1 END)::INT,
         COUNT(CASE WHEN last_sync >= NOW() - INTERVAL '14 days' AND last_sync < NOW() - INTERVAL '7 days' THEN 1 END)::INT,
-        COUNT(CASE WHEN last_sync < NOW() - INTERVAL '14 days' THEN 1 END)::INT
-    INTO v_fresh, v_mod, v_stale, v_very_stale
+        COUNT(CASE WHEN last_sync < NOW() - INTERVAL '14 days' THEN 1 END)::INT,
+        COUNT(CASE WHEN last_sync IS NULL THEN 1 END)::INT
+    INTO v_fresh, v_mod, v_stale, v_very_stale, v_unknown
     FROM sync_dates;
 
     SELECT
@@ -1783,10 +1945,11 @@ BEGIN
         'moderate_sync_count', v_mod,
         'stale_sync_count', v_stale,
         'very_stale_sync_count', v_very_stale,
+        'unknown_sync_count', v_unknown,
         'fresh_coverage_rate', CASE WHEN v_total_students > 0 THEN ROUND(((v_fresh + v_mod)::NUMERIC / v_total_students::NUMERIC) * 100.0, 2) ELSE 0.0 END,
         'timing_unverified_count', v_timing_unverified,
         'clock_anomaly_count', v_clock_anomaly,
-        'methodological_notice', 'Stale synchronization reflects offline mobile usage patterns in network-constrained environments. Missing cloud evidence must not be interpreted as lack of study.'
+        'methodological_notice', 'Stale synchronization reflects offline mobile usage patterns in network-constrained environments. Missing cloud evidence must not be interpreted as lack of study. No recent cloud evidence ≠ No student study, and No recent academic event ≠ No device synchronization.'
     );
 END;
 $$;
@@ -1826,7 +1989,9 @@ DECLARE
     v_assigned_count INT := 0;
     v_completed_count INT := 0;
     v_interventions_count INT := 0;
+    v_last_academic_activity TIMESTAMPTZ;
     v_last_sync TIMESTAMPTZ;
+    v_sync_freshness TEXT := 'unknown';
     v_as_of TIMESTAMPTZ := TIMEZONE('utc', NOW());
 BEGIN
     IF NOT public.can_access_student(p_student_id, p_school_id) THEN
@@ -1837,8 +2002,16 @@ BEGIN
     v_end := COALESCE(p_period_end, TIMEZONE('utc', NOW()));
     v_start := COALESCE(p_period_start, v_end - INTERVAL '90 days');
 
-    SELECT p.display_name, p.stream, p.grade, c.name, p.updated_at
-    INTO v_student_name, v_stream, v_grade, v_class_name, v_last_sync
+    SELECT p.display_name, p.stream, p.grade, c.name,
+           (SELECT GREATEST(MAX(a.end_time), MAX(a.start_time), MAX(m.last_failed_at))
+            FROM public.attempts a
+            FULL JOIN public.mistake_records m ON m.user_id = p.id
+            WHERE a.user_id = p.id),
+           (SELECT GREATEST(MAX(a.created_at), MAX(m.last_failed_at))
+            FROM public.attempts a
+            FULL JOIN public.mistake_records m ON m.user_id = p.id
+            WHERE a.user_id = p.id)
+    INTO v_student_name, v_stream, v_grade, v_class_name, v_last_academic_activity, v_last_sync
     FROM public.profiles p
     LEFT JOIN public.classroom_memberships cm ON cm.user_id = p.id AND cm.status = 'active'
     LEFT JOIN public.classrooms c ON c.id = cm.classroom_id AND c.school_id = p_school_id AND c.academic_year = v_year
@@ -1846,6 +2019,18 @@ BEGIN
 
     IF NOT FOUND THEN
         RAISE EXCEPTION 'Student not found' USING ERRCODE = 'P0002';
+    END IF;
+
+    IF v_last_sync IS NULL THEN
+        v_sync_freshness := 'unknown';
+    ELSIF v_last_sync >= NOW() - INTERVAL '2 days' THEN
+        v_sync_freshness := 'fresh';
+    ELSIF v_last_sync >= NOW() - INTERVAL '7 days' THEN
+        v_sync_freshness := 'moderate';
+    ELSIF v_last_sync >= NOW() - INTERVAL '14 days' THEN
+        v_sync_freshness := 'stale';
+    ELSE
+        v_sync_freshness := 'very_stale';
     END IF;
 
     -- Attempts & performance
@@ -1864,10 +2049,10 @@ BEGIN
     FROM public.mistake_records m
     WHERE m.user_id = p_student_id AND m.is_mastered = FALSE;
 
-    -- Assignments
+    -- Assignments: (submitted + completed)
     SELECT 
         COUNT(*)::INT,
-        COUNT(CASE WHEN r.status IN ('submitted', 'completed', 'late') THEN 1 END)::INT
+        COUNT(CASE WHEN r.status IN ('submitted', 'completed') THEN 1 END)::INT
     INTO v_assigned_count, v_completed_count
     FROM public.learning_assignment_recipients r
     JOIN public.learning_assignments a ON a.id = r.assignment_id
@@ -1899,6 +2084,9 @@ BEGIN
         'assignments_assigned', v_assigned_count,
         'assignments_completed', v_completed_count,
         'interventions_received', v_interventions_count,
+        'last_cloud_academic_activity', v_last_academic_activity,
+        'last_successful_sync', v_last_sync,
+        'sync_freshness', v_sync_freshness,
         'last_sync_timestamp', v_last_sync,
         'p4_mastery_notice', 'FidelLearn P4 adaptive spaced mastery and composite national readiness are device-local and not synchronized to institutional cloud reports.'
     );
@@ -1946,25 +2134,43 @@ BEGIN
             c.id AS cid,
             c.name AS cname,
             c.grade AS cgrade,
-            c.stream AS cstream,
+            CASE
+                WHEN c.stream IN ('natural', 'naturalScience') THEN 'naturalScience'
+                WHEN c.stream IN ('social', 'socialScience') THEN 'socialScience'
+                ELSE c.stream
+            END AS cstream,
             c.section AS csection
         FROM public.classrooms c
         WHERE c.school_id = p_school_id
           AND c.academic_year = v_year
           AND c.status = 'active'
     ),
-    core_curriculum AS (
-        SELECT
-            s.id AS sub_id,
-            s.name_en AS sub_name,
-            CASE
-                WHEN s.id IN ('physics_g12', 'chemistry_g12', 'biology_g12') THEN 'naturalScience'
-                WHEN s.id IN ('history_g12', 'geography_g12', 'economics_g12') THEN 'socialScience'
-                ELSE 'common'
-            END AS sub_stream
-        FROM public.subjects s
-        WHERE s.grade = 12
-          AND s.id != 'civics_g12'
+    stream_curriculum AS (
+        -- Natural Science: 6 primary ESSLCE subjects
+        SELECT 'naturalScience'::TEXT AS stream, 'english_g12'::TEXT AS subject_id, 'English'::TEXT AS subject_name, NULL::TEXT AS exam_variant
+        UNION ALL
+        SELECT 'naturalScience', 'math_g12', 'Mathematics (Natural Science)', 'naturalScience'
+        UNION ALL
+        SELECT 'naturalScience', 'aptitude_g12', 'Scholastic Aptitude', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'physics_g12', 'Physics', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'chemistry_g12', 'Chemistry', NULL
+        UNION ALL
+        SELECT 'naturalScience', 'biology_g12', 'Biology', NULL
+        -- Social Science: 6 primary ESSLCE subjects
+        UNION ALL
+        SELECT 'socialScience', 'english_g12', 'English', NULL
+        UNION ALL
+        SELECT 'socialScience', 'math_g12', 'Mathematics (Social Science)', 'socialScience'
+        UNION ALL
+        SELECT 'socialScience', 'aptitude_g12', 'Scholastic Aptitude', NULL
+        UNION ALL
+        SELECT 'socialScience', 'history_g12', 'History', NULL
+        UNION ALL
+        SELECT 'socialScience', 'geography_g12', 'Geography', NULL
+        UNION ALL
+        SELECT 'socialScience', 'economics_g12', 'Economics', NULL
     ),
     required_slots AS (
         SELECT
@@ -1973,15 +2179,11 @@ BEGIN
             ac.cgrade AS grade,
             ac.cstream AS stream,
             ac.csection AS section,
-            cc.sub_id AS subject_id,
-            cc.sub_name AS subject_name,
-            CASE
-                WHEN cc.sub_id = 'math_g12' THEN ac.cstream
-                ELSE NULL
-            END AS exam_variant
+            sc.subject_id,
+            sc.subject_name,
+            sc.exam_variant
         FROM active_classes ac
-        CROSS JOIN core_curriculum cc
-        WHERE cc.sub_stream = 'common' OR cc.sub_stream = ac.cstream
+        JOIN stream_curriculum sc ON sc.stream = ac.cstream
     ),
     slots_with_teachers AS (
         SELECT
@@ -2000,7 +2202,12 @@ BEGIN
         LEFT JOIN public.teacher_subject_assignments tsa
             ON tsa.classroom_id = rs.classroom_id
            AND tsa.subject_id = rs.subject_id
-           AND (rs.exam_variant IS NULL OR tsa.exam_variant IS NULL OR tsa.exam_variant = rs.exam_variant)
+           AND tsa.school_id = p_school_id
+           AND tsa.status = 'active'
+           AND (
+               (rs.exam_variant IS NULL AND (tsa.exam_variant IS NULL OR tsa.exam_variant = 'shared'))
+               OR (rs.exam_variant IS NOT NULL AND tsa.exam_variant = rs.exam_variant)
+           )
         LEFT JOIN public.profiles p ON p.id = tsa.teacher_user_id
     )
     SELECT
@@ -2032,4 +2239,55 @@ $$;
 
 REVOKE ALL ON FUNCTION public.get_teacher_coverage_report(UUID, TEXT) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.get_teacher_coverage_report(UUID, TEXT) TO authenticated;
+
+-- -----------------------------------------------------------------------------
+-- 17. RPC: record_institutional_report_audit
+-- Records export and download actions in the canonical public.audit_log ledger.
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.record_institutional_report_audit(
+    p_school_id UUID,
+    p_run_id    UUID,
+    p_action    TEXT,
+    p_metadata  JSONB DEFAULT '{}'::jsonb
+)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+BEGIN
+    IF auth.uid() IS NULL THEN
+        RAISE EXCEPTION 'Access denied: Authentication required' USING ERRCODE = '42501';
+    END IF;
+
+    IF NOT (public.is_platform_admin() OR public.is_school_admin(p_school_id) OR public.is_teacher_in_school(p_school_id)) THEN
+        RAISE EXCEPTION 'Access denied: Insufficient privileges' USING ERRCODE = '42501';
+    END IF;
+
+    IF p_action NOT IN ('institutional_report_generated', 'institutional_report_exported', 'institutional_report_downloaded') THEN
+        RAISE EXCEPTION 'Invalid report audit action: %', p_action USING ERRCODE = '22023';
+    END IF;
+
+    INSERT INTO public.audit_log (
+        actor_id,
+        action,
+        target_table,
+        target_id,
+        metadata
+    ) VALUES (
+        auth.uid(),
+        p_action,
+        'institutional_report_runs',
+        p_run_id,
+        jsonb_build_object(
+            'school_id', p_school_id,
+            'action', p_action
+        ) || p_metadata
+    );
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.record_institutional_report_audit(UUID, UUID, TEXT, JSONB) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.record_institutional_report_audit(UUID, UUID, TEXT, JSONB) TO authenticated;
+
 
