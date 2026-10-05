@@ -167,15 +167,27 @@ The `AssessmentReportRow.provenanceLabel` delegates directly to `ExamProvenanceH
   > *"Observed change reflects academic performance recorded after intervention completion. Causation is not established."*
 
 ### 5.4 Synchronization Freshness vs Cloud Academic Activity Separation
-Frozen institutional semantics distinguish `last_activity` (academic exercise) from `last_synced` (device-server synchronization):
-- **Cloud Academic Evidence Recency**: Derived strictly from server-recorded academic activity timestamps (`attempts.start_time`, `mistake_records.last_failed_at`).
-- **Device Synchronization Freshness**: Derived from server synchronization confirmation timestamps (`attempts.created_at`, `profiles.last_synced_at`).
-- **Freshness Classification**:
+Frozen institutional reporting semantics enforce a strict invariant:
+$$\text{academic activity} \ne \text{device synchronization}$$
+
+- **Authoritative Synchronization Evidence Source (`last_successful_academic_upload` / `last_academic_sync_evidence`)**:
+  Derived strictly from server-received upload timestamps (`MAX(attempts.created_at)`). This timestamp serves as authoritative cloud evidence that student assessment data was successfully transmitted to and ingested by the central server. Because the local Drift SQLite architecture operates an independent queue without a whole-device heartbeat table, `attempts.created_at` represents authoritative *academic upload synchronization evidence* rather than proof of a complete device-level sync handshake.
+- **Cloud Academic Activity (`last_cloud_academic_activity`)**:
+  Derived from when the student performed academic learning actions (`GREATEST(MAX(a.end_time), MAX(a.start_time))` from assessment attempts combined independently with `MAX(m.last_failed_at)` from `mistake_records`). This measures learning recency, NOT cloud transmission.
+- **Strict Separation & No Fallback Rule**:
+  **No academic-activity fallback is permitted for synchronization freshness.**
+  Academic activity can never upgrade or substitute for synchronization freshness. If a student has recent academic activity (e.g., local mistake remediation recorded yesterday) but `last_successful_sync` is NULL (no qualifying server-received sync/upload evidence), `sync_freshness` **must resolve to `unknown`**.
+- **Freshness Classification** (derived strictly and exclusively from authoritative upload evidence):
   - $\le 2$ days: **Fresh**
   - $3$ to $7$ days: **Moderate**
   - $8$ to $14$ days: **Stale**
   - $> 14$ days: **Very Stale**
-  - Missing / zero activity: **Unknown**
+  - Missing / NULL: **Unknown**
+- **Canonical Four-Student Freshness Matrix**:
+  - **Student A** (Sync today, academic activity 10 days ago) $\to$ `fresh`.
+  - **Student B** (Sync 8 days ago, academic activity yesterday) $\to$ `stale`. Recent academic activity does *not* upgrade sync freshness.
+  - **Student C** (Sync NULL, academic activity yesterday via mistake records) $\to$ `unknown`. Academic activity does *not* substitute for sync evidence (critical regression invariant).
+  - **Student D** (Sync NULL, academic activity NULL) $\to$ `unknown`.
 - **Mandatory Offline Methodological Notice**:
   > *"Missing cloud evidence must not be interpreted as lack of study; students may be practicing actively offline."*
 
@@ -242,8 +254,8 @@ where $\text{requiredForCompletion} = \text{publication\_cohort} + \text{audited
 | PostgreSQL P7 Teacher Portal | `tools/test_postgres_p7_teacher_portal.js` | 20 | **PASS** |
 | PostgreSQL P8 School Leadership | `tools/test_postgres_p8_leadership.js` | 16 | **PASS** |
 | PostgreSQL P9 Assignments + Interventions | `tools/test_postgres_p9_assignments.js` | 23 | **PASS** |
-| PostgreSQL P10 Institutional Reporting | `tools/test_postgres_p10_reporting.js` | 98 | **PASS** |
-| **Total PostgreSQL RPC Checks** | | **181** | **100% PASS** |
+| PostgreSQL P10 Institutional Reporting | `tools/test_postgres_p10_reporting.js` | 102 | **PASS** |
+| **Total PostgreSQL RPC Checks** | | **185** | **100% PASS** |
 | Flutter Full Suite Regression | `flutter test` | 555 | **555 / 555 PASS** |
 | Flutter Analyzer | `flutter analyze --no-pub` | 300 files | **0 issues** |
 | Dart Code Formatter | `dart format --output=none --set-exit-if-changed` | 300 files | **0 changes (Clean)** |

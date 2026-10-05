@@ -622,17 +622,18 @@ BEGIN
           AND sm.role = 'student'
           AND sm.status = 'active'
     ),
+    -- sync_freshness is derived strictly from server-received cloud evidence (attempts.created_at).
+    -- mistake_records.last_failed_at is academic activity, NOT a synchronization event.
     student_freshness AS (
         SELECT 
             ae.user_id,
-            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_attempt_at,
-            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = ae.user_id) AS last_mistake_at
+            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_sync_receipt
         FROM active_enrolled ae
     ),
     sync_dates AS (
         SELECT 
             user_id,
-            GREATEST(last_attempt_at, last_mistake_at) AS last_sync
+            last_sync_receipt AS last_sync
         FROM student_freshness
     )
     SELECT
@@ -1903,17 +1904,18 @@ BEGIN
           AND sm.role = 'student'
           AND sm.status = 'active'
     ),
+    -- sync_freshness is derived strictly from server-received cloud evidence (attempts.created_at).
+    -- mistake_records.last_failed_at is academic activity, NOT a synchronization event.
     student_sync AS (
         SELECT
             ae.user_id,
-            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_attempt_at,
-            (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = ae.user_id) AS last_mistake_at
+            (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = ae.user_id) AS last_sync_receipt
         FROM active_enrolled ae
     ),
     sync_dates AS (
         SELECT
             user_id,
-            GREATEST(last_attempt_at, last_mistake_at) AS last_sync
+            last_sync_receipt AS last_sync
         FROM student_sync
     )
     SELECT
@@ -2002,15 +2004,18 @@ BEGIN
     v_end := COALESCE(p_period_end, TIMEZONE('utc', NOW()));
     v_start := COALESCE(p_period_start, v_end - INTERVAL '90 days');
 
+    -- Strict semantic separation:
+    -- last_cloud_academic_activity = when the student last did academic work (attempt start/end + mistake events)
+    -- last_successful_sync (v_last_sync) = when the server last received uploaded attempt data (attempts.created_at)
+    -- Neither may substitute for the other. No fallback between them.
     SELECT p.display_name, p.stream, p.grade, c.name,
-           (SELECT GREATEST(MAX(a.end_time), MAX(a.start_time), MAX(m.last_failed_at))
-            FROM public.attempts a
-            FULL JOIN public.mistake_records m ON m.user_id = p.id
-            WHERE a.user_id = p.id),
-           (SELECT GREATEST(MAX(a.created_at), MAX(m.last_failed_at))
-            FROM public.attempts a
-            FULL JOIN public.mistake_records m ON m.user_id = p.id
-            WHERE a.user_id = p.id)
+           -- last_cloud_academic_activity: independent sources combined — present even if student has only mistakes or only attempts
+           GREATEST(
+               (SELECT GREATEST(MAX(a.end_time), MAX(a.start_time)) FROM public.attempts a WHERE a.user_id = p.id),
+               (SELECT MAX(m.last_failed_at) FROM public.mistake_records m WHERE m.user_id = p.id)
+           ),
+           -- last_successful_sync: ONLY from server cloud-evidence receipt (attempts.created_at). No fallback.
+           (SELECT MAX(a.created_at) FROM public.attempts a WHERE a.user_id = p.id)
     INTO v_student_name, v_stream, v_grade, v_class_name, v_last_academic_activity, v_last_sync
     FROM public.profiles p
     LEFT JOIN public.classroom_memberships cm ON cm.user_id = p.id AND cm.status = 'active'

@@ -687,37 +687,46 @@ async function run() {
   // =========================================================================
   console.log('\n[9/9] Running Final P10 Canonical Freeze Verification Tests...');
 
-  // Test 23: Freshness vs Academic Activity Separation (Prompt Issues 1-7)
+  // Test 23: Canonical 4-Student Sync Freshness Regression Matrix
+  // Invariant: sync_freshness is derived ONLY from attempts.created_at (server cloud-evidence receipt).
+  // Academic activity (attempts.start_time, mistake_records.last_failed_at) NEVER substitutes for sync.
   await asSuperuser();
-  const fStudentA = 'ea000001-0000-0000-0000-000000000001';
-  const fStudentB = 'ea000002-0000-0000-0000-000000000002';
-  const fStudentC = 'ea000003-0000-0000-0000-000000000003';
+  const fStudentA = 'ea000001-0000-0000-0000-000000000001'; // sync=today, activity=10 days ago → fresh
+  const fStudentB = 'ea000002-0000-0000-0000-000000000002'; // sync=8 days ago, activity=yesterday → stale (not fresh)
+  const fStudentC = 'ea000003-0000-0000-0000-000000000003'; // sync=NULL, activity=yesterday (via mistake) → UNKNOWN (critical regression)
+  const fStudentD = 'ea000006-0000-0000-0000-000000000006'; // sync=NULL, activity=NULL → unknown
   await db.exec(`
     INSERT INTO auth.users (id, phone) VALUES 
       ('${fStudentA}', '+251910000091'),
       ('${fStudentB}', '+251910000092'),
-      ('${fStudentC}', '+251910000093')
+      ('${fStudentC}', '+251910000093'),
+      ('${fStudentD}', '+251910000094')
     ON CONFLICT (id) DO NOTHING;
 
     INSERT INTO public.profiles (id, display_name, phone_number, grade, stream, preferred_language) VALUES 
       ('${fStudentA}', 'Freshness Student A', '+251910000091', 12, 'natural', 'en'),
       ('${fStudentB}', 'Freshness Student B', '+251910000092', 12, 'natural', 'en'),
-      ('${fStudentC}', 'Freshness Student C', '+251910000093', 12, 'natural', 'en')
+      ('${fStudentC}', 'Freshness Student C', '+251910000093', 12, 'natural', 'en'),
+      ('${fStudentD}', 'Freshness Student D', '+251910000094', 12, 'natural', 'en')
     ON CONFLICT (id) DO NOTHING;
 
     INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES 
       ('${schoolAId}', '${fStudentA}', 'student', 'active'),
       ('${schoolAId}', '${fStudentB}', 'student', 'active'),
-      ('${schoolAId}', '${fStudentC}', 'student', 'active')
+      ('${schoolAId}', '${fStudentC}', 'student', 'active'),
+      ('${schoolAId}', '${fStudentD}', 'student', 'active')
     ON CONFLICT DO NOTHING;
 
+    -- Note: fStudentD intentionally has NO classroom membership to test null-sync + null-activity case
+    -- without affecting the school-wide active_enrolled_students count used in Test 24 deduplication.
     INSERT INTO public.classroom_memberships (classroom_id, user_id, role, status) VALUES 
       ('${classA}', '${fStudentA}', 'student', 'active'),
       ('${classA}', '${fStudentB}', 'student', 'active'),
       ('${classA}', '${fStudentC}', 'student', 'active')
     ON CONFLICT DO NOTHING;
 
-    -- Student A: activity 10 days ago, server sync created today
+    -- Student A: academic activity 10 days ago (start_time), server received sync TODAY (created_at)
+    -- Expected: sync_freshness=fresh, last_cloud_academic_activity=10 days ago
     INSERT INTO public.attempts (
       id, user_id, exam_id, total_questions, score, percentage, is_completed,
       start_time, end_time, created_at
@@ -726,7 +735,8 @@ async function run() {
       NOW() - INTERVAL '10 days', NOW() - INTERVAL '10 days', NOW()
     );
 
-    -- Student B: activity yesterday, sync confirmed 8 days ago
+    -- Student B: academic activity YESTERDAY (start_time), server received sync 8 DAYS AGO (created_at)
+    -- Expected: sync_freshness=stale (NOT fresh — recent academic activity must NOT upgrade sync freshness)
     INSERT INTO public.attempts (
       id, user_id, exam_id, total_questions, score, percentage, is_completed,
       start_time, end_time, created_at
@@ -734,21 +744,52 @@ async function run() {
       'ea922222-2222-2222-2222-222222222222', '${fStudentB}', '${examPhysics}', 50, 38, 76.0, true,
       NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day', NOW() - INTERVAL '8 days'
     );
-    -- Student C: never synced (0 attempts, 0 mistakes)
+
+    -- Student C: NO attempts (no server-received sync). Has a recent mistake event from YESTERDAY.
+    -- Critical regression: mistake_records.last_failed_at is academic activity, NOT sync evidence.
+    -- Expected: sync_freshness=unknown, last_cloud_academic_activity=non-null (yesterday)
   `);
+  // Insert Student C's mistake separately to reference a real question
+  const qForMistake = (await db.query(`SELECT id FROM public.questions LIMIT 1`)).rows[0]?.id;
+  if (qForMistake) {
+    await asSuperuser();
+    await db.query(`
+      INSERT INTO public.mistake_records (user_id, question_id, mistake_count, is_mastered, last_failed_at)
+      VALUES ('${fStudentC}', '${qForMistake}', 1, false, NOW() - INTERVAL '1 day')
+      ON CONFLICT (user_id, question_id) DO NOTHING;
+    `);
+  }
+  // Student D: no attempts, no mistakes — everything null
+  // Expected: sync_freshness=unknown, last_cloud_academic_activity=null
 
   await asUser(adminA);
   const repA = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentA}') AS res;`)).rows[0].res;
   const repB = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentB}') AS res;`)).rows[0].res;
   const repC = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentC}') AS res;`)).rows[0].res;
+  const repD = (await db.query(`SELECT public.get_student_academic_report('${schoolAId}', '${fStudentD}') AS res;`)).rows[0].res;
 
+  // Student A: sync=today → fresh; activity=10 days ago (separate, non-null)
   assert(repA.sync_freshness === 'fresh', `Student A sync_freshness: expected fresh (synced today), got ${repA.sync_freshness}`);
   assert(repA.last_successful_sync !== null, 'Student A has last_successful_sync');
   assert(repA.last_cloud_academic_activity !== null, 'Student A has last_cloud_academic_activity');
-  assert(repB.sync_freshness === 'stale', `Student B sync_freshness: expected stale (synced 8 days ago), got ${repB.sync_freshness}`);
-  assert(repC.sync_freshness === 'unknown', `Student C sync_freshness: expected unknown (never synced), got ${repC.sync_freshness}`);
-  assert(repC.last_successful_sync === null, 'Student C has NULL last_successful_sync');
-  assert(repC.last_cloud_academic_activity === null, 'Student C has NULL last_cloud_academic_activity');
+
+  // Student B: sync=8 days ago → stale; activity=yesterday. Critical: recent activity must NOT make sync fresh.
+  assert(repB.sync_freshness === 'stale', `Student B sync_freshness: expected stale (synced 8 days ago), got ${repB.sync_freshness} — recent academic activity must NOT override sync freshness`);
+  assert(repB.last_successful_sync !== null, 'Student B has last_successful_sync (8 days ago)');
+  assert(repB.last_cloud_academic_activity !== null, 'Student B has last_cloud_academic_activity (yesterday)');
+
+  // Student C: CRITICAL REGRESSION — no sync at all, but has recent academic activity (mistake yesterday)
+  // sync_freshness MUST be unknown even though academic activity is recent
+  assert(repC.sync_freshness === 'unknown', `Student C sync_freshness: expected unknown (NULL sync despite recent activity), got ${repC.sync_freshness} — academic activity must NOT substitute for sync`);
+  assert(repC.last_successful_sync === null, 'Student C: last_successful_sync must be NULL (no attempts synced)');
+  if (qForMistake) {
+    assert(repC.last_cloud_academic_activity !== null, 'Student C: last_cloud_academic_activity must be non-null (recent mistake)');
+  }
+
+  // Student D: nothing at all → unknown, null activity
+  assert(repD.sync_freshness === 'unknown', `Student D sync_freshness: expected unknown (null sync + null activity), got ${repD.sync_freshness}`);
+  assert(repD.last_successful_sync === null, 'Student D has NULL last_successful_sync');
+  assert(repD.last_cloud_academic_activity === null, 'Student D has NULL last_cloud_academic_activity');
 
   const dataCov = (await db.query(`SELECT public.get_data_coverage_report('${schoolAId}', '2026') AS res;`)).rows[0].res;
   assert(dataCov.unknown_sync_count >= 1, `Data coverage unknown_sync_count: expected >= 1, got ${dataCov.unknown_sync_count}`);
