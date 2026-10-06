@@ -98,11 +98,14 @@ CREATE TABLE IF NOT EXISTS public.school_licenses (
     billing_customer_ref TEXT NULL,
     billing_subscription_ref TEXT NULL,
     source TEXT NOT NULL CHECK (source IN ('manual_contract', 'trial_provisioning', 'online_checkout', 'bank_transfer', 'system')) DEFAULT 'manual_contract',
+    last_billing_event_at TIMESTAMPTZ NULL,
     created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
     CONSTRAINT uq_school_licenses_school UNIQUE (school_id)
 );
+
+ALTER TABLE public.school_licenses ADD COLUMN IF NOT EXISTS last_billing_event_at TIMESTAMPTZ NULL;
 
 CREATE INDEX IF NOT EXISTS idx_school_licenses_status ON public.school_licenses(status);
 CREATE INDEX IF NOT EXISTS idx_school_licenses_school_status ON public.school_licenses(school_id, status);
@@ -212,12 +215,15 @@ CREATE TABLE IF NOT EXISTS public.billing_events (
     event_type TEXT NOT NULL,
     school_id UUID REFERENCES public.schools(id) ON DELETE SET NULL,
     payload_hash TEXT NOT NULL,
+    event_timestamp TIMESTAMPTZ NULL,
     status TEXT NOT NULL CHECK (status IN ('received', 'processed', 'ignored', 'failed')) DEFAULT 'received',
     processed_at TIMESTAMPTZ NULL,
     error_message TEXT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
     CONSTRAINT uq_billing_events_provider_event UNIQUE (provider, provider_event_id)
 );
+
+ALTER TABLE public.billing_events ADD COLUMN IF NOT EXISTS event_timestamp TIMESTAMPTZ NULL;
 
 CREATE INDEX IF NOT EXISTS idx_billing_events_school ON public.billing_events(school_id);
 
@@ -239,7 +245,7 @@ DECLARE
     v_status TEXT := 'unknown';
     v_ends_at TIMESTAMPTZ;
     v_grace_ends_at TIMESTAMPTZ;
-    v_now TIMESTAMPTZ := TIMEZONE('utc', NOW());
+    v_now TIMESTAMPTZ := NOW();
     v_is_over_capacity BOOLEAN := FALSE;
     v_utilization_pct NUMERIC(5,2) := 0.00;
 BEGIN
@@ -266,16 +272,23 @@ BEGIN
         v_limit := 0;
         v_status := 'unlicensed';
     ELSE
-        -- Derive effective status based on timestamps (Section 8 & 9)
-        IF v_status IN ('trial', 'active') AND v_ends_at IS NOT NULL AND v_ends_at < v_now THEN
-            IF v_grace_ends_at IS NOT NULL AND v_grace_ends_at >= v_now THEN
-                v_status := 'grace';
-            ELSE
+        -- Derive effective status based on timestamps
+        IF v_status = 'trial' THEN
+            IF v_ends_at IS NOT NULL AND v_ends_at <= v_now THEN
                 v_status := 'expired';
             END IF;
-        END IF;
-        IF v_status = 'grace' AND v_grace_ends_at IS NOT NULL AND v_grace_ends_at < v_now THEN
-            v_status := 'suspended';
+        ELSIF v_status = 'active' THEN
+            IF v_ends_at IS NOT NULL AND v_ends_at <= v_now THEN
+                IF v_grace_ends_at IS NOT NULL AND v_grace_ends_at > v_now THEN
+                    v_status := 'grace';
+                ELSE
+                    v_status := 'expired';
+                END IF;
+            END IF;
+        ELSIF v_status = 'grace' THEN
+            IF v_grace_ends_at IS NOT NULL AND v_grace_ends_at <= v_now THEN
+                v_status := 'suspended';
+            END IF;
         END IF;
     END IF;
 
@@ -323,7 +336,7 @@ DECLARE
     v_license public.school_licenses%ROWTYPE;
     v_occupied INT := 0;
     v_effective_status TEXT;
-    v_now TIMESTAMPTZ := TIMEZONE('utc', NOW());
+    v_now TIMESTAMPTZ := NOW();
 BEGIN
     SELECT * INTO v_license
     FROM public.school_licenses
@@ -335,22 +348,9 @@ BEGIN
             USING ERRCODE = 'check_violation';
     END IF;
 
-    -- Derive effective status based on timestamps (Section 8 & 9)
-    v_effective_status := v_license.status;
-    IF v_effective_status IN ('trial', 'active') AND v_license.ends_at IS NOT NULL AND v_license.ends_at < v_now THEN
-        IF v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at >= v_now THEN
-            v_effective_status := 'grace';
-        ELSE
-            v_effective_status := 'expired';
-        END IF;
-    END IF;
-    IF v_effective_status = 'grace' AND v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at < v_now THEN
-        v_effective_status := 'suspended';
-    END IF;
-
-    -- Verify effective license operational status
-    IF v_effective_status NOT IN ('trial', 'active', 'grace') THEN
-        RAISE EXCEPTION 'School % license is % (effective: %) — cannot enroll students', p_school_id, v_license.status, v_effective_status
+    -- Verify commercial license effectiveness
+    IF NOT public.is_school_license_effective(p_school_id) THEN
+        RAISE EXCEPTION 'School % license is not commercially effective — cannot enroll students', p_school_id
             USING ERRCODE = 'check_violation';
     END IF;
 
@@ -379,22 +379,82 @@ $$ LANGUAGE plpgsql
 -- 8. SERVER-AUTHORITATIVE FEATURE ENTITLEMENT FUNCTIONS
 -- =============================================================================
 
--- 8a. get_school_entitlements: Returns active feature entitlements for a school
+-- 8a. is_school_license_effective: Authoritative central evaluator for commercial license effectiveness
+CREATE OR REPLACE FUNCTION public.is_school_license_effective(p_school_id UUID)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_school_status TEXT;
+    v_license public.school_licenses%ROWTYPE;
+    v_now TIMESTAMPTZ := NOW();
+BEGIN
+    IF p_school_id IS NULL THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Cross-school caller authorization check (anti-probing guard)
+    IF auth.uid() IS NOT NULL 
+       AND auth.role() != 'service_role' 
+       AND NOT public.is_platform_admin() THEN
+        IF NOT public.is_school_member(p_school_id) THEN
+            RAISE EXCEPTION 'Access denied: caller % is not an active member of school %', auth.uid(), p_school_id
+                USING ERRCODE = '42501';
+        END IF;
+    END IF;
+
+    -- School must exist and be active
+    SELECT status INTO v_school_status FROM public.schools WHERE id = p_school_id;
+    IF NOT FOUND OR v_school_status != 'active' THEN
+        RETURN FALSE;
+    END IF;
+
+    -- License row must exist
+    SELECT * INTO v_license FROM public.school_licenses WHERE school_id = p_school_id;
+    IF NOT FOUND THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Deterministic request-time commercial policy:
+    -- trial: starts_at <= NOW() AND (ends_at IS NULL OR ends_at > NOW())
+    -- active: starts_at <= NOW() AND (ends_at IS NULL OR ends_at > NOW())
+    -- grace: grace_ends_at IS NOT NULL AND grace_ends_at > NOW()
+    -- suspended, expired, cancelled: DENIED (FALSE)
+    IF v_license.status = 'trial' THEN
+        RETURN (v_license.starts_at <= v_now AND (v_license.ends_at IS NULL OR v_license.ends_at > v_now));
+    ELSIF v_license.status = 'active' THEN
+        RETURN (v_license.starts_at <= v_now AND (v_license.ends_at IS NULL OR v_license.ends_at > v_now));
+    ELSIF v_license.status = 'grace' THEN
+        RETURN (v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at > v_now);
+    ELSE
+        RETURN FALSE;
+    END IF;
+END;
+$$ LANGUAGE plpgsql
+   STABLE
+   SECURITY DEFINER
+   SET search_path = public, pg_temp;
+
+-- 8b. get_school_entitlements: Returns active feature entitlements for a school
 CREATE OR REPLACE FUNCTION public.get_school_entitlements(p_school_id UUID)
 RETURNS JSONB AS $$
 DECLARE
     v_license public.school_licenses%ROWTYPE;
-    v_school_status TEXT;
-    v_effective_status TEXT;
-    v_now TIMESTAMPTZ := TIMEZONE('utc', NOW());
 BEGIN
-    SELECT status INTO v_school_status FROM public.schools WHERE id = p_school_id;
-    IF NOT FOUND THEN
+    IF p_school_id IS NULL THEN
         RETURN '{}'::jsonb;
     END IF;
 
-    -- If school itself is suspended or archived, institutional features are disabled
-    IF v_school_status != 'active' THEN
+    -- Cross-school caller authorization check (anti-probing guard)
+    IF auth.uid() IS NOT NULL 
+       AND auth.role() != 'service_role' 
+       AND NOT public.is_platform_admin() THEN
+        IF NOT public.is_school_member(p_school_id) THEN
+            RAISE EXCEPTION 'Access denied: caller % is not an active member of school %', auth.uid(), p_school_id
+                USING ERRCODE = '42501';
+        END IF;
+    END IF;
+
+    -- Commercial request-time effectiveness evaluation
+    IF NOT public.is_school_license_effective(p_school_id) THEN
         RETURN '{}'::jsonb;
     END IF;
 
@@ -403,33 +463,14 @@ BEGIN
         RETURN '{}'::jsonb;
     END IF;
 
-    -- Derive effective status based on timestamps (Section 8 & 9)
-    v_effective_status := v_license.status;
-    IF v_effective_status IN ('trial', 'active') AND v_license.ends_at IS NOT NULL AND v_license.ends_at < v_now THEN
-        IF v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at >= v_now THEN
-            v_effective_status := 'grace';
-        ELSE
-            v_effective_status := 'expired';
-        END IF;
-    END IF;
-    IF v_effective_status = 'grace' AND v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at < v_now THEN
-        v_effective_status := 'suspended';
-    END IF;
-
-    -- License status check: trial, active, grace have active entitlements
-    IF v_effective_status IN ('trial', 'active', 'grace') THEN
-        RETURN v_license.feature_entitlements;
-    END IF;
-
-    -- Suspended, expired, cancelled return empty entitlements
-    RETURN '{}'::jsonb;
+    RETURN COALESCE(v_license.feature_entitlements, '{}'::jsonb);
 END;
 $$ LANGUAGE plpgsql
    STABLE
    SECURITY DEFINER
    SET search_path = public, pg_temp;
 
--- 8b. school_has_entitlement: Fast boolean check for specific feature key
+-- 8c. school_has_entitlement: Fast boolean check for specific feature key
 CREATE OR REPLACE FUNCTION public.school_has_entitlement(
     p_school_id   UUID,
     p_entitlement TEXT
@@ -437,6 +478,20 @@ CREATE OR REPLACE FUNCTION public.school_has_entitlement(
 DECLARE
     v_entitlements JSONB;
 BEGIN
+    IF p_school_id IS NULL OR p_entitlement IS NULL THEN
+        RETURN FALSE;
+    END IF;
+
+    -- Cross-school caller authorization check (anti-probing guard)
+    IF auth.uid() IS NOT NULL 
+       AND auth.role() != 'service_role' 
+       AND NOT public.is_platform_admin() THEN
+        IF NOT public.is_school_member(p_school_id) THEN
+            RAISE EXCEPTION 'Access denied: caller % is not an active member of school %', auth.uid(), p_school_id
+                USING ERRCODE = '42501';
+        END IF;
+    END IF;
+
     v_entitlements := public.get_school_entitlements(p_school_id);
     RETURN COALESCE((v_entitlements->>p_entitlement)::boolean, FALSE);
 END;
@@ -782,17 +837,24 @@ BEGIN
     -- Derive effective status based on timestamps (Section 8 & 9)
     DECLARE
         v_effective_status TEXT := v_license.status;
-        v_now TIMESTAMPTZ := TIMEZONE('utc', NOW());
+        v_now TIMESTAMPTZ := NOW();
     BEGIN
-        IF v_effective_status IN ('trial', 'active') AND v_license.ends_at IS NOT NULL AND v_license.ends_at < v_now THEN
-            IF v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at >= v_now THEN
-                v_effective_status := 'grace';
-            ELSE
+        IF v_license.status = 'trial' THEN
+            IF v_license.ends_at IS NOT NULL AND v_license.ends_at <= v_now THEN
                 v_effective_status := 'expired';
             END IF;
-        END IF;
-        IF v_effective_status = 'grace' AND v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at < v_now THEN
-            v_effective_status := 'suspended';
+        ELSIF v_license.status = 'active' THEN
+            IF v_license.ends_at IS NOT NULL AND v_license.ends_at <= v_now THEN
+                IF v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at > v_now THEN
+                    v_effective_status := 'grace';
+                ELSE
+                    v_effective_status := 'expired';
+                END IF;
+            END IF;
+        ELSIF v_license.status = 'grace' THEN
+            IF v_license.grace_ends_at IS NOT NULL AND v_license.grace_ends_at <= v_now THEN
+                v_effective_status := 'suspended';
+            END IF;
         END IF;
 
         RETURN jsonb_build_object(
@@ -807,6 +869,7 @@ BEGIN
             'student_seat_limit', v_license.student_seat_limit,
             'feature_entitlements', v_license.feature_entitlements,
             'source', v_license.source,
+            'last_billing_event_at', v_license.last_billing_event_at,
             'seat_usage', v_seat_usage,
             'created_at', v_license.created_at,
             'updated_at', v_license.updated_at
@@ -1443,6 +1506,7 @@ DECLARE
     v_existing_event public.billing_events%ROWTYPE;
     v_event          public.billing_events%ROWTYPE;
     v_license        public.school_licenses%ROWTYPE;
+    v_watermark      TIMESTAMPTZ;
 BEGIN
     -- Authority Guard: Only service_role, platform_admin, or database superuser can ingest billing events
     IF current_user NOT IN ('postgres', 'supabase_admin') AND auth.role() != 'service_role' AND NOT public.is_platform_admin() THEN
@@ -1465,16 +1529,40 @@ BEGIN
 
     -- Record event in ingestion ledger
     INSERT INTO public.billing_events (
-        provider, provider_event_id, event_type, school_id, payload_hash, status, processed_at
+        provider, provider_event_id, event_type, school_id, payload_hash, event_timestamp, status, processed_at
     ) VALUES (
-        p_provider, p_provider_event_id, p_event_type, p_school_id, p_payload_hash, 'processed', TIMEZONE('utc', NOW())
+        p_provider, p_provider_event_id, p_event_type, p_school_id, p_payload_hash, p_event_timestamp, 'received', TIMEZONE('utc', NOW())
     ) RETURNING * INTO v_event;
 
     -- If school_id is provided and license exists, apply business logic transitions:
-    -- Billing determines whether money was paid; Licensing updates access.
     IF p_school_id IS NOT NULL THEN
         SELECT * INTO v_license FROM public.school_licenses WHERE school_id = p_school_id FOR UPDATE;
         IF FOUND THEN
+            -- Canonical Billing Watermark:
+            -- Use last_billing_event_at from license, or latest accepted event timestamp/processed_at from billing_events
+            v_watermark := v_license.last_billing_event_at;
+            IF v_watermark IS NULL THEN
+                SELECT COALESCE(MAX(event_timestamp), MAX(processed_at))
+                INTO v_watermark
+                FROM public.billing_events
+                WHERE school_id = p_school_id
+                  AND status = 'processed';
+            END IF;
+
+            -- True Stale Event Check based on billing watermark (NOT generic license updated_at!)
+            IF p_event_timestamp IS NOT NULL AND v_watermark IS NOT NULL AND p_event_timestamp < v_watermark THEN
+                UPDATE public.billing_events
+                SET status = 'ignored',
+                    error_message = 'Stale billing event: timestamp ' || p_event_timestamp || ' is older than billing watermark ' || v_watermark
+                WHERE id = v_event.id;
+
+                RETURN jsonb_build_object(
+                    'status', 'ignored_stale',
+                    'event_id', v_event.id,
+                    'message', 'Stale billing event ignored; newer billing event watermark exists'
+                );
+            END IF;
+
             -- Payment Succeeded / Invoice Paid -> Activate or renew license
             IF p_event_type IN ('payment_succeeded', 'invoice_paid', 'subscription_renewed') THEN
                 UPDATE public.school_licenses
@@ -1483,6 +1571,7 @@ BEGIN
                     ends_at = COALESCE(p_period_end, ends_at),
                     student_seat_limit = COALESCE(p_seat_limit, student_seat_limit),
                     grace_ends_at = NULL,
+                    last_billing_event_at = GREATEST(COALESCE(p_event_timestamp, TIMEZONE('utc', NOW())), COALESCE(v_license.last_billing_event_at, '-infinity'::timestamptz)),
                     updated_at = TIMEZONE('utc', NOW())
                 WHERE id = v_license.id;
 
@@ -1496,14 +1585,12 @@ BEGIN
                     jsonb_build_object('event_id', p_provider_event_id, 'period_end', p_period_end)
                 );
 
-            -- Payment Failed -> Enter grace period (with stale-event guard)
+            -- Payment Failed -> Enter grace period
             ELSIF p_event_type IN ('payment_failed', 'invoice_payment_failed') THEN
                 -- Only enter grace if currently active
                 IF v_license.status = 'active' THEN
-                    -- Stale event guard: If the license was already renewed with a period end in the future,
-                    -- or if an event timestamp is older than last renewal, do NOT downgrade the active license!
-                    IF (p_period_end IS NOT NULL AND v_license.ends_at IS NOT NULL AND p_period_end < v_license.ends_at)
-                       OR (p_event_timestamp IS NOT NULL AND p_event_timestamp < v_license.updated_at) THEN
+                    -- Guard against older period end if future renewal already happened
+                    IF (p_period_end IS NOT NULL AND v_license.ends_at IS NOT NULL AND p_period_end < v_license.ends_at) THEN
                         UPDATE public.billing_events
                         SET status = 'ignored',
                             error_message = 'Stale payment failure received after successful renewal'
@@ -1519,6 +1606,7 @@ BEGIN
                     UPDATE public.school_licenses
                     SET status = 'grace',
                         grace_ends_at = TIMEZONE('utc', NOW()) + INTERVAL '14 days',
+                        last_billing_event_at = GREATEST(COALESCE(p_event_timestamp, TIMEZONE('utc', NOW())), COALESCE(v_license.last_billing_event_at, '-infinity'::timestamptz)),
                         updated_at = TIMEZONE('utc', NOW())
                     WHERE id = v_license.id;
 
@@ -1536,6 +1624,7 @@ BEGIN
             ELSIF p_event_type IN ('subscription_canceled', 'customer_subscription_deleted') THEN
                 UPDATE public.school_licenses
                 SET status = 'cancelled',
+                    last_billing_event_at = GREATEST(COALESCE(p_event_timestamp, TIMEZONE('utc', NOW())), COALESCE(v_license.last_billing_event_at, '-infinity'::timestamptz)),
                     updated_at = TIMEZONE('utc', NOW())
                 WHERE id = v_license.id;
 
@@ -1550,6 +1639,12 @@ BEGIN
             END IF;
         END IF;
     END IF;
+
+    -- Update billing event status to processed
+    UPDATE public.billing_events
+    SET status = 'processed',
+        processed_at = TIMEZONE('utc', NOW())
+    WHERE id = v_event.id;
 
     -- Audit log (no secret or sensitive PII written)
     INSERT INTO public.audit_log (actor_id, action, target_table, target_id, metadata)
@@ -2121,7 +2216,7 @@ CREATE OR REPLACE FUNCTION public.sync_school_license_expiration_internal(
 RETURNS JSONB AS $$
 DECLARE
     v_caller_id UUID := auth.uid();
-    v_now TIMESTAMPTZ := TIMEZONE('utc', NOW());
+    v_now TIMESTAMPTZ := NOW();
     v_expired_count INT := 0;
     v_grace_count INT := 0;
     v_suspended_count INT := 0;
@@ -2205,6 +2300,7 @@ $$ LANGUAGE plpgsql
 -- =============================================================================
 
 -- Step A: Explicitly REVOKE ALL from PUBLIC and anon on ALL P11 and hooked functions
+REVOKE ALL ON FUNCTION public.is_school_license_effective(UUID) FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.get_school_seat_usage(UUID) FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.check_school_seat_capacity(UUID, INT) FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.get_school_entitlements(UUID) FROM PUBLIC, anon;
@@ -2233,6 +2329,7 @@ REVOKE ALL ON FUNCTION public.validate_report_authority(UUID, UUID, TEXT, TEXT) 
 REVOKE ALL ON FUNCTION public.sync_school_license_expiration_internal(UUID) FROM PUBLIC, anon, authenticated;
 
 -- Step B: Minimum Grants for Caller-Facing RPCs
+GRANT EXECUTE ON FUNCTION public.is_school_license_effective(UUID) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.get_school_seat_usage(UUID) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.check_school_seat_capacity(UUID, INT) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.get_school_entitlements(UUID) TO authenticated;

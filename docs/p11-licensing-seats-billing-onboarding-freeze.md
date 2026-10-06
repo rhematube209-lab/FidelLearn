@@ -3,7 +3,7 @@
 **Milestone**: Priority 11 (P11) Production Hardening & Freeze Pass  
 **Schema Version**: PostgreSQL (Supabase) Migration `20260925050000_p11_licensing_seats_onboarding.sql` | Drift SQLite Schema `v9` (Unchanged)  
 **Status**: APPROVED & FROZEN  
-**Verification Baseline**: 241 / 241 PostgreSQL Invariants Passed | 571 / 571 Flutter Tests Passed (99 physical test files) | 0 Analyzer Issues | 0 Formatter Changes  
+**Verification Baseline**: 264 / 264 PostgreSQL Invariants Passed | 571 / 571 Flutter Tests Passed (99 physical test files) | 0 Analyzer Issues | 0 Formatter Changes  
 
 ---
 
@@ -23,14 +23,15 @@ The FidelLearn P11 subsystem establishes server-authoritative institutional lice
 
 ## 2. Privileged Function & Security Catalog Audit
 
-All 26 P11 and hook functions have been audited and verified in the live PostgreSQL catalog (`pg_proc`):
+All 27 P11 and hook functions have been audited and verified in the live PostgreSQL catalog (`pg_proc`):
 
 | Function Name | Definer / Invoker | `search_path` | Caller Guard | PUBLIC / anon | authenticated | service_role |
 |---|---|---|---|---|---|---|
+| `is_school_license_effective` | `SECURITY DEFINER` | `public, pg_temp` | Tenant member / PlatAdmin | REVOKED | GRANTED | GRANTED |
 | `get_school_seat_usage` | `SECURITY DEFINER` | `public, pg_temp` | Admin / Teacher / PlatAdmin | REVOKED | GRANTED | GRANTED |
 | `check_school_seat_capacity` | `SECURITY DEFINER` | `public, pg_temp` | Admin / PlatAdmin | REVOKED | GRANTED | GRANTED |
 | `get_school_entitlements` | `SECURITY DEFINER` | `public, pg_temp` | Tenant member / PlatAdmin | REVOKED | GRANTED | GRANTED |
-| `school_has_entitlement` | `SECURITY DEFINER` | `public, pg_temp` | Server / Invoker / PlatAdmin | REVOKED | GRANTED | GRANTED |
+| `school_has_entitlement` | `SECURITY DEFINER` | `public, pg_temp` | Tenant member / PlatAdmin | REVOKED | GRANTED | GRANTED |
 | `create_school_license_internal` | `SECURITY DEFINER` | `public, pg_temp` | `is_platform_admin()` | REVOKED | GRANTED | GRANTED |
 | `transition_school_license_internal`| `SECURITY DEFINER` | `public, pg_temp` | `is_platform_admin()` | REVOKED | GRANTED | GRANTED |
 | `update_school_seat_limit_internal` | `SECURITY DEFINER` | `public, pg_temp` | `is_platform_admin()` | REVOKED | GRANTED | GRANTED |
@@ -87,10 +88,17 @@ stateDiagram-v2
     cancelled --> [*]: Terminal State (Reactivation Denied)
 ```
 
+### Deterministic Effective Entitlement Evaluation Policy
+Institutional access evaluation is centralized in `public.is_school_license_effective(p_school_id UUID)` and operates deterministically at query time:
+- **`trial`**: Granted **IF AND ONLY IF** `starts_at <= NOW() AND (ends_at IS NULL OR ends_at > NOW())`.
+- **`active`**: Granted **IF AND ONLY IF** `starts_at <= NOW() AND (ends_at IS NULL OR ends_at > NOW())`.
+- **`grace`**: Granted **IF AND ONLY IF** `grace_ends_at IS NOT NULL AND grace_ends_at > NOW()` (evaluated independently of normal contract `ends_at`).
+- **`suspended`, `expired`, `cancelled`**: Strictly **DENIED** (`false`).
+- **Request-Time Fail-Closed**: When a contract's `ends_at` or `grace_ends_at` elapses, all queries fail closed immediately (`is_effective_active = false`), with zero dependency on asynchronous schedulers or background sync jobs.
+
 ### Transition Enforcement Rules
 - **Terminal States**: `cancelled` is permanently terminal. Any call to `transition_school_license_internal` attempting `cancelled -> active` is rejected with `ILLEGAL_TRANSITION`. Re-licensing requires a brand new contract.
 - **Illegal Reversions**: `active -> trial` is rejected with `ILLEGAL_TRANSITION`.
-- **Effective Expiration at Query Time**: A license whose `ends_at < NOW()` is treated as non-active by `school_has_entitlement` and returns `is_effective_active = false`.
 - **Scheduled Expiration Engine**: `sync_school_license_expiration_internal(school_id)` transitions expired active licenses to `expired` and expired grace licenses to `suspended`, logging canonical audit events.
 
 ---
@@ -135,7 +143,14 @@ SELECT id FROM public.school_licenses WHERE school_id = v_school_id FOR UPDATE;
 
 ## 5. Commercial Entitlement Integration Across P7–P10
 
-All commercial feature checks route through `public.school_has_entitlement(school_id, feature_code)`. If a school license row is absent, legacy unmanaged schools operate in backwards-compatible mode. If a license row exists, strict entitlement rules apply.
+All commercial feature checks route through `public.school_has_entitlement(school_id, feature_code)` and `public.get_school_entitlements(school_id)`. If a school license row is absent, legacy unmanaged schools operate in backwards-compatible mode. If a license row exists, strict entitlement rules apply.
+
+### Anti-Probing Direct Authorization Guard
+To prevent unauthorized users from enumerating or probing commercial entitlement packages of arbitrary tenants, both `school_has_entitlement` and `get_school_entitlements` enforce request-time caller authorization:
+- If invoked by an authenticated user (`auth.uid() IS NOT NULL`, `auth.role() != 'service_role'`, and `NOT is_platform_admin()`), the caller MUST be verified as an active member of the queried institution (`public.is_school_member(p_school_id)`).
+- Cross-tenant queries are immediately DENIED with SQLSTATE `42501` (`Access denied: caller ... is not an active member of school ...`).
+- Anonymous/unauthenticated invocations are rejected with SQLSTATE `42501` (`Authentication required`).
+- Platform administrators and `service_role` retain authorized institutional inspection capabilities.
 
 | Phase & Feature | Entitlement Flag | Active + Entitled | Suspended License | Missing Entitlement |
 |---|---|---|---|---|
@@ -201,9 +216,11 @@ The school onboarding engine tracks 10 lifecycle checklist items across required
 ### Architecture
 - **External Webhook Status**: External webhook endpoint is **NOT YET CONFIGURED**. Direct invocation of `process_billing_event_internal` is restricted exclusively to `service_role` and `platform_admin`. Direct execution from `PUBLIC`, `anon`, and ordinary `authenticated` callers is revoked.
 - **Primary Idempotency Key**: Stable composite identity `(provider, provider_event_id)` enforces database-level uniqueness. Re-deliveries return `ignored_duplicate`.
-- **Out-of-Order / Stale Event Rejection**:
-  - Scenario: T2 renewal succeeds (license active through 2027). A delayed T1 `payment_failed` event (timestamp T1 < T2) arrives out of order.
-  - Verification: `process_billing_event_internal` evaluates `p_event_timestamp < v_license.updated_at`, rejects the event as `ignored_stale`, and preserves the active license.
+- **Explicit Billing Watermark & Ordering Semantics**:
+  - Ingestion ordering relies on a dedicated billing watermark (`school_licenses.last_billing_event_at`) and event ledger timestamps (`billing_events.event_timestamp`), completely isolated from generic administrative row updates (`school_licenses.updated_at`).
+  - **Administrative Independence**: Updating school metadata or administrative seat limits (e.g. at timestamp T2) does NOT advance the billing watermark. A legitimate renewal event created at T3 (where T3 > T1) is accepted and processed successfully.
+  - **Stale Event Rejection**: If an out-of-order event arrives with `event_timestamp < watermark` (e.g. T4 arriving after T5), it is rejected as `ignored_stale`, preserving current contract validity.
+  - **Duplicate Rejection**: Repeated submissions with identical `(provider, provider_event_id)` return `ignored_duplicate` idempotently.
 - **Zero Card Data**: Full PAN, CVV, and payment secrets are strictly forbidden and never stored.
 - **Audit Privacy**: Audit events in `public.audit_log` contain zero cardholder data or sensitive credentials.
 
@@ -233,8 +250,8 @@ Measured on live PostgreSQL instance:
 | `test_postgres_p8_leadership.js` | P8 Leadership Dashboard & Segregation | 19 checks | 19 | 0 | 100% PASS |
 | `test_postgres_p9_assignments.js` | P9 Assignments & Interventions | 23 checks | 23 | 0 | 100% PASS |
 | `test_postgres_p10_reporting.js` | P10 Institutional Reporting & Sync | 102 checks | 102 | 0 | 100% PASS |
-| `test_postgres_p11_licensing.js` | P11 Licensing, Seats, Billing & Concurrency | 73 checks | 73 | 0 | 100% PASS |
-| **Combined PostgreSQL Total** | **Full Multi-Tenant Regression** | **241** | **241** | **0** | **100% PASS** |
+| `test_postgres_p11_licensing.js` | P11 Licensing, Seats, Billing & Concurrency | 96 checks | 96 | 0 | 100% PASS |
+| **Combined PostgreSQL Total** | **Full Multi-Tenant Regression** | **264** | **264** | **0** | **100% PASS** |
 
 ### Flutter Test Suite
 - **Physical Test Files**: 99 files

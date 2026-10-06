@@ -130,6 +130,7 @@ async function run() {
   // 3. Catalog & SECURITY DEFINER Audit
   console.log('\n[3/15] Catalog Verification: Inspecting SECURITY DEFINER, search_path & RLS...');
   const p11Rpcs = [
+    'is_school_license_effective',
     'get_school_seat_usage',
     'check_school_seat_capacity',
     'get_school_entitlements',
@@ -634,6 +635,87 @@ async function run() {
     'Expired license (ends_at < NOW()) deterministically transitions to expired'
   );
 
+  // 8b. Commercial Request-Time Entitlement Evaluation: Trial Semantics
+  const schoolTrialId = '22222222-0000-0000-0000-000000000091';
+  await asSuperuser();
+  await db.exec(`
+    INSERT INTO public.schools (id, name, display_name, school_code, status)
+      VALUES ('${schoolTrialId}', 'Trial Secondary', 'Trial High', 'SCH-TRL', 'active') ON CONFLICT DO NOTHING;
+    INSERT INTO public.school_licenses (school_id, plan_code, status, starts_at, ends_at, student_seat_limit, feature_entitlements, source)
+      VALUES (
+        '${schoolTrialId}', 'trial', 'trial', NOW() - INTERVAL '1 day', NOW() + INTERVAL '14 days', 100,
+        jsonb_build_object('student_learning', true, 'teacher_portal', true, 'leadership_dashboard', true, 'assignments_interventions', true, 'institutional_reporting', true),
+        'trial_provisioning'
+      ) ON CONFLICT (school_id) DO UPDATE SET status = 'trial', ends_at = NOW() + INTERVAL '14 days';
+  `);
+  // Valid trial is effective and has entitlement
+  const trialEffective = await db.query(`SELECT public.is_school_license_effective('${schoolTrialId}'::uuid)`);
+  assert(trialEffective.rows[0].is_school_license_effective === true, 'Trial Semantics: Valid trial license is commercially effective (starts_at <= NOW, ends_at in future)');
+  const trialEnt = await db.query(`SELECT public.school_has_entitlement('${schoolTrialId}'::uuid, 'teacher_portal')`);
+  assert(trialEnt.rows[0].school_has_entitlement === true, 'Trial Semantics: school_has_entitlement returns TRUE for entitled feature during valid trial');
+
+  // Expired trial: ends_at in the past fails immediately closed without requiring scheduler
+  await db.query(`UPDATE public.school_licenses SET ends_at = NOW() - INTERVAL '1 day' WHERE school_id = '${schoolTrialId}'`);
+  const trialExpEffective = await db.query(`SELECT public.is_school_license_effective('${schoolTrialId}'::uuid)`);
+  assert(trialExpEffective.rows[0].is_school_license_effective === false, 'Trial Semantics: Expired trial fails closed immediately (is_school_license_effective = false)');
+  const trialExpEnt = await db.query(`SELECT public.school_has_entitlement('${schoolTrialId}'::uuid, 'teacher_portal')`);
+  assert(trialExpEnt.rows[0].school_has_entitlement === false, 'Trial Semantics: school_has_entitlement returns FALSE immediately upon trial expiry without scheduler');
+
+  // 8c. Commercial Request-Time Entitlement Evaluation: Grace Semantics
+  const schoolGraceId = '22222222-0000-0000-0000-000000000092';
+  await db.exec(`
+    INSERT INTO public.schools (id, name, display_name, school_code, status)
+      VALUES ('${schoolGraceId}', 'Grace Secondary', 'Grace High', 'SCH-GRC', 'active') ON CONFLICT DO NOTHING;
+    INSERT INTO public.school_licenses (school_id, plan_code, status, starts_at, ends_at, grace_ends_at, student_seat_limit, feature_entitlements, source)
+      VALUES (
+        '${schoolGraceId}', 'school_standard', 'grace', NOW() - INTERVAL '30 days', NOW() - INTERVAL '1 day', NOW() + INTERVAL '10 days', 100,
+        jsonb_build_object('student_learning', true, 'teacher_portal', true, 'leadership_dashboard', true, 'assignments_interventions', true, 'institutional_reporting', true),
+        'manual_contract'
+      ) ON CONFLICT (school_id) DO UPDATE SET status = 'grace', ends_at = NOW() - INTERVAL '1 day', grace_ends_at = NOW() + INTERVAL '10 days';
+  `);
+  // Valid grace: past contract ends_at does NOT cancel valid grace period
+  const graceEffective = await db.query(`SELECT public.is_school_license_effective('${schoolGraceId}'::uuid)`);
+  assert(graceEffective.rows[0].is_school_license_effective === true, 'Grace Semantics: Valid grace period is commercially effective even when contract ends_at has elapsed');
+  const graceEnt = await db.query(`SELECT public.school_has_entitlement('${schoolGraceId}'::uuid, 'teacher_portal')`);
+  assert(graceEnt.rows[0].school_has_entitlement === true, 'Grace Semantics: school_has_entitlement returns TRUE during active grace governed by grace_ends_at');
+
+  // Expired grace: grace_ends_at in past fails closed immediately without scheduler
+  await db.query(`UPDATE public.school_licenses SET grace_ends_at = NOW() - INTERVAL '1 day' WHERE school_id = '${schoolGraceId}'`);
+  const graceExpEffective = await db.query(`SELECT public.is_school_license_effective('${schoolGraceId}'::uuid)`);
+  assert(graceExpEffective.rows[0].is_school_license_effective === false, 'Grace Semantics: Expired grace fails closed immediately (is_school_license_effective = false)');
+  const graceExpEnt = await db.query(`SELECT public.school_has_entitlement('${schoolGraceId}'::uuid, 'teacher_portal')`);
+  assert(graceExpEnt.rows[0].school_has_entitlement === false, 'Grace Semantics: school_has_entitlement returns FALSE immediately when grace_ends_at has passed');
+
+  // 8d. Direct Authorization & Cross-School Entitlement Probing Defense
+  // teacherAId belongs only to schoolAId
+  await asUser(teacherAId);
+  let crossSchoolTeacherBlocked = false;
+  try {
+    await db.query(`SELECT public.school_has_entitlement('${schoolBId}'::uuid, 'institutional_reporting')`);
+  } catch (err) {
+    crossSchoolTeacherBlocked = err.message.includes('42501') || err.message.includes('Access denied');
+  }
+  assert(crossSchoolTeacherBlocked, 'Security: Cross-school entitlement check by teacher in School A against School B is strictly DENIED (42501)');
+
+  // schoolAdminAId belongs only to schoolAId
+  await asUser(schoolAdminAId);
+  let crossSchoolAdminBlocked = false;
+  try {
+    await db.query(`SELECT public.school_has_entitlement('${schoolBId}'::uuid, 'institutional_reporting')`);
+  } catch (err) {
+    crossSchoolAdminBlocked = err.message.includes('42501') || err.message.includes('Access denied');
+  }
+  assert(crossSchoolAdminBlocked, 'Security: Cross-school entitlement check by admin in School A against School B is strictly DENIED (42501)');
+
+  // Same user querying their OWN school succeeds
+  const ownSchoolEnt = await db.query(`SELECT public.school_has_entitlement('${schoolAId}'::uuid, 'institutional_reporting')`);
+  assert(ownSchoolEnt.rows[0].school_has_entitlement === true, 'Security: Direct authenticated entitlement check for caller own school is ALLOWED');
+
+  // Platform admin querying any school succeeds
+  await asUser(platformAdminId);
+  const platAdminEnt = await db.query(`SELECT public.school_has_entitlement('${schoolBId}'::uuid, 'institutional_reporting')`);
+  assert(typeof platAdminEnt.rows[0].school_has_entitlement === 'boolean', 'Security: Platform admin has global oversight access to school_has_entitlement');
+
   // 9. Entitlement Integration on P7, P8, P9, P10
   console.log('\n[9/15] Running P7–P10 Commercial Entitlement Integration Tests...');
 
@@ -700,6 +782,125 @@ async function run() {
   // Restore School A to active
   await asUser(platformAdminId);
   await db.query(`SELECT * FROM public.transition_school_license_internal('${schoolAId}'::uuid, 'active', 'Restore active')`);
+
+  // 9b. P7–P10 Integration with Valid Trial School
+  await asSuperuser();
+  await db.query(`
+    UPDATE public.school_licenses
+    SET ends_at = NOW() + INTERVAL '14 days'
+    WHERE school_id = '${schoolTrialId}'
+  `);
+  const teacherTrialId = '11111111-0000-0000-0000-000000000093';
+  const adminTrialId = '11111111-0000-0000-0000-000000000094';
+  const classTrialId = '33333333-0000-0000-0000-000000000091';
+  await db.exec(`
+    INSERT INTO auth.users (id, phone) VALUES
+      ('${teacherTrialId}', '+251911000093'),
+      ('${adminTrialId}', '+251911000094')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.profiles (id, phone_number, display_name, grade, stream) VALUES
+      ('${teacherTrialId}', '+251911000093', 'Teacher Trial', 12, 'natural'),
+      ('${adminTrialId}', '+251911000094', 'Admin Trial', 12, 'natural')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.user_roles (user_id, role_id) VALUES
+      ('${teacherTrialId}', 'teacher'),
+      ('${adminTrialId}', 'school_admin')
+    ON CONFLICT DO NOTHING;
+    INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES
+      ('${schoolTrialId}', '${teacherTrialId}', 'teacher', 'active'),
+      ('${schoolTrialId}', '${adminTrialId}', 'school_admin', 'active')
+    ON CONFLICT DO NOTHING;
+    INSERT INTO public.classrooms (id, school_id, name, grade, stream, section, academic_year, status) VALUES
+      ('${classTrialId}', '${schoolTrialId}', 'Grade 12 Natural Trial', 12, 'naturalScience', 'A', '2026/27', 'active')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.teacher_subject_assignments (school_id, classroom_id, teacher_user_id, subject_id, status)
+      VALUES ('${schoolTrialId}', '${classTrialId}', '${teacherTrialId}', 'physics_g12', 'active')
+      ON CONFLICT DO NOTHING;
+  `);
+
+  // Valid trial: P7 teacher portal allowed
+  await asUser(teacherTrialId);
+  const p7TrialClasses = await db.query(`SELECT * FROM public.get_teacher_assigned_classes('${schoolTrialId}'::uuid)`);
+  assert(p7TrialClasses.rows.length >= 1, 'P7 Teacher Portal: Allowed for school in valid trial');
+
+  // Valid trial: P8 leadership allowed
+  await asUser(adminTrialId);
+  const p8TrialAuth = await db.query(`SELECT public.resolve_school_admin_authority('${schoolTrialId}'::uuid)`);
+  assert(p8TrialAuth.rows[0].resolve_school_admin_authority === true, 'P8 Leadership Dashboard: Allowed for school in valid trial');
+
+  // Valid trial: P9 assignments allowed
+  await asUser(teacherTrialId);
+  const p9TrialAuth = await db.query(`SELECT public.can_teacher_manage_assignment('${schoolTrialId}'::uuid, '${classTrialId}'::uuid, 'physics_g12', NULL)`);
+  assert(p9TrialAuth.rows[0].can_teacher_manage_assignment === true, 'P9 Assignments: Allowed for school in valid trial');
+
+  // Valid trial: P10 reporting allowed
+  await asUser(adminTrialId);
+  const p10TrialAuth = await db.query(`SELECT public.validate_report_authority('${schoolTrialId}'::uuid)`);
+  assert(p10TrialAuth.rows[0].validate_report_authority === true, 'P10 Reporting: Allowed for school in valid trial');
+
+  // 9c. P7–P10 Integration with Valid Grace School
+  await asSuperuser();
+  await db.query(`
+    UPDATE public.school_licenses
+    SET grace_ends_at = NOW() + INTERVAL '10 days'
+    WHERE school_id = '${schoolGraceId}'
+  `);
+  const teacherGraceId = '11111111-0000-0000-0000-000000000096';
+  const adminGraceId = '11111111-0000-0000-0000-000000000097';
+  const classGraceId = '33333333-0000-0000-0000-000000000092';
+  await db.exec(`
+    INSERT INTO auth.users (id, phone) VALUES
+      ('${teacherGraceId}', '+251911000096'),
+      ('${adminGraceId}', '+251911000097')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.profiles (id, phone_number, display_name, grade, stream) VALUES
+      ('${teacherGraceId}', '+251911000096', 'Teacher Grace', 12, 'natural'),
+      ('${adminGraceId}', '+251911000097', 'Admin Grace', 12, 'natural')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.user_roles (user_id, role_id) VALUES
+      ('${teacherGraceId}', 'teacher'),
+      ('${adminGraceId}', 'school_admin')
+    ON CONFLICT DO NOTHING;
+    INSERT INTO public.school_memberships (school_id, user_id, role, status) VALUES
+      ('${schoolGraceId}', '${teacherGraceId}', 'teacher', 'active'),
+      ('${schoolGraceId}', '${adminGraceId}', 'school_admin', 'active')
+    ON CONFLICT DO NOTHING;
+    INSERT INTO public.classrooms (id, school_id, name, grade, stream, section, academic_year, status) VALUES
+      ('${classGraceId}', '${schoolGraceId}', 'Grade 12 Natural Grace', 12, 'naturalScience', 'A', '2026/27', 'active')
+    ON CONFLICT (id) DO NOTHING;
+    INSERT INTO public.teacher_subject_assignments (school_id, classroom_id, teacher_user_id, subject_id, status)
+      VALUES ('${schoolGraceId}', '${classGraceId}', '${teacherGraceId}', 'physics_g12', 'active')
+      ON CONFLICT DO NOTHING;
+  `);
+
+  // Valid grace: P7 teacher portal allowed
+  await asUser(teacherGraceId);
+  const p7GraceClasses = await db.query(`SELECT * FROM public.get_teacher_assigned_classes('${schoolGraceId}'::uuid)`);
+  assert(p7GraceClasses.rows.length >= 1, 'P7 Teacher Portal: Allowed for school in valid grace period');
+
+  // Valid grace: P8 leadership allowed
+  await asUser(adminGraceId);
+  const p8GraceAuth = await db.query(`SELECT public.resolve_school_admin_authority('${schoolGraceId}'::uuid)`);
+  assert(p8GraceAuth.rows[0].resolve_school_admin_authority === true, 'P8 Leadership Dashboard: Allowed for school in valid grace period');
+
+  // Expired grace: P7, P8 fail
+  await asSuperuser();
+  await db.query(`
+    UPDATE public.school_licenses
+    SET grace_ends_at = NOW() - INTERVAL '1 day'
+    WHERE school_id = '${schoolGraceId}'
+  `);
+  await asUser(teacherGraceId);
+  let p7GraceExpDenied = false;
+  try {
+    await db.query(`SELECT * FROM public.get_teacher_assigned_classes('${schoolGraceId}'::uuid)`);
+  } catch (err) {
+    p7GraceExpDenied = err.message.includes('Teacher portal access denied') || err.message.includes('entitlement');
+  }
+  assert(p7GraceExpDenied, 'P7 Teacher Portal: DENIED immediately when grace period has expired');
+  await asUser(adminGraceId);
+  const p8GraceExpAuth = await db.query(`SELECT public.resolve_school_admin_authority('${schoolGraceId}'::uuid)`);
+  assert(p8GraceExpAuth.rows[0].resolve_school_admin_authority === false, 'P8 Leadership Dashboard: DENIED immediately when grace period has expired');
 
   // 10. School Onboarding Checklist & Activation Success Test
   console.log('\n[10/15] Running School Onboarding Checklist & Complete Activation Tests...');
@@ -858,58 +1059,105 @@ async function run() {
   }
   assert(studentBillBlocked, 'Unauthorized user calling process_billing_event_internal is DENIED');
 
-  // Service role executes billing renewal (T2: future renewal)
+  // Service role executes initial billing event (T1: 10 hours ago)
   await asUser(null, 'service_role');
-  const renewalT2 = await db.query(`
+  const renewalT1 = await db.query(`
     SELECT * FROM public.process_billing_event_internal(
       'telebirr',
-      'evt_tb_renewal_t2',
+      'evt_tb_renewal_t1',
       'payment_succeeded',
       '${schoolAId}'::uuid,
-      'hash_payload_renewal',
+      'hash_payload_renewal_t1',
       'active',
       NOW(),
       NOW() + INTERVAL '365 days',
       10,
-      NOW() -- Event timestamp T2
+      NOW() - INTERVAL '10 hours' -- Event timestamp T1
     )
   `);
-  assert(renewalT2.rows[0].process_billing_event_internal.status === 'processed', 'Service role processes payment_succeeded renewal (T2)');
+  assert(renewalT1.rows[0].process_billing_event_internal.status === 'processed', 'Service role processes payment_succeeded renewal (T1)');
 
-  // Stale out-of-order billing event: Older payment_failed (T1 < T2) arrives after T2 renewal!
-  // Must NOT downgrade active license to grace/suspended!
-  const staleT1 = await db.query(`
+  // T2: Platform admin changes seat limit (unrelated administrative mutation changes school_licenses.updated_at)
+  await asUser(platformAdminId);
+  const seatLimitT2 = await db.query(`
+    SELECT * FROM public.update_school_seat_limit_internal('${schoolAId}'::uuid, 25, 'Mid-contract seat expansion')
+  `);
+  assert(seatLimitT2.rows[0].student_seat_limit === 25, 'Platform admin updates seat limit to 25 (mutates school_licenses.updated_at)');
+
+  // T3: Valid billing renewal event arrives whose provider timestamp (8 hours ago) is after T1 (10 hours ago)
+  // but before the seat-limit mutation timestamp T2 (NOW)!
+  // Must NOT be rejected merely because school_licenses.updated_at was changed by the seat-limit operation!
+  await asUser(null, 'service_role');
+  const renewalT3 = await db.query(`
     SELECT * FROM public.process_billing_event_internal(
       'telebirr',
-      'evt_tb_stale_fail_t1',
+      'evt_tb_renewal_t3',
+      'subscription_renewed',
+      '${schoolAId}'::uuid,
+      'hash_payload_renewal_t3',
+      'active',
+      NOW(),
+      NOW() + INTERVAL '730 days',
+      25,
+      NOW() - INTERVAL '8 hours' -- Event timestamp T3 (after T1, before T2 mutation)
+    )
+  `);
+  assert(
+    renewalT3.rows[0].process_billing_event_internal.status === 'processed',
+    'Out-of-Order Proof: T3 renewal is NOT rejected merely because school_licenses.updated_at was changed by seat-limit operation'
+  );
+
+  // T5: New billing event accepted with provider timestamp T5 (1 hour ago)
+  const renewalT5 = await db.query(`
+    SELECT * FROM public.process_billing_event_internal(
+      'telebirr',
+      'evt_tb_renewal_t5',
+      'payment_succeeded',
+      '${schoolAId}'::uuid,
+      'hash_payload_renewal_t5',
+      'active',
+      NOW(),
+      NOW() + INTERVAL '730 days',
+      25,
+      NOW() - INTERVAL '1 hour' -- Event timestamp T5
+    )
+  `);
+  assert(renewalT5.rows[0].process_billing_event_internal.status === 'processed', 'T5 billing event accepted; advances billing watermark');
+
+  // T4: True Stale Event: Older event (T4: 4 hours ago, T4 < T5) arrives AFTER T5!
+  // Must be rejected as ignored_stale using billing watermark evidence
+  const staleT4 = await db.query(`
+    SELECT * FROM public.process_billing_event_internal(
+      'telebirr',
+      'evt_tb_stale_fail_t4',
       'payment_failed',
       '${schoolAId}'::uuid,
-      'hash_payload_stale',
+      'hash_payload_stale_t4',
       'grace',
       NOW() - INTERVAL '30 days',
       NOW() - INTERVAL '1 day',
       NULL,
-      NOW() - INTERVAL '2 days' -- Event timestamp T1 is older!
+      NOW() - INTERVAL '4 hours' -- Event timestamp T4 is older than T5!
     )
   `);
-  assert(staleT1.rows[0].process_billing_event_internal.status === 'ignored_stale', 'Stale out-of-order billing event rejected as ignored_stale');
+  assert(staleT4.rows[0].process_billing_event_internal.status === 'ignored_stale', 'True Stale Proof: T4 older event (T4 < T5) is rejected as ignored_stale using billing watermark');
 
   await asSuperuser();
   const licAfterStale = (await db.query(`SELECT status FROM public.school_licenses WHERE school_id = '${schoolAId}'`)).rows[0];
   assert(licAfterStale.status === 'active', 'Active license is preserved: stale payment_failed did NOT downgrade license');
 
-  // Duplicate event delivery of T2 event
+  // Duplicate event delivery of T3 event
   await asUser(null, 'service_role');
-  const dupT2 = await db.query(`
+  const dupT3 = await db.query(`
     SELECT * FROM public.process_billing_event_internal(
       'telebirr',
-      'evt_tb_renewal_t2',
-      'payment_succeeded',
+      'evt_tb_renewal_t3',
+      'subscription_renewed',
       '${schoolAId}'::uuid,
-      'hash_payload_renewal'
+      'hash_payload_renewal_t3'
     )
   `);
-  assert(dupT2.rows[0].process_billing_event_internal.status === 'ignored_duplicate', 'Duplicate billing event delivery returns ignored_duplicate');
+  assert(dupT3.rows[0].process_billing_event_internal.status === 'ignored_duplicate', 'Duplicate billing event delivery returns ignored_duplicate (one effective transition)');
 
   // 13. Direct Table Row Level Security (RLS) Tests
   console.log('\n[13/15] Running Direct Table Row Level Security (RLS) Tests...');
