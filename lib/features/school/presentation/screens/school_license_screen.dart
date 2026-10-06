@@ -56,13 +56,51 @@ class SchoolLicenseScreen extends ConsumerWidget {
           ),
         ),
         data: (license) {
+          if (license == null) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.info_outline,
+                        size: 48, color: Colors.blueGrey),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No Active Institutional License',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'This school does not currently have an active license recorded. Please contact your administrator or support to activate school licensing.',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
           return seatsAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, _) => Center(child: Text('Error loading seats: $err')),
-            data: (seats) => _LicenseContent(
-              license: license,
-              seats: seats,
-            ),
+            data: (seats) {
+              if (seats == null) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Text(
+                      'Seat information unavailable for this school.',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                );
+              }
+              return _LicenseContent(
+                license: license,
+                seats: seats,
+              );
+            },
           );
         },
       ),

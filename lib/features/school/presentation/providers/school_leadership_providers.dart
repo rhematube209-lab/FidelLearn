@@ -29,9 +29,7 @@ import 'active_school_context_provider.dart';
 /// - Local offline development mode when Supabase is deliberately unconfigured.
 final schoolLeadershipRepositoryProvider =
     Provider<SchoolLeadershipRepository>((ref) {
-  if (EnvConfig.isProduction ||
-      EnvConfig.isStaging ||
-      EnvConfig.isSupabaseConfigured) {
+  if (EnvConfig.isProductionLike || EnvConfig.isSupabaseConfigured) {
     return SupabaseSchoolLeadershipRepository();
   }
   return LocalSchoolLeadershipRepository();

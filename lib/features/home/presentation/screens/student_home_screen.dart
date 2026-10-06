@@ -20,6 +20,7 @@ import '../../../progress/domain/services/remedial_drill_service.dart';
 import '../../../progress/domain/services/weak_topic_detector.dart';
 import '../../../progress/presentation/widgets/today_study_plan_card.dart';
 import '../../../progress/presentation/widgets/reviews_due_banner.dart';
+import '../../../rewards/domain/services/daily_streak_service.dart';
 import '../../../subjects/domain/models/subject_models.dart';
 import '../../../teacher/presentation/widgets/due_assignments_banner.dart';
 
@@ -293,12 +294,18 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   history.length)
               : 0.0;
 
-          readiness = WeakTopicDetector.calculateReadinessScore(
-            totalExamsCompleted: history.length,
-            averageScorePercentage: avgScore,
-            weakTopicCount: detected.length,
-            studyStreakDays: 5,
+          final streakResult = DailyStreakService.calculateStreak(
+            activityDates: history.map((e) => e.completedAt).toList(),
           );
+
+          readiness = history.isNotEmpty
+              ? WeakTopicDetector.calculateReadinessScore(
+                  totalExamsCompleted: history.length,
+                  averageScorePercentage: avgScore,
+                  weakTopicCount: detected.length,
+                  studyStreakDays: streakResult.currentStreakDays,
+                )
+              : 0.0;
         } catch (_) {}
 
         if (mounted) {
@@ -324,20 +331,19 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     if (user == null) return;
     final contentRepo = ref.read(contentRepositoryProvider);
 
-    final targetTopic = topic ??
-        (_weakTopics.isNotEmpty
-            ? _weakTopics.first
-            : const WeakTopicRecommendation(
-                topicId: 'bio_t3_1',
-                topicTitleEn: 'Cellular Respiration & Krebs Cycle',
-                subjectId: 'biology_g12',
-                accuracyPercentage: 45.0,
-                totalAttempts: 5,
-                mistakeCount: 3,
-                urgencyLevel: 'high',
-                recommendationReason:
-                    'Targeted drill on highest mistake density',
-              ));
+    final targetTopic =
+        topic ?? (_weakTopics.isNotEmpty ? _weakTopics.first : null);
+
+    if (targetTopic == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'No weak topics detected yet. Complete practice exams to generate targeted drills.',
+          ),
+        ),
+      );
+      return;
+    }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -1110,9 +1116,8 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
     bool isAmharic,
     bool isDark,
   ) {
-    final readinessPercent = _readinessScore > 0
-        ? (_readinessScore * 100).clamp(0, 100).toInt()
-        : 84;
+    final hasActivity = _recentAttempt != null || _readinessScore > 0;
+    final readinessPercent = (_readinessScore * 100).clamp(0, 100).toInt();
     final topPadding = MediaQuery.of(context).padding.top;
 
     return Container(
@@ -1322,7 +1327,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '$readinessPercent%',
+                                hasActivity ? '$readinessPercent%' : '--%',
                                 style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w900,
@@ -1331,13 +1336,15 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                                 ),
                               ),
                               const SizedBox(height: 3),
-                              const Text(
-                                'READY',
+                              Text(
+                                hasActivity ? 'READY' : 'NEW',
                                 style: TextStyle(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.1,
-                                  color: Color(0xE66EE7B7),
+                                  color: hasActivity
+                                      ? const Color(0xE66EE7B7)
+                                      : Colors.white70,
                                   height: 1.0,
                                 ),
                               ),
@@ -2738,16 +2745,21 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // 🎯 NATIONAL EXAM READINESS SCORE CARD
   // ==========================================
   Widget _buildReadinessGaugeCard(BuildContext context, bool isDark) {
-    final score = _readinessScore > 0 ? _readinessScore : 68.5;
+    final hasData = _readinessScore > 0 || _recentAttempt != null;
+    final score = _readinessScore > 0 ? _readinessScore : 0.0;
     final isReady = score >= 75.0;
     final isOnTrack = score >= 50.0 && score < 75.0;
 
-    final badgeText = isReady
-        ? 'EXAM READY 🎯'
-        : (isOnTrack ? 'ON TRACK 📈' : 'NEEDS PRACTICE ⚠️');
-    final badgeColor = isReady
-        ? AppTheme.green
-        : (isOnTrack ? AppTheme.accent : AppTheme.danger);
+    final badgeText = !hasData
+        ? 'NO DATA YET 📚'
+        : (isReady
+            ? 'EXAM READY 🎯'
+            : (isOnTrack ? 'ON TRACK 📈' : 'NEEDS PRACTICE ⚠️'));
+    final badgeColor = !hasData
+        ? (isDark ? AppTheme.darkMuted : AppTheme.lightMuted)
+        : (isReady
+            ? AppTheme.green
+            : (isOnTrack ? AppTheme.accent : AppTheme.danger));
 
     return Container(
       padding: const EdgeInsets.all(22),
@@ -2830,7 +2842,7 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(badgeColor),
                     ),
                     Text(
-                      '${score.toStringAsFixed(0)}%',
+                      hasData ? '${score.toStringAsFixed(0)}%' : '--%',
                       style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
@@ -2845,9 +2857,11 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isReady
-                          ? 'Projected Top-Decile University Placement!'
-                          : 'Target 80%+ to unlock top university placement.',
+                      !hasData
+                          ? 'Complete your first practice exam to calculate national exam readiness.'
+                          : (isReady
+                              ? 'Projected Top-Decile University Placement!'
+                              : 'Target 80%+ to unlock top university placement.'),
                       style: TextStyle(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w600,
@@ -2893,40 +2907,51 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   // 🎯 WEAK TOPIC RADAR CARD
   // ==========================================
   Widget _buildWeakTopicRadarCard(BuildContext context, bool isDark) {
-    final displayedTopics = _weakTopics.isNotEmpty
-        ? _weakTopics.take(3).toList()
-        : [
-            const WeakTopicRecommendation(
-              topicId: 'bio_t3_1',
-              topicTitleEn: 'Cellular Respiration & Krebs Cycle',
-              subjectId: 'biology_g12',
-              accuracyPercentage: 45.0,
-              totalAttempts: 6,
-              mistakeCount: 3,
-              urgencyLevel: 'high',
-              recommendationReason: 'Priority area',
+    if (_weakTopics.isEmpty) {
+      return FidelCard(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Priority Weak Topics',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: isDark ? AppTheme.darkText : AppTheme.lightText,
+                    ),
+                  ),
+                ),
+                const Icon(Icons.radar_rounded,
+                    color: AppTheme.brand, size: 20),
+              ],
             ),
-            const WeakTopicRecommendation(
-              topicId: 'math_t1_1',
-              topicTitleEn: 'Arithmetic & Geometric Sequences',
-              subjectId: 'math_g12',
-              accuracyPercentage: 58.0,
-              totalAttempts: 5,
-              mistakeCount: 2,
-              urgencyLevel: 'medium',
-              recommendationReason: 'Priority area',
+            const SizedBox(height: 12),
+            Text(
+              'No weak topics flagged yet. Complete practice exams or subject drills to generate targeted diagnostic insights.',
+              style: TextStyle(
+                fontSize: 13,
+                color: isDark ? AppTheme.darkMuted : AppTheme.lightMuted,
+              ),
             ),
-            const WeakTopicRecommendation(
-              topicId: 'hist_t2_1',
-              topicTitleEn: 'Battle of Adwa Treaties',
-              subjectId: 'history_g12',
-              accuracyPercentage: 62.0,
-              totalAttempts: 8,
-              mistakeCount: 3,
-              urgencyLevel: 'low',
-              recommendationReason: 'Priority area',
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () => context.push('/progress'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(38),
+              ),
+              child: const Text('View Topic Diagnostic Hub'),
             ),
-          ];
+          ],
+        ),
+      );
+    }
+
+    final displayedTopics = _weakTopics.take(3).toList();
 
     return FidelCard(
       padding: const EdgeInsets.all(18),

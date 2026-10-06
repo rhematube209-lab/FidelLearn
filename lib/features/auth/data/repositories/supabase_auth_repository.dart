@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/security/auth_session_storage.dart';
 import '../../domain/models/user_profile.dart';
@@ -268,28 +269,37 @@ class SupabaseAuthRepository implements AuthRepository {
             'Please enter a valid phone number (at least 9 digits).');
       }
 
-      // 1. Instant check for Quick Fill Demo Accounts & recognized accounts
-      for (final entry in _demoProfiles.entries) {
-        final entryNorm = normalizePhone(entry.key);
-        final entryClean = _cleanPhone(entry.key);
-        if (entryNorm == normalized ||
-            entryClean == clean ||
-            (clean.length >= 9 &&
-                entryClean.endsWith(clean.substring(clean.length - 9))) ||
-            (entryClean.length >= 9 &&
-                clean.endsWith(entryClean.substring(entryClean.length - 9)))) {
-          return await _commitUser(entry.value, rememberMe: rememberMe);
+      // 1. Instant check for Quick Fill Demo Accounts (strictly isolated to local development mode)
+      if (!EnvConfig.isProductionLike && EnvConfig.isDevelopment) {
+        for (final entry in _demoProfiles.entries) {
+          final entryNorm = normalizePhone(entry.key);
+          final entryClean = _cleanPhone(entry.key);
+          if (entryNorm == normalized ||
+              entryClean == clean ||
+              (clean.length >= 9 &&
+                  entryClean.endsWith(clean.substring(clean.length - 9))) ||
+              (entryClean.length >= 9 &&
+                  clean
+                      .endsWith(entryClean.substring(entryClean.length - 9)))) {
+            return await _commitUser(entry.value, rememberMe: rememberMe);
+          }
         }
       }
 
-      // 1b. Check locally registered profiles
-      if (_localProfiles.containsKey(normalized)) {
+      // 1b. Check locally registered profiles (isolated to local development mode)
+      if (!EnvConfig.isProductionLike &&
+          EnvConfig.isDevelopment &&
+          _localProfiles.containsKey(normalized)) {
         final local = _localProfiles[normalized]!;
         return await _commitUser(local, rememberMe: rememberMe);
       }
 
       final client = _client;
       if (client == null) {
+        if (EnvConfig.isProductionLike) {
+          throw const AuthFailure(
+              'Authentication service is currently unavailable. Please check your internet connection.');
+        }
         final offlineProfile = UserProfile(
           id: '00000000-0000-4000-a000-${DateTime.now().millisecondsSinceEpoch.toRadixString(16).padLeft(12, '0')}',
           phoneNumber: normalized,
@@ -314,7 +324,9 @@ class SupabaseAuthRepository implements AuthRepository {
             )
             .timeout(const Duration(seconds: 5));
       } on TimeoutException {
-        if (_localProfiles.containsKey(normalized)) {
+        if (!EnvConfig.isProductionLike &&
+            EnvConfig.isDevelopment &&
+            _localProfiles.containsKey(normalized)) {
           final local = _localProfiles[normalized]!;
           return await _commitUser(local, rememberMe: rememberMe);
         }
@@ -330,7 +342,9 @@ class SupabaseAuthRepository implements AuthRepository {
               )
               .timeout(const Duration(seconds: 5));
         } catch (_) {
-          if (_localProfiles.containsKey(normalized)) {
+          if (!EnvConfig.isProductionLike &&
+              EnvConfig.isDevelopment &&
+              _localProfiles.containsKey(normalized)) {
             final local = _localProfiles[normalized]!;
             return await _commitUser(local, rememberMe: rememberMe);
           }
@@ -389,6 +403,10 @@ class SupabaseAuthRepository implements AuthRepository {
       }
 
       Future<UserProfile> createOfflineFallback() async {
+        if (EnvConfig.isProductionLike) {
+          throw const AuthFailure(
+              'Unable to complete registration. Please check your internet connection and try again.');
+        }
         final offlineId =
             '00000000-0000-4000-a000-${DateTime.now().millisecondsSinceEpoch.toRadixString(16).padLeft(12, '0')}';
         final offlineProfile = UserProfile(

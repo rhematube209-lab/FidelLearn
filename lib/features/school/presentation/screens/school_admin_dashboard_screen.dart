@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../domain/models/school_models.dart';
+import '../providers/active_school_context_provider.dart';
 
 class SchoolAdminDashboardScreen extends ConsumerStatefulWidget {
   const SchoolAdminDashboardScreen({super.key});
@@ -29,10 +30,25 @@ class _SchoolAdminDashboardScreenState
 
   Future<void> _loadSchoolData() async {
     try {
+      final activeContext = ref.read(activeSchoolContextProvider);
+      final schoolId = activeContext.school?.id;
+
+      if (schoolId == null) {
+        if (mounted) {
+          setState(() {
+            _profile = null;
+            _roster = [];
+            _analytics = null;
+            _isLoading = false;
+          });
+        }
+        return;
+      }
+
       final schoolRepo = ref.read(schoolRepositoryProvider);
-      final prof = await schoolRepo.getSchoolProfile('sch_bole_1');
-      final ros = await schoolRepo.getTeacherRoster('sch_bole_1');
-      final an = await schoolRepo.getSchoolAnalytics('sch_bole_1');
+      final prof = await schoolRepo.getSchoolProfile(schoolId);
+      final ros = await schoolRepo.getTeacherRoster(schoolId);
+      final an = await schoolRepo.getSchoolAnalytics(schoolId);
 
       if (mounted) {
         setState(() {

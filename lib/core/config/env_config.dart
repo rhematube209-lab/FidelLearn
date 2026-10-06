@@ -33,22 +33,33 @@ class EnvConfig {
     defaultValue: '',
   );
 
-  /// Deployment environment identifier.
-  /// Provide via: --dart-define=APP_ENVIRONMENT=development|staging|production
-  static const String appEnvironment = String.fromEnvironment(
+  static const String _defaultAppEnvironment = String.fromEnvironment(
     'APP_ENVIRONMENT',
     defaultValue: 'development',
   );
 
+  /// Test hook to override the runtime environment in tests.
+  static String? overrideEnvironment;
+
+  /// Deployment environment identifier.
+  /// Provide via: --dart-define=APP_ENVIRONMENT=development|staging|production
+  static String get appEnvironment =>
+      overrideEnvironment ?? _defaultAppEnvironment;
+
   static bool get isDevelopment => appEnvironment == 'development';
   static bool get isStaging => appEnvironment == 'staging';
+  static bool get isPilot => appEnvironment == 'pilot';
   static bool get isProduction => appEnvironment == 'production';
+
+  /// Staging, pilot, and production are all production-like environments where
+  /// real backend repositories are mandatory and mock fallbacks are strictly prohibited.
+  static bool get isProductionLike => isProduction || isPilot || isStaging;
 
   /// Returns true when both Supabase credentials are present.
   static bool get isSupabaseConfigured =>
       supabaseUrl.isNotEmpty && supabasePublishableKey.isNotEmpty;
 
-  /// Returns true when Supabase is configured; throws in staging/production
+  /// Returns true when Supabase is configured; throws in staging/pilot/production
   /// if either credential is missing.
   ///
   /// This ensures that CI/CD jobs which omit secrets fail loudly at startup
@@ -64,5 +75,16 @@ class EnvConfig {
       'A $appEnvironment build must not run in offline/mock mode. '
       'Pass them via --dart-define or CI/CD secrets.',
     );
+  }
+
+  /// Startup/runtime guard: prevents mock repository or mock data activation
+  /// in any production-like environment (staging, pilot, production).
+  static void assertNoMockInProduction(String componentName) {
+    if (isProductionLike) {
+      throw StateError(
+        '[FidelLearn] FATAL: Mock component "$componentName" cannot be activated '
+        'in APP_ENVIRONMENT=$appEnvironment. Production truth must never be fabricated.',
+      );
+    }
   }
 }

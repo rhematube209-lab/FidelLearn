@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../data/repositories/local_licensing_onboarding_repository.dart';
 import '../../data/repositories/supabase_licensing_onboarding_repository.dart';
 import '../../domain/models/licensing_onboarding_models.dart';
@@ -7,9 +8,12 @@ import '../../domain/repositories/licensing_onboarding_repository.dart';
 import 'active_school_context_provider.dart';
 
 /// Provider for the [LicensingOnboardingRepository].
-/// Uses Supabase in production and falls back to Local in tests/mock setups.
+/// Uses Supabase in production and falls back to Local only in local dev when Supabase is unconfigured.
 final licensingOnboardingRepositoryProvider =
     Provider<LicensingOnboardingRepository>((ref) {
+  if (EnvConfig.isProductionLike) {
+    return SupabaseLicensingOnboardingRepository();
+  }
   try {
     return SupabaseLicensingOnboardingRepository();
   } catch (_) {
@@ -63,14 +67,14 @@ final currentSchoolOnboardingStateProvider =
 
 /// Family provider for school license by ID.
 final schoolLicenseFamilyProvider =
-    FutureProvider.family<SchoolLicense, String>((ref, schoolId) async {
+    FutureProvider.family<SchoolLicense?, String>((ref, schoolId) async {
   final repo = ref.watch(licensingOnboardingRepositoryProvider);
   return repo.getSchoolLicense(schoolId);
 });
 
 /// Family provider for school seat usage by ID.
 final schoolSeatUsageFamilyProvider =
-    FutureProvider.family<SchoolSeatUsage, String>((ref, schoolId) async {
+    FutureProvider.family<SchoolSeatUsage?, String>((ref, schoolId) async {
   final repo = ref.watch(licensingOnboardingRepositoryProvider);
   return repo.getSchoolSeatUsage(schoolId);
 });

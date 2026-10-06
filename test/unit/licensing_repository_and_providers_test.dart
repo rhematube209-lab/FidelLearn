@@ -121,12 +121,12 @@ void main() {
 
       final license =
           await container.read(schoolLicenseFamilyProvider('sch-001').future);
-      expect(license.schoolId, 'sch-001');
+      expect(license!.schoolId, 'sch-001');
       expect(license.status, LicenseStatus.active);
 
       final usage =
           await container.read(schoolSeatUsageFamilyProvider('sch-001').future);
-      expect(usage.occupiedSeats, 320);
+      expect(usage!.occupiedSeats, 320);
 
       final plans = await container.read(institutionalPlansProvider.future);
       expect(plans.isNotEmpty, isTrue);

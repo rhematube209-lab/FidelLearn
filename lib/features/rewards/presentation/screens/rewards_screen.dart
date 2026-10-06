@@ -8,6 +8,8 @@ import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../payments/presentation/widgets/telebirr_checkout_modal.dart';
 import '../../domain/models/coin_ledger_entry.dart';
+import '../../domain/services/daily_streak_service.dart';
+import '../../../exams/domain/models/exam_models.dart';
 
 class RewardsScreen extends ConsumerStatefulWidget {
   const RewardsScreen({super.key});
@@ -331,6 +333,34 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
   }
 
   Widget _buildDailyQuestsCard(bool isDark) {
+    final user = ref.watch(currentUserProvider).valueOrNull;
+    final List<ExamAttempt> attempts = user != null
+        ? (ref.watch(userAttemptHistoryProvider(user.id)).valueOrNull ??
+            const <ExamAttempt>[])
+        : const <ExamAttempt>[];
+
+    final now = DateTime.now();
+    final todayStart = DateTime(now.year, now.month, now.day);
+    final todayAttempts =
+        attempts.where((a) => a.completedAt.isAfter(todayStart)).toList();
+
+    final questionsToday =
+        todayAttempts.fold<int>(0, (int sum, a) => sum + a.totalQuestions);
+    final q1Progress = (questionsToday / 20.0).clamp(0.0, 1.0);
+    final q1Text =
+        questionsToday >= 20 ? 'Completed ✅' : '$questionsToday / 20 items';
+
+    final hasHighScore = todayAttempts.any((a) => a.percentage >= 80.0);
+    final q2Progress = hasHighScore ? 1.0 : 0.0;
+    final q2Text = hasHighScore ? 'Completed ✅' : '0 / 1 Exams';
+
+    final streak = DailyStreakService.calculateStreak(
+      activityDates: attempts.map<DateTime>((e) => e.completedAt).toList(),
+    ).currentStreakDays;
+    final q3Progress = (streak / 5.0).clamp(0.0, 1.0);
+    final q3Text =
+        streak >= 5 ? 'Completed ✅ ($streak Days 🔥)' : '$streak / 5 Days 🔥';
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -344,13 +374,13 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
           const Text('Daily Goal & Streak Quests',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          _buildQuestRow('Complete 20 Exam Questions', '15 / 20 items', 0.75,
+          _buildQuestRow('Complete 20 Exam Questions', q1Text, q1Progress,
               '+10 Coins', isDark),
           const SizedBox(height: 14),
-          _buildQuestRow('Score ≥ 80% on a Mock Exam', 'Completed ✅', 1.0,
+          _buildQuestRow('Score ≥ 80% on a Practice Exam', q2Text, q2Progress,
               '+25 Coins', isDark),
           const SizedBox(height: 14),
-          _buildQuestRow('Maintain 5-Day Study Streak', '5 / 5 Days 🔥', 1.0,
+          _buildQuestRow('Maintain 5-Day Study Streak', q3Text, q3Progress,
               '+50 Coins', isDark),
         ],
       ),

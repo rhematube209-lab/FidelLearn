@@ -50,19 +50,19 @@ void main() {
       expect(find.text('Tamerat Mengesha'), findsOneWidget);
       expect(find.text('Grade 12'), findsOneWidget);
 
-      // Verify Performance Dashboard Header & 4 Cards
+      // Verify Performance Dashboard Header & 4 Cards (honest empty state for fresh user)
       expect(find.text('Performance Dashboard'), findsOneWidget);
       expect(find.text('Study Coins'), findsOneWidget);
       expect(find.text('10 Coins = 1 ETB (Telebirr)'), findsOneWidget);
       expect(find.text('Daily Streak'), findsOneWidget);
-      expect(find.text('5 Days 🔥'), findsOneWidget);
-      expect(find.text('Freeze Shield Active'), findsOneWidget);
+      expect(find.text('0 Days 🔥'), findsOneWidget);
+      expect(find.text('Start your streak today'), findsOneWidget);
       expect(find.text('Exam Accuracy'), findsOneWidget);
-      expect(find.text('88.4%'), findsOneWidget);
-      expect(find.text('100+ Questions Solved'), findsOneWidget);
+      expect(find.text('--%'), findsOneWidget);
+      expect(find.text('No exams completed yet'), findsOneWidget);
       expect(find.text('Avg Pace'), findsOneWidget);
-      expect(find.text('42s / Q'), findsOneWidget);
-      expect(find.text('Top 5% National Speed'), findsOneWidget);
+      expect(find.text('--'), findsOneWidget);
+      expect(find.text('No pacing data yet'), findsOneWidget);
     });
   });
 }

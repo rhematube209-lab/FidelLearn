@@ -12,6 +12,7 @@ import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/challenges/data/repositories/local_challenge_repository.dart';
 import '../../features/challenges/domain/repositories/challenge_repository.dart';
 import '../../features/exams/data/repositories/drift_exam_repository.dart';
+import '../../features/exams/domain/models/exam_models.dart';
 import '../../features/exams/domain/repositories/exam_repository.dart';
 import '../../features/exams/domain/services/exam_submission_service.dart';
 import '../../features/mistakes/domain/models/mistake_model.dart';
@@ -138,6 +139,15 @@ final authSessionStorageProvider = Provider<AuthSessionStorage>((ref) {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final storage = ref.watch(authSessionStorageProvider);
+  if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate MockAuthRepository.',
+      );
+    }
+    return SupabaseAuthRepository(sessionStorage: storage);
+  }
   if (EnvConfig.isSupabaseConfigured) {
     try {
       return SupabaseAuthRepository(sessionStorage: storage);
@@ -168,6 +178,12 @@ final examRepositoryProvider = Provider<ExamRepository>((ref) {
   final db = ref.watch(appDatabaseProvider);
   final queue = ref.watch(syncQueueRepositoryProvider);
   return DriftExamRepository(db: db, syncQueue: queue);
+});
+
+final userAttemptHistoryProvider =
+    FutureProvider.family<List<ExamAttempt>, String>((ref, userId) async {
+  final repo = ref.watch(examRepositoryProvider);
+  return repo.getAttemptHistory(userId);
 });
 
 final bookmarkRepositoryProvider = Provider<BookmarkRepository>((ref) {
@@ -241,6 +257,9 @@ final teacherRepositoryProvider = Provider<TeacherRepository>((ref) {
 
 final teacherPortalRepositoryProvider =
     Provider<TeacherPortalRepository>((ref) {
+  if (EnvConfig.isProductionLike) {
+    return SupabaseTeacherPortalRepository();
+  }
   if (EnvConfig.isSupabaseConfigured) {
     try {
       return SupabaseTeacherPortalRepository();
@@ -462,27 +481,7 @@ final coinLedgerProvider =
 class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
   final DriftCoinLedgerRepository? _repository;
 
-  CoinLedgerNotifier([this._repository])
-      : super([
-          CoinLedgerEntry(
-            id: 'init_signup_bonus',
-            userId: 'demo-student-001',
-            transactionType: CoinTransactionType.credit,
-            amount: 50,
-            reason: 'Welcome Signup Bonus',
-            idempotencyKey: 'welcome_demo-student-001',
-            createdAt: DateTime.now().subtract(const Duration(days: 5)),
-          ),
-          CoinLedgerEntry(
-            id: 'daily_goal_1',
-            userId: 'demo-student-001',
-            transactionType: CoinTransactionType.credit,
-            amount: 15,
-            reason: 'Completed Daily Study Goal',
-            idempotencyKey: 'daily_goal_20260820_demo-student-001',
-            createdAt: DateTime.now().subtract(const Duration(days: 1)),
-          ),
-        ]) {
+  CoinLedgerNotifier([this._repository]) : super([]) {
     _init();
   }
 
@@ -490,13 +489,7 @@ class CoinLedgerNotifier extends StateNotifier<List<CoinLedgerEntry>> {
     if (_repository != null) {
       try {
         final entries = await _repository.getLedger();
-        if (entries.isNotEmpty) {
-          state = entries;
-        } else {
-          for (final e in state) {
-            await _repository.recordEntry(e);
-          }
-        }
+        state = entries;
       } catch (_) {}
     }
   }

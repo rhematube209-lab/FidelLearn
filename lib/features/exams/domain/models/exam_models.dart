@@ -244,6 +244,8 @@ class ExamAttempt extends Equatable {
     this.syncStatus = 'synced',
   });
 
+  DateTime get completedAt => endTime ?? startTime;
+
   ExamAttempt copyWith({
     DateTime? endTime,
     int? durationSeconds,

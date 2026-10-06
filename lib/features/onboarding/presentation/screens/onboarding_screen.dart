@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/fidel_button.dart';
@@ -257,28 +258,31 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     isFullWidth: true,
                     height: 48,
                   ),
-                  const SizedBox(height: 12),
-                  FidelButton(
-                    label: _selectedLang == 'am'
-                        ? 'እንደ እንግዳ ጀምር'
-                        : 'Try Demo as Guest (Instant Offline)',
-                    variant: FidelButtonVariant.outline,
-                    onPressed: () async {
-                      await ref.read(currentUserProvider.notifier).register(
-                            phone: '+251911000000',
-                            pass: 'demo123',
-                            name: 'Guest Student',
-                            grade: _selectedGrade,
-                            stream: _selectedStream,
-                            lang: _selectedLang,
-                          );
-                      if (context.mounted) {
-                        context.go('/home');
-                      }
-                    },
-                    isFullWidth: true,
-                    height: 48,
-                  ),
+                  if (!EnvConfig.isProductionLike &&
+                      EnvConfig.isDevelopment) ...[
+                    const SizedBox(height: 12),
+                    FidelButton(
+                      label: _selectedLang == 'am'
+                          ? 'እንደ እንግዳ ጀምር'
+                          : 'Try Demo as Guest (Instant Offline)',
+                      variant: FidelButtonVariant.outline,
+                      onPressed: () async {
+                        await ref.read(currentUserProvider.notifier).register(
+                              phone: '+251911000000',
+                              pass: 'demo123',
+                              name: 'Guest Student',
+                              grade: _selectedGrade,
+                              stream: _selectedStream,
+                              lang: _selectedLang,
+                            );
+                        if (context.mounted) {
+                          context.go('/home');
+                        }
+                      },
+                      isFullWidth: true,
+                      height: 48,
+                    ),
+                  ],
                 ],
               ),
             ),

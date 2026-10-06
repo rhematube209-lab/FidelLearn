@@ -6,6 +6,7 @@ import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../exams/domain/models/exam_models.dart';
 import '../../../question_bank/domain/models/question_models.dart';
+import '../../../rewards/domain/services/daily_streak_service.dart';
 import '../../domain/models/progress_models.dart';
 import '../../domain/services/remedial_drill_service.dart';
 import '../../domain/services/weak_topic_detector.dart';
@@ -120,12 +121,18 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         avgScore = totalPct / history.length;
       }
 
-      final readiness = WeakTopicDetector.calculateReadinessScore(
-        totalExamsCompleted: history.length,
-        averageScorePercentage: avgScore,
-        weakTopicCount: detected.length,
-        studyStreakDays: 5,
+      final streakResult = DailyStreakService.calculateStreak(
+        activityDates: history.map((e) => e.completedAt).toList(),
       );
+
+      final readiness = history.isNotEmpty
+          ? WeakTopicDetector.calculateReadinessScore(
+              totalExamsCompleted: history.length,
+              averageScorePercentage: avgScore,
+              weakTopicCount: detected.length,
+              studyStreakDays: streakResult.currentStreakDays,
+            )
+          : 0.0;
 
       if (mounted) {
         setState(() {
@@ -293,16 +300,18 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${_readinessScore.toStringAsFixed(0)}%',
+                    _attempts.isNotEmpty
+                        ? '${_readinessScore.toStringAsFixed(0)}%'
+                        : '--%',
                     style: const TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.w900,
                       color: AppTheme.brand,
                     ),
                   ),
-                  const Text(
-                    'READINESS',
-                    style: TextStyle(
+                  Text(
+                    _attempts.isNotEmpty ? 'READINESS' : 'NO DATA',
+                    style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF94A3B8)),
@@ -312,18 +321,22 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Projected National Score: 580 – 625 / 700',
-            style: TextStyle(
+          Text(
+            _attempts.isNotEmpty
+                ? 'Projected National Score: ${((_readinessScore * 7.0).round().clamp(200, 700) - 25).clamp(0, 700)} – ${((_readinessScore * 7.0).round().clamp(200, 700) + 25).clamp(0, 700)} / 700'
+                : 'Projected National Score: -- / 700',
+            style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.accent),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'Based on completed practice sessions, speed accuracy curve, and streak consistency.',
-            style:
-                TextStyle(fontSize: 12, color: Color(0xFFE2E8F0), height: 1.3),
+          Text(
+            _attempts.isNotEmpty
+                ? 'Based on completed practice sessions, speed accuracy curve, and streak consistency.'
+                : 'Complete practice exams and mock tests to calculate your projected national score.',
+            style: const TextStyle(
+                fontSize: 12, color: Color(0xFFE2E8F0), height: 1.3),
             textAlign: TextAlign.center,
           ),
         ],

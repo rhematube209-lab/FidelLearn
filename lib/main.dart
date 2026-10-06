@@ -19,15 +19,19 @@ void main() async {
 
   // requireSupabase:
   //   development → returns false if credentials missing (offline/mock mode)
-  //   staging/production → throws StateError if credentials missing (fail closed)
+  //   staging/pilot/production → throws StateError if credentials missing (fail closed)
   bool supabaseReady = false;
   try {
     supabaseReady = EnvConfig.requireSupabase;
   } on StateError catch (e) {
-    // In staging/production this is unrecoverable — rethrow to crash loudly
+    // In staging/pilot/production this is unrecoverable — rethrow to crash loudly
     // so CI/CD and on-call teams see the misconfiguration immediately.
     debugPrint(e.message);
     rethrow;
+  }
+
+  if (EnvConfig.isProductionLike) {
+    EnvConfig.assertNoMockInProduction('AppBootstrap');
   }
 
   if (supabaseReady) {
@@ -37,8 +41,8 @@ void main() async {
         anonKey: EnvConfig.supabasePublishableKey,
       );
     } catch (e) {
-      if (!EnvConfig.isDevelopment) {
-        // Never silently swallow Supabase init failures in staging/production.
+      if (EnvConfig.isProductionLike) {
+        // Never silently swallow Supabase init failures in staging/pilot/production.
         debugPrint('Supabase initialization failed: $e');
         rethrow;
       }

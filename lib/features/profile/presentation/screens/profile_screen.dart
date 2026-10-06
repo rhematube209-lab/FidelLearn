@@ -7,6 +7,8 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/widgets/fidel_stat_card.dart';
 import '../../../../core/widgets/sync_indicator_widget.dart';
 import '../../../auth/domain/models/user_profile.dart';
+import '../../../exams/domain/models/exam_models.dart';
+import '../../../rewards/domain/services/daily_streak_service.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -125,7 +127,7 @@ class ProfileScreen extends ConsumerWidget {
 
                 // Performance Dashboard Section
                 _buildPerformanceDashboard(
-                    context, coinBalance, isDesktop, isDark),
+                    context, ref, user.id, coinBalance, isDesktop, isDark),
                 const SizedBox(height: 28),
 
                 if (isDesktop)
@@ -385,8 +387,30 @@ class ProfileScreen extends ConsumerWidget {
   // ==========================================
   // 📊 PERFORMANCE DASHBOARD
   // ==========================================
-  Widget _buildPerformanceDashboard(
-      BuildContext context, int coinBalance, bool isDesktop, bool isDark) {
+  Widget _buildPerformanceDashboard(BuildContext context, WidgetRef ref,
+      String userId, int coinBalance, bool isDesktop, bool isDark) {
+    final List<ExamAttempt> attempts =
+        ref.watch(userAttemptHistoryProvider(userId)).valueOrNull ??
+            const <ExamAttempt>[];
+    final hasAttempts = attempts.isNotEmpty;
+
+    final streak = DailyStreakService.calculateStreak(
+      activityDates: attempts.map<DateTime>((e) => e.completedAt).toList(),
+    ).currentStreakDays;
+
+    final avgAccuracy = hasAttempts
+        ? (attempts.fold<double>(0.0, (acc, a) => acc + a.percentage) /
+            attempts.length)
+        : 0.0;
+    final totalQuestions =
+        attempts.fold<int>(0, (acc, a) => acc + a.totalQuestions);
+
+    final totalDurationSeconds =
+        attempts.fold<int>(0, (acc, a) => acc + a.durationSeconds);
+    final avgPace = (hasAttempts && totalQuestions > 0)
+        ? (totalDurationSeconds / totalQuestions).round()
+        : 0;
+
     final cards = [
       FidelStatCard(
         title: 'Study Coins',
@@ -398,24 +422,29 @@ class ProfileScreen extends ConsumerWidget {
       ),
       FidelStatCard(
         title: 'Daily Streak',
-        value: '5 Days 🔥',
-        subtitle: 'Freeze Shield Active',
+        value: '$streak Days 🔥',
+        subtitle:
+            streak > 0 ? 'Active Study Streak' : 'Start your streak today',
         icon: Icons.local_fire_department_rounded,
         accentColor: AppTheme.pink,
         onTap: () => context.push('/rewards'),
       ),
       FidelStatCard(
         title: 'Exam Accuracy',
-        value: '88.4%',
-        subtitle: '100+ Questions Solved',
+        value: hasAttempts ? '${avgAccuracy.toStringAsFixed(1)}%' : '--%',
+        subtitle: hasAttempts
+            ? '$totalQuestions Questions Solved'
+            : 'No exams completed yet',
         icon: Icons.check_circle_outline_rounded,
         accentColor: AppTheme.green,
         onTap: () => context.push('/progress'),
       ),
       FidelStatCard(
         title: 'Avg Pace',
-        value: '42s / Q',
-        subtitle: 'Top 5% National Speed',
+        value: (hasAttempts && totalQuestions > 0) ? '${avgPace}s / Q' : '--',
+        subtitle: (hasAttempts && totalQuestions > 0)
+            ? 'Personal Solving Pace'
+            : 'No pacing data yet',
         icon: Icons.speed_rounded,
         accentColor: AppTheme.brand,
         onTap: () => context.push('/progress'),

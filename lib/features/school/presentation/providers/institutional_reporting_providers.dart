@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/config/env_config.dart';
 import '../../data/repositories/local_institutional_reporting_repository.dart';
 import '../../data/repositories/supabase_institutional_reporting_repository.dart';
 import '../../domain/models/institutional_reporting_models.dart';
@@ -7,9 +8,12 @@ import '../../domain/repositories/institutional_reporting_repository.dart';
 import 'active_school_context_provider.dart';
 
 /// Provider for the [InstitutionalReportingRepository].
-/// Uses Supabase in production and falls back to Local in tests/mock setups.
+/// Uses Supabase in production and falls back to Local only in local dev when Supabase is unconfigured.
 final institutionalReportingRepositoryProvider =
     Provider<InstitutionalReportingRepository>((ref) {
+  if (EnvConfig.isProductionLike) {
+    return SupabaseInstitutionalReportingRepository();
+  }
   try {
     return SupabaseInstitutionalReportingRepository();
   } catch (_) {

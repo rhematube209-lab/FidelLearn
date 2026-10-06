@@ -13,6 +13,9 @@ import '../../domain/repositories/teacher_portal_repository.dart';
 
 final teacherPortalRepositoryProvider =
     Provider<TeacherPortalRepository>((ref) {
+  if (EnvConfig.isProductionLike) {
+    return SupabaseTeacherPortalRepository();
+  }
   if (EnvConfig.isSupabaseConfigured) {
     try {
       return SupabaseTeacherPortalRepository();
