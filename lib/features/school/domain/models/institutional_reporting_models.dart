@@ -1591,6 +1591,9 @@ class StudentAcademicReport extends Equatable {
   final int assignmentsCompleted;
   final int interventionsReceived;
   final DateTime? lastSyncTimestamp;
+  final DateTime? lastSuccessfulSync;
+  final DateTime? lastCloudAcademicActivity;
+  final String syncFreshness;
   final String p4MasteryNotice;
 
   const StudentAcademicReport({
@@ -1611,6 +1614,9 @@ class StudentAcademicReport extends Equatable {
     required this.assignmentsCompleted,
     required this.interventionsReceived,
     this.lastSyncTimestamp,
+    this.lastSuccessfulSync,
+    this.lastCloudAcademicActivity,
+    this.syncFreshness = 'unknown',
     this.p4MasteryNotice =
         'FidelLearn P4 adaptive spaced mastery and composite national readiness are device-local and not synchronized to institutional cloud reports.',
   });
@@ -1636,6 +1642,15 @@ class StudentAcademicReport extends Equatable {
       lastSyncTimestamp: json['last_sync_timestamp'] != null
           ? DateTime.tryParse(json['last_sync_timestamp'] as String)
           : null,
+      lastSuccessfulSync: json['last_successful_sync'] != null
+          ? DateTime.tryParse(json['last_successful_sync'] as String)
+          : (json['last_sync_timestamp'] != null
+              ? DateTime.tryParse(json['last_sync_timestamp'] as String)
+              : null),
+      lastCloudAcademicActivity: json['last_cloud_academic_activity'] != null
+          ? DateTime.tryParse(json['last_cloud_academic_activity'] as String)
+          : null,
+      syncFreshness: json['sync_freshness'] as String? ?? 'unknown',
       p4MasteryNotice: json['p4_mastery_notice'] as String? ??
           'FidelLearn P4 adaptive spaced mastery and composite national readiness are device-local and not synchronized to institutional cloud reports.',
     );
@@ -1650,6 +1665,11 @@ class StudentAcademicReport extends Equatable {
         medianScore,
         activeMistakes,
         assignmentsCompleted,
+        interventionsReceived,
+        lastSyncTimestamp,
+        lastSuccessfulSync,
+        lastCloudAcademicActivity,
+        syncFreshness,
       ];
 }
 
