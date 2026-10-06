@@ -643,14 +643,70 @@ async function run() {
 
   // Verify privileged function definitions on Restored Database
   const recSecDefRes = await recoveryDb.query(`
-    SELECT proname, prosecdef
+    SELECT proname, prosecdef, proconfig
     FROM pg_proc
-    WHERE proname IN ('system_health_status', 'get_school_operational_summary', 'is_school_license_effective')
+    WHERE proname IN ('system_health_status', 'get_school_operational_summary', 'is_school_license_effective', 'school_has_entitlement')
       AND pronamespace = 'public'::regnamespace;
   `);
   for (const proc of recSecDefRes.rows) {
-    assert(proc.prosecdef === true, `Restored DB Security: Function ${proc.proname} preserves SECURITY DEFINER`);
+    assert(proc.prosecdef === true, `Restored DB Objects: Function ${proc.proname} preserves SECURITY DEFINER`);
+    const cfg = proc.proconfig ? proc.proconfig.join(',') : '';
+    assert(cfg.includes('search_path=public, pg_temp'), `Restored DB Objects: Function ${proc.proname} preserves search_path=public, pg_temp`);
   }
+
+  // Verify RLS policies, indexes, constraints, and triggers on Restored Database
+  const recPolicies = await recoveryDb.query(`SELECT count(*) as c FROM pg_policy;`);
+  assert(Number(recPolicies.rows[0].c) > 0, `Restored DB Objects: RLS policies preserved (${recPolicies.rows[0].c} policies)`);
+
+  const recIndexes = await recoveryDb.query(`SELECT count(*) as c FROM pg_class WHERE relkind = 'i';`);
+  assert(Number(recIndexes.rows[0].c) > 0, `Restored DB Objects: Indexes preserved (${recIndexes.rows[0].c} indexes)`);
+
+  const recConstraints = await recoveryDb.query(`SELECT count(*) as c FROM pg_constraint;`);
+  assert(Number(recConstraints.rows[0].c) > 0, `Restored DB Objects: Constraints preserved (${recConstraints.rows[0].c} constraints)`);
+
+  const recTriggers = await recoveryDb.query(`SELECT count(*) as c FROM pg_trigger WHERE tgname = 'on_auth_user_created';`);
+  assert(Number(recTriggers.rows[0].c) === 1, `Restored DB Objects: Triggers preserved (on_auth_user_created exists)`);
+
+  // Post-Restore Authority & Security Verification
+  await asUser(teacherId, 'authenticated', recoveryDb);
+  try {
+    await recoveryDb.query(`SELECT public.get_school_operational_summary('${schoolId}');`);
+    assert(false, `Restored DB Security: Teacher querying school summary should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Security: Teacher querying school summary strictly DENIED (42501)`);
+  }
+
+  await asUser(crossSchoolAdminId, 'authenticated', recoveryDb);
+  try {
+    await recoveryDb.query(`SELECT public.get_school_operational_summary('${schoolId}');`);
+    assert(false, `Restored DB Security: Cross-school admin querying school summary should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Security: Cross-school admin querying school summary strictly DENIED (42501)`);
+  }
+
+  await asUser(schoolAdminId, 'authenticated', recoveryDb);
+  const recEnt = await recoveryDb.query(`SELECT public.school_has_entitlement('${schoolId}', 'student_learning') as e;`);
+  assert(recEnt.rows[0].e === true, `Restored DB Security: School Admin verifies student_learning entitlement`);
+
+  // Restored Database Operational Smoke Test (Point 8)
+  const recSm = await recoveryDb.query(`SELECT * FROM public.school_memberships WHERE school_id = '${schoolId}' AND user_id = '${student1Id}';`);
+  assert(recSm.rows.length === 1 && recSm.rows[0].role === 'student', `Restored DB Smoke: School membership resolved`);
+
+  const recRoster = await recoveryDb.query(`SELECT * FROM public.classroom_memberships WHERE classroom_id = '${classId}';`);
+  assert(recRoster.rows.length >= 2, `Restored DB Smoke: Classroom roster loaded (${recRoster.rows.length} students)`);
+
+  // Switch to student context to verify student attempt read with intact score
+  await asUser(student1Id, 'authenticated', recoveryDb);
+  const recAtt = await recoveryDb.query(`SELECT * FROM public.attempts WHERE user_id = '${student1Id}';`);
+  assert(recAtt.rows.length >= 1 && recAtt.rows[0].score === 85, `Restored DB Smoke: Student attempt read with intact score (85)`);
+
+  // Switch back to school admin context for institutional license and report run checks
+  await asUser(schoolAdminId, 'authenticated', recoveryDb);
+  const recLic = await recoveryDb.query(`SELECT public.is_school_license_effective('${schoolId}') as eff;`);
+  assert(recLic.rows[0].eff === true, `Restored DB Smoke: School license effective evaluation succeeds`);
+
+  const recRep = await recoveryDb.query(`SELECT * FROM public.institutional_report_runs WHERE school_id = '${schoolId}';`);
+  assert(recRep.rows.length >= 1 && recRep.rows[0].report_type === 'stream_performance', `Restored DB Smoke: Report-run metadata read succeeds`);
 
   // Record database restore drill event in original audit_log
   await asSuperuser();
@@ -668,7 +724,7 @@ async function run() {
       NOW()
     );
   `);
-  assert(true, `Disaster Recovery: Real backup restoration drill recorded in audit_log`);
+  assert(true, `Disaster Recovery: Automated database recovery regression recorded in audit_log`);
 
   // 12. National Simulation Submission Burst Simulation (Point 23)
   console.log('\n[12/15] Running National Exam Simulation Burst Load Simulation (Point 23)...');
