@@ -29,16 +29,18 @@ Ensure an empty or staging target PostgreSQL instance is provisioned:
 export TARGET_DB_URL="postgres://postgres:password@recovery-host:5432/fidel_recovery"
 ```
 
-### Step 2: Produce & Export Backup Snapshot
+### Step 2: Produce & Export Backup Snapshot (Option A: Archive Includes ACLs)
+Omitting `--no-privileges` ensures all database ACLs, role grants, and revocations are preserved inside the custom archive:
 ```bash
-pg_dump --format=custom --no-owner --no-privileges \
+pg_dump --format=custom --no-owner \
   --dbname="$SOURCE_DB_URL" \
   --file="fidel_backup_drill_$(date +%Y%m%d_%H%M%S).dump"
 ```
 
 ### Step 3: Restore Snapshot to Target Environment
+Restore the snapshot including all schema definitions, data rows, and privilege grants directly into the isolated recovery database:
 ```bash
-pg_restore --clean --if-exists --no-owner --no-privileges \
+pg_restore --clean --if-exists --no-owner \
   --dbname="$TARGET_DB_URL" \
   "fidel_backup_drill_$(date +%Y%m%d_%H%M%S).dump"
 ```

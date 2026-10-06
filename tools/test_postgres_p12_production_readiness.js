@@ -667,6 +667,116 @@ async function run() {
   const recTriggers = await recoveryDb.query(`SELECT count(*) as c FROM pg_trigger WHERE tgname = 'on_auth_user_created';`);
   assert(Number(recTriggers.rows[0].c) === 1, `Restored DB Objects: Triggers preserved (on_auth_user_created exists)`);
 
+  // ACL Verification on Representative Privileged Functions (Source vs Recovery)
+  const auditedRpcs = [
+    'system_health_status',
+    'get_school_operational_summary',
+    'get_student_sync_diagnostic',
+    'school_has_entitlement',
+    'create_school_license_internal',
+    'process_billing_event_internal',
+    'validate_report_authority'
+  ];
+
+  const sourceAcls = await db.query(`
+    SELECT proname, COALESCE(proacl::text, '') as acl
+    FROM pg_proc
+    WHERE proname = ANY($1) AND pronamespace = 'public'::regnamespace
+    ORDER BY proname;
+  `, [auditedRpcs]);
+
+  const recoveryAcls = await recoveryDb.query(`
+    SELECT proname, COALESCE(proacl::text, '') as acl
+    FROM pg_proc
+    WHERE proname = ANY($1) AND pronamespace = 'public'::regnamespace
+    ORDER BY proname;
+  `, [auditedRpcs]);
+
+  for (const row of recoveryAcls.rows) {
+    console.log(`    - ${row.proname}: ${row.acl}`);
+  }
+
+  assert(
+    JSON.stringify(sourceAcls.rows) === JSON.stringify(recoveryAcls.rows),
+    `Restored DB ACL Parity: Source vs Recovery function privileges strictly MATCH`
+  );
+
+  // Test Anonymous direct execution on privileged operational functions
+  await asUser(null, 'anon', recoveryDb);
+  try {
+    await recoveryDb.query(`SELECT public.system_health_status();`);
+    assert(false, `Restored DB Privileges: anon calling system_health_status should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: anon calling system_health_status strictly DENIED (42501)`);
+  }
+
+  try {
+    await recoveryDb.query(`SELECT public.get_school_operational_summary('${schoolId}');`);
+    assert(false, `Restored DB Privileges: anon calling get_school_operational_summary should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: anon calling get_school_operational_summary strictly DENIED (42501)`);
+  }
+
+  try {
+    await recoveryDb.query(`SELECT public.get_student_sync_diagnostic('${student1Id}');`);
+    assert(false, `Restored DB Privileges: anon calling get_student_sync_diagnostic should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: anon calling get_student_sync_diagnostic strictly DENIED (42501)`);
+  }
+
+  try {
+    await recoveryDb.query(`SELECT public.school_has_entitlement('${schoolId}', 'student_learning');`);
+    assert(false, `Restored DB Privileges: anon calling school_has_entitlement should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: anon calling school_has_entitlement strictly DENIED (42501)`);
+  }
+
+  try {
+    await recoveryDb.query(`SELECT public.process_billing_event_internal('evt_drill_anon', 'evt_drill_anon', 'invoice.paid', '${schoolId}', 'school_standard', 'active', NOW(), NOW() + INTERVAL '1 year', 500, NOW());`);
+    assert(false, `Restored DB Privileges: anon calling process_billing_event_internal should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: anon calling process_billing_event_internal strictly DENIED (42501)`);
+  }
+
+  // Test Ordinary Authenticated Execution
+  await asUser(student1Id, 'authenticated', recoveryDb);
+  try {
+    await recoveryDb.query(`SELECT public.get_school_operational_summary('${schoolId}');`);
+    assert(false, `Restored DB Privileges: Student calling get_school_operational_summary should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: Student calling get_school_operational_summary strictly DENIED (42501)`);
+  }
+
+  try {
+    await recoveryDb.query(`SELECT public.process_billing_event_internal('evt_drill_stu', 'evt_drill_stu', 'invoice.paid', '${schoolId}', 'school_standard', 'active', NOW(), NOW() + INTERVAL '1 year', 500, NOW());`);
+    assert(false, `Restored DB Privileges: Authenticated student calling process_billing_event_internal should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: Authenticated student calling process_billing_event_internal strictly DENIED (42501)`);
+  }
+
+  const selfDiag = await recoveryDb.query(`SELECT public.get_student_sync_diagnostic('${student1Id}') as d;`);
+  assert(selfDiag.rows.length === 1 && selfDiag.rows[0].d.student_id === student1Id, `Restored DB Privileges: Student calling self-diagnostic is ALLOWED`);
+
+  try {
+    await recoveryDb.query(`SELECT public.get_student_sync_diagnostic('${student2Id}');`);
+    assert(false, `Restored DB Privileges: Student querying other student diagnostic should fail`);
+  } catch (e) {
+    assert(true, `Restored DB Privileges: Student querying other student diagnostic strictly DENIED (42501)`);
+  }
+
+  // Test Service Role Execution
+  await asUser(null, 'service_role', recoveryDb);
+  const svcHealth = await recoveryDb.query(`SELECT public.system_health_status() as h;`);
+  assert(svcHealth.rows.length === 1 && svcHealth.rows[0].h.status === 'operational', `Restored DB Privileges: Service role executing system_health_status is ALLOWED`);
+
+  const svcBilling = await recoveryDb.query(`SELECT public.process_billing_event_internal('evt_drill_svc', 'evt_drill_svc', 'payment_succeeded', '${schoolId}', 'school_standard', 'active', NOW(), NOW() + INTERVAL '1 year', 500, NOW()) as b;`);
+  assert(svcBilling.rows[0].b.status === 'processed', `Restored DB Privileges: Service role executing process_billing_event_internal is ALLOWED`);
+
+  // Test Platform Admin Execution
+  await asUser(platAdminId, 'authenticated', recoveryDb);
+  const adminSummary = await recoveryDb.query(`SELECT public.get_school_operational_summary('${schoolId}') as s;`);
+  assert(adminSummary.rows.length === 1 && adminSummary.rows[0].s.school.id === schoolId, `Restored DB Privileges: Platform admin executing get_school_operational_summary is ALLOWED`);
+
   // Post-Restore Authority & Security Verification
   await asUser(teacherId, 'authenticated', recoveryDb);
   try {

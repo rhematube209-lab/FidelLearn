@@ -18,16 +18,18 @@ Priority 12 (P12) operationalizes the complete FidelLearn institutional learning
 ### 2.1 Production Recovery Architecture & Real Database Restoration Path
 Disaster recovery for production environments is strictly separated from automated CI test regressions:
 
-1. **Production Recovery Mechanism**:
+1. **Production Recovery Mechanism (Option A: Backup Includes ACLs)**:
    - **Primary Engine**: PostgreSQL 15+ running under Supabase enterprise configuration.
    - **Backup Mechanism**:
-     - Daily physical full backup snapshots via `pg_dump --format=custom --no-owner --no-privileges -d fidel_learn_prod -f fidel_backup_wal.dump`.
+     - Daily physical full backup snapshots via `pg_dump --format=custom --no-owner -d fidel_learn_prod -f fidel_backup_wal.dump`.
+     - **ACL Preservation Contract**: Omitting `--no-privileges` guarantees that all object ACLs, GRANTs, and REVOKEs on tables, schemas, sequences, and RPC functions are preserved directly inside the custom archive.
      - Continuous Write-Ahead Log (WAL) archiving providing Point-in-Time Recovery (PITR) with up to 7-day retention.
    - **Restore Execution**:
-     - Restored into an independent, isolated recovery database instance (`fidel_learn_recovery_drill`) using `pg_restore --clean --if-exists --exit-on-error`.
+     - Restored into an independent, isolated recovery database instance (`fidel_learn_recovery_drill`) using `pg_restore --clean --if-exists --no-owner --exit-on-error`.
+     - PostgreSQL restores all table schemas, rows, indexes, triggers, RLS policies, and function execution privileges directly from the backup archive.
      - In managed Supabase environments, executed via Supabase Project Restore / Branching PITR to a designated staging/drill ref without touching the active production database.
    - **Auth Schema Boundary**:
-     - Custom `pg_dump` covers all application tables in schema `public`, institutional models, RLS policies, custom indexes, triggers, and procedures.
+     - Custom `pg_dump` covers all application tables in schema `public`, institutional models, RLS policies, custom indexes, triggers, procedures, and their respective ACLs.
      - Internal `auth` schema (`auth.users`, refresh tokens, identity providers) is managed by Supabase Auth and restored through platform PITR / project restoration runbooks. Client code does NOT claim custom SQL scripts restore Supabase Auth internals.
 
 2. **Real PostgreSQL Recovery Drill Execution Report**:
@@ -74,7 +76,27 @@ The recovery drill verified that all schema objects survived intact:
 - **Triggers**: Schema triggers (including `on_auth_user_created`) active.
 - **Migration State**: Migration tracking tables preserved in sequence (P0–P12).
 
-### 2.4 Post-Restore Security & Smoke Test Results
+### 2.4 Function & Object Privilege Posture Verification (Source vs Recovery ACLs)
+The recovery drill verified that all execution rights and database ACLs survived restoration with 100% parity:
+- **Catalog ACL Parity**: Source Database vs Recovered Database function ACLs strictly **MATCH** (`pg_proc.proacl`).
+- **Representative RPC Privilege Matrix**:
+
+| Function Name | PUBLIC | anon | authenticated | service_role | Enforced Authority / Scope |
+|---|---|---|---|---|---|
+| `system_health_status()` | DENIED | DENIED (`42501`) | ALLOWED | ALLOWED | Minimized operational telemetry for ordinary users; full system stats for platform operators. |
+| `get_school_operational_summary(UUID)` | DENIED | DENIED (`42501`) | Guarded | ALLOWED | Platform Admin or Service Role only. Student & Teacher strictly DENIED (`42501`). |
+| `get_student_sync_diagnostic(UUID)` | DENIED | DENIED (`42501`) | Guarded | ALLOWED | Student self-diagnostic, school admin, or platform admin. Cross-student queries strictly DENIED (`42501`). |
+| `school_has_entitlement(UUID, TEXT)` | DENIED | DENIED (`42501`) | Guarded | ALLOWED | Enrolled school member or platform admin. Cross-school queries strictly DENIED (`42501`). |
+| `create_school_license_internal(...)` | DENIED | DENIED (`42501`) | Guarded | ALLOWED | Platform Admin only via internal role validation. |
+| `process_billing_event_internal(...)` | DENIED | DENIED (`42501`) | DENIED (`42501`) | ALLOWED | Server-only billing ingestion. Direct client / authenticated execution strictly blocked. |
+| `validate_report_authority(...)` | DENIED | DENIED (`42501`) | Guarded | ALLOWED | School Admin or Teacher oversight validation for reporting RPCs. |
+
+- **Anonymous Execution**: Direct execution of operational RPCs by `anon` strictly rejected with SQLSTATE `42501` (**PASS**).
+- **Authenticated Isolation**: Student calling `get_school_operational_summary` or `process_billing_event_internal` strictly rejected with SQLSTATE `42501` (**PASS**).
+- **Service Role Execution**: Service role executing `process_billing_event_internal` and `system_health_status` succeeds with authorized status (**PASS**).
+- **Platform Admin Execution**: Platform Admin executing `get_school_operational_summary` succeeds with school support payload (**PASS**).
+
+### 2.5 Post-Restore Security & Smoke Test Results
 - **Tenancy Isolation**: Student 1 reads enrolled school `aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa` and receives 0 rows for unenrolled school `bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb` (**PASS**).
 - **Teacher Authority**: Teacher querying `get_school_operational_summary` is strictly DENIED with SQLSTATE `42501` (**PASS**).
 - **Cross-School Admin**: Admin from School B querying School A is strictly DENIED with SQLSTATE `42501` (**PASS**).
@@ -229,8 +251,8 @@ All 7 regression suites pass with 100% success rate:
 | **P9 Assignments & Interventions** | `tools/test_postgres_p9_assignments.js` | 23 / 23 assertions passed | **100% PASS** |
 | **P10 Institutional Reporting** | `tools/test_postgres_p10_reporting.js` | 102 / 102 assertions passed | **100% PASS** |
 | **P11 Licensing & Onboarding** | `tools/test_postgres_p11_licensing.js` | 96 / 96 assertions passed | **100% PASS** |
-| **P12 Production Readiness** | `tools/test_postgres_p12_production_readiness.js` | 127 / 127 assertions passed | **100% PASS** |
-| **TOTAL POSTGRESQL CHECKS** | **All 7 Suites** | **390+ Granular Assertions & Gates** | **100% PASS** |
+| **P12 Production Readiness** | `tools/test_postgres_p12_production_readiness.js` | 140 / 140 assertions passed | **100% PASS** |
+| **TOTAL POSTGRESQL CHECKS** | **All 7 Suites** | **403+ Granular Assertions & Gates** | **100% PASS** |
 
 ### 10.2 Flutter Regression Suite
 - **Total Physical Test Files**: **101 physical files** (`*_test.dart`)
