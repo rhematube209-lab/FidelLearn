@@ -37,7 +37,9 @@ class DriftSyncQueueRepository implements SyncQueueRepository {
   Future<List<SyncOperation>> getPendingOperations({int limit = 20}) async {
     final now = DateTime.now();
     final query = _db.select(_db.dbSyncQueue)
-      ..where((tbl) => tbl.nextRetryAt.isSmallerOrEqualValue(now))
+      ..where((tbl) =>
+          tbl.nextRetryAt.isSmallerOrEqualValue(now) &
+          (tbl.lastError.isNull() | tbl.lastError.like('[DEAD_LETTER]%').not()))
       ..orderBy([(tbl) => OrderingTerm.asc(tbl.createdAt)])
       ..limit(limit);
 
@@ -74,11 +76,19 @@ class DriftSyncQueueRepository implements SyncQueueRepository {
         .getSingleOrNull();
 
     if (current != null) {
+      final newRetryCount = current.retryCount + 1;
+      if (newRetryCount >= 10) {
+        await markOperationDeadLetter(
+          operationId,
+          reason: 'Max retries exceeded ($newRetryCount): $error',
+        );
+        return;
+      }
       await (_db.update(_db.dbSyncQueue)
             ..where((tbl) => tbl.id.equals(operationId)))
           .write(
         DbSyncQueueCompanion(
-          retryCount: Value(current.retryCount + 1),
+          retryCount: Value(newRetryCount),
           nextRetryAt: Value(DateTime.now().add(retryDelay)),
           lastError: Value(error),
         ),
@@ -87,9 +97,27 @@ class DriftSyncQueueRepository implements SyncQueueRepository {
   }
 
   @override
+  Future<void> markOperationDeadLetter(
+    String operationId, {
+    required String reason,
+  }) async {
+    await (_db.update(_db.dbSyncQueue)
+          ..where((tbl) => tbl.id.equals(operationId)))
+        .write(
+      DbSyncQueueCompanion(
+        nextRetryAt: Value(DateTime.now().add(const Duration(days: 3650))),
+        lastError: Value('[DEAD_LETTER] $reason'),
+      ),
+    );
+  }
+
+  @override
   Future<int> getPendingCount() async {
     final countExp = _db.dbSyncQueue.id.count();
-    final query = _db.selectOnly(_db.dbSyncQueue)..addColumns([countExp]);
+    final query = _db.selectOnly(_db.dbSyncQueue)
+      ..addColumns([countExp])
+      ..where(_db.dbSyncQueue.lastError.isNull() |
+          _db.dbSyncQueue.lastError.like('[DEAD_LETTER]%').not());
     final result = await query.getSingle();
     return result.read(countExp) ?? 0;
   }

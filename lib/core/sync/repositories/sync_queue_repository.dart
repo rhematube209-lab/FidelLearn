@@ -9,6 +9,10 @@ abstract class SyncQueueRepository {
     required String error,
     required Duration retryDelay,
   });
+  Future<void> markOperationDeadLetter(
+    String operationId, {
+    required String reason,
+  });
   Future<int> getPendingCount();
   Future<void> clearAll();
 }
@@ -33,8 +37,9 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
     final now = DateTime.now();
     final eligible = _queue
         .where((op) =>
-            op.nextRetryAt.isBefore(now) ||
-            op.nextRetryAt.isAtSameMomentAs(now))
+            (op.nextRetryAt.isBefore(now) ||
+                op.nextRetryAt.isAtSameMomentAs(now)) &&
+            !(op.lastError?.startsWith('[DEAD_LETTER]') ?? false))
         .toList()
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt)); // FIFO
 
@@ -58,8 +63,17 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
     final index = _queue.indexWhere((op) => op.id == operationId);
     if (index != -1) {
       final current = _queue[index];
+      final newCount = current.retryCount + 1;
+      if (newCount >= 10) {
+        // Automatically dead-letter after 10 consecutive failed attempts
+        await markOperationDeadLetter(
+          operationId,
+          reason: 'Max retries exceeded ($newCount): $error',
+        );
+        return;
+      }
       _queue[index] = current.copyWith(
-        retryCount: current.retryCount + 1,
+        retryCount: newCount,
         nextRetryAt: DateTime.now().add(retryDelay),
         lastError: error,
       );
@@ -67,8 +81,25 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
   }
 
   @override
+  Future<void> markOperationDeadLetter(
+    String operationId, {
+    required String reason,
+  }) async {
+    final index = _queue.indexWhere((op) => op.id == operationId);
+    if (index != -1) {
+      final current = _queue[index];
+      _queue[index] = current.copyWith(
+        nextRetryAt: DateTime.now().add(const Duration(days: 3650)),
+        lastError: '[DEAD_LETTER] $reason',
+      );
+    }
+  }
+
+  @override
   Future<int> getPendingCount() async {
-    return _queue.length;
+    return _queue
+        .where((op) => !(op.lastError?.startsWith('[DEAD_LETTER]') ?? false))
+        .length;
   }
 
   @override
