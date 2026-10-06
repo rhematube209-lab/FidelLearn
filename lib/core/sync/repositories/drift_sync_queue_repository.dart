@@ -78,9 +78,15 @@ class DriftSyncQueueRepository implements SyncQueueRepository {
     if (current != null) {
       final newRetryCount = current.retryCount + 1;
       if (newRetryCount >= 10) {
-        await markOperationDeadLetter(
-          operationId,
-          reason: 'Max retries exceeded ($newRetryCount): $error',
+        await (_db.update(_db.dbSyncQueue)
+              ..where((tbl) => tbl.id.equals(operationId)))
+            .write(
+          DbSyncQueueCompanion(
+            retryCount: Value(newRetryCount),
+            nextRetryAt: Value(DateTime.now().add(const Duration(days: 3650))),
+            lastError: Value(
+                '[DEAD_LETTER] Max retries exceeded ($newRetryCount): $error'),
+          ),
         );
         return;
       }
@@ -120,6 +126,25 @@ class DriftSyncQueueRepository implements SyncQueueRepository {
           _db.dbSyncQueue.lastError.like('[DEAD_LETTER]%').not());
     final result = await query.getSingle();
     return result.read(countExp) ?? 0;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getDeadLetterDiagnostics() async {
+    final query = _db.select(_db.dbSyncQueue)
+      ..where((tbl) =>
+          tbl.lastError.isNotNull() & tbl.lastError.like('[DEAD_LETTER]%'))
+      ..orderBy([(tbl) => OrderingTerm.desc(tbl.createdAt)]);
+    final rows = await query.get();
+    return rows
+        .map((r) => {
+              'id': r.id,
+              'operation_type': r.operationType,
+              'retry_count': r.retryCount,
+              'error_code': r.lastError,
+              'created_at': r.createdAt.toUtc().toIso8601String(),
+              // Raw payload is shielded from support visibility
+            })
+        .toList();
   }
 
   @override

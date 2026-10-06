@@ -14,6 +14,7 @@ abstract class SyncQueueRepository {
     required String reason,
   });
   Future<int> getPendingCount();
+  Future<List<Map<String, dynamic>>> getDeadLetterDiagnostics();
   Future<void> clearAll();
 }
 
@@ -66,9 +67,10 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
       final newCount = current.retryCount + 1;
       if (newCount >= 10) {
         // Automatically dead-letter after 10 consecutive failed attempts
-        await markOperationDeadLetter(
-          operationId,
-          reason: 'Max retries exceeded ($newCount): $error',
+        _queue[index] = current.copyWith(
+          retryCount: newCount,
+          nextRetryAt: DateTime.now().add(const Duration(days: 3650)),
+          lastError: '[DEAD_LETTER] Max retries exceeded ($newCount): $error',
         );
         return;
       }
@@ -100,6 +102,20 @@ class LocalSyncQueueRepository implements SyncQueueRepository {
     return _queue
         .where((op) => !(op.lastError?.startsWith('[DEAD_LETTER]') ?? false))
         .length;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getDeadLetterDiagnostics() async {
+    return _queue
+        .where((op) => op.lastError?.startsWith('[DEAD_LETTER]') ?? false)
+        .map((op) => {
+              'id': op.id,
+              'operation_type': op.operationType.value,
+              'retry_count': op.retryCount,
+              'error_code': op.lastError,
+              'created_at': op.createdAt.toUtc().toIso8601String(),
+            })
+        .toList();
   }
 
   @override

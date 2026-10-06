@@ -26,7 +26,23 @@ DECLARE
     v_total_schools INT := 0;
     v_audit_count INT := 0;
     v_now TIMESTAMPTZ := NOW();
+    v_is_operator BOOLEAN := FALSE;
 BEGIN
+    -- Check if caller is platform_admin or service_role
+    IF auth.role() = 'service_role' OR public.is_platform_admin() THEN
+        v_is_operator := TRUE;
+    END IF;
+
+    -- For ordinary authenticated users (students/teachers): data minimization
+    IF NOT v_is_operator THEN
+        RETURN jsonb_build_object(
+            'status', 'operational',
+            'database', 'healthy',
+            'server_time', v_now
+        );
+    END IF;
+
+    -- For authorized platform operators: full telemetry
     SELECT COUNT(*) INTO v_active_licenses
     FROM public.school_licenses
     WHERE status IN ('trial', 'active', 'grace');
@@ -475,5 +491,83 @@ CREATE POLICY "audit_log_admin_read"
 
 GRANT SELECT ON public.audit_log TO authenticated, service_role;
 GRANT SELECT, INSERT ON public.production_releases TO authenticated, service_role;
+
+-- -----------------------------------------------------------------------------
+-- 7. Operational Alerting Infrastructure
+-- -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.operational_alerts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    severity TEXT NOT NULL CHECK (severity IN ('SEV-1', 'SEV-2', 'SEV-3')),
+    service TEXT NOT NULL,
+    alert_name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    is_resolved BOOLEAN NOT NULL DEFAULT false,
+    emitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    resolved_at TIMESTAMPTZ NULL
+);
+
+ALTER TABLE public.operational_alerts ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "operational_alerts_admin_read"
+    ON public.operational_alerts
+    FOR SELECT
+    TO authenticated
+    USING (public.is_platform_admin());
+
+CREATE OR REPLACE FUNCTION public.emit_operational_alert(
+    p_severity TEXT,
+    p_service TEXT,
+    p_alert_name TEXT,
+    p_description TEXT,
+    p_metadata JSONB DEFAULT '{}'::jsonb
+)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+DECLARE
+    v_alert_id UUID;
+    v_actor_id UUID := auth.uid();
+BEGIN
+    IF auth.uid() IS NOT NULL AND auth.role() != 'service_role' AND NOT public.is_platform_admin() THEN
+        RAISE EXCEPTION 'Access denied: emitting operational alerts requires platform_admin or service_role'
+            USING ERRCODE = '42501';
+    END IF;
+
+    INSERT INTO public.operational_alerts (
+        severity, service, alert_name, description, metadata, emitted_at
+    ) VALUES (
+        p_severity, p_service, p_alert_name, p_description, p_metadata, NOW()
+    ) RETURNING id INTO v_alert_id;
+
+    -- Also record in canonical audit_log
+    INSERT INTO public.audit_log (
+        actor_id, action, target_table, target_id, metadata, created_at
+    ) VALUES (
+        v_actor_id,
+        'operational_alert_emitted',
+        'operational_alerts',
+        v_alert_id::TEXT,
+        jsonb_build_object(
+            'severity', p_severity,
+            'service', p_service,
+            'alert_name', p_alert_name,
+            'description', p_description,
+            'metadata', p_metadata
+        ),
+        NOW()
+    );
+
+    RETURN v_alert_id;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.emit_operational_alert(TEXT, TEXT, TEXT, TEXT, JSONB) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.emit_operational_alert(TEXT, TEXT, TEXT, TEXT, JSONB) TO authenticated, service_role;
+GRANT SELECT ON public.operational_alerts TO authenticated, service_role;
+
 
 

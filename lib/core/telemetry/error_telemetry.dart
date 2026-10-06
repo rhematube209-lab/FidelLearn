@@ -1,4 +1,6 @@
 import 'dart:collection';
+import 'dart:convert';
+import 'dart:io';
 import '../config/release_info.dart';
 import '../logging/app_logger.dart';
 
@@ -89,6 +91,33 @@ class ErrorTelemetry {
   /// Clears the in-memory telemetry buffer.
   static void clear() {
     _eventBuffer.clear();
+  }
+
+  /// Persists current telemetry events to a local crash envelope file.
+  static Future<void> persistCrashEnvelope(File envelopeFile) async {
+    final events = exportDiagnostics();
+    await envelopeFile.writeAsString(jsonEncode(events));
+  }
+
+  /// Loads crash envelopes from a local file across app restarts.
+  static Future<List<Map<String, dynamic>>> loadPersistentCrashEnvelopes(
+      File envelopeFile) async {
+    if (!await envelopeFile.exists()) return [];
+    try {
+      final content = await envelopeFile.readAsString();
+      if (content.isEmpty) return [];
+      final decoded = jsonDecode(content) as List<dynamic>;
+      return decoded.cast<Map<String, dynamic>>();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  /// Clears persistent crash envelope file once reported.
+  static Future<void> clearPersistentCrashEnvelopes(File envelopeFile) async {
+    if (await envelopeFile.exists()) {
+      await envelopeFile.delete();
+    }
   }
 
   static String _sanitizeStackTrace(String trace) {
