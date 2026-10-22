@@ -25,6 +25,8 @@ import '../../features/subjects/data/repositories/supabase_content_repository.da
 import '../../features/subjects/domain/repositories/content_repository.dart';
 import '../../features/admin/data/repositories/local_admin_repository.dart';
 import '../../features/admin/domain/repositories/admin_repository.dart';
+import '../../features/school/data/repositories/local_school_repository.dart';
+import '../../features/school/data/repositories/mock_classroom_repository.dart';
 import '../../features/school/data/repositories/supabase_school_repository.dart';
 import '../../features/school/domain/repositories/school_repository.dart';
 import '../../features/school/domain/repositories/classroom_repository.dart';
@@ -277,23 +279,42 @@ final teacherPortalRepositoryProvider =
 });
 
 final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
-  if (EnvConfig.isProductionLike && !EnvConfig.isSupabaseConfigured) {
-    throw StateError(
-      '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
-      'A ${EnvConfig.appEnvironment} build must not activate mock school repositories.',
-    );
+  if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate mock school repositories.',
+      );
+    }
+    return SupabaseSchoolRepository();
   }
-  return SupabaseSchoolRepository();
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseSchoolRepository();
+    } catch (_) {}
+  }
+  EnvConfig.assertNoMockInProduction('LocalSchoolRepository');
+  final storage = ref.watch(authSessionStorageProvider);
+  return LocalSchoolRepository(sessionStorage: storage);
 });
 
 final classroomRepositoryProvider = Provider<ClassroomRepository>((ref) {
-  if (EnvConfig.isProductionLike && !EnvConfig.isSupabaseConfigured) {
-    throw StateError(
-      '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
-      'A ${EnvConfig.appEnvironment} build must not activate mock classroom repositories.',
-    );
+  if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate mock classroom repositories.',
+      );
+    }
+    return SupabaseClassroomRepository();
   }
-  return SupabaseClassroomRepository();
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseClassroomRepository();
+    } catch (_) {}
+  }
+  EnvConfig.assertNoMockInProduction('MockClassroomRepository');
+  return MockClassroomRepository();
 });
 
 final adminRepositoryProvider = Provider<AdminRepository>((ref) {

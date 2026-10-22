@@ -23,7 +23,33 @@ class MockClassroomRepository implements ClassroomRepository {
     }
     if (initialAssignments != null) {
       _assignments.addAll(initialAssignments);
+    } else {
+      _seedDefaultAssignments();
     }
+  }
+
+  void _seedDefaultAssignments() {
+    final now = DateTime.now();
+    _assignments.addAll([
+      TeacherSubjectAssignment(
+        id: 'tsa-1',
+        teacherUserId: 'usr_teacher',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        classroomId: 'cls-12A',
+        subjectId: 'math_g12',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      TeacherSubjectAssignment(
+        id: 'tsa-2',
+        teacherUserId: '00000000-0000-0000-0000-000000000002',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        classroomId: 'cls-12A',
+        subjectId: 'math_g12',
+        createdAt: now,
+        updatedAt: now,
+      ),
+    ]);
   }
 
   void _seedDefaultClassrooms() {

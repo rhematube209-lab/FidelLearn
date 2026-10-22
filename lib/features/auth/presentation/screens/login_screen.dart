@@ -539,6 +539,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             avatar: const Text('🏛️'),
                             label: const Text('School Admin',
                                 style: TextStyle(fontSize: 11)),
+                            onPressed: () => _quickFillDemo(
+                                '+251944556677', 'schoolAdminPass123'),
+                          ),
+                          ActionChip(
+                            avatar: const Text('⚙️'),
+                            label: const Text('Platform CMS',
+                                style: TextStyle(fontSize: 11)),
                             onPressed: () =>
                                 _quickFillDemo('+251933445566', 'adminPass123'),
                           ),

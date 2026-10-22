@@ -1,18 +1,24 @@
 import '../../domain/models/school_models.dart';
 import '../../domain/models/tenant_models.dart';
 import '../../domain/repositories/school_repository.dart';
+import '../../../auth/domain/models/user_profile.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../../core/security/auth_session_storage.dart';
 
 /// Test and preview mock implementation of SchoolRepository.
 /// Correctly honors schoolId parameters to prevent test bugs.
 class LocalSchoolRepository implements SchoolRepository {
   final List<School> _schools = [];
   final List<SchoolMembership> _memberships = [];
+  final AuthSessionStorage? _sessionStorage;
+  final bool _hasCustomMemberships;
 
   LocalSchoolRepository({
     List<School>? initialSchools,
     List<SchoolMembership>? initialMemberships,
-  }) {
+    AuthSessionStorage? sessionStorage,
+  })  : _sessionStorage = sessionStorage,
+        _hasCustomMemberships = initialMemberships != null {
     if (initialSchools != null) {
       _schools.addAll(initialSchools);
     } else {
@@ -67,13 +73,97 @@ class LocalSchoolRepository implements SchoolRepository {
         createdAt: now,
         updatedAt: now,
       ),
+      SchoolMembership(
+        id: 'sm-student-global',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: '00000000-0000-0000-0000-000000000001',
+        role: SchoolMemberRole.student,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'STU-BOL-102',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      SchoolMembership(
+        id: 'sm-student-tamerat',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: '00000000-0000-0000-0000-000000000009',
+        role: SchoolMemberRole.student,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'STU-BOL-103',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      SchoolMembership(
+        id: 'sm-admin-tenant',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: 'usr_school_admin',
+        role: SchoolMemberRole.schoolAdmin,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'DIR-BOL-001',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      SchoolMembership(
+        id: 'sm-admin-global',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: '00000000-0000-0000-0000-000000000004',
+        role: SchoolMemberRole.schoolAdmin,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'DIR-BOL-002',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      SchoolMembership(
+        id: 'sm-teacher-tenant',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: 'usr_teacher',
+        role: SchoolMemberRole.teacher,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'TCH-BOL-001',
+        createdAt: now,
+        updatedAt: now,
+      ),
+      SchoolMembership(
+        id: 'sm-teacher-global',
+        schoolId: '11111111-1111-1111-1111-111111111111',
+        userId: '00000000-0000-0000-0000-000000000002',
+        role: SchoolMemberRole.teacher,
+        status: SchoolMembershipStatus.active,
+        schoolStudentId: 'TCH-BOL-002',
+        createdAt: now,
+        updatedAt: now,
+      ),
     ]);
   }
 
   @override
   Future<List<SchoolMembershipWithSchool>> getMySchools() async {
+    List<SchoolMembership> targetMemberships = _memberships;
+
+    if (!_hasCustomMemberships) {
+      final rememberedUser = await _sessionStorage?.getRememberedUser();
+      if (rememberedUser != null) {
+        final matches = _memberships.where((m) {
+          if (m.userId == rememberedUser.id) return true;
+          if (rememberedUser.role == UserRole.schoolAdmin &&
+              m.role == SchoolMemberRole.schoolAdmin) {
+            return true;
+          }
+          if (rememberedUser.role == UserRole.teacher &&
+              m.role == SchoolMemberRole.teacher) {
+            return true;
+          }
+          return false;
+        }).toList();
+
+        if (matches.isNotEmpty) {
+          targetMemberships = matches;
+        }
+      }
+    }
+
     final list = <SchoolMembershipWithSchool>[];
-    for (final sm in _memberships) {
+    for (final sm in targetMemberships) {
       final school = _schools.cast<School?>().firstWhere(
             (s) => s?.id == sm.schoolId,
             orElse: () => null,
@@ -95,18 +185,20 @@ class LocalSchoolRepository implements SchoolRepository {
 
   @override
   Future<SchoolMembership?> getMyMembership(String schoolId) async {
-    return _memberships.cast<SchoolMembership?>().firstWhere(
-          (m) => m?.schoolId == schoolId,
-          orElse: () => null,
-        );
+    final list = await getMySchools();
+    return list.cast<SchoolMembershipWithSchool?>().firstWhere(
+      (m) => m?.school.id == schoolId,
+      orElse: () => null,
+    )?.membership;
   }
 
   @override
   Future<SchoolMembership?> getActiveMembership() async {
-    return _memberships.cast<SchoolMembership?>().firstWhere(
-          (m) => m?.isActive == true,
-          orElse: () => null,
-        );
+    final list = await getMySchools();
+    return list.cast<SchoolMembershipWithSchool?>().firstWhere(
+      (m) => m?.membership.isActive == true,
+      orElse: () => null,
+    )?.membership;
   }
 
   @override
