@@ -30,10 +30,6 @@ void main() async {
     rethrow;
   }
 
-  if (EnvConfig.isProductionLike) {
-    EnvConfig.assertNoMockInProduction('AppBootstrap');
-  }
-
   if (supabaseReady) {
     try {
       await Supabase.initialize(

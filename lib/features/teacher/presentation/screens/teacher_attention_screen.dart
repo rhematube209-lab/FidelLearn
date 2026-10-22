@@ -392,181 +392,169 @@ class _AttentionItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _getSeverityColor(item.severity);
+    final initials = item.studentName.isNotEmpty
+        ? item.studentName.split(' ').map((s) => s.isNotEmpty ? s[0] : '').take(2).join()
+        : 'ST';
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 14),
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? AppTheme.darkSurface : Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: color.withValues(alpha: 0.35),
-            width: 1.2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          color: AppTheme.protoSurface(context),
+          borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+          border: Border.all(color: AppTheme.protoLine(context)),
+          boxShadow: AppTheme.protoCardShadow(context),
         ),
         child: Material(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppTheme.protoRadius),
           child: InkWell(
             onTap: onTap,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppTheme.protoRadius),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header Row: Severity Badge + Student Info
+                  // Top Row: Initials Avatar + Student Name & ID + Severity Pill
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 9, vertical: 4),
+                        width: 38,
+                        height: 38,
                         decoration: BoxDecoration(
-                          color: color.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: color.withValues(alpha: 0.3),
-                          ),
+                          color: isDark ? const Color(0xFF2B3869) : AppTheme.protoBrandLight,
+                          borderRadius: BorderRadius.circular(11),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(_getSeverityIcon(item.severity),
-                                size: 13, color: color),
-                            const SizedBox(width: 4),
-                            Text(
-                              item.severity.displayLabel,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: color,
-                              ),
-                            ),
-                          ],
+                        alignment: Alignment.center,
+                        child: Text(
+                          initials,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: AppTheme.protoBrand,
+                          ),
                         ),
                       ),
-                      const Spacer(),
-                      if (item.schoolStudentId != null)
-                        Text(
-                          item.schoolStudentId!,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? AppTheme.darkTextMuted
-                                : AppTheme.lightTextMuted,
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Student Name
-                  Text(
-                    item.studentName,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : const Color(0xFF1E293B),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Transparent Reasons (Why the student is flagged)
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppTheme.darkBg.withValues(alpha: 0.6)
-                          : const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: item.reasonExplanations.map((reason) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Container(
-                                  width: 4,
-                                  height: 4,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: color,
-                                  ),
-                                ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.studentName,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: isDark ? AppTheme.protoInkDark : AppTheme.protoInkLight,
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  reason,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: isDark
-                                        ? const Color(0xFFCBD5E1)
-                                        : const Color(0xFF475569),
-                                  ),
+                            ),
+                            if (item.schoolStudentId != null) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                item.schoolStudentId!,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppTheme.protoMuted(context),
                                 ),
                               ),
                             ],
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Recommended Action & Action Button
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.lightbulb_outline_rounded,
-                        size: 16,
-                        color: AppTheme.accent,
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 6),
-                      Expanded(
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: item.severity == AttentionSeverity.high
+                              ? AppTheme.protoBadLight
+                              : item.severity == AttentionSeverity.medium
+                                  ? AppTheme.protoWarnLight
+                                  : (isDark ? const Color(0xFF233452) : const Color(0xFFEFF2F6)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: Text(
-                          item.recommendedAction,
+                          item.severity.displayLabel,
                           style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: isDark
-                                ? const Color(0xFFE2E8F0)
-                                : const Color(0xFF334155),
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.bold,
+                            color: item.severity == AttentionSeverity.high
+                                ? AppTheme.protoBad
+                                : item.severity == AttentionSeverity.medium
+                                    ? AppTheme.protoWarn
+                                    : (isDark ? const Color(0xFFBAC6F1) : const Color(0xFF78859B)),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'View Summary',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.brand,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 11,
-                        color: AppTheme.brand,
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Explainable Reason Pills
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: item.reasonExplanations.map((reason) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: isDark ? const Color(0xFF233452) : const Color(0xFFF1F4FA),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isDark ? const Color(0xFF334365) : const Color(0xFFE2E7F1),
+                          ),
+                        ),
+                        child: Text(
+                          reason,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: isDark ? const Color(0xFFCBD5E1) : const Color(0xFF475569),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Recommended Action Callout
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF242C51) : const Color(0xFFF5F6FF),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF384878) : const Color(0xFFE2E7FC),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.lightbulb_outline_rounded,
+                          size: 16,
+                          color: AppTheme.protoBrand,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            item.recommendedAction,
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: isDark ? const Color(0xFFBAC6F1) : const Color(0xFF394CCA),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'View Summary →',
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.protoBrand,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -575,27 +563,5 @@ class _AttentionItemCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getSeverityColor(AttentionSeverity severity) {
-    switch (severity) {
-      case AttentionSeverity.high:
-        return AppTheme.danger;
-      case AttentionSeverity.medium:
-        return AppTheme.accent;
-      case AttentionSeverity.low:
-        return AppTheme.info;
-    }
-  }
-
-  IconData _getSeverityIcon(AttentionSeverity severity) {
-    switch (severity) {
-      case AttentionSeverity.high:
-        return Icons.warning_rounded;
-      case AttentionSeverity.medium:
-        return Icons.info_outline_rounded;
-      case AttentionSeverity.low:
-        return Icons.remove_red_eye_outlined;
-    }
   }
 }

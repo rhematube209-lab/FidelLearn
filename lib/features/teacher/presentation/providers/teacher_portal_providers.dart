@@ -14,6 +14,12 @@ import '../../domain/repositories/teacher_portal_repository.dart';
 final teacherPortalRepositoryProvider =
     Provider<TeacherPortalRepository>((ref) {
   if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate LocalTeacherPortalRepository.',
+      );
+    }
     return SupabaseTeacherPortalRepository();
   }
   if (EnvConfig.isSupabaseConfigured) {
@@ -21,6 +27,7 @@ final teacherPortalRepositoryProvider =
       return SupabaseTeacherPortalRepository();
     } catch (_) {}
   }
+  EnvConfig.assertNoMockInProduction('LocalTeacherPortalRepository');
   return LocalTeacherPortalRepository();
 });
 

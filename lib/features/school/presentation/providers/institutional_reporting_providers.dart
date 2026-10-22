@@ -12,13 +12,21 @@ import 'active_school_context_provider.dart';
 final institutionalReportingRepositoryProvider =
     Provider<InstitutionalReportingRepository>((ref) {
   if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate LocalInstitutionalReportingRepository.',
+      );
+    }
     return SupabaseInstitutionalReportingRepository();
   }
-  try {
-    return SupabaseInstitutionalReportingRepository();
-  } catch (_) {
-    return LocalInstitutionalReportingRepository();
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseInstitutionalReportingRepository();
+    } catch (_) {}
   }
+  EnvConfig.assertNoMockInProduction('LocalInstitutionalReportingRepository');
+  return LocalInstitutionalReportingRepository();
 });
 
 /// Provider for historical report runs.

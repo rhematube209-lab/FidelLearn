@@ -182,25 +182,29 @@ class TeacherStudentSummaryScreen extends ConsumerWidget {
   Widget _buildStudentHeader(
       BuildContext context, StudentAcademicSummary summary, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
+        color: AppTheme.protoSurface(context),
+        borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+        border: Border.all(color: AppTheme.protoLine(context)),
+        boxShadow: AppTheme.protoCardShadow(context),
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundColor: AppTheme.brand.withValues(alpha: 0.12),
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF2B3869) : AppTheme.protoBrandLight,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            alignment: Alignment.center,
             child: Text(
               _getInitials(summary.displayName),
               style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.brand,
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppTheme.protoBrand,
               ),
             ),
           ),
@@ -769,13 +773,12 @@ class _MetricCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
+        color: AppTheme.protoSurface(context),
+        borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+        border: Border.all(color: AppTheme.protoLine(context)),
+        boxShadow: AppTheme.protoCardShadow(context),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -783,17 +786,18 @@ class _MetricCard extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: isDark ? AppTheme.darkTextMuted : AppTheme.lightTextMuted,
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.5,
+              color: AppTheme.protoMuted(context),
             ),
           ),
           const SizedBox(height: 6),
           Text(
             value,
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
               color: color,
             ),
           ),
@@ -803,8 +807,8 @@ class _MetricCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 10,
-              color: isDark ? AppTheme.darkTextMuted : AppTheme.lightTextMuted,
+              fontSize: 10.5,
+              color: AppTheme.protoMuted(context),
             ),
           ),
         ],

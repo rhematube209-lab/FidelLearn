@@ -39,6 +39,8 @@ class MockAuthRepository implements AuthRepository {
     'teacher123': 'teacher123',
     '+251933445566': 'adminPass123',
     '+251944556677': 'schoolAdminPass123',
+    '+251955667788': 'tenantAdminPass123',
+    '+251966778899': 'tenantTeacherPass123',
     '+251911000000': 'demo123',
   };
 
@@ -92,6 +94,26 @@ class MockAuthRepository implements AuthRepository {
       preferredLanguage: 'en',
       role: UserRole.schoolAdmin,
       createdAt: DateTime.now().subtract(const Duration(days: 60)),
+    ),
+    '+251955667788': UserProfile(
+      id: 'usr_school_admin',
+      phoneNumber: '+251955667788',
+      displayName: 'Director Abebe (Student Role)',
+      grade: 12,
+      stream: 'common',
+      preferredLanguage: 'en',
+      role: UserRole.student,
+      createdAt: DateTime.now().subtract(const Duration(days: 10)),
+    ),
+    '+251966778899': UserProfile(
+      id: 'usr_teacher',
+      phoneNumber: '+251966778899',
+      displayName: 'Teacher Bekele (Student Role)',
+      grade: 12,
+      stream: 'natural',
+      preferredLanguage: 'en',
+      role: UserRole.student,
+      createdAt: DateTime.now().subtract(const Duration(days: 10)),
     ),
     '+251911000000': UserProfile(
       id: '00000000-0000-0000-0000-000000000005',

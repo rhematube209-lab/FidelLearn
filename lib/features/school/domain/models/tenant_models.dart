@@ -649,6 +649,7 @@ class CachedSchoolContext extends Equatable {
   final SchoolMembershipStatus membershipStatus;
   final String? activeClassroomId;
   final String? activeClassroomName;
+  final String? userId;
   final DateTime cachedAt;
 
   const CachedSchoolContext({
@@ -660,6 +661,7 @@ class CachedSchoolContext extends Equatable {
     required this.membershipStatus,
     this.activeClassroomId,
     this.activeClassroomName,
+    this.userId,
     required this.cachedAt,
   });
 
@@ -677,6 +679,7 @@ class CachedSchoolContext extends Equatable {
       membershipStatus: membership.status,
       activeClassroomId: classroom?.id,
       activeClassroomName: classroom?.name,
+      userId: membership.userId,
       cachedAt: DateTime.now(),
     );
   }
@@ -693,6 +696,7 @@ class CachedSchoolContext extends Equatable {
           json['membership_status'] as String?),
       activeClassroomId: json['active_classroom_id'] as String?,
       activeClassroomName: json['active_classroom_name'] as String?,
+      userId: json['user_id'] as String?,
       cachedAt: DateTime.parse(json['cached_at'] as String),
     );
   }
@@ -707,6 +711,7 @@ class CachedSchoolContext extends Equatable {
       'membership_status': membershipStatus.toDbString(),
       'active_classroom_id': activeClassroomId,
       'active_classroom_name': activeClassroomName,
+      'user_id': userId,
       'cached_at': cachedAt.toIso8601String(),
     };
   }
@@ -721,6 +726,7 @@ class CachedSchoolContext extends Equatable {
         membershipStatus,
         activeClassroomId,
         activeClassroomName,
+        userId,
         cachedAt,
       ];
 }

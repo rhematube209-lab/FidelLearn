@@ -58,21 +58,26 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
   }
 
   /// Resolve school context for a user, using offline cache first, followed by online sync.
-  Future<void> resolveContext({UserProfile? user}) async {
+  Future<ActiveSchoolContext> resolveContext({UserProfile? user}) async {
     final activeUser = user ?? _ref.read(currentUserProvider).valueOrNull;
     if (activeUser == null) {
+      final loadEpoch = ++_activeLoadEpoch;
       state = const ActiveSchoolContext.independent();
-      await _storage.clearSchoolContext();
-      return;
+      await _storage.clearSchoolContext(version: loadEpoch);
+      return state;
     }
 
     final loadEpoch = ++_activeLoadEpoch;
 
+    // Immediately mark state as loading synchronously before any async gap
+    state = const ActiveSchoolContext.loading();
+
     // 1. Immediately inspect local cache for fast offline responsiveness
     final cached = await _storage.getCachedSchoolContext();
-    if (loadEpoch != _activeLoadEpoch) return;
+    if (loadEpoch != _activeLoadEpoch) return state;
 
-    if (cached != null) {
+    // Security check: Only use cached context if it belongs to activeUser
+    if (cached != null && cached.userId == activeUser.id) {
       // Reconstitute minimal display context from cache
       final cachedSchool = School(
         id: cached.schoolId,
@@ -114,22 +119,23 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
         selectedClassroom: cachedClassroom,
         isOfflineCached: true,
       );
-    } else {
-      state = const ActiveSchoolContext.loading();
+    } else if (cached != null && cached.userId != activeUser.id) {
+      // Cached context belongs to a different signed-in user or is untagged; purge it immediately!
+      await _storage.clearSchoolContext(version: loadEpoch);
     }
 
     // 2. Perform authoritative online refresh against Supabase
     try {
       final mySchools = await _schoolRepo.getMySchools();
       if (loadEpoch != _activeLoadEpoch) {
-        return; // Discard stale response if user switched
+        return state; // Discard stale response if user switched
       }
 
       if (mySchools.isEmpty) {
         // Zero school memberships -> pure independent personal learner
         state = const ActiveSchoolContext.independent();
-        await _storage.clearSchoolContext();
-        return;
+        await _storage.clearSchoolContext(version: loadEpoch);
+        return state;
       }
 
       // Filter for active memberships
@@ -141,12 +147,13 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
         state = const ActiveSchoolContext.permissionRevoked(
           'Your institutional school membership has been deactivated or removed.',
         );
-        await _storage.clearSchoolContext();
-        return;
+        await _storage.clearSchoolContext(version: loadEpoch);
+        return state;
       }
 
       // Deterministically select active school
       final savedSchoolId = await _storage.getActiveSchoolId();
+      if (loadEpoch != _activeLoadEpoch) return state;
       SchoolMembershipWithSchool selectedEntry = activeSchools.first;
 
       if (savedSchoolId != null) {
@@ -172,7 +179,7 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
         debugPrint('ActiveSchoolContext: classroom read warning: $e');
       }
 
-      if (loadEpoch != _activeLoadEpoch) return;
+      if (loadEpoch != _activeLoadEpoch) return state;
 
       Classroom? primaryClassroom;
       if (classrooms.isNotEmpty) {
@@ -188,68 +195,100 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
         isOfflineCached: false,
       );
 
-      // Persist refreshed snapshot to local cache
-      await _storage.saveActiveSchoolId(selectedEntry.school.id);
-      await _storage.saveCachedSchoolContext(
-        CachedSchoolContext.fromSchoolAndMembership(
+      // Persist refreshed snapshot with versioned atomic commit
+      await _storage.commitSchoolContext(
+        version: loadEpoch,
+        schoolId: selectedEntry.school.id,
+        context: CachedSchoolContext.fromSchoolAndMembership(
           school: selectedEntry.school,
           membership: selectedEntry.membership,
           classroom: primaryClassroom,
         ),
       );
+      if (loadEpoch != _activeLoadEpoch) return state;
+      return state;
     } catch (e) {
-      if (loadEpoch != _activeLoadEpoch) return;
+      if (loadEpoch != _activeLoadEpoch) return state;
       debugPrint('ActiveSchoolContext online sync error: $e');
 
       // If already displayed from offline cache, keep it active offline!
       if (state.isOfflineCached) {
-        return;
+        return state;
       }
 
       // Fallback: If network failed on fresh device with 0 cache, default to independent
       // so student personal study is NEVER blocked by an institutional network error.
       state = const ActiveSchoolContext.independent();
+      return state;
     }
   }
 
   /// Switch active school deterministically (e.g. for multi-school teachers).
   Future<void> selectSchool(String schoolId) async {
     final user = _ref.read(currentUserProvider).valueOrNull;
-    if (user == null) return;
+    if (user == null) {
+      state = const ActiveSchoolContext.independent();
+      return;
+    }
+
+    final loadEpoch = ++_activeLoadEpoch;
+    state = const ActiveSchoolContext.loading();
 
     try {
       final mySchools = await _schoolRepo.getMySchools();
+      if (loadEpoch != _activeLoadEpoch) return;
+
       final match = mySchools.cast<SchoolMembershipWithSchool?>().firstWhere(
             (m) => m?.school.id == schoolId && m?.membership.isActive == true,
             orElse: () => null,
           );
 
-      if (match != null) {
-        await _storage.saveActiveSchoolId(schoolId);
-        final classrooms =
-            await _classroomRepo.getMyClassrooms(schoolId: schoolId);
-        final classroomMemberships =
-            await _classroomRepo.getMyClassroomMemberships();
+      if (match == null) {
+        if (loadEpoch != _activeLoadEpoch) return;
+        // Deterministically settle on unavailable school ID; never remain loading
+        if (mySchools.isEmpty) {
+          state = const ActiveSchoolContext.independent();
+        } else {
+          state = ActiveSchoolContext.error(
+            'School $schoolId is not available or membership is inactive.',
+          );
+        }
+        return;
+      }
 
-        state = ActiveSchoolContext(
-          status: ActiveSchoolContextStatus.active,
+      final classrooms =
+          await _classroomRepo.getMyClassrooms(schoolId: schoolId);
+      final classroomMemberships =
+          await _classroomRepo.getMyClassroomMemberships();
+
+      if (loadEpoch != _activeLoadEpoch) return;
+
+      state = ActiveSchoolContext(
+        status: ActiveSchoolContextStatus.active,
+        school: match.school,
+        membership: match.membership,
+        classroomMemberships: classroomMemberships,
+        selectedClassroom: classrooms.isNotEmpty ? classrooms.first : null,
+        isOfflineCached: false,
+      );
+
+      // Persist selected school with versioned atomic commit
+      await _storage.commitSchoolContext(
+        version: loadEpoch,
+        schoolId: schoolId,
+        context: CachedSchoolContext.fromSchoolAndMembership(
           school: match.school,
           membership: match.membership,
-          classroomMemberships: classroomMemberships,
-          selectedClassroom: classrooms.isNotEmpty ? classrooms.first : null,
-          isOfflineCached: false,
-        );
-
-        await _storage.saveCachedSchoolContext(
-          CachedSchoolContext.fromSchoolAndMembership(
-            school: match.school,
-            membership: match.membership,
-            classroom: classrooms.isNotEmpty ? classrooms.first : null,
-          ),
-        );
-      }
+          classroom: classrooms.isNotEmpty ? classrooms.first : null,
+        ),
+      );
+      if (loadEpoch != _activeLoadEpoch) return;
     } catch (e) {
+      if (loadEpoch != _activeLoadEpoch) return;
       debugPrint('ActiveSchoolContext: failed to select school $schoolId: $e');
+      // Settle deterministically on error, never leave state as loading
+      state =
+          ActiveSchoolContext.error('Failed to select school $schoolId: $e');
     }
   }
 
@@ -267,9 +306,9 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
 
   /// Explicitly reset context.
   Future<void> clear() async {
-    _activeLoadEpoch++;
+    final loadEpoch = ++_activeLoadEpoch;
     state = const ActiveSchoolContext.independent();
-    await _storage.clearSchoolContext();
+    await _storage.clearSchoolContext(version: loadEpoch);
   }
 }
 

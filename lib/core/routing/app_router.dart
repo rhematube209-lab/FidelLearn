@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
 import '../../features/admin/presentation/screens/question_editor_screen.dart';
+import '../../features/auth/domain/models/user_profile.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../providers/app_providers.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/bookmarks/presentation/screens/bookmarks_screen.dart';
 import '../../features/challenges/presentation/screens/challenges_screen.dart';
@@ -41,20 +43,198 @@ import '../../features/rewards/presentation/screens/rewards_screen.dart';
 import '../../features/subjects/presentation/screens/subjects_screen.dart';
 import '../../features/p2p_transfer/presentation/screens/p2p_sharing_screen.dart';
 
+import '../../features/school/domain/models/tenant_models.dart';
 import '../../features/school/presentation/providers/active_school_context_provider.dart';
 import '../../features/school/presentation/screens/school_leadership_home_screen.dart';
 import '../../features/school/domain/models/institutional_reporting_models.dart';
 import '../../features/school/presentation/screens/reports_hub_screen.dart';
 import '../../features/school/presentation/screens/report_preview_screen.dart';
 
+class RouterRefreshNotifier extends ChangeNotifier {
+  void notify() => notifyListeners();
+}
+
+Listenable? _createRefreshNotifier({Ref? ref, ProviderContainer? container}) {
+  if (ref != null) {
+    final notifier = RouterRefreshNotifier();
+    ref.onDispose(notifier.dispose);
+    ref.listen<AsyncValue<UserProfile?>>(
+      currentUserProvider,
+      (_, __) => notifier.notify(),
+    );
+    ref.listen<ActiveSchoolContext>(
+      activeSchoolContextProvider,
+      (_, __) => notifier.notify(),
+    );
+    return notifier;
+  }
+  if (container != null) {
+    final notifier = RouterRefreshNotifier();
+    container.listen<AsyncValue<UserProfile?>>(
+      currentUserProvider,
+      (_, __) => notifier.notify(),
+    );
+    container.listen<ActiveSchoolContext>(
+      activeSchoolContextProvider,
+      (_, __) => notifier.notify(),
+    );
+    return notifier;
+  }
+  return null;
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   return createAppRouter(ref: ref);
 });
 
-final appRouter = createAppRouter();
+/// Neutral loading gate that prevents building protected screens while authority is unresolved
+/// or when the user is unauthorized (awaiting GoRouter redirect).
+class _RouteAuthorityGate extends ConsumerWidget {
+  final Widget Function(BuildContext context) builder;
+  final bool Function(UserProfile user, ActiveSchoolContext schoolContext)
+      isAuthorized;
 
-GoRouter createAppRouter({String initialLocation = '/', Ref? ref}) => GoRouter(
+  const _RouteAuthorityGate({
+    required this.builder,
+    required this.isAuthorized,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(currentUserProvider);
+    final schoolContext = ref.watch(activeSchoolContextProvider);
+
+    // While authority is unresolved, display a neutral loading state
+    if (userAsync.isLoading || schoolContext.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final user = userAsync.valueOrNull;
+    if (user == null || !isAuthorized(user, schoolContext)) {
+      // Authority is resolved as unauthorized. Router redirect will navigate away.
+      // Display a neutral loading indicator instead of building protected content.
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // Authority verified: build protected screen
+    return builder(context);
+  }
+}
+
+String? _guardSchoolAdminRoute({Ref? ref, ProviderContainer? container}) {
+  if (ref == null && container == null) return null;
+
+  final userAsync = ref != null
+      ? ref.read(currentUserProvider)
+      : container!.read(currentUserProvider);
+  if (userAsync.isLoading) return null;
+
+  final user = userAsync.valueOrNull;
+  if (user == null) {
+    return '/login';
+  }
+
+  // Consistent policy: Platform admin portal is /admin, not /school
+  if (user.role == UserRole.platformAdmin) {
+    return '/admin';
+  }
+
+  final schoolContext = ref != null
+      ? ref.read(activeSchoolContextProvider)
+      : container!.read(activeSchoolContextProvider);
+  // While school context is loading, do not redirect away prematurely; allow screen to display loading state
+  if (schoolContext.isLoading) {
+    return null;
+  }
+
+  // Once resolved, if not active schoolAdmin, deny access
+  if (!schoolContext.isSchoolAdmin) {
+    return '/home';
+  }
+
+  return null;
+}
+
+String? _guardReportsPreviewRoute({Ref? ref, ProviderContainer? container}) {
+  if (ref == null && container == null) return null;
+  final userAsync = ref != null
+      ? ref.read(currentUserProvider)
+      : container!.read(currentUserProvider);
+  if (userAsync.isLoading) return null;
+  final user = userAsync.valueOrNull;
+  if (user == null) return '/login';
+
+  if (user.role == UserRole.platformAdmin) {
+    return '/admin';
+  }
+  final schoolContext = ref != null
+      ? ref.read(activeSchoolContextProvider)
+      : container!.read(activeSchoolContextProvider);
+  if (schoolContext.isLoading) return null;
+  if (!schoolContext.isSchoolAdmin && !schoolContext.isTeacher) {
+    return '/home';
+  }
+  return null;
+}
+
+String? _guardTeacherRoute({Ref? ref, ProviderContainer? container}) {
+  if (ref == null && container == null) return null;
+  final userAsync = ref != null
+      ? ref.read(currentUserProvider)
+      : container!.read(currentUserProvider);
+  if (userAsync.isLoading) return null;
+  final user = userAsync.valueOrNull;
+  if (user == null) return '/login';
+
+  if (user.role == UserRole.platformAdmin) {
+    return '/admin';
+  }
+  final schoolContext = ref != null
+      ? ref.read(activeSchoolContextProvider)
+      : container!.read(activeSchoolContextProvider);
+  if (schoolContext.isLoading) return null;
+  if (!schoolContext.isTeacher) {
+    return '/home';
+  }
+  return null;
+}
+
+String? _guardTeacherReportsRoute({Ref? ref, ProviderContainer? container}) {
+  if (ref == null && container == null) return null;
+  final userAsync = ref != null
+      ? ref.read(currentUserProvider)
+      : container!.read(currentUserProvider);
+  if (userAsync.isLoading) return null;
+  final user = userAsync.valueOrNull;
+  if (user == null) return '/login';
+
+  if (user.role == UserRole.platformAdmin) {
+    return '/admin';
+  }
+  final schoolContext = ref != null
+      ? ref.read(activeSchoolContextProvider)
+      : container!.read(activeSchoolContextProvider);
+  if (schoolContext.isLoading) return null;
+  if (!schoolContext.isTeacher && !schoolContext.isSchoolAdmin) {
+    return '/home';
+  }
+  return null;
+}
+
+GoRouter createAppRouter({
+  String initialLocation = '/',
+  Ref? ref,
+  ProviderContainer? container,
+  Listenable? refreshListenable,
+}) =>
+    GoRouter(
       initialLocation: initialLocation,
+      refreshListenable: refreshListenable ??
+          _createRefreshNotifier(ref: ref, container: container),
       routes: [
         GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
         GoRoute(
@@ -206,199 +386,268 @@ GoRouter createAppRouter({String initialLocation = '/', Ref? ref}) => GoRouter(
         ),
         GoRoute(
           path: '/teacher',
-          builder: (context, state) => const TeacherHomeScreen(),
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) => const TeacherHomeScreen(),
+          ),
         ),
         GoRoute(
           path: '/teacher/home',
-          builder: (context, state) => const TeacherHomeScreen(),
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) => const TeacherHomeScreen(),
+          ),
         ),
         GoRoute(
           path: '/teacher/legacy_dashboard',
-          builder: (context, state) => const TeacherDashboardScreen(),
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) => const TeacherDashboardScreen(),
+          ),
         ),
         GoRoute(
           path: '/teacher/assignments',
-          builder: (context, state) => const TeacherAssignmentCenterScreen(),
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) => const TeacherAssignmentCenterScreen(),
+          ),
         ),
         GoRoute(
           path: '/teacher/assignment/new',
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>?;
-            return CreateAssignmentScreen(
-              initialClassroomId: extra?['classroomId'] as String?,
-              initialSubjectId: extra?['subjectId'] as String?,
-              initialExamVariant: extra?['examVariant'] as String?,
-              initialStudentUserId: extra?['studentUserId'] as String?,
-              initialTopicId: extra?['topicId'] as String?,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final extra = state.extra as Map<String, dynamic>?;
+              return CreateAssignmentScreen(
+                initialClassroomId: extra?['classroomId'] as String?,
+                initialSubjectId: extra?['subjectId'] as String?,
+                initialExamVariant: extra?['examVariant'] as String?,
+                initialStudentUserId: extra?['studentUserId'] as String?,
+                initialTopicId: extra?['topicId'] as String?,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/create_assignment',
-          builder: (context, state) {
-            final extra = state.extra as Map<String, dynamic>?;
-            return CreateAssignmentScreen(
-              initialClassroomId: extra?['classroomId'] as String?,
-              initialSubjectId: extra?['subjectId'] as String?,
-              initialExamVariant: extra?['examVariant'] as String?,
-              initialStudentUserId: extra?['studentUserId'] as String?,
-              initialTopicId: extra?['topicId'] as String?,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final extra = state.extra as Map<String, dynamic>?;
+              return CreateAssignmentScreen(
+                initialClassroomId: extra?['classroomId'] as String?,
+                initialSubjectId: extra?['subjectId'] as String?,
+                initialExamVariant: extra?['examVariant'] as String?,
+                initialStudentUserId: extra?['studentUserId'] as String?,
+                initialTopicId: extra?['topicId'] as String?,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/assignment/:assignmentId',
-          builder: (context, state) {
-            final assignmentId = state.pathParameters['assignmentId']!;
-            return TeacherAssignmentDetailScreen(assignmentId: assignmentId);
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final assignmentId = state.pathParameters['assignmentId']!;
+              return TeacherAssignmentDetailScreen(assignmentId: assignmentId);
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/interventions',
-          builder: (context, state) => const TeacherInterventionCenterScreen(),
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) => const TeacherInterventionCenterScreen(),
+          ),
         ),
         GoRoute(
           path: '/teacher/class/:classroomId/:subjectId',
-          builder: (context, state) {
-            final classroomId = state.pathParameters['classroomId']!;
-            final subjectId = state.pathParameters['subjectId']!;
-            final extra = state.extra as Map<String, dynamic>?;
-            return TeacherClassDetailScreen(
-              classroomId: classroomId,
-              subjectId: subjectId,
-              classroomName:
-                  extra?['classroomName'] as String? ?? 'Class Detail',
-              subjectName: extra?['subjectName'] as String? ?? 'Subject',
-              examVariant: extra?['examVariant'] as String?,
-              enrolledCount: extra?['enrolledCount'] as int? ?? 0,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final classroomId = state.pathParameters['classroomId']!;
+              final subjectId = state.pathParameters['subjectId']!;
+              final extra = state.extra as Map<String, dynamic>?;
+              return TeacherClassDetailScreen(
+                classroomId: classroomId,
+                subjectId: subjectId,
+                classroomName:
+                    extra?['classroomName'] as String? ?? 'Class Detail',
+                subjectName: extra?['subjectName'] as String? ?? 'Subject',
+                examVariant: extra?['examVariant'] as String?,
+                enrolledCount: extra?['enrolledCount'] as int? ?? 0,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/class/:classroomId/:subjectId/roster',
-          builder: (context, state) {
-            final classroomId = state.pathParameters['classroomId']!;
-            final subjectId = state.pathParameters['subjectId']!;
-            final extra = state.extra as Map<String, dynamic>?;
-            return TeacherClassRosterScreen(
-              classroomId: classroomId,
-              subjectId: subjectId,
-              classroomName: extra?['classroomName'] as String?,
-              subjectName: extra?['subjectName'] as String?,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final classroomId = state.pathParameters['classroomId']!;
+              final subjectId = state.pathParameters['subjectId']!;
+              final extra = state.extra as Map<String, dynamic>?;
+              return TeacherClassRosterScreen(
+                classroomId: classroomId,
+                subjectId: subjectId,
+                classroomName: extra?['classroomName'] as String?,
+                subjectName: extra?['subjectName'] as String?,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/class/:classroomId/:subjectId/attention',
-          builder: (context, state) {
-            final classroomId = state.pathParameters['classroomId']!;
-            final subjectId = state.pathParameters['subjectId']!;
-            final extra = state.extra as Map<String, dynamic>?;
-            return TeacherAttentionScreen(
-              classroomId: classroomId,
-              subjectId: subjectId,
-              classroomName: extra?['classroomName'] as String?,
-              subjectName: extra?['subjectName'] as String?,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final classroomId = state.pathParameters['classroomId']!;
+              final subjectId = state.pathParameters['subjectId']!;
+              final extra = state.extra as Map<String, dynamic>?;
+              return TeacherAttentionScreen(
+                classroomId: classroomId,
+                subjectId: subjectId,
+                classroomName: extra?['classroomName'] as String?,
+                subjectName: extra?['subjectName'] as String?,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/class/:classroomId/:subjectId/student/:studentId',
-          builder: (context, state) {
-            final classroomId = state.pathParameters['classroomId']!;
-            final subjectId = state.pathParameters['subjectId']!;
-            final studentId = state.pathParameters['studentId']!;
-            final extra = state.extra as Map<String, dynamic>?;
-            return TeacherStudentSummaryScreen(
-              classroomId: classroomId,
-              subjectId: subjectId,
-              studentId: studentId,
-              studentName: extra?['studentName'] as String?,
-              schoolStudentId: extra?['schoolStudentId'] as String?,
-              subjectName: extra?['subjectName'] as String?,
-              classroomName: extra?['classroomName'] as String?,
-            );
-          },
+          redirect: (context, state) =>
+              _guardTeacherRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isTeacher,
+            builder: (context) {
+              final classroomId = state.pathParameters['classroomId']!;
+              final subjectId = state.pathParameters['subjectId']!;
+              final studentId = state.pathParameters['studentId']!;
+              final extra = state.extra as Map<String, dynamic>?;
+              return TeacherStudentSummaryScreen(
+                classroomId: classroomId,
+                subjectId: subjectId,
+                studentId: studentId,
+                studentName: extra?['studentName'] as String?,
+                schoolStudentId: extra?['schoolStudentId'] as String?,
+                subjectName: extra?['subjectName'] as String?,
+                classroomName: extra?['classroomName'] as String?,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/school',
-          redirect: (context, state) {
-            if (ref != null) {
-              final schoolContext = ref.read(activeSchoolContextProvider);
-              if (!schoolContext.isSchoolAdmin) {
-                return '/home';
-              }
-            }
-            return null;
-          },
-          builder: (context, state) => const SchoolLeadershipHomeScreen(),
+          redirect: (context, state) =>
+              _guardSchoolAdminRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isSchoolAdmin,
+            builder: (context) => const SchoolLeadershipHomeScreen(),
+          ),
         ),
         GoRoute(
           path: '/school/home',
-          redirect: (context, state) {
-            if (ref != null) {
-              final schoolContext = ref.read(activeSchoolContextProvider);
-              if (!schoolContext.isSchoolAdmin) {
-                return '/home';
-              }
-            }
-            return null;
-          },
-          builder: (context, state) => const SchoolLeadershipHomeScreen(),
+          redirect: (context, state) =>
+              _guardSchoolAdminRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isSchoolAdmin,
+            builder: (context) => const SchoolLeadershipHomeScreen(),
+          ),
         ),
         GoRoute(
           path: '/school/legacy_dashboard',
-          builder: (context, state) => const SchoolAdminDashboardScreen(),
+          redirect: (context, state) =>
+              _guardSchoolAdminRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isSchoolAdmin,
+            builder: (context) => const SchoolAdminDashboardScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/school_admin',
+          redirect: (context, state) =>
+              _guardSchoolAdminRoute(ref: ref, container: container) ??
+              '/school',
         ),
         GoRoute(
           path: '/school/reports',
-          redirect: (context, state) {
-            if (ref != null) {
-              final schoolContext = ref.read(activeSchoolContextProvider);
-              if (!schoolContext.isSchoolAdmin) {
-                return '/home';
-              }
-            }
-            return null;
-          },
-          builder: (context, state) =>
-              const ReportsHubScreen(isTeacherView: false),
+          redirect: (context, state) =>
+              _guardSchoolAdminRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin && ctx.isSchoolAdmin,
+            builder: (context) => const ReportsHubScreen(isTeacherView: false),
+          ),
         ),
         GoRoute(
           path: '/school/reports/preview',
-          redirect: (context, state) {
-            if (ref != null) {
-              final schoolContext = ref.read(activeSchoolContextProvider);
-              if (!schoolContext.isSchoolAdmin && !schoolContext.isTeacher) {
-                return '/home';
-              }
-            }
-            return null;
-          },
-          builder: (context, state) {
-            final typeStr = state.uri.queryParameters['type'];
-            final schoolId = state.uri.queryParameters['schoolId'] ?? '';
-            final extraReport = state.extra as ExecutiveReport?;
-            return ReportPreviewScreen(
-              schoolId: schoolId,
-              reportType: InstitutionalReportType.fromString(typeStr),
-              passedExecutiveReport: extraReport,
-            );
-          },
+          redirect: (context, state) =>
+              _guardReportsPreviewRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin &&
+                (ctx.isSchoolAdmin || ctx.isTeacher),
+            builder: (context) {
+              final typeStr = state.uri.queryParameters['type'];
+              final schoolId = state.uri.queryParameters['schoolId'] ?? '';
+              final extraReport = state.extra as ExecutiveReport?;
+              return ReportPreviewScreen(
+                schoolId: schoolId,
+                reportType: InstitutionalReportType.fromString(typeStr),
+                passedExecutiveReport: extraReport,
+              );
+            },
+          ),
         ),
         GoRoute(
           path: '/teacher/reports',
-          redirect: (context, state) {
-            if (ref != null) {
-              final schoolContext = ref.read(activeSchoolContextProvider);
-              if (!schoolContext.isTeacher && !schoolContext.isSchoolAdmin) {
-                return '/home';
-              }
-            }
-            return null;
-          },
-          builder: (context, state) =>
-              const ReportsHubScreen(isTeacherView: true),
+          redirect: (context, state) =>
+              _guardTeacherReportsRoute(ref: ref, container: container),
+          builder: (context, state) => _RouteAuthorityGate(
+            isAuthorized: (user, ctx) =>
+                user.role != UserRole.platformAdmin &&
+                (ctx.isTeacher || ctx.isSchoolAdmin),
+            builder: (context) => const ReportsHubScreen(isTeacherView: true),
+          ),
         ),
         GoRoute(
           path: '/admin',

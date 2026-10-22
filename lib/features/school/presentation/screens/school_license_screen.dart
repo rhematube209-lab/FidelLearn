@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/app_theme.dart';
 import '../../domain/models/licensing_onboarding_models.dart';
 import '../providers/licensing_onboarding_providers.dart';
 
@@ -119,184 +120,121 @@ class _LicenseContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: [
-        // Status & Plan Header Card
-        Card(
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Notice Banner
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF242C51) : const Color(0xFFF0F3FF),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isDark ? const Color(0xFF384878) : const Color(0xFFDFE5FF),
+              ),
+            ),
+            child: Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'License Status',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                const Icon(Icons.info_outline_rounded, size: 18, color: AppTheme.protoBrand),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Commercial License & Entitlements · Academic Year 2026/27. Seat usage and payment records are kept strictly isolated from student academic profiles.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isDark ? const Color(0xFFBAC6F1) : const Color(0xFF5B66A8),
                     ),
-                    _StatusBadge(status: license.status),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  license.planCode.toUpperCase(),
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Source: ${license.source.replaceAll('_', ' ').toUpperCase()}',
-                  style: theme.textTheme.bodySmall,
-                ),
-                const Divider(height: 24),
-                _DateRow(
-                  label: 'Contract Starts',
-                  date: license.startsAt,
-                ),
-                if (license.endsAt != null) ...[
-                  const SizedBox(height: 6),
-                  _DateRow(
-                    label: 'Contract Ends',
-                    date: license.endsAt!,
-                  ),
-                ],
-                if (license.graceEndsAt != null) ...[
-                  const SizedBox(height: 6),
-                  _DateRow(
-                    label: 'Grace Period Ends',
-                    date: license.graceEndsAt!,
-                    isWarning: true,
-                  ),
-                ],
               ],
             ),
           ),
-        ),
-        const SizedBox(height: 16),
+          const SizedBox(height: 20),
 
-        // Seat Management Card
-        Card(
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          // 2. Status & Seat Capacity Cards (2 columns on wide screens)
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth >= 900;
+              final leftCol = _buildSeatAllocationCard(context, isDark);
+              final rightCol = _buildLicensePlanCard(context, isDark);
+
+              if (isWide) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: leftCol),
+                    const SizedBox(width: 18),
+                    Expanded(child: rightCol),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    leftCol,
+                    const SizedBox(height: 18),
+                    rightCol,
+                  ],
+                );
+              }
+            },
+          ),
+          const SizedBox(height: 20),
+
+          // 3. Feature Entitlements Card
+          Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              color: AppTheme.protoSurface(context),
+              borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+              border: Border.all(color: AppTheme.protoLine(context)),
+              boxShadow: AppTheme.protoCardShadow(context),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Student Seat Allocation',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${seats.occupiedSeats} / ${seats.studentSeatLimit} seats',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: seats.isOverCapacity ? Colors.red : null,
-                      ),
-                    ),
-                    Text(
-                      '${seats.seatUtilizationPct.toStringAsFixed(1)}% used',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: (seats.seatUtilizationPct / 100.0).clamp(0.0, 1.0),
-                    minHeight: 10,
-                    backgroundColor: theme.colorScheme.surfaceVariant,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      seats.isOverCapacity
-                          ? Colors.red
-                          : seats.warningLevel == 'warning_90'
-                              ? Colors.orange
-                              : theme.colorScheme.primary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Available Seats: ${seats.availableSeats}',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: seats.availableSeats <= 0
-                            ? Colors.red
-                            : Colors.green,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    if (seats.isOverCapacity)
-                      const Text(
-                        'OVER CAPACITY',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                  ],
-                ),
-                if (seats.warningLevel == 'critical_100') ...[
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: Colors.red.withOpacity(0.3)),
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.warning, color: Colors.red, size: 20),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Student seat limit reached. New student enrollments are blocked until seats are increased or inactive students are removed.',
-                            style: TextStyle(color: Colors.red, fontSize: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Enabled Feature Entitlements',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 2),
+                          Text(
+                            'Capabilities authorized by this active institutional license',
+                            style: TextStyle(fontSize: 11.5, color: AppTheme.protoMuted(context)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Feature Entitlements Card
-        Card(
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Enabled Feature Entitlements',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                    const SizedBox(width: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppTheme.protoGoodLight,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'Verified License',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.protoGood,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 16),
+                const Divider(height: 1),
                 const SizedBox(height: 12),
                 _EntitlementTile(
                   title: 'Student Learning Platform',
@@ -306,8 +244,7 @@ class _LicenseContent extends StatelessWidget {
                 _EntitlementTile(
                   title: 'Teacher Portal (P7)',
                   enabled: license.hasEntitlement('teacher_portal'),
-                  description:
-                      'Class assignments, monitoring, and focus topics',
+                  description: 'Class assignments, monitoring, and focus topics',
                 ),
                 _EntitlementTile(
                   title: 'Leadership Dashboard (P8)',
@@ -322,20 +259,316 @@ class _LicenseContent extends StatelessWidget {
                 _EntitlementTile(
                   title: 'Institutional Analytics & Reporting (P10)',
                   enabled: license.hasEntitlement('institutional_reporting'),
-                  description:
-                      'Formal executive, subject, and coverage reports',
+                  description: 'Formal executive, subject, and coverage reports',
                 ),
                 _EntitlementTile(
                   title: 'ESSLCE National Exam Simulation (P5)',
                   enabled: license.hasEntitlement('national_exam_simulation'),
-                  description:
-                      'Official historical papers and timed mock exams',
+                  description: 'Official historical papers and timed mock exams',
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 20),
+
+          // 4. Payment Rails & Billing Options
+          Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              color: AppTheme.protoSurface(context),
+              borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+              border: Border.all(color: AppTheme.protoLine(context)),
+              boxShadow: AppTheme.protoCardShadow(context),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Institutional Billing & Payment Rail Integrations',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Supported payment rails for institutional contract renewals and seat additions.',
+                  style: TextStyle(fontSize: 12, color: AppTheme.protoMuted(context)),
+                ),
+                const SizedBox(height: 14),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    _buildPaymentPill('Telebirr', context, isDark),
+                    _buildPaymentPill('Chapa', context, isDark),
+                    _buildPaymentPill('CBE Bank Transfer', context, isDark),
+                    _buildPaymentPill('Manual Invoice', context, isDark),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeatAllocationCard(BuildContext context, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: AppTheme.protoSurface(context),
+        borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+        border: Border.all(color: AppTheme.protoLine(context)),
+        boxShadow: AppTheme.protoCardShadow(context),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Student Seat Allocation',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: seats.isOverCapacity ? AppTheme.protoBadLight : AppTheme.protoGoodLight,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  seats.isOverCapacity ? 'Capacity Alert' : 'Seats Active',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: seats.isOverCapacity ? AppTheme.protoBad : AppTheme.protoGood,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            children: [
+              // Ring Chart Visual
+              Container(
+                width: 108,
+                height: 108,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: SweepGradient(
+                    colors: [
+                      seats.isOverCapacity ? AppTheme.protoBad : AppTheme.protoBrand,
+                      isDark ? const Color(0xFF233452) : const Color(0xFFE9EDFB),
+                    ],
+                    stops: [
+                      (seats.seatUtilizationPct / 100.0).clamp(0.0, 1.0),
+                      (seats.seatUtilizationPct / 100.0).clamp(0.0, 1.0),
+                    ],
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Container(
+                  width: 78,
+                  height: 78,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppTheme.protoSurface(context),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${seats.seatUtilizationPct.toStringAsFixed(1)}%',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        'used',
+                        style: TextStyle(fontSize: 9, color: AppTheme.protoMuted(context)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ENROLLED SEATS',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.0,
+                        color: AppTheme.protoMuted(context),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${seats.occupiedSeats} / ${seats.studentSeatLimit} seats',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: seats.isOverCapacity ? AppTheme.protoBad : null,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${seats.seatUtilizationPct.toStringAsFixed(1)}% used',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Available Seats: ${seats.availableSeats}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: seats.availableSeats <= 0 ? AppTheme.protoBad : AppTheme.protoGood,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: (seats.seatUtilizationPct / 100.0).clamp(0.0, 1.0),
+              minHeight: 8,
+              backgroundColor: isDark ? const Color(0xFF233452) : const Color(0xFFEEF2F8),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                seats.isOverCapacity
+                    ? AppTheme.protoBad
+                    : seats.warningLevel == 'warning_90'
+                        ? AppTheme.protoWarn
+                        : AppTheme.protoBrand,
+              ),
+            ),
+          ),
+          if (seats.isOverCapacity) ...[
+            const SizedBox(height: 10),
+            const Text(
+              'OVER CAPACITY',
+              style: TextStyle(color: AppTheme.protoBad, fontWeight: FontWeight.bold, fontSize: 11),
+            ),
+          ],
+          if (seats.warningLevel == 'critical_100') ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.protoBadLight,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.protoBad.withOpacity(0.3)),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.warning_amber_rounded, color: AppTheme.protoBad, size: 20),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Student seat limit reached. New student enrollments are blocked until seats are increased or inactive students are removed.',
+                      style: TextStyle(color: AppTheme.protoBad, fontSize: 12, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLicensePlanCard(BuildContext context, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        color: AppTheme.protoSurface(context),
+        borderRadius: BorderRadius.circular(AppTheme.protoRadius),
+        border: Border.all(color: AppTheme.protoLine(context)),
+        boxShadow: AppTheme.protoCardShadow(context),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'License Status',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.protoMuted(context),
+                ),
+              ),
+              _StatusBadge(status: license.status),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            license.planCode.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Source: ${license.source.replaceAll('_', ' ').toUpperCase()}',
+            style: TextStyle(fontSize: 12, color: AppTheme.protoMuted(context)),
+          ),
+          const SizedBox(height: 16),
+          const Divider(height: 1),
+          const SizedBox(height: 12),
+          _DateRow(
+            label: 'Contract Starts',
+            date: license.startsAt,
+          ),
+          if (license.endsAt != null) ...[
+            const SizedBox(height: 8),
+            _DateRow(
+              label: 'Contract Ends',
+              date: license.endsAt!,
+            ),
+          ],
+          if (license.graceEndsAt != null) ...[
+            const SizedBox(height: 8),
+            _DateRow(
+              label: 'Grace Period Ends',
+              date: license.graceEndsAt!,
+              isWarning: true,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentPill(String name, BuildContext context, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF233452) : const Color(0xFFEFF2F6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.protoLine(context)),
+      ),
+      child: Text(
+        name,
+        style: TextStyle(
+          fontSize: 11.5,
+          fontWeight: FontWeight.w600,
+          color: isDark ? const Color(0xFFBAC6F1) : const Color(0xFF53617D),
         ),
-      ],
+      ),
     );
   }
 }
@@ -413,13 +646,16 @@ class _DateRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: isWarning ? Colors.orange.shade800 : null,
-            fontWeight: isWarning ? FontWeight.bold : null,
+        Expanded(
+          child: Text(
+            label,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isWarning ? Colors.orange.shade800 : null,
+              fontWeight: isWarning ? FontWeight.bold : null,
+            ),
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           str,
           style: theme.textTheme.bodyMedium?.copyWith(

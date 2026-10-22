@@ -451,62 +451,76 @@ class _WeakTopicTile extends StatelessWidget {
             : AppTheme.info;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: isDark ? AppTheme.darkSurface : Colors.white,
+        color: AppTheme.protoSurface(context),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isDark ? AppTheme.darkBorder : AppTheme.lightBorder,
-        ),
+        border: Border.all(color: AppTheme.protoLine(context)),
+        boxShadow: AppTheme.protoCardShadow(context),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(topic.topicName,
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color:
-                            isDark ? AppTheme.darkText : AppTheme.lightText)),
-                if (topic.unitName != null)
-                  Text(topic.unitName!,
-                      style: TextStyle(
-                          fontSize: 11,
-                          color: isDark
-                              ? AppTheme.darkTextSoft
-                              : AppTheme.lightMuted)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          Row(
             children: [
-              Row(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      topic.topicName,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? AppTheme.protoInkDark : AppTheme.protoInkLight,
+                      ),
+                    ),
+                    if (topic.unitName != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        topic.unitName!,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppTheme.protoMuted(context),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Icon(Icons.person_rounded, size: 12, color: color),
-                  const SizedBox(width: 3),
                   Text(
-                    '${topic.affectedStudentCount} / $total',
+                    '${topic.affectedStudentCount} / $total students',
                     style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: color),
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
+                  ),
+                  Text(
+                    '${topic.activeMistakeCount} active mistakes',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: AppTheme.protoMuted(context),
+                    ),
                   ),
                 ],
               ),
-              Text(
-                '${topic.activeMistakeCount} mistakes',
-                style: TextStyle(
-                    fontSize: 10,
-                    color:
-                        isDark ? AppTheme.darkTextSoft : AppTheme.lightMuted),
-              ),
             ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: pct.clamp(0.0, 1.0),
+              minHeight: 6,
+              backgroundColor: isDark ? const Color(0xFF233452) : const Color(0xFFEEF1F9),
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
           ),
         ],
       ),

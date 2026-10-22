@@ -12,13 +12,21 @@ import 'active_school_context_provider.dart';
 final licensingOnboardingRepositoryProvider =
     Provider<LicensingOnboardingRepository>((ref) {
   if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate LocalLicensingOnboardingRepository.',
+      );
+    }
     return SupabaseLicensingOnboardingRepository();
   }
-  try {
-    return SupabaseLicensingOnboardingRepository();
-  } catch (_) {
-    return LocalLicensingOnboardingRepository();
+  if (EnvConfig.isSupabaseConfigured) {
+    try {
+      return SupabaseLicensingOnboardingRepository();
+    } catch (_) {}
   }
+  EnvConfig.assertNoMockInProduction('LocalLicensingOnboardingRepository');
+  return LocalLicensingOnboardingRepository();
 });
 
 /// Current school license provider tied to [activeSchoolContextProvider].

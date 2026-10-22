@@ -830,28 +830,47 @@ class _TypeRadioTile extends StatelessWidget {
       onTap: () => onChanged(value),
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppTheme.brand.withValues(alpha: 0.08)
-              : (isDark ? AppTheme.darkSurface : Colors.white),
+              ? (isDark ? const Color(0xFF242F56) : const Color(0xFFF5F6FF))
+              : AppTheme.protoSurface(context),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
-                ? AppTheme.brand
-                : (isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
-            width: isSelected ? 2 : 1,
+                ? AppTheme.protoBrand
+                : AppTheme.protoLine(context),
+            width: isSelected ? 1.8 : 1,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppTheme.protoBrand.withOpacity(0.12),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? AppTheme.brand
-                  : (isDark ? AppTheme.darkTextMuted : AppTheme.lightTextMuted),
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppTheme.protoBrand
+                    : (isDark ? const Color(0xFF233452) : const Color(0xFFF1F4FA)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              alignment: Alignment.center,
+              child: Icon(
+                icon,
+                size: 18,
+                color: isSelected ? Colors.white : AppTheme.protoBrand,
+              ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -859,29 +878,39 @@ class _TypeRadioTile extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: isSelected ? AppTheme.brand : null,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13.5,
+                      color: isSelected
+                          ? (isDark ? const Color(0xFFBAC6F1) : AppTheme.protoBrand)
+                          : (isDark ? AppTheme.protoInkDark : AppTheme.protoInkLight),
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: isDark
-                          ? AppTheme.darkTextMuted
-                          : AppTheme.lightTextMuted,
+                      fontSize: 11.5,
+                      color: AppTheme.protoMuted(context),
                     ),
                   ),
                 ],
               ),
             ),
-            Radio<AssignmentType>(
-              value: value,
-              groupValue: groupValue,
-              activeColor: AppTheme.brand,
-              onChanged: onChanged,
+            Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? AppTheme.protoBrand : Colors.transparent,
+                border: Border.all(
+                  color: isSelected ? AppTheme.protoBrand : AppTheme.protoLine(context),
+                  width: 1.5,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: isSelected
+                  ? const Icon(Icons.check, size: 14, color: Colors.white)
+                  : null,
             ),
           ],
         ),

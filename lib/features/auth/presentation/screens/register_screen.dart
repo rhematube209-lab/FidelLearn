@@ -109,7 +109,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             context.go('/teacher');
             break;
           case UserRole.schoolAdmin:
-            context.go('/school_admin');
+            // Institutional school administrators cannot self-register through public registration.
+            // School admin accounts are provisioned via enterprise licenses and tenant invitations.
+            // This branch is unreachable from public UI; fallback safely to /home.
+            context.go('/home');
             break;
           case UserRole.platformAdmin:
             context.go('/admin');

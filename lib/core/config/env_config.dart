@@ -17,18 +17,12 @@
 class EnvConfig {
   EnvConfig._();
 
-  /// Supabase project URL.
-  /// Provide via: --dart-define=SUPABASE_URL=https://your-ref.supabase.co
-  static const String supabaseUrl = String.fromEnvironment(
+  static const String _defaultSupabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
     defaultValue: '',
   );
 
-  /// Supabase publishable (anon) key — safe for client-side use.
-  /// Provide via: --dart-define=SUPABASE_PUBLISHABLE_KEY=your_publishable_key
-  ///
-  /// This is NOT the service role key. RLS enforces all authorization.
-  static const String supabasePublishableKey = String.fromEnvironment(
+  static const String _defaultSupabasePublishableKey = String.fromEnvironment(
     'SUPABASE_PUBLISHABLE_KEY',
     defaultValue: '',
   );
@@ -38,8 +32,28 @@ class EnvConfig {
     defaultValue: 'development',
   );
 
-  /// Test hook to override the runtime environment in tests.
+  /// Test hooks to override configuration in tests.
+  static String? overrideSupabaseUrl;
+  static String? overrideSupabasePublishableKey;
   static String? overrideEnvironment;
+
+  /// Resets all test overrides to their compile-time defaults.
+  static void resetTestOverrides() {
+    overrideEnvironment = null;
+    overrideSupabaseUrl = null;
+    overrideSupabasePublishableKey = null;
+  }
+
+  /// Supabase project URL.
+  /// Provide via: --dart-define=SUPABASE_URL=https://your-ref.supabase.co
+  static String get supabaseUrl => overrideSupabaseUrl ?? _defaultSupabaseUrl;
+
+  /// Supabase publishable (anon) key — safe for client-side use.
+  /// Provide via: --dart-define=SUPABASE_PUBLISHABLE_KEY=your_publishable_key
+  ///
+  /// This is NOT the service role key. RLS enforces all authorization.
+  static String get supabasePublishableKey =>
+      overrideSupabasePublishableKey ?? _defaultSupabasePublishableKey;
 
   /// Deployment environment identifier.
   /// Provide via: --dart-define=APP_ENVIRONMENT=development|staging|production

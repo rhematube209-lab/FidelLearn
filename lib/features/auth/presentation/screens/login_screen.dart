@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,8 @@ import '../../../../core/config/env_config.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../school/domain/models/tenant_models.dart';
+import '../../../school/presentation/providers/active_school_context_provider.dart';
 import '../../domain/models/user_profile.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -30,6 +34,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   late String _lang;
   bool _isLoading = false;
+  bool _isSlowResolution = false;
   bool _obscurePass = true;
   bool _rememberMe = true;
   String? _errorMessage;
@@ -81,6 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     setState(() {
       _isLoading = true;
+      _isSlowResolution = false;
       _errorMessage = null;
     });
 
@@ -91,19 +97,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .timeout(const Duration(seconds: 8));
 
       if (mounted) {
-        switch (user.role) {
-          case UserRole.teacher:
-            context.go('/teacher');
-            break;
-          case UserRole.schoolAdmin:
-            context.go('/school_admin');
-            break;
-          case UserRole.platformAdmin:
-            context.go('/admin');
-            break;
-          case UserRole.student:
-            context.go('/home');
-            break;
+        if (user.role == UserRole.platformAdmin) {
+          context.go('/admin');
+          return;
+        }
+
+        final future = ref
+            .read(activeSchoolContextProvider.notifier)
+            .resolveContext(user: user);
+
+        ActiveSchoolContext? schoolContext;
+        try {
+          schoolContext = await future.timeout(const Duration(seconds: 4));
+        } on TimeoutException {
+          if (mounted) {
+            setState(() {
+              _isSlowResolution = true;
+            });
+          }
+          // Do not send to /home merely because timeout fired while loading.
+          schoolContext = await future;
+        }
+
+        if (!mounted) return;
+
+        if (schoolContext.isSchoolAdmin) {
+          context.go('/school');
+        } else if (schoolContext.isTeacher) {
+          context.go('/teacher');
+        } else {
+          // Context has actually resolved as independent or unauthorized
+          context.go('/home');
         }
       }
     } catch (e) {
@@ -428,6 +452,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
               ),
+              if (_isLoading && _isSlowResolution) ...[
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 14,
+                      height: 14,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      isAmharic
+                          ? 'የትምህርት ቤት አባልነትን በማረጋገጥ ላይ...'
+                          : 'Verifying school membership...',
+                      style: const TextStyle(
+                          fontSize: 12, color: AppTheme.textMuted),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (mounted) context.go('/home');
+                  },
+                  child: Text(
+                    isAmharic
+                        ? 'ወደ ዋና ገጽ ቀጥል (Continue to Home)'
+                        : 'Continue to Home',
+                    style: const TextStyle(fontSize: 12, color: AppTheme.brand),
+                  ),
+                ),
+              ],
               const SizedBox(height: 20),
 
               // Quick Fill Test Accounts (Strictly isolated to local development mode)

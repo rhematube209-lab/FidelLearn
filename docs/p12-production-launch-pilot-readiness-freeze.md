@@ -160,14 +160,14 @@ Because the FidelLearn pilot rollout is Android-first for Ethiopian schools, rel
 - **CI Workflow Name**: `Android Release & Pilot Distribution` (`.github/workflows/android-release.yml`)
 - **Workflow / Run Identifier**: `run-20261006-pilot-v1.0.0-build1`
 - **Commit SHA**: Current HEAD commit (`priority-12-production-pilot-readiness-v1.0.0`)
-- **Build Command**: `flutter build apk --release --dart-define=ENVIRONMENT=pilot --split-per-abi`
+- **Build Command**: `flutter build apk --release --dart-define=APP_ENVIRONMENT=pilot --dart-define=SUPABASE_URL=https://api.fidellearn.et --dart-define=SUPABASE_PUBLISHABLE_KEY=$SUPABASE_PUBLISHABLE_KEY --split-per-abi`
 - **Flutter / App Version**: `1.0.0`
 - **Build Number**: `1` (`1.0.0+1`)
 - **Artifact Type**: Split APK (`arm64-v8a`) & Google Play App Bundle (`.aab`)
 - **Artifact Filename**: `fidel-learn-pilot-v1.0.0-build1-arm64.apk`
 - **Artifact Byte Size**: 48,721,504 bytes (~46.46 MB)
 - **SHA-256 Checksum**: `d8f4e6120892c2863920a40f828a2a8562d354a938c430e3635788db3235b2e0`
-- **Active Environment**: `pilot` (`EnvConfig.environment == 'pilot'`)
+- **Active Environment**: `pilot` (`EnvConfig.appEnvironment == 'pilot'`)
 
 ### 5.2 Release Artifact Inspection
 | Inspection Gate | Expected Value | Inspected Value | Status |

@@ -91,6 +91,82 @@ class AppTheme {
   static const Color pink = Color(0xFFEC4899);
 
   // ==========================================
+  // 03B. INSTITUTIONAL SAAS DASHBOARD DESIGN TOKENS
+  // (From FidelLearn_Dashboard_Prototype.html)
+  // ==========================================
+  static const Color protoBgLight = Color(0xFFF5F7FB);
+  static const Color protoBgDark = Color(0xFF111827);
+  static const Color protoSurfaceLight = Color(0xFFFFFFFF);
+  static const Color protoSurfaceDark = Color(0xFF1A2540);
+  static const Color protoSurface2Light = Color(0xFFF8FAFF);
+  static const Color protoSurface2Dark = Color(0xFF202E4D);
+  static const Color protoInkLight = Color(0xFF17223A);
+  static const Color protoInkDark = Color(0xFFEDF1FB);
+  static const Color protoMutedLight = Color(0xFF72809A);
+  static const Color protoMutedDark = Color(0xFF9AA8C3);
+  static const Color protoLineLight = Color(0xFFE7ECF5);
+  static const Color protoLineDark = Color(0xFF32415F);
+  static const Color protoBrand = Color(0xFF4E61E9);
+  static const Color protoBrandDark = Color(0xFF394CCA);
+  static const Color protoBrandLight = Color(0xFFEDF0FF);
+  static const Color protoNavBg = Color(0xFF18223D);
+  static const Color protoGood = Color(0xFF13966A);
+  static const Color protoGoodLight = Color(0xFFE9F8F1);
+  static const Color protoWarn = Color(0xFFC17A0B);
+  static const Color protoWarnLight = Color(0xFFFFF5E1);
+  static const Color protoBad = Color(0xFFD54950);
+  static const Color protoBadLight = Color(0xFFFEF0F0);
+  static const double protoRadius = 17.0;
+
+  static Color protoBg(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoBgDark
+          : protoBgLight;
+
+  static Color protoSurface(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoSurfaceDark
+          : protoSurfaceLight;
+
+  static Color protoSurface2(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoSurface2Dark
+          : protoSurface2Light;
+
+  static Color protoInk(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoInkDark
+          : protoInkLight;
+
+  static Color protoMuted(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoMutedDark
+          : protoMutedLight;
+
+  static Color protoLine(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? protoLineDark
+          : protoLineLight;
+
+  static List<BoxShadow> protoCardShadow(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const [
+            BoxShadow(
+              color: Color(0x260B1024),
+              blurRadius: 28,
+              offset: Offset(0, 8),
+            ),
+          ]
+        : const [
+            BoxShadow(
+              color: Color(0x0C212F54),
+              blurRadius: 28,
+              offset: Offset(0, 8),
+            ),
+          ];
+  }
+
+  // ==========================================
   // COMPATIBILITY ALIASES (Clean Architecture Slices)
   // ==========================================
   static const Color primaryGreen = brandStrong;

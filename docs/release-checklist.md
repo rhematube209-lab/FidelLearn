@@ -3,7 +3,7 @@
 ## 1. Pre-Release Verification
 - [ ] **Working Tree Clean**: No uncommitted files or dirty changes in Git repository.
 - [ ] **Release Tag & Commit SHA**: Tag matches SemVer (e.g., `v1.0.0`) and points to verified release commit.
-- [ ] **Environment Separation**: Build environment set explicitly to `production` (`--dart-define=ENVIRONMENT=production`).
+- [ ] **Environment Separation**: Build environment set explicitly to `production` (`--dart-define=APP_ENVIRONMENT=production`).
 - [ ] **No Secret Leaks**: Verified zero server secrets (Supabase `service_role`, webhook secrets, private keys) present in client code or assets.
 
 ## 2. Automated Quality Gates

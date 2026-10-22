@@ -29,9 +29,19 @@ import 'active_school_context_provider.dart';
 /// - Local offline development mode when Supabase is deliberately unconfigured.
 final schoolLeadershipRepositoryProvider =
     Provider<SchoolLeadershipRepository>((ref) {
-  if (EnvConfig.isProductionLike || EnvConfig.isSupabaseConfigured) {
+  if (EnvConfig.isProductionLike) {
+    if (!EnvConfig.isSupabaseConfigured) {
+      throw StateError(
+        '[FidelLearn] FATAL: Supabase credentials are required in ${EnvConfig.appEnvironment}. '
+        'A ${EnvConfig.appEnvironment} build must not activate LocalSchoolLeadershipRepository.',
+      );
+    }
     return SupabaseSchoolLeadershipRepository();
   }
+  if (EnvConfig.isSupabaseConfigured) {
+    return SupabaseSchoolLeadershipRepository();
+  }
+  EnvConfig.assertNoMockInProduction('LocalSchoolLeadershipRepository');
   return LocalSchoolLeadershipRepository();
 });
 
