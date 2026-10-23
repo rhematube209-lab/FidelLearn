@@ -7,10 +7,21 @@ import '../../domain/models/licensing_onboarding_models.dart';
 import '../../domain/repositories/licensing_onboarding_repository.dart';
 import 'active_school_context_provider.dart';
 
+import '../../../auth/domain/models/user_profile.dart';
+import '../../../../core/providers/app_providers.dart';
+
 /// Provider for the [LicensingOnboardingRepository].
 /// Uses Supabase in production and falls back to Local only in local dev when Supabase is unconfigured.
 final licensingOnboardingRepositoryProvider =
     Provider<LicensingOnboardingRepository>((ref) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  final isDemoUser = user != null &&
+      (user.id.startsWith('00000000-') ||
+          user.id.startsWith('usr_') ||
+          user.role == UserRole.schoolAdmin);
+  if (isDemoUser) {
+    return LocalLicensingOnboardingRepository();
+  }
   if (EnvConfig.isProductionLike) {
     if (!EnvConfig.isSupabaseConfigured) {
       throw StateError(

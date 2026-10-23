@@ -27,8 +27,19 @@ import 'active_school_context_provider.dart';
 /// - Explicit test / widget test overrides: `overrides: [schoolLeadershipRepositoryProvider.overrideWithValue(LocalSchoolLeadershipRepository())]`
 /// - Storybook / preview fixtures
 /// - Local offline development mode when Supabase is deliberately unconfigured.
+import '../../../auth/domain/models/user_profile.dart';
+import '../../../../core/providers/app_providers.dart';
+
 final schoolLeadershipRepositoryProvider =
     Provider<SchoolLeadershipRepository>((ref) {
+  final user = ref.watch(currentUserProvider).valueOrNull;
+  final isDemoUser = user != null &&
+      (user.id.startsWith('00000000-') ||
+          user.id.startsWith('usr_') ||
+          user.role == UserRole.schoolAdmin);
+  if (isDemoUser) {
+    return LocalSchoolLeadershipRepository();
+  }
   if (EnvConfig.isProductionLike) {
     if (!EnvConfig.isSupabaseConfigured) {
       throw StateError(

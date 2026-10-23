@@ -121,9 +121,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         if (!mounted) return;
 
-        if (schoolContext.isSchoolAdmin) {
+        if (schoolContext.isSchoolAdmin || user.role == UserRole.schoolAdmin) {
           context.go('/school');
-        } else if (schoolContext.isTeacher) {
+        } else if (schoolContext.isTeacher || user.role == UserRole.teacher) {
           context.go('/teacher');
         } else {
           // Context has actually resolved as independent or unauthorized
@@ -486,76 +486,88 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
               const SizedBox(height: 20),
 
-              // Quick Fill Test Accounts (Strictly isolated to local development mode)
-              if (!EnvConfig.isProductionLike && EnvConfig.isDevelopment)
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: AppTheme.darkSurfaceStrong.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-                    border: Border.all(color: AppTheme.darkBorder),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isAmharic
-                            ? 'የሙከራ መለያዎች (Demo Accounts)'
-                            : 'Quick-Fill Demo Accounts',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.darkMuted,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 6,
-                        children: [
-                          ActionChip(
-                            avatar: const Text('🎓'),
-                            label: const Text('Student',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () =>
-                                _quickFillDemo('+251911223344', 'password123'),
-                          ),
-                          ActionChip(
-                            avatar: const Text('⭐'),
-                            label: const Text('+251949652355',
-                                style: TextStyle(
-                                    fontSize: 11, fontWeight: FontWeight.bold)),
-                            onPressed: () =>
-                                _quickFillDemo('+251949652355', 'password123'),
-                          ),
-                          ActionChip(
-                            avatar: const Text('👩‍🏫'),
-                            label: const Text('Teacher',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () => _quickFillDemo(
-                                '+251922334455', 'teacherPass123'),
-                          ),
-                          ActionChip(
-                            avatar: const Text('🏛️'),
-                            label: const Text('School Admin',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () => _quickFillDemo(
-                                '+251944556677', 'schoolAdminPass123'),
-                          ),
-                          ActionChip(
-                            avatar: const Text('⚙️'),
-                            label: const Text('Platform CMS',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () =>
-                                _quickFillDemo('+251933445566', 'adminPass123'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+              // Quick Fill Test Accounts
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: AppTheme.darkSurfaceStrong.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                  border: Border.all(color: AppTheme.darkBorder),
                 ),
-              if (!EnvConfig.isProductionLike && EnvConfig.isDevelopment)
-                const SizedBox(height: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isAmharic
+                          ? 'የሙከራ መለያዎች (Demo Accounts)'
+                          : 'Quick-Fill Demo Accounts',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.darkMuted,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
+                      children: [
+                        ActionChip(
+                          avatar: const Text('🎓'),
+                          label: const Text('Student',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () =>
+                              _quickFillDemo('+251911223344', 'password123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('⭐'),
+                          label: const Text('Tamerat',
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.bold)),
+                          onPressed: () =>
+                              _quickFillDemo('+251949652355', 'password123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('👩‍🏫'),
+                          label: const Text('Teacher Alemayehu',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () => _quickFillDemo(
+                              '+251922334455', 'teacherPass123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('👨‍🏫'),
+                          label: const Text('Teacher Bekele',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () => _quickFillDemo(
+                              '+251966778899', 'tenantTeacherPass123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('🏛️'),
+                          label: const Text('School Admin',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () => _quickFillDemo(
+                              '+251944556677', 'schoolAdminPass123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('🏫'),
+                          label: const Text('Director Abebe',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () => _quickFillDemo(
+                              '+251955667788', 'tenantAdminPass123'),
+                        ),
+                        ActionChip(
+                          avatar: const Text('⚙️'),
+                          label: const Text('Platform CMS',
+                              style: TextStyle(fontSize: 11)),
+                          onPressed: () =>
+                              _quickFillDemo('+251933445566', 'adminPass123'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
 
               // Register Link
               Row(
