@@ -209,102 +209,6 @@ DO $$ BEGIN
 END $$;
 
 -- -----------------------------------------------------------------------------
--- 0c. DASHBOARD RPC READ MODELS (Used by School Admin and Teacher dashboards)
--- -----------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION public.get_school_leadership_summary(
-    p_school_id UUID,
-    p_academic_year TEXT DEFAULT '2026/27'
-) RETURNS JSONB AS $$
-DECLARE
-    v_total_students INT;
-    v_total_teachers INT;
-    v_total_classes INT;
-BEGIN
-    SELECT COUNT(DISTINCT user_id) INTO v_total_students 
-    FROM public.school_memberships WHERE school_id = p_school_id AND role = 'student' AND status = 'active';
-    
-    SELECT COUNT(DISTINCT user_id) INTO v_total_teachers 
-    FROM public.school_memberships WHERE school_id = p_school_id AND role = 'teacher' AND status = 'active';
-    
-    SELECT COUNT(*) INTO v_total_classes 
-    FROM public.classrooms WHERE school_id = p_school_id AND status = 'active';
-
-    RETURN jsonb_build_object(
-        'schoolId', p_school_id,
-        'academicYear', COALESCE(p_academic_year, '2026/27'),
-        'totalEnrolledStudents', COALESCE(NULLIF(v_total_students, 0), 284),
-        'activeTeachers', COALESCE(NULLIF(v_total_teachers, 0), 16),
-        'totalClassrooms', COALESCE(NULLIF(v_total_classes, 0), 6),
-        'averageAttendanceRate', 94.2,
-        'averageExamScore', 76.5,
-        'passingRate', 88.0,
-        'topSubject', 'Physics',
-        'needsAttentionSubject', 'Mathematics',
-        'generatedAt', NOW()
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.get_school_stream_summary(
-    p_school_id UUID,
-    p_academic_year TEXT DEFAULT '2026/27'
-) RETURNS JSONB AS $$
-BEGIN
-    RETURN jsonb_build_array(
-        jsonb_build_object(
-            'stream', 'naturalScience',
-            'enrolledStudents', 164,
-            'averageScore', 78.4,
-            'passingRate', 91.2
-        ),
-        jsonb_build_object(
-            'stream', 'socialScience',
-            'enrolledStudents', 120,
-            'averageScore', 74.1,
-            'passingRate', 84.8
-        )
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.get_school_subject_summary(
-    p_school_id UUID,
-    p_academic_year TEXT DEFAULT '2026/27',
-    p_stream TEXT DEFAULT NULL
-) RETURNS JSONB AS $$
-BEGIN
-    RETURN jsonb_build_array(
-        jsonb_build_object('subjectId', 'physics_g12', 'subjectName', 'Physics', 'averageScore', 82.1, 'passingRate', 93.0),
-        jsonb_build_object('subjectId', 'math_g12', 'subjectName', 'Mathematics', 'averageScore', 69.4, 'passingRate', 78.5),
-        jsonb_build_object('subjectId', 'biology_g12', 'subjectName', 'Biology', 'averageScore', 79.8, 'passingRate', 90.2),
-        jsonb_build_object('subjectId', 'chemistry_g12', 'subjectName', 'Chemistry', 'averageScore', 75.3, 'passingRate', 86.4),
-        jsonb_build_object('subjectId', 'english_g12', 'subjectName', 'English', 'averageScore', 84.0, 'passingRate', 95.1)
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION public.get_teacher_portal_summary(
-    p_teacher_user_id UUID,
-    p_school_id UUID DEFAULT NULL
-) RETURNS JSONB AS $$
-BEGIN
-    RETURN jsonb_build_object(
-        'teacherId', p_teacher_user_id,
-        'assignedClassesCount', 2,
-        'totalStudentsCount', 78,
-        'pendingAssignmentsCount', 3,
-        'flaggedStudentsCount', 4,
-        'classAverageScore', 76.8
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-GRANT EXECUTE ON FUNCTION public.get_school_leadership_summary(UUID, TEXT) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.get_school_stream_summary(UUID, TEXT) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.get_school_subject_summary(UUID, TEXT, TEXT) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.get_teacher_portal_summary(UUID, UUID) TO authenticated;
-
--- -----------------------------------------------------------------------------
 -- 1. SEED SCHOOLS
 -- -----------------------------------------------------------------------------
 INSERT INTO public.schools (id, name, display_name, school_code, status, city, region, timezone)
@@ -397,6 +301,7 @@ INSERT INTO public.school_licenses (
 -- -----------------------------------------------------------------------------
 -- 4. HARDENED PROVISIONING FUNCTION (Populates BOTH auth.users AND auth.identities)
 -- -----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS public.provision_demo_user(UUID, TEXT, TEXT, TEXT, TEXT, TEXT, INT, TEXT, UUID, TEXT, UUID);
 CREATE OR REPLACE FUNCTION public.provision_demo_user(
     p_desired_id UUID,
     p_phone TEXT,
@@ -688,6 +593,7 @@ ON CONFLICT DO NOTHING;
 -- 7. HELPER: PROVISION OR UPGRADE ANY REGISTERED PHONE NUMBER
 --    Usage: SELECT public.assign_school_role('+2519xxxxxxxx', 'school_admin');
 -- -----------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS public.assign_school_role(TEXT, TEXT, UUID);
 CREATE OR REPLACE FUNCTION public.assign_school_role(
     p_phone TEXT,
     p_role TEXT, -- 'school_admin', 'teacher', or 'student'
