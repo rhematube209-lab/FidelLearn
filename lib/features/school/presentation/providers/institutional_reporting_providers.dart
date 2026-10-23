@@ -7,22 +7,10 @@ import '../../domain/models/institutional_reporting_models.dart';
 import '../../domain/repositories/institutional_reporting_repository.dart';
 import 'active_school_context_provider.dart';
 
-import '../../../auth/domain/models/user_profile.dart';
-import '../../../../core/providers/app_providers.dart';
-
 /// Provider for the [InstitutionalReportingRepository].
 /// Uses Supabase in production and falls back to Local only in local dev when Supabase is unconfigured.
 final institutionalReportingRepositoryProvider =
     Provider<InstitutionalReportingRepository>((ref) {
-  final user = ref.watch(currentUserProvider).valueOrNull;
-  final isDemoUser = user != null &&
-      (user.id.startsWith('00000000-') ||
-          user.id.startsWith('usr_') ||
-          user.role == UserRole.schoolAdmin ||
-          user.role == UserRole.teacher);
-  if (isDemoUser) {
-    return LocalInstitutionalReportingRepository();
-  }
   if (EnvConfig.isProductionLike) {
     if (!EnvConfig.isSupabaseConfigured) {
       throw StateError(

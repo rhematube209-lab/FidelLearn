@@ -265,7 +265,7 @@ final teacherPortalRepositoryProvider =
       (user.id.startsWith('00000000-') ||
           user.id.startsWith('usr_') ||
           user.role == UserRole.teacher);
-  if (isDemoUser) {
+  if (!EnvConfig.isProductionLike && isDemoUser) {
     return LocalTeacherPortalRepository();
   }
   if (EnvConfig.isProductionLike) {
@@ -294,7 +294,7 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
           user.id.startsWith('usr_') ||
           user.role == UserRole.schoolAdmin ||
           user.role == UserRole.teacher);
-  if (isDemoUser) {
+  if (!EnvConfig.isProductionLike && isDemoUser) {
     return LocalSchoolRepository(sessionStorage: storage);
   }
   if (EnvConfig.isProductionLike) {
@@ -304,11 +304,11 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
         'A ${EnvConfig.appEnvironment} build must not activate mock school repositories.',
       );
     }
-    return SupabaseSchoolRepository(sessionStorage: storage);
+    return SupabaseSchoolRepository();
   }
   if (EnvConfig.isSupabaseConfigured) {
     try {
-      return SupabaseSchoolRepository(sessionStorage: storage);
+      return SupabaseSchoolRepository();
     } catch (_) {}
   }
   EnvConfig.assertNoMockInProduction('LocalSchoolRepository');
@@ -322,7 +322,7 @@ final classroomRepositoryProvider = Provider<ClassroomRepository>((ref) {
           user.id.startsWith('usr_') ||
           user.role == UserRole.schoolAdmin ||
           user.role == UserRole.teacher);
-  if (isDemoUser) {
+  if (!EnvConfig.isProductionLike && isDemoUser) {
     return MockClassroomRepository();
   }
   if (EnvConfig.isProductionLike) {

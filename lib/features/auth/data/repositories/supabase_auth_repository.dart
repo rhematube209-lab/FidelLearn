@@ -300,28 +300,31 @@ class SupabaseAuthRepository implements AuthRepository {
             'Please enter a valid phone number (at least 9 digits).');
       }
 
-      // 1. Instant check for Quick Fill Demo Accounts
-      for (final entry in _demoProfiles.entries) {
-        final entryNorm = normalizePhone(entry.key);
-        final entryClean = _cleanPhone(entry.key);
-        if (entryNorm == normalized ||
-            entryClean == clean ||
-            (clean.length >= 9 &&
-                entryClean.endsWith(clean.substring(clean.length - 9))) ||
-            (entryClean.length >= 9 &&
-                clean.endsWith(entryClean.substring(entryClean.length - 9)))) {
-          final expectedPass = _demoPasswords[entry.key];
-          final isAcceptablePass = expectedPass == null ||
-              expectedPass == password ||
-              password == 'password123' ||
-              password == 'schoolAdminPass123' ||
-              password == 'tenantAdminPass123' ||
-              password == 'teacherPass123' ||
-              password == 'tenantTeacherPass123' ||
-              password == 'adminPass123' ||
-              password.length >= 6;
-          if (isAcceptablePass) {
-            return await _commitUser(entry.value, rememberMe: rememberMe);
+      // 1. Instant check for Quick Fill Demo Accounts (strictly isolated to local development mode)
+      if (!EnvConfig.isProductionLike && EnvConfig.isDevelopment) {
+        for (final entry in _demoProfiles.entries) {
+          final entryNorm = normalizePhone(entry.key);
+          final entryClean = _cleanPhone(entry.key);
+          if (entryNorm == normalized ||
+              entryClean == clean ||
+              (clean.length >= 9 &&
+                  entryClean.endsWith(clean.substring(clean.length - 9))) ||
+              (entryClean.length >= 9 &&
+                  clean
+                      .endsWith(entryClean.substring(entryClean.length - 9)))) {
+            final expectedPass = _demoPasswords[entry.key];
+            final isAcceptablePass = expectedPass == null ||
+                expectedPass == password ||
+                password == 'password123' ||
+                password == 'schoolAdminPass123' ||
+                password == 'tenantAdminPass123' ||
+                password == 'teacherPass123' ||
+                password == 'tenantTeacherPass123' ||
+                password == 'adminPass123' ||
+                password.length >= 6;
+            if (isAcceptablePass) {
+              return await _commitUser(entry.value, rememberMe: rememberMe);
+            }
           }
         }
       }
@@ -382,31 +385,6 @@ class SupabaseAuthRepository implements AuthRepository {
               )
               .timeout(const Duration(seconds: 5));
         } catch (_) {
-          // Check demo passwords as fallback before throwing error
-          for (final entry in _demoProfiles.entries) {
-            final entryNorm = normalizePhone(entry.key);
-            final entryClean = _cleanPhone(entry.key);
-            if (entryNorm == normalized ||
-                entryClean == clean ||
-                (clean.length >= 9 &&
-                    entryClean.endsWith(clean.substring(clean.length - 9))) ||
-                (entryClean.length >= 9 &&
-                    clean.endsWith(entryClean.substring(entryClean.length - 9)))) {
-              final expectedPass = _demoPasswords[entry.key];
-              final isAcceptablePass = expectedPass == null ||
-                  expectedPass == password ||
-                  password == 'password123' ||
-                  password == 'schoolAdminPass123' ||
-                  password == 'tenantAdminPass123' ||
-                  password == 'teacherPass123' ||
-                  password == 'tenantTeacherPass123' ||
-                  password == 'adminPass123' ||
-                  password.length >= 6;
-              if (isAcceptablePass) {
-                return await _commitUser(entry.value, rememberMe: rememberMe);
-              }
-            }
-          }
           if (!EnvConfig.isProductionLike &&
               EnvConfig.isDevelopment &&
               _localProfiles.containsKey(normalized)) {
