@@ -143,11 +143,11 @@ CREATE TABLE IF NOT EXISTS public.teacher_subject_assignments (
 -- Institutional Plans
 CREATE TABLE IF NOT EXISTS public.institutional_plans (
     plan_code TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    max_student_seats INT NOT NULL,
-    feature_entitlements JSONB NOT NULL,
-    billing_cadence TEXT NOT NULL CHECK (billing_cadence IN ('monthly', 'annual', 'term')),
-    is_public BOOLEAN NOT NULL DEFAULT FALSE,
+    display_name TEXT NOT NULL,
+    default_student_seat_limit INT NOT NULL CHECK (default_student_seat_limit > 0),
+    default_entitlements JSONB NOT NULL,
+    billing_interval TEXT NOT NULL CHECK (billing_interval IN ('monthly', 'term', 'annual', 'custom')),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
 );
@@ -233,7 +233,7 @@ ON CONFLICT (id) DO UPDATE SET status = 'active';
 -- -----------------------------------------------------------------------------
 -- 3. SEED SCHOOL LICENSES (Standard Institutional License - 500 Seats)
 -- -----------------------------------------------------------------------------
-INSERT INTO public.institutional_plans (plan_code, name, max_student_seats, feature_entitlements, billing_cadence, is_public)
+INSERT INTO public.institutional_plans (plan_code, display_name, default_student_seat_limit, default_entitlements, billing_interval, is_active)
 VALUES (
     'school_standard',
     'Standard Secondary School License',
