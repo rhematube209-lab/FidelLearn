@@ -2,7 +2,8 @@
 
 ## Overview
 
-FidelLearn uses three environments:
+FidelLearn uses a separate sample-data demo alongside development, staging,
+and production:
 
 ```
 LOCAL (development)
@@ -21,6 +22,7 @@ Environment is selected at **compile time** via `--dart-define=APP_ENVIRONMENT=`
 | Environment | Missing Supabase credentials | Supabase init failure |
 |---|---|---|
 | `development` | Falls back to offline/mock mode | Logged, continues offline |
+| `demo` | Always uses local sample data, even if cloud variables are present | Supabase is never initialized |
 | `staging` | **App crashes with StateError** | **App crashes, rethrows** |
 | `production` | **App crashes with StateError** | **App crashes, rethrows** |
 
@@ -35,10 +37,26 @@ in mock mode because a CI variable was omitted.
 |---|---|---|
 | `SUPABASE_URL` | Flutter (dart-define) | Project URL from Supabase dashboard |
 | `SUPABASE_PUBLISHABLE_KEY` | Flutter (dart-define) | Public/anon key (safe for client) |
-| `APP_ENVIRONMENT` | Flutter (dart-define) | `development` \| `staging` \| `production` |
+| `APP_ENVIRONMENT` | Flutter (dart-define) | `development` \| `demo` \| `staging` \| `pilot` \| `production` |
 
 **Never use** `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` in Flutter.
 Server-side keys belong only in Supabase Vault and CI/CD secrets.
+
+---
+
+## Isolated Vercel demo
+
+For a Vercel project intended solely for public sample data, set its Production
+environment variable `APP_ENVIRONMENT=demo` and redeploy a commit containing
+this mode. `vercel-build.sh` then compiles local repositories and sample accounts
+without embedding any Supabase URL or key. The School Admin demo account is
+`+251944556677` with `schoolAdminPass123` (or the shared sample password
+`password123`). Demo accounts are for evaluation only; user changes are local to
+their browser and do not create cloud accounts. Do not run
+`supabase/seed_production_demo_users.sql` for this deployment.
+
+Staging, pilot, and production builds still require Supabase configuration and
+do not accept local sample credentials.
 
 ---
 

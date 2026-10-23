@@ -22,17 +22,17 @@ if [ -z "$TARGET_ENV" ]; then
   fi
 fi
 
-# Validation: Release builds must use a valid production-like environment (staging, pilot, production).
-# Development builds are strictly prohibited on Vercel releases.
+# Validation: release builds use a production-like environment or the
+# explicitly selected, sample-data-only demo environment.
 if [ -z "$TARGET_ENV" ]; then
   echo "ERROR: APP_ENVIRONMENT (or VERCEL_ENV) must be provided."
-  echo "Valid values for release builds: 'staging', 'pilot', 'production'."
+  echo "Valid values for release builds: 'demo', 'staging', 'pilot', 'production'."
   echo "Neither APP_ENVIRONMENT nor VERCEL_ENV was recognized."
   exit 1
 fi
 
 case "$TARGET_ENV" in
-  production|pilot|staging)
+  demo|production|pilot|staging)
     echo "Configuring release build for environment: $TARGET_ENV"
     ;;
   development)
@@ -41,12 +41,22 @@ case "$TARGET_ENV" in
     exit 1
     ;;
   *)
-    echo "ERROR: Invalid environment '$TARGET_ENV'. Must be one of: 'staging', 'pilot', 'production'."
+    echo "ERROR: Invalid environment '$TARGET_ENV'. Must be one of: 'demo', 'staging', 'pilot', 'production'."
     exit 1
     ;;
 esac
 
 echo "=== STEP 2: Resolve Client-Safe Supabase Configuration ==="
+
+if [ "$TARGET_ENV" = "demo" ]; then
+  # The demo is an isolated local-data build. Never embed Supabase settings,
+  # even if this Vercel project also defines them for other environments.
+  if [ "${VALIDATE_ONLY:-}" = "true" ] || [ "${1:-}" = "--validate-only" ]; then
+    echo "Demo build selected; no Supabase configuration will be included."
+    exit 0
+  fi
+  echo "Demo build selected; using sample data without Supabase."
+else
 
 # Check environment-specific or general variables for Supabase credentials.
 TARGET_SUPABASE_URL="${SUPABASE_URL:-}"
@@ -139,6 +149,8 @@ fi
 
 echo "Supabase client configuration validated for $TARGET_ENV."
 
+fi
+
 # Support dry-run validation without cloning Flutter or building
 if [ "${VALIDATE_ONLY:-}" = "true" ] || [ "${1:-}" = "--validate-only" ]; then
   echo "Build arguments validated successfully (--validate-only). Exiting before build."
@@ -163,10 +175,15 @@ echo "=== STEP 6: Install Dependencies ==="
 flutter pub get
 
 echo "=== STEP 7: Compile Web Release ==="
-flutter build web --release --no-tree-shake-icons \
-  --dart-define=APP_ENVIRONMENT="$TARGET_ENV" \
-  --dart-define=SUPABASE_URL="$TARGET_SUPABASE_URL" \
-  --dart-define=SUPABASE_PUBLISHABLE_KEY="$TARGET_SUPABASE_KEY"
+if [ "$TARGET_ENV" = "demo" ]; then
+  flutter build web --release --no-tree-shake-icons \
+    --dart-define=APP_ENVIRONMENT=demo
+else
+  flutter build web --release --no-tree-shake-icons \
+    --dart-define=APP_ENVIRONMENT="$TARGET_ENV" \
+    --dart-define=SUPABASE_URL="$TARGET_SUPABASE_URL" \
+    --dart-define=SUPABASE_PUBLISHABLE_KEY="$TARGET_SUPABASE_KEY"
+fi
 
 echo "=== STEP 8: Verify Output in build/web ==="
 ls -la build/web

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fidel_learn/app/app.dart';
+import 'package:fidel_learn/core/config/env_config.dart';
 import 'package:fidel_learn/core/providers/app_providers.dart';
 import 'package:fidel_learn/core/routing/app_router.dart';
 import 'package:fidel_learn/core/security/auth_session_storage.dart';
@@ -360,6 +361,8 @@ void main() {
     testWidgets(
         'Successful login navigates school admin to /school (SchoolLeadershipHomeScreen)',
         (WidgetTester tester) async {
+      EnvConfig.overrideEnvironment = 'demo';
+      addTearDown(EnvConfig.resetTestOverrides);
       tester.view.physicalSize = const Size(1280, 800);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -392,6 +395,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(LoginScreen), findsOneWidget);
+
+      expect(find.text('Quick-Fill Demo Accounts'), findsOneWidget);
+      expect(find.text('School Admin'), findsOneWidget);
 
       // Enter school admin credentials using TextFields
       final textFields = find.byType(TextField);

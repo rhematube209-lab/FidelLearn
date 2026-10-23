@@ -54,6 +54,13 @@ assert_fails "Missing APP_ENVIRONMENT and VERCEL_ENV rejects build" \
 assert_fails "Explicit APP_ENVIRONMENT=development rejects build" \
   env -i PATH="$PATH" APP_ENVIRONMENT="development" bash "$BUILD_SCRIPT" --validate-only
 
+# An explicit isolated demo release needs no backend settings. Stray cloud
+# settings must not change the selected build path.
+assert_succeeds "Explicit demo build needs no Supabase variables" \
+  env -i PATH="$PATH" APP_ENVIRONMENT="demo" bash "$BUILD_SCRIPT" --validate-only
+assert_succeeds "Explicit demo build ignores Supabase variables" \
+  env -i PATH="$PATH" APP_ENVIRONMENT="demo" SUPABASE_URL="$SYNTHETIC_URL" SUPABASE_PUBLISHABLE_KEY="$SYNTHETIC_MODERN_SECRETKEY" bash "$BUILD_SCRIPT" --validate-only
+
 # 3. Missing Supabase URL
 assert_fails "Missing Supabase URL rejects build" \
   env -i PATH="$PATH" APP_ENVIRONMENT="production" SUPABASE_PUBLISHABLE_KEY="$SYNTHETIC_MODERN_PUBKEY" bash "$BUILD_SCRIPT" --validate-only

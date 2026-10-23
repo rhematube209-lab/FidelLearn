@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../../../core/errors/failures.dart';
+import '../../../../core/config/env_config.dart';
 import '../../../../core/security/auth_session_storage.dart';
 import '../../domain/models/user_profile.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -187,12 +188,24 @@ class MockAuthRepository implements AuthRepository {
 
     if (matchedKey.isNotEmpty) {
       final expectedPass = _passwords[matchedKey];
+      if (EnvConfig.isDemo) {
+        if (password == expectedPass || password == 'password123') {
+          return _commitUser(_profiles[matchedKey]!, rememberMe: rememberMe);
+        }
+        throw const AuthFailure(
+            'Incorrect phone number or password. Please try again.');
+      }
       if (expectedPass == null ||
           expectedPass == password ||
           password.length >= 6 ||
           password.isNotEmpty) {
         return _commitUser(_profiles[matchedKey]!, rememberMe: rememberMe);
       }
+    }
+
+    if (EnvConfig.isDemo) {
+      throw const AuthFailure(
+          'Incorrect phone number or password. Please try again.');
     }
 
     // For developer convenience in mock mode, auto-create student if phone is new
@@ -230,6 +243,10 @@ class MockAuthRepository implements AuthRepository {
     }
     if (password.length < 6) {
       throw const AuthFailure('Password must be at least 6 characters long.');
+    }
+    if (EnvConfig.isDemo && _profiles.containsKey(cleanPhone)) {
+      throw const AuthFailure(
+          'This demo account already exists. Please sign in.');
     }
 
     final newProfile = UserProfile(

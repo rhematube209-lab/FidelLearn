@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fidel_learn/features/auth/data/repositories/mock_auth_repository.dart';
+import 'package:fidel_learn/core/config/env_config.dart';
+import 'package:fidel_learn/core/errors/failures.dart';
 import 'package:fidel_learn/features/auth/data/repositories/supabase_auth_repository.dart';
 import 'package:fidel_learn/features/auth/domain/models/user_profile.dart';
 import 'package:fidel_learn/core/providers/app_providers.dart';
@@ -16,6 +18,37 @@ void main() {
     setUp(() {
       mockAuth = MockAuthRepository();
       userNotifier = CurrentUserNotifier(mockAuth);
+    });
+
+    tearDown(EnvConfig.resetTestOverrides);
+
+    test('isolated demo accepts school admin credentials and rejects mistakes',
+        () async {
+      EnvConfig.overrideEnvironment = 'demo';
+      final admin =
+          await userNotifier.login('0944556677', 'schoolAdminPass123');
+      expect(admin.role, UserRole.schoolAdmin);
+      await expectLater(
+        userNotifier.login('0944556677', 'wrongPassword'),
+        throwsA(isA<AuthFailure>()),
+      );
+      await expectLater(
+        userNotifier.login('0999999999', 'password123'),
+        throwsA(isA<AuthFailure>()),
+      );
+      await expectLater(
+        mockAuth.registerWithPhone(
+          phoneNumber: '0944556677',
+          password: 'anotherPassword',
+          displayName: 'Student',
+          grade: 12,
+          stream: 'natural',
+          preferredLanguage: 'en',
+        ),
+        throwsA(isA<AuthFailure>()),
+      );
+      final alias = await userNotifier.login('0944556677', 'password123');
+      expect(alias.role, UserRole.schoolAdmin);
     });
 
     test('Demo Student logs in successfully with valid UUID', () async {

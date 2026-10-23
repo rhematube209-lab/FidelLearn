@@ -3,8 +3,9 @@
 /// All values are injected at compile time via:
 ///   flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_PUBLISHABLE_KEY=... --dart-define=APP_ENVIRONMENT=...
 ///
-/// LOCAL DEVELOPMENT:
+/// LOCAL DEVELOPMENT / ISOLATED DEMO:
 ///   Missing credentials → offline/mock mode (safe fallback).
+///   Demo mode never initializes Supabase, even if variables are present.
 ///
 /// STAGING / PRODUCTION:
 ///   Missing credentials → [requireSupabase] throws a [StateError] at startup.
@@ -56,11 +57,12 @@ class EnvConfig {
       overrideSupabasePublishableKey ?? _defaultSupabasePublishableKey;
 
   /// Deployment environment identifier.
-  /// Provide via: --dart-define=APP_ENVIRONMENT=development|staging|production
+  /// Provide via: --dart-define=APP_ENVIRONMENT=development|demo|staging|pilot|production
   static String get appEnvironment =>
       overrideEnvironment ?? _defaultAppEnvironment;
 
   static bool get isDevelopment => appEnvironment == 'development';
+  static bool get isDemo => appEnvironment == 'demo';
   static bool get isStaging => appEnvironment == 'staging';
   static bool get isPilot => appEnvironment == 'pilot';
   static bool get isProduction => appEnvironment == 'production';
@@ -69,9 +71,9 @@ class EnvConfig {
   /// real backend repositories are mandatory and mock fallbacks are strictly prohibited.
   static bool get isProductionLike => isProduction || isPilot || isStaging;
 
-  /// Returns true when both Supabase credentials are present.
+  /// Returns true when cloud credentials are present and demo mode is inactive.
   static bool get isSupabaseConfigured =>
-      supabaseUrl.isNotEmpty && supabasePublishableKey.isNotEmpty;
+      !isDemo && supabaseUrl.isNotEmpty && supabasePublishableKey.isNotEmpty;
 
   /// Returns true when Supabase is configured; throws in staging/pilot/production
   /// if either credential is missing.
@@ -79,8 +81,9 @@ class EnvConfig {
   /// This ensures that CI/CD jobs which omit secrets fail loudly at startup
   /// rather than silently deploying a mock/offline build to real users.
   ///
-  /// In development, returns false and the app enters offline/mock mode.
+  /// In development without credentials or in demo, returns false for local data.
   static bool get requireSupabase {
+    if (isDemo) return false;
     if (isSupabaseConfigured) return true;
     if (isDevelopment) return false;
     throw StateError(

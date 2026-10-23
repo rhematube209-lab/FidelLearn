@@ -31,6 +31,21 @@ void main() {
   });
 
   group('Priority 1 — Fail-Closed Startup & Provider Wiring', () {
+    test('demo mode selects local auth and school data despite cloud variables',
+        () {
+      EnvConfig.overrideEnvironment = 'demo';
+      EnvConfig.overrideSupabaseUrl = 'https://example.supabase.co';
+      EnvConfig.overrideSupabasePublishableKey = 'test_pub_key';
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      expect(container.read(authRepositoryProvider), isA<MockAuthRepository>());
+      expect(container.read(schoolLeadershipRepositoryProvider),
+          isA<LocalSchoolLeadershipRepository>());
+      expect(container.read(teacherPortalRepositoryProvider),
+          isA<LocalTeacherPortalRepository>());
+    });
+
     test(
         'In development without credentials, providers select safe local/mock fallbacks',
         () {

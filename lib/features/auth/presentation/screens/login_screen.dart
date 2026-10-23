@@ -301,40 +301,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton.icon(
-                          icon:
-                              const Icon(Icons.offline_bolt_outlined, size: 16),
-                          label: Text(
-                            isAmharic
-                                ? 'ከመስመር ውጭ (Offline) ግባ'
-                                : 'Continue in Offline Mode',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.brand,
-                            ),
-                          ),
-                          onPressed: () async {
-                            await ref
-                                .read(currentUserProvider.notifier)
-                                .register(
-                                  phone: _phoneController.text.trim(),
-                                  pass: _passController.text.trim().isEmpty
-                                      ? 'password123'
-                                      : _passController.text.trim(),
-                                  name: 'Student',
-                                  grade: widget.initialGrade ?? 12,
-                                  stream: widget.initialStream ?? 'natural',
-                                  lang: _lang,
-                                );
-                            if (!context.mounted) return;
-                            context.go('/home');
-                          },
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -486,8 +452,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
               const SizedBox(height: 20),
 
-              // Quick Fill Test Accounts (Strictly isolated to local development mode)
-              if (!EnvConfig.isProductionLike && EnvConfig.isDevelopment) ...[
+              // Sample accounts are available only with the local/mock backend.
+              if (EnvConfig.isDemo ||
+                  (EnvConfig.isDevelopment &&
+                      !EnvConfig.isSupabaseConfigured)) ...[
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(

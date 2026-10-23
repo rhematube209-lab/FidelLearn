@@ -174,7 +174,8 @@ CREATE TABLE IF NOT EXISTS public.school_licenses (
 );
 
 -- -----------------------------------------------------------------------------
--- 0b. RLS POLICIES (Allow authenticated users to read institutional records)
+-- 0b. RLS: retain the tenant-scoped policies from versioned migrations.
+-- Remove permissive policies if an older copy of this seed was already run.
 -- -----------------------------------------------------------------------------
 ALTER TABLE public.schools ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.school_memberships ENABLE ROW LEVEL SECURITY;
@@ -184,29 +185,13 @@ ALTER TABLE public.teacher_subject_assignments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.school_licenses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
-DO $$ BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'schools' AND policyname = 'schools_read_all') THEN
-        CREATE POLICY "schools_read_all" ON public.schools FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'school_memberships' AND policyname = 'school_memberships_read_all') THEN
-        CREATE POLICY "school_memberships_read_all" ON public.school_memberships FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'classrooms' AND policyname = 'classrooms_read_all') THEN
-        CREATE POLICY "classrooms_read_all" ON public.classrooms FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'classroom_memberships' AND policyname = 'classroom_memberships_read_all') THEN
-        CREATE POLICY "classroom_memberships_read_all" ON public.classroom_memberships FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'teacher_subject_assignments' AND policyname = 'teacher_subject_assignments_read_all') THEN
-        CREATE POLICY "teacher_subject_assignments_read_all" ON public.teacher_subject_assignments FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'school_licenses' AND policyname = 'school_licenses_read_all') THEN
-        CREATE POLICY "school_licenses_read_all" ON public.school_licenses FOR SELECT TO authenticated USING (true);
-    END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'profiles_read_all') THEN
-        CREATE POLICY "profiles_read_all" ON public.profiles FOR SELECT TO authenticated USING (true);
-    END IF;
-END $$;
+DROP POLICY IF EXISTS "schools_read_all" ON public.schools;
+DROP POLICY IF EXISTS "school_memberships_read_all" ON public.school_memberships;
+DROP POLICY IF EXISTS "classrooms_read_all" ON public.classrooms;
+DROP POLICY IF EXISTS "classroom_memberships_read_all" ON public.classroom_memberships;
+DROP POLICY IF EXISTS "teacher_subject_assignments_read_all" ON public.teacher_subject_assignments;
+DROP POLICY IF EXISTS "school_licenses_read_all" ON public.school_licenses;
+DROP POLICY IF EXISTS "profiles_read_all" ON public.profiles;
 
 -- -----------------------------------------------------------------------------
 -- 1. SEED SCHOOLS
@@ -641,6 +626,11 @@ BEGIN
     RETURN 'SUCCESS: Assigned role ' || p_role || ' to ' || p_phone || ' at ' || v_school_name;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- PostgreSQL grants EXECUTE to PUBLIC by default for newly created functions.
+-- Only privileged operators may use this maintenance helper.
+REVOKE ALL ON FUNCTION public.assign_school_role(TEXT, TEXT, UUID)
+    FROM PUBLIC, anon, authenticated;
 
 -- Cleanup temporary helper function
 DROP FUNCTION IF EXISTS public.provision_demo_user(UUID, TEXT, TEXT, TEXT, TEXT, TEXT, INT, TEXT, UUID, TEXT, UUID);

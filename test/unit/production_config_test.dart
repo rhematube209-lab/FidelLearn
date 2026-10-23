@@ -33,6 +33,16 @@ void main() {
       expect(EnvConfig.isSupabaseConfigured, isFalse);
     });
 
+    test('isolated demo ignores Supabase variables even when supplied', () {
+      EnvConfig.overrideEnvironment = 'demo';
+      EnvConfig.overrideSupabaseUrl = 'https://example.supabase.co';
+      EnvConfig.overrideSupabasePublishableKey = 'test_pub_key';
+      expect(EnvConfig.isDemo, isTrue);
+      expect(EnvConfig.isProductionLike, isFalse);
+      expect(EnvConfig.isSupabaseConfigured, isFalse);
+      expect(EnvConfig.requireSupabase, isFalse);
+    });
+
     test('appEnvironment defaults to development', () {
       expect(EnvConfig.appEnvironment, equals('development'));
       expect(EnvConfig.isDevelopment, isTrue);
