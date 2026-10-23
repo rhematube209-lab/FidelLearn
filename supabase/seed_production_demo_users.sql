@@ -1,10 +1,11 @@
 -- =============================================================================
--- FidelLearn Production Seed: Demo Accounts & Institutional Setup
+-- FidelLearn Production Seed: Demo Accounts & Institutional Setup (v3)
 -- Description: Self-contained setup script. Automatically ensures all required
---              tables (schools, classrooms, memberships, licenses, profiles),
---              indexes, policies, and dashboard RPCs exist, then creates real
---              Supabase auth.users records for immediate testing on deployed sites.
--- Execution: Paste and run directly in the Supabase Dashboard SQL Editor.
+--              tables exist, creates both auth.users AND auth.identities records
+--              (required by Supabase GoTrue Auth for password login), confirms
+--              emails/phones, and links school memberships.
+-- Password:    'password123' for ALL demo accounts.
+-- Execution:   Paste and run directly in the Supabase Dashboard SQL Editor.
 -- =============================================================================
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -394,7 +395,7 @@ INSERT INTO public.school_licenses (
     ends_at = NOW() + INTERVAL '335 days';
 
 -- -----------------------------------------------------------------------------
--- 4. HELPER PROVISIONING FUNCTION FOR REAL AUTH USERS
+-- 4. HARDENED PROVISIONING FUNCTION (Populates BOTH auth.users AND auth.identities)
 -- -----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.provision_demo_user(
     p_desired_id UUID,
@@ -411,12 +412,25 @@ CREATE OR REPLACE FUNCTION public.provision_demo_user(
 ) RETURNS UUID AS $$
 DECLARE
     v_user_id UUID;
+    v_has_provider_id BOOLEAN;
+    v_has_confirmed_at BOOLEAN;
+    v_has_is_anonymous BOOLEAN;
 BEGIN
     -- Check if user already exists in auth.users by email or phone
-    SELECT id INTO v_user_id FROM auth.users WHERE email = p_email OR phone = p_phone LIMIT 1;
+    SELECT id INTO v_user_id FROM auth.users WHERE LOWER(email) = LOWER(p_email) OR phone = p_phone LIMIT 1;
+
+    -- Inspect auth.users schema dynamically
+    SELECT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_schema = 'auth' AND table_name = 'users' AND column_name = 'confirmed_at'
+    ) INTO v_has_confirmed_at;
+
+    SELECT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_schema = 'auth' AND table_name = 'users' AND column_name = 'is_anonymous'
+    ) INTO v_has_is_anonymous;
 
     IF v_user_id IS NULL THEN
-        -- Check if desired UUID is already taken
         IF EXISTS (SELECT 1 FROM auth.users WHERE id = p_desired_id) THEN
             v_user_id := gen_random_uuid();
         ELSE
@@ -443,8 +457,8 @@ BEGIN
             v_user_id,
             'authenticated',
             'authenticated',
-            p_email,
-            crypt(p_password, gen_salt('bf')),
+            LOWER(p_email),
+            crypt(p_password, gen_salt('bf', 10)),
             NOW(),
             p_phone,
             NOW(),
@@ -462,11 +476,12 @@ BEGIN
             NOW()
         );
     ELSE
-        -- Update password and confirmation timestamps on existing user
         UPDATE auth.users SET
-            encrypted_password = crypt(p_password, gen_salt('bf')),
-            email = p_email,
+            encrypted_password = crypt(p_password, gen_salt('bf', 10)),
+            email = LOWER(p_email),
             phone = p_phone,
+            aud = 'authenticated',
+            role = 'authenticated',
             email_confirmed_at = COALESCE(email_confirmed_at, NOW()),
             phone_confirmed_at = COALESCE(phone_confirmed_at, NOW()),
             raw_app_meta_data = '{"provider":"email","providers":["email"]}'::jsonb,
@@ -480,6 +495,34 @@ BEGIN
             ),
             updated_at = NOW()
         WHERE id = v_user_id;
+    END IF;
+
+    -- Update confirmed_at if column exists
+    IF v_has_confirmed_at THEN
+        EXECUTE 'UPDATE auth.users SET confirmed_at = NOW() WHERE id = $1' USING v_user_id;
+    END IF;
+
+    -- Update is_anonymous if column exists
+    IF v_has_is_anonymous THEN
+        EXECUTE 'UPDATE auth.users SET is_anonymous = false WHERE id = $1' USING v_user_id;
+    END IF;
+
+    -- CRITICAL STEP: Provision auth.identities so GoTrue allows email/password sign-in!
+    DELETE FROM auth.identities WHERE user_id = v_user_id OR (provider = 'email' AND identity_data->>'email' = LOWER(p_email));
+
+    SELECT EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_schema = 'auth' AND table_name = 'identities' AND column_name = 'provider_id'
+    ) INTO v_has_provider_id;
+
+    IF v_has_provider_id THEN
+        EXECUTE 'INSERT INTO auth.identities (id, user_id, identity_data, provider, provider_id, last_sign_in_at, created_at, updated_at) ' ||
+                'VALUES ($1, $2, $3, ''email'', $1, NOW(), NOW(), NOW())'
+        USING v_user_id::text, v_user_id, jsonb_build_object('sub', v_user_id::text, 'email', LOWER(p_email), 'email_verified', true, 'phone_verified', true);
+    ELSE
+        EXECUTE 'INSERT INTO auth.identities (id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at) ' ||
+                'VALUES ($1, $2, $3, ''email'', NOW(), NOW(), NOW())'
+        USING v_user_id::text, v_user_id, jsonb_build_object('sub', v_user_id::text, 'email', LOWER(p_email), 'email_verified', true, 'phone_verified', true);
     END IF;
 
     -- Upsert public.profiles
@@ -528,7 +571,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- -----------------------------------------------------------------------------
--- 5. SEED ACCOUNTS
+-- 5. SEED ACCOUNTS (All configured with password: 'password123')
 -- -----------------------------------------------------------------------------
 
 -- 1. School Admin: Director Abebe (Bole Senior Secondary School)
@@ -536,7 +579,7 @@ SELECT public.provision_demo_user(
     'a1111111-1111-1111-1111-111111111111'::uuid,
     '+251944556677',
     'fidel_251944556677@gmail.com',
-    'schoolAdminPass123',
+    'password123',
     'Director Abebe',
     'school_admin',
     12,
@@ -550,7 +593,7 @@ SELECT public.provision_demo_user(
     'a2222222-2222-2222-2222-222222222222'::uuid,
     '+251955667788',
     'fidel_251955667788@gmail.com',
-    'tenantAdminPass123',
+    'password123',
     'Director Kebede',
     'school_admin',
     12,
@@ -564,7 +607,7 @@ SELECT public.provision_demo_user(
     'de111111-1111-1111-1111-111111111111'::uuid,
     '+251922334455',
     'fidel_251922334455@gmail.com',
-    'teacherPass123',
+    'password123',
     'Teacher Alemayehu',
     'teacher',
     12,
@@ -579,7 +622,7 @@ SELECT public.provision_demo_user(
     'de222222-2222-2222-2222-222222222222'::uuid,
     '+251966778899',
     'fidel_251966778899@gmail.com',
-    'tenantTeacherPass123',
+    'password123',
     'Teacher Bekele',
     'teacher',
     12,
@@ -624,7 +667,7 @@ SELECT public.provision_demo_user(
     '00000000-0000-0000-0000-000000000001'::uuid,
     '+251933445566',
     'fidel_251933445566@gmail.com',
-    'adminPass123',
+    'password123',
     'Global Platform Admin',
     'platform_admin',
     12,
@@ -641,19 +684,74 @@ INSERT INTO public.teacher_subject_assignments (
     ('22222222-2222-2222-2222-222222222222', (SELECT id FROM auth.users WHERE email = 'fidel_251966778899@gmail.com'), 'ca222222-2222-2222-2222-222222222222', 'math_g12', 'naturalScience', 'active')
 ON CONFLICT DO NOTHING;
 
+-- -----------------------------------------------------------------------------
+-- 7. HELPER: PROVISION OR UPGRADE ANY REGISTERED PHONE NUMBER
+--    Usage: SELECT public.assign_school_role('+2519xxxxxxxx', 'school_admin');
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.assign_school_role(
+    p_phone TEXT,
+    p_role TEXT, -- 'school_admin', 'teacher', or 'student'
+    p_school_id UUID DEFAULT '11111111-1111-1111-1111-111111111111'::uuid
+) RETURNS TEXT AS $$
+DECLARE
+    v_user_id UUID;
+    v_clean_phone TEXT;
+    v_school_name TEXT;
+BEGIN
+    v_clean_phone := REPLACE(REPLACE(p_phone, '+', ''), ' ', '');
+    IF v_clean_phone LIKE '0%' THEN
+        v_clean_phone := '251' || SUBSTRING(v_clean_phone, 2);
+    END IF;
+    IF LENGTH(v_clean_phone) = 9 THEN
+        v_clean_phone := '251' || v_clean_phone;
+    END IF;
+
+    SELECT id INTO v_user_id FROM public.profiles WHERE phone_number = p_phone OR phone_number = '+' || v_clean_phone LIMIT 1;
+    IF v_user_id IS NULL THEN
+        SELECT id INTO v_user_id FROM auth.users WHERE phone = p_phone OR phone = '+' || v_clean_phone OR email = 'fidel_' || v_clean_phone || '@gmail.com' LIMIT 1;
+    END IF;
+    
+    IF v_user_id IS NULL THEN
+        RETURN 'ERROR: User with phone ' || p_phone || ' not found. Please register on the app first.';
+    END IF;
+
+    SELECT name INTO v_school_name FROM public.schools WHERE id = p_school_id;
+    IF v_school_name IS NULL THEN
+        RETURN 'ERROR: School ID ' || p_school_id || ' not found.';
+    END IF;
+
+    -- Upsert school membership
+    INSERT INTO public.school_memberships (school_id, user_id, role, status, joined_at)
+    VALUES (p_school_id, v_user_id, p_role, 'active', NOW())
+    ON CONFLICT (school_id, user_id) DO UPDATE SET
+        role = p_role,
+        status = 'active';
+
+    -- Upsert global user role
+    INSERT INTO public.user_roles (user_id, role_id)
+    VALUES (v_user_id, p_role)
+    ON CONFLICT (user_id, role_id) DO NOTHING;
+
+    RETURN 'SUCCESS: Assigned role ' || p_role || ' to ' || p_phone || ' at ' || v_school_name;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- Cleanup temporary helper function
 DROP FUNCTION IF EXISTS public.provision_demo_user(UUID, TEXT, TEXT, TEXT, TEXT, TEXT, INT, TEXT, UUID, TEXT, UUID);
 
 -- -----------------------------------------------------------------------------
--- 7. VERIFICATION OUTPUT
+-- 8. VERIFICATION OUTPUT
 -- -----------------------------------------------------------------------------
 SELECT 
     p.phone_number,
     p.display_name,
-    p.grade,
     sm.role AS school_role,
-    s.name AS school_name
-FROM public.profiles p
+    s.name AS school_name,
+    u.email AS auth_email,
+    EXISTS(SELECT 1 FROM auth.identities i WHERE i.user_id = u.id) AS has_auth_identity,
+    u.email_confirmed_at IS NOT NULL AS email_confirmed
+FROM auth.users u
+JOIN public.profiles p ON p.id = u.id
 LEFT JOIN public.school_memberships sm ON sm.user_id = p.id
 LEFT JOIN public.schools s ON s.id = sm.school_id
 WHERE p.phone_number IN ('+251944556677', '+251955667788', '+251922334455', '+251966778899', '+251949652355', '+251911223344', '+251933445566')
