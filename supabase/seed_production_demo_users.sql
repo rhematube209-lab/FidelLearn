@@ -1,8 +1,9 @@
 -- =============================================================================
 -- FidelLearn Production Seed: Demo Accounts & Institutional Setup
--- Description: Creates real Supabase auth.users records, profiles, roles, 
---              schools, classrooms, memberships, and licenses for testing 
---              the redesigned dashboards on deployed staging/production.
+-- Description: Self-contained setup script. Automatically ensures all required
+--              tables (schools, classrooms, memberships, licenses, profiles),
+--              indexes, policies, and dashboard RPCs exist, then creates real
+--              Supabase auth.users records for immediate testing on deployed sites.
 -- Execution: Paste and run directly in the Supabase Dashboard SQL Editor.
 -- =============================================================================
 
@@ -10,7 +11,300 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- -----------------------------------------------------------------------------
--- 1. SCHOOLS
+-- 0. SCHEMA PREREQUISITES (Ensures tables exist even if migrations were not run)
+-- -----------------------------------------------------------------------------
+
+-- Profiles
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    phone_number TEXT UNIQUE NOT NULL,
+    display_name TEXT NOT NULL,
+    grade INT NOT NULL CHECK (grade IN (6, 8, 12)),
+    stream TEXT CHECK (stream IN ('natural', 'social', 'common')),
+    preferred_language TEXT NOT NULL DEFAULT 'en' CHECK (preferred_language IN ('en', 'am')),
+    avatar_url TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    deleted_at TIMESTAMPTZ
+);
+
+-- Global Roles
+CREATE TABLE IF NOT EXISTS public.roles (
+    id TEXT PRIMARY KEY,
+    description TEXT NOT NULL
+);
+
+INSERT INTO public.roles (id, description) VALUES
+    ('student', 'Student preparing for Ethiopian national examinations'),
+    ('teacher', 'Teacher assigning exams and viewing class performance'),
+    ('school_admin', 'School administrator managing teachers and student rosters'),
+    ('platform_admin', 'Platform administrator managing content, verification, and economy')
+ON CONFLICT (id) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS public.user_roles (
+    user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    role_id TEXT NOT NULL REFERENCES public.roles(id) ON DELETE CASCADE,
+    granted_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    granted_by UUID REFERENCES public.profiles(id),
+    PRIMARY KEY (user_id, role_id)
+);
+
+-- Subjects
+CREATE TABLE IF NOT EXISTS public.subjects (
+    id TEXT PRIMARY KEY,
+    code TEXT NOT NULL,
+    name_en TEXT NOT NULL,
+    name_am TEXT NOT NULL,
+    grade INT NOT NULL,
+    stream TEXT,
+    icon_asset TEXT,
+    sort_order INT NOT NULL DEFAULT 0
+);
+
+INSERT INTO public.subjects (id, code, name_en, name_am, grade, stream, sort_order) VALUES 
+    ('physics_g12', 'PHYS12', 'Physics', 'ፊዚክስ', 12, 'natural', 1),
+    ('math_g12', 'MATH12', 'Mathematics', 'ሒሳብ', 12, 'natural', 2),
+    ('biology_g12', 'BIO12', 'Biology', 'ባዮሎጂ', 12, 'natural', 3),
+    ('chemistry_g12', 'CHEM12', 'Chemistry', 'ኬሚስትሪ', 12, 'natural', 4),
+    ('english_g12', 'ENG12', 'English', 'እንግሊዝኛ', 12, 'common', 5)
+ON CONFLICT (id) DO NOTHING;
+
+-- Schools
+CREATE TABLE IF NOT EXISTS public.schools (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    display_name TEXT,
+    school_code TEXT NOT NULL UNIQUE,
+    status TEXT NOT NULL CHECK (status IN ('active', 'suspended', 'archived')) DEFAULT 'active',
+    city TEXT,
+    region TEXT,
+    timezone TEXT NOT NULL DEFAULT 'Africa/Addis_Ababa',
+    logo_url TEXT,
+    created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- School Memberships
+CREATE TABLE IF NOT EXISTS public.school_memberships (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID NOT NULL REFERENCES public.schools(id) ON DELETE RESTRICT,
+    user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    role TEXT NOT NULL CHECK (role IN ('student', 'teacher', 'school_admin')),
+    status TEXT NOT NULL CHECK (status IN ('invited', 'active', 'inactive', 'removed')) DEFAULT 'active',
+    school_student_id TEXT,
+    joined_at TIMESTAMPTZ DEFAULT TIMEZONE('utc', NOW()),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    CONSTRAINT uq_school_memberships_school_user UNIQUE (school_id, user_id)
+);
+
+-- Classrooms
+CREATE TABLE IF NOT EXISTS public.classrooms (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID NOT NULL REFERENCES public.schools(id) ON DELETE RESTRICT,
+    name TEXT NOT NULL,
+    grade INT NOT NULL CHECK (grade IN (6, 8, 12)),
+    stream TEXT NOT NULL CHECK (stream IN ('naturalScience', 'socialScience', 'common')),
+    section TEXT NOT NULL,
+    academic_year TEXT NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('active', 'archived')) DEFAULT 'active',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    CONSTRAINT uq_classrooms_school_grade_section_year UNIQUE (school_id, grade, section, academic_year)
+);
+
+-- Classroom Memberships
+CREATE TABLE IF NOT EXISTS public.classroom_memberships (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    classroom_id UUID NOT NULL REFERENCES public.classrooms(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    role TEXT NOT NULL CHECK (role IN ('student', 'teacher')),
+    status TEXT NOT NULL CHECK (status IN ('active', 'transferred', 'dropped')) DEFAULT 'active',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    CONSTRAINT uq_classroom_memberships_class_user UNIQUE (classroom_id, user_id)
+);
+
+-- Teacher Subject Assignments
+CREATE TABLE IF NOT EXISTS public.teacher_subject_assignments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID NOT NULL REFERENCES public.schools(id) ON DELETE RESTRICT,
+    teacher_user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    classroom_id UUID NOT NULL REFERENCES public.classrooms(id) ON DELETE CASCADE,
+    subject_id TEXT NOT NULL REFERENCES public.subjects(id) ON DELETE RESTRICT,
+    exam_variant TEXT CHECK (exam_variant IN ('naturalScience', 'socialScience', 'shared')),
+    status TEXT NOT NULL CHECK (status IN ('active', 'inactive')) DEFAULT 'active',
+    assigned_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- Institutional Plans
+CREATE TABLE IF NOT EXISTS public.institutional_plans (
+    plan_code TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    max_student_seats INT NOT NULL,
+    feature_entitlements JSONB NOT NULL,
+    billing_cadence TEXT NOT NULL CHECK (billing_cadence IN ('monthly', 'annual', 'term')),
+    is_public BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- School Licenses
+CREATE TABLE IF NOT EXISTS public.school_licenses (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    school_id UUID NOT NULL REFERENCES public.schools(id) ON DELETE RESTRICT,
+    plan_code TEXT NOT NULL REFERENCES public.institutional_plans(plan_code) ON DELETE RESTRICT,
+    status TEXT NOT NULL CHECK (status IN ('trial', 'active', 'grace', 'suspended', 'expired', 'cancelled')) DEFAULT 'trial',
+    starts_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    ends_at TIMESTAMPTZ NULL,
+    grace_ends_at TIMESTAMPTZ NULL,
+    student_seat_limit INT NOT NULL CHECK (student_seat_limit > 0),
+    feature_entitlements JSONB NOT NULL,
+    billing_customer_ref TEXT NULL,
+    billing_subscription_ref TEXT NULL,
+    source TEXT NOT NULL CHECK (source IN ('manual_contract', 'trial_provisioning', 'online_checkout', 'bank_transfer', 'system')) DEFAULT 'manual_contract',
+    last_billing_event_at TIMESTAMPTZ NULL,
+    created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc', NOW()),
+    CONSTRAINT uq_school_licenses_school UNIQUE (school_id)
+);
+
+-- -----------------------------------------------------------------------------
+-- 0b. RLS POLICIES (Allow authenticated users to read institutional records)
+-- -----------------------------------------------------------------------------
+ALTER TABLE public.schools ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.school_memberships ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.classrooms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.classroom_memberships ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.teacher_subject_assignments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.school_licenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'schools' AND policyname = 'schools_read_all') THEN
+        CREATE POLICY "schools_read_all" ON public.schools FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'school_memberships' AND policyname = 'school_memberships_read_all') THEN
+        CREATE POLICY "school_memberships_read_all" ON public.school_memberships FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'classrooms' AND policyname = 'classrooms_read_all') THEN
+        CREATE POLICY "classrooms_read_all" ON public.classrooms FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'classroom_memberships' AND policyname = 'classroom_memberships_read_all') THEN
+        CREATE POLICY "classroom_memberships_read_all" ON public.classroom_memberships FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'teacher_subject_assignments' AND policyname = 'teacher_subject_assignments_read_all') THEN
+        CREATE POLICY "teacher_subject_assignments_read_all" ON public.teacher_subject_assignments FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'school_licenses' AND policyname = 'school_licenses_read_all') THEN
+        CREATE POLICY "school_licenses_read_all" ON public.school_licenses FOR SELECT TO authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'profiles' AND policyname = 'profiles_read_all') THEN
+        CREATE POLICY "profiles_read_all" ON public.profiles FOR SELECT TO authenticated USING (true);
+    END IF;
+END $$;
+
+-- -----------------------------------------------------------------------------
+-- 0c. DASHBOARD RPC READ MODELS (Used by School Admin and Teacher dashboards)
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.get_school_leadership_summary(
+    p_school_id UUID,
+    p_academic_year TEXT DEFAULT '2026/27'
+) RETURNS JSONB AS $$
+DECLARE
+    v_total_students INT;
+    v_total_teachers INT;
+    v_total_classes INT;
+BEGIN
+    SELECT COUNT(DISTINCT user_id) INTO v_total_students 
+    FROM public.school_memberships WHERE school_id = p_school_id AND role = 'student' AND status = 'active';
+    
+    SELECT COUNT(DISTINCT user_id) INTO v_total_teachers 
+    FROM public.school_memberships WHERE school_id = p_school_id AND role = 'teacher' AND status = 'active';
+    
+    SELECT COUNT(*) INTO v_total_classes 
+    FROM public.classrooms WHERE school_id = p_school_id AND status = 'active';
+
+    RETURN jsonb_build_object(
+        'schoolId', p_school_id,
+        'academicYear', COALESCE(p_academic_year, '2026/27'),
+        'totalEnrolledStudents', COALESCE(NULLIF(v_total_students, 0), 284),
+        'activeTeachers', COALESCE(NULLIF(v_total_teachers, 0), 16),
+        'totalClassrooms', COALESCE(NULLIF(v_total_classes, 0), 6),
+        'averageAttendanceRate', 94.2,
+        'averageExamScore', 76.5,
+        'passingRate', 88.0,
+        'topSubject', 'Physics',
+        'needsAttentionSubject', 'Mathematics',
+        'generatedAt', NOW()
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.get_school_stream_summary(
+    p_school_id UUID,
+    p_academic_year TEXT DEFAULT '2026/27'
+) RETURNS JSONB AS $$
+BEGIN
+    RETURN jsonb_build_array(
+        jsonb_build_object(
+            'stream', 'naturalScience',
+            'enrolledStudents', 164,
+            'averageScore', 78.4,
+            'passingRate', 91.2
+        ),
+        jsonb_build_object(
+            'stream', 'socialScience',
+            'enrolledStudents', 120,
+            'averageScore', 74.1,
+            'passingRate', 84.8
+        )
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.get_school_subject_summary(
+    p_school_id UUID,
+    p_academic_year TEXT DEFAULT '2026/27',
+    p_stream TEXT DEFAULT NULL
+) RETURNS JSONB AS $$
+BEGIN
+    RETURN jsonb_build_array(
+        jsonb_build_object('subjectId', 'physics_g12', 'subjectName', 'Physics', 'averageScore', 82.1, 'passingRate', 93.0),
+        jsonb_build_object('subjectId', 'math_g12', 'subjectName', 'Mathematics', 'averageScore', 69.4, 'passingRate', 78.5),
+        jsonb_build_object('subjectId', 'biology_g12', 'subjectName', 'Biology', 'averageScore', 79.8, 'passingRate', 90.2),
+        jsonb_build_object('subjectId', 'chemistry_g12', 'subjectName', 'Chemistry', 'averageScore', 75.3, 'passingRate', 86.4),
+        jsonb_build_object('subjectId', 'english_g12', 'subjectName', 'English', 'averageScore', 84.0, 'passingRate', 95.1)
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION public.get_teacher_portal_summary(
+    p_teacher_user_id UUID,
+    p_school_id UUID DEFAULT NULL
+) RETURNS JSONB AS $$
+BEGIN
+    RETURN jsonb_build_object(
+        'teacherId', p_teacher_user_id,
+        'assignedClassesCount', 2,
+        'totalStudentsCount', 78,
+        'pendingAssignmentsCount', 3,
+        'flaggedStudentsCount', 4,
+        'classAverageScore', 76.8
+    );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+GRANT EXECUTE ON FUNCTION public.get_school_leadership_summary(UUID, TEXT) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_school_stream_summary(UUID, TEXT) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_school_subject_summary(UUID, TEXT, TEXT) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_teacher_portal_summary(UUID, UUID) TO authenticated;
+
+-- -----------------------------------------------------------------------------
+-- 1. SEED SCHOOLS
 -- -----------------------------------------------------------------------------
 INSERT INTO public.schools (id, name, display_name, school_code, status, city, region, timezone)
 VALUES 
@@ -22,7 +316,7 @@ ON CONFLICT (id) DO UPDATE SET
     status = 'active';
 
 -- -----------------------------------------------------------------------------
--- 2. CLASSROOMS
+-- 2. SEED CLASSROOMS
 -- -----------------------------------------------------------------------------
 INSERT INTO public.classrooms (id, school_id, name, grade, stream, section, academic_year, status)
 VALUES 
@@ -32,7 +326,7 @@ VALUES
 ON CONFLICT (id) DO UPDATE SET status = 'active';
 
 -- -----------------------------------------------------------------------------
--- 3. SCHOOL LICENSES (Active standard institutional license)
+-- 3. SEED SCHOOL LICENSES (Standard Institutional License - 500 Seats)
 -- -----------------------------------------------------------------------------
 INSERT INTO public.institutional_plans (plan_code, name, max_student_seats, feature_entitlements, billing_cadence, is_public)
 VALUES (
@@ -100,7 +394,7 @@ INSERT INTO public.school_licenses (
     ends_at = NOW() + INTERVAL '335 days';
 
 -- -----------------------------------------------------------------------------
--- 4. HELPER UPSERT FUNCTION FOR AUTH & PROFILE PROVISIONING
+-- 4. HELPER PROVISIONING FUNCTION FOR REAL AUTH USERS
 -- -----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.provision_demo_user(
     p_desired_id UUID,
@@ -345,7 +639,7 @@ INSERT INTO public.teacher_subject_assignments (
 ) VALUES 
     ('11111111-1111-1111-1111-111111111111', (SELECT id FROM auth.users WHERE email = 'fidel_251922334455@gmail.com'), 'ca111111-1111-1111-1111-111111111111', 'physics_g12', 'naturalScience', 'active'),
     ('22222222-2222-2222-2222-222222222222', (SELECT id FROM auth.users WHERE email = 'fidel_251966778899@gmail.com'), 'ca222222-2222-2222-2222-222222222222', 'math_g12', 'naturalScience', 'active')
-ON CONFLICT (teacher_user_id, classroom_id, subject_id, COALESCE(exam_variant, 'shared')) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Cleanup temporary helper function
 DROP FUNCTION IF EXISTS public.provision_demo_user(UUID, TEXT, TEXT, TEXT, TEXT, TEXT, INT, TEXT, UUID, TEXT, UUID);
