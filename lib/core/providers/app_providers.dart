@@ -295,7 +295,10 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
           user.role == UserRole.schoolAdmin ||
           user.role == UserRole.teacher);
   if (!EnvConfig.isProductionLike && isDemoUser) {
-    return LocalSchoolRepository(sessionStorage: storage);
+    return LocalSchoolRepository(
+      sessionStorage: storage,
+      currentUser: user,
+    );
   }
   if (EnvConfig.isProductionLike) {
     if (!EnvConfig.isSupabaseConfigured) {
@@ -312,7 +315,10 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
     } catch (_) {}
   }
   EnvConfig.assertNoMockInProduction('LocalSchoolRepository');
-  return LocalSchoolRepository(sessionStorage: storage);
+  return LocalSchoolRepository(
+    sessionStorage: storage,
+    currentUser: user,
+  );
 });
 
 final classroomRepositoryProvider = Provider<ClassroomRepository>((ref) {

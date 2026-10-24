@@ -151,19 +151,52 @@ class ActiveSchoolContextNotifier extends StateNotifier<ActiveSchoolContext> {
         return state;
       }
 
+      // Prioritize candidate memberships that match activeUser's role and user ID
+      final matchingRoleSchools = activeSchools.where((e) {
+        if (e.membership.userId == activeUser.id) return true;
+        if (activeUser.role == UserRole.schoolAdmin &&
+            e.membership.isSchoolAdmin) {
+          return true;
+        }
+        if (activeUser.role == UserRole.teacher && e.membership.isTeacher) {
+          return true;
+        }
+        if (activeUser.role == UserRole.student && e.membership.isStudent) {
+          return true;
+        }
+        return false;
+      }).toList();
+
+      final candidateSchools =
+          matchingRoleSchools.isNotEmpty ? matchingRoleSchools : activeSchools;
+
       // Deterministically select active school
       final savedSchoolId = await _storage.getActiveSchoolId();
       if (loadEpoch != _activeLoadEpoch) return state;
-      SchoolMembershipWithSchool selectedEntry = activeSchools.first;
+      SchoolMembershipWithSchool selectedEntry = candidateSchools.first;
 
       if (savedSchoolId != null) {
         final match =
-            activeSchools.cast<SchoolMembershipWithSchool?>().firstWhere(
+            candidateSchools.cast<SchoolMembershipWithSchool?>().firstWhere(
                   (e) => e?.school.id == savedSchoolId,
                   orElse: () => null,
                 );
         if (match != null) {
           selectedEntry = match;
+        }
+      }
+
+      // If activeUser is schoolAdmin but selected entry is not schoolAdmin, promote if admin match exists
+      if (activeUser.role == UserRole.schoolAdmin &&
+          !selectedEntry.membership.isSchoolAdmin) {
+        final adminMatch = activeSchools
+            .cast<SchoolMembershipWithSchool?>()
+            .firstWhere(
+              (e) => e?.membership.isSchoolAdmin == true,
+              orElse: () => null,
+            );
+        if (adminMatch != null) {
+          selectedEntry = adminMatch;
         }
       }
 

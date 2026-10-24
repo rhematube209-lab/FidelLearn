@@ -269,6 +269,23 @@ GoRouter createAppRouter({
         ),
         GoRoute(
           path: '/home',
+          redirect: (context, state) {
+            final userAsync = ref != null
+                ? ref.read(currentUserProvider)
+                : container?.read(currentUserProvider);
+            final user = userAsync?.valueOrNull;
+            if (user != null && user.role == UserRole.platformAdmin) {
+              return '/admin';
+            }
+            final schoolContext = ref != null
+                ? ref.read(activeSchoolContextProvider)
+                : container?.read(activeSchoolContextProvider);
+            if (schoolContext != null && !schoolContext.isLoading) {
+              if (schoolContext.isSchoolAdmin) return '/school';
+              if (schoolContext.isTeacher) return '/teacher';
+            }
+            return null;
+          },
           builder: (context, state) => const StudentHomeScreen(),
         ),
         GoRoute(

@@ -11,13 +11,16 @@ class LocalSchoolRepository implements SchoolRepository {
   final List<School> _schools = [];
   final List<SchoolMembership> _memberships = [];
   final AuthSessionStorage? _sessionStorage;
+  final UserProfile? _currentUser;
   final bool _hasCustomMemberships;
 
   LocalSchoolRepository({
     List<School>? initialSchools,
     List<SchoolMembership>? initialMemberships,
     AuthSessionStorage? sessionStorage,
+    UserProfile? currentUser,
   })  : _sessionStorage = sessionStorage,
+        _currentUser = currentUser,
         _hasCustomMemberships = initialMemberships != null {
     if (initialSchools != null) {
       _schools.addAll(initialSchools);
@@ -141,15 +144,16 @@ class LocalSchoolRepository implements SchoolRepository {
     List<SchoolMembership> targetMemberships = _memberships;
 
     if (!_hasCustomMemberships) {
-      final rememberedUser = await _sessionStorage?.getRememberedUser();
-      if (rememberedUser != null) {
+      final activeUser =
+          _currentUser ?? await _sessionStorage?.getRememberedUser();
+      if (activeUser != null) {
         final matches = _memberships.where((m) {
-          if (m.userId == rememberedUser.id) return true;
-          if (rememberedUser.role == UserRole.schoolAdmin &&
+          if (m.userId == activeUser.id) return true;
+          if (activeUser.role == UserRole.schoolAdmin &&
               m.role == SchoolMemberRole.schoolAdmin) {
             return true;
           }
-          if (rememberedUser.role == UserRole.teacher &&
+          if (activeUser.role == UserRole.teacher &&
               m.role == SchoolMemberRole.teacher) {
             return true;
           }
@@ -158,6 +162,32 @@ class LocalSchoolRepository implements SchoolRepository {
 
         if (matches.isNotEmpty) {
           targetMemberships = matches;
+        } else if (activeUser.role == UserRole.schoolAdmin) {
+          targetMemberships = [
+            SchoolMembership(
+              id: 'sm-admin-fallback',
+              schoolId: '11111111-1111-1111-1111-111111111111',
+              userId: activeUser.id,
+              role: SchoolMemberRole.schoolAdmin,
+              status: SchoolMembershipStatus.active,
+              schoolStudentId: 'DIR-BOL-001',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+          ];
+        } else if (activeUser.role == UserRole.teacher) {
+          targetMemberships = [
+            SchoolMembership(
+              id: 'sm-teacher-fallback',
+              schoolId: '11111111-1111-1111-1111-111111111111',
+              userId: activeUser.id,
+              role: SchoolMemberRole.teacher,
+              status: SchoolMembershipStatus.active,
+              schoolStudentId: 'TCH-BOL-001',
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+          ];
         }
       }
     }

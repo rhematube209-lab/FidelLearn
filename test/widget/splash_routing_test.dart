@@ -10,6 +10,8 @@ import 'package:fidel_learn/features/auth/domain/models/user_profile.dart';
 import 'package:fidel_learn/features/auth/presentation/screens/login_screen.dart';
 import 'package:fidel_learn/features/bookmarks/data/repositories/local_bookmark_repository.dart';
 import 'package:fidel_learn/features/exams/data/repositories/local_exam_repository.dart';
+import 'package:fidel_learn/features/home/presentation/screens/student_home_screen.dart';
+import 'package:fidel_learn/features/school/presentation/screens/school_leadership_home_screen.dart';
 import 'package:fidel_learn/features/mistakes/data/repositories/local_mistake_repository.dart';
 import 'package:fidel_learn/features/subjects/data/repositories/local_content_repository.dart';
 
@@ -108,5 +110,59 @@ void main() {
       expect(find.byType(SyncIndicatorWidget), findsWidgets);
       expect(find.text('FidelLearn'), findsWidgets);
     });
+
+    testWidgets(
+        'Remembered school admin routes directly to SchoolLeadershipHomeScreen',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final storage = AuthSessionStorage();
+      final adminUser = UserProfile(
+        id: '00000000-0000-0000-0000-000000000004',
+        phoneNumber: '+251944556677',
+        displayName: 'Bole School Admin',
+        grade: 12,
+        stream: 'common',
+        preferredLanguage: 'en',
+        role: UserRole.schoolAdmin,
+        createdAt: DateTime.now().subtract(const Duration(days: 60)),
+      );
+      await storage.saveSession(user: adminUser, rememberMe: true);
+
+      final authRepo = MockAuthRepository(
+        initialUser: adminUser,
+        sessionStorage: storage,
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            authSessionStorageProvider.overrideWithValue(storage),
+            authRepositoryProvider.overrideWithValue(authRepo),
+            contentRepositoryProvider
+                .overrideWithValue(LocalContentRepository()),
+            examRepositoryProvider.overrideWithValue(LocalExamRepository()),
+            bookmarkRepositoryProvider
+                .overrideWithValue(LocalBookmarkRepository()),
+            mistakeRepositoryProvider
+                .overrideWithValue(LocalMistakeRepository()),
+          ],
+          child: const FidelLearnApp(),
+        ),
+      );
+
+      // Settle splash delay (300ms) and context resolution
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byType(SchoolLeadershipHomeScreen), findsOneWidget);
+      expect(find.byType(StudentHomeScreen), findsNothing);
+      expect(find.text('Bole Secondary'), findsWidgets);
+    });
   });
 }
+

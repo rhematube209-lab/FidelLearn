@@ -65,9 +65,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
           if (!mounted) return;
 
-          if (schoolContext.isSchoolAdmin) {
+          if (schoolContext.isSchoolAdmin || user.role == UserRole.schoolAdmin) {
             context.go('/school');
-          } else if (schoolContext.isTeacher) {
+          } else if (schoolContext.isTeacher || user.role == UserRole.teacher) {
             context.go('/teacher');
           } else {
             // Context has actually resolved as independent or unauthorized
